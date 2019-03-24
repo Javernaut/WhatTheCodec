@@ -35,7 +35,7 @@ public class MainActivity extends Activity {
                 String path = PathUtil.getPath(this, data.getData());
                 String messageToShow;
                 if (path != null) {
-                    messageToShow = getFileFormat(path);
+                    messageToShow = getVideoCodecName(path);
                 } else {
                     messageToShow = "Couldn't convert the URI";
                 }
@@ -46,13 +46,13 @@ public class MainActivity extends Activity {
         }
     }
 
-    private static String getFileFormat(String path) {
+    private static String getVideoCodecName(String path) {
         VideoFileConfig videoFileConfig = VideoFileConfig.create(path);
         if (videoFileConfig == null) {
             return "Couldn't open the file";
         }
 
-        String fileFormat = videoFileConfig.getFileFormat();
+        String fileFormat = videoFileConfig.getCodecName();
         videoFileConfig.release();
 
         return fileFormat;
