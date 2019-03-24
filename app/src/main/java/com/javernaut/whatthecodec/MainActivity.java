@@ -35,7 +35,7 @@ public class MainActivity extends Activity {
                 String path = PathUtil.getPath(this, data.getData());
                 String messageToShow;
                 if (path != null) {
-                    messageToShow = getVideoCodecName(path);
+                    messageToShow = getFileFormat(path);
                 } else {
                     messageToShow = "Couldn't convert the URI";
                 }
@@ -46,12 +46,15 @@ public class MainActivity extends Activity {
         }
     }
 
-    private native String getVideoCodecName(String filePath);
+    private static String getFileFormat(String path) {
+        VideoFileConfig videoFileConfig = VideoFileConfig.create(path);
+        if (videoFileConfig == null) {
+            return "Couldn't open the file";
+        }
 
-    static {
-        System.loadLibrary("avformat");
-        System.loadLibrary("avcodec");
-        System.loadLibrary("avutil");
-        System.loadLibrary("native-lib");
+        String fileFormat = videoFileConfig.getFileFormat();
+        videoFileConfig.release();
+
+        return fileFormat;
     }
 }
