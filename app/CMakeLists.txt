@@ -16,7 +16,8 @@ set_target_properties(avcodec PROPERTIES IMPORTED_LOCATION ${ffmpeg_libs}/libavc
 
 add_library(native-lib
         SHARED
-        src/main/cpp/native-lib.cpp)
+        src/main/cpp/native-lib.cpp
+        src/main/cpp/video_config.cpp)
 
 target_link_libraries(
         native-lib

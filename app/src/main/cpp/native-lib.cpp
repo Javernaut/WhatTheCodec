@@ -6,11 +6,7 @@ extern "C" {
 #include <libavcodec/avcodec.h>
 }
 
-struct VideoConfig {
-    AVFormatContext *avFormatContext;
-    AVCodecParameters *parameters;
-    AVCodec *avVideoCodec;
-};
+#include "video_config.h"
 
 extern "C"
 JNIEXPORT jlong JNICALL
@@ -18,32 +14,11 @@ Java_com_javernaut_whatthecodec_VideoFileConfig_nativeCreate(JNIEnv *env, jclass
                                                              jstring jfilePath) {
     const char *filePath = env->GetStringUTFChars(jfilePath, nullptr);
 
-    AVFormatContext *avFormatContext = nullptr;
-
-    if (avformat_open_input(&avFormatContext, filePath, nullptr, nullptr)) {
-        return -1;
-    }
+    VideoConfig *videoConfig = video_config_create(filePath);
 
     env->ReleaseStringUTFChars(jfilePath, filePath);
 
-    auto *videoConfig = (VideoConfig *) malloc(sizeof(VideoConfig));;
-    videoConfig->avFormatContext = avFormatContext;
-
-    if (avformat_find_stream_info(avFormatContext, nullptr) < 0) {
-        return -1;
-    };
-
-    for (int pos = 0; pos < avFormatContext->nb_streams; pos++) {
-        // Getting the name of a codec of the very first video stream
-        AVCodecParameters *parameters = avFormatContext->streams[pos]->codecpar;
-        if (parameters->codec_type == AVMEDIA_TYPE_VIDEO) {
-            videoConfig->parameters = parameters;
-            videoConfig->avVideoCodec = avcodec_find_decoder(parameters->codec_id);
-            break;
-        }
-    }
-
-    return reinterpret_cast<long>(videoConfig);
+    return videoConfig == nullptr ? -1 : reinterpret_cast<long>(videoConfig);
 }
 
 extern "C"
