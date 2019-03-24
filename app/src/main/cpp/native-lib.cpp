@@ -8,6 +8,7 @@ extern "C" {
 
 struct VideoConfig {
     AVFormatContext *avFormatContext;
+    AVCodecParameters *parameters;
     AVCodec *avVideoCodec;
 };
 
@@ -36,6 +37,7 @@ Java_com_javernaut_whatthecodec_VideoFileConfig_nativeCreate(JNIEnv *env, jclass
         // Getting the name of a codec of the very first video stream
         AVCodecParameters *parameters = avFormatContext->streams[pos]->codecpar;
         if (parameters->codec_type == AVMEDIA_TYPE_VIDEO) {
+            videoConfig->parameters = parameters;
             videoConfig->avVideoCodec = avcodec_find_decoder(parameters->codec_id);
             break;
         }
@@ -73,4 +75,20 @@ Java_com_javernaut_whatthecodec_VideoFileConfig_nativeGetCodecName(JNIEnv *env, 
     auto *avVideoCodec = videoConfig->avVideoCodec;
 
     return env->NewStringUTF(avVideoCodec->long_name);
+}
+
+extern "C"
+JNIEXPORT jint JNICALL
+Java_com_javernaut_whatthecodec_VideoFileConfig_nativeGetWidth(JNIEnv *env, jclass type,
+                                                               jlong nativePointer) {
+    auto *videoConfig = reinterpret_cast<VideoConfig *>(nativePointer);
+    return videoConfig->parameters->width;
+}
+
+extern "C"
+JNIEXPORT jint JNICALL
+Java_com_javernaut_whatthecodec_VideoFileConfig_nativeGetHeight(JNIEnv *env, jclass type,
+                                                                jlong nativePointer) {
+    auto *videoConfig = reinterpret_cast<VideoConfig *>(nativePointer);
+    return videoConfig->parameters->height;
 }
