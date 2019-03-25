@@ -14,6 +14,8 @@ set_target_properties(avformat PROPERTIES IMPORTED_LOCATION ${ffmpeg_libs}/libav
 add_library(avcodec SHARED IMPORTED)
 set_target_properties(avcodec PROPERTIES IMPORTED_LOCATION ${ffmpeg_libs}/libavcodec.so)
 
+find_library(log-lib log)
+
 add_library(native-lib
         SHARED
         src/main/cpp/native-lib.cpp
@@ -21,6 +23,7 @@ add_library(native-lib
 
 target_link_libraries(
         native-lib
+        ${log-lib}
         avformat
         avcodec
         avutil)
