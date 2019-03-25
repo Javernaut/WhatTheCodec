@@ -19,7 +19,8 @@ find_library(log-lib log)
 add_library(native-lib
         SHARED
         src/main/cpp/native-lib.cpp
-        src/main/cpp/video_config.cpp)
+        src/main/cpp/video_config.cpp
+        src/main/cpp/utils.cpp)
 
 target_link_libraries(
         native-lib
