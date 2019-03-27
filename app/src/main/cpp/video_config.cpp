@@ -8,9 +8,9 @@ extern "C" {
 }
 
 #include "video_config.h"
+#include "utils.h"
 
-// TODO consider attaching the VideoConfig to VideoFileConfig here and returning a 'success' boolean
-VideoConfig *video_config_create(const char *filePath) {
+static VideoConfig *video_config_create(const char *filePath) {
     AVFormatContext *avFormatContext = nullptr;
 
     if (avformat_open_input(&avFormatContext, filePath, nullptr, nullptr)) {
@@ -36,6 +36,18 @@ VideoConfig *video_config_create(const char *filePath) {
     }
 
     return videoConfig;
+}
+
+static void video_config_set_pointer(jobject thiz, jlong value) {
+    utils_get_env()->SetLongField(thiz,
+                                  fields.VideoFileConfig.nativePointer,
+                                  value);
+}
+
+void video_config_new(jobject instance, const char *filePath) {
+    VideoConfig *videoConfig = video_config_create(filePath);
+    jlong valueToAttach = videoConfig == nullptr ? -1 : reinterpret_cast<long>(videoConfig);
+    video_config_set_pointer(instance, valueToAttach);
 }
 
 VideoConfig *video_config_get(jobject jVideoConfig) {

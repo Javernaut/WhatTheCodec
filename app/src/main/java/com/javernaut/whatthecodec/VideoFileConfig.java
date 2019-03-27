@@ -2,10 +2,11 @@ package com.javernaut.whatthecodec;
 
 public class VideoFileConfig {
 
-    private final long nativePointer;
+    // The field is handled by the native code
+    private long nativePointer;
 
-    private VideoFileConfig(long nativePointer) {
-        this.nativePointer = nativePointer;
+    private VideoFileConfig(String filePath) {
+        nativeNew(filePath);
     }
 
     public String getFileFormat() {
@@ -29,15 +30,14 @@ public class VideoFileConfig {
     }
 
     public static VideoFileConfig create(String filePath) {
-        long nativePointer = nativeCreate(filePath);
-        if (nativePointer == -1) {
+        VideoFileConfig result = new VideoFileConfig(filePath);
+        if (result.nativePointer == -1) {
             return null;
         }
-
-        return new VideoFileConfig(nativePointer);
+        return result;
     }
 
-    private static native long nativeCreate(String filePath);
+    private native void nativeNew(String filePath);
 
     private static native String nativeGetFileFormat(long nativePointer);
 

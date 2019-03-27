@@ -21,19 +21,6 @@ void JNI_OnUnload(JavaVM *vm, void *reserved) {
 }
 
 extern "C"
-JNIEXPORT jlong JNICALL
-Java_com_javernaut_whatthecodec_VideoFileConfig_nativeCreate(JNIEnv *env, jclass type,
-                                                             jstring jfilePath) {
-    const char *filePath = env->GetStringUTFChars(jfilePath, nullptr);
-
-    VideoConfig *videoConfig = video_config_create(filePath);
-
-    env->ReleaseStringUTFChars(jfilePath, filePath);
-
-    return videoConfig == nullptr ? -1 : reinterpret_cast<long>(videoConfig);
-}
-
-extern "C"
 JNIEXPORT jstring JNICALL
 Java_com_javernaut_whatthecodec_VideoFileConfig_nativeGetFileFormat(JNIEnv *env, jclass type,
                                                                     jlong nativePointer) {
@@ -78,4 +65,15 @@ Java_com_javernaut_whatthecodec_VideoFileConfig_nativeGetHeight(JNIEnv *env, jcl
                                                                 jlong nativePointer) {
     auto *videoConfig = reinterpret_cast<VideoConfig *>(nativePointer);
     return videoConfig->parameters->height;
+}
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_javernaut_whatthecodec_VideoFileConfig_nativeNew(JNIEnv *env, jobject instance,
+                                                          jstring jfilePath) {
+    const char *filePath = env->GetStringUTFChars(jfilePath, nullptr);
+
+    video_config_new(instance, filePath);
+
+    env->ReleaseStringUTFChars(jfilePath, filePath);
 }

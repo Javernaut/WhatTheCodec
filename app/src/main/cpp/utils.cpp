@@ -5,9 +5,22 @@
 #include "utils.h"
 #include "log.h"
 
-int utils_fields_init(JavaVM *vm) {
+struct fields fields;
+static JavaVM *javaVM;
+
+JNIEnv *utils_get_env() {
     JNIEnv *env;
-    if (vm->GetEnv(reinterpret_cast<void **>(&env), JNI_VERSION_1_6) != JNI_OK) {
+    if (javaVM->GetEnv(reinterpret_cast<void **>(&env), JNI_VERSION_1_6) != JNI_OK) {
+        return nullptr;
+    }
+    return env;
+}
+
+int utils_fields_init(JavaVM *vm) {
+    javaVM = vm;
+
+    JNIEnv *env = utils_get_env();
+    if (env == nullptr) {
         return -1;
     }
 
@@ -48,10 +61,12 @@ int utils_fields_init(JavaVM *vm) {
 }
 
 void utils_fields_free(JavaVM *vm) {
-    JNIEnv *env;
-    if (vm->GetEnv(reinterpret_cast<void **>(&env), JNI_VERSION_1_6) != JNI_OK) {
+    JNIEnv *env = utils_get_env();
+    if (vm == nullptr) {
         return;
     }
 
     env->DeleteGlobalRef(fields.VideoFileConfig.clazz);
+
+    javaVM = nullptr;
 }

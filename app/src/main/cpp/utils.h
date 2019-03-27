@@ -12,15 +12,19 @@ int utils_fields_init(JavaVM *vm);
 
 void utils_fields_free(JavaVM *vm);
 
+JNIEnv *utils_get_env();
+
 // The approach was taken from here:
 // https://code.videolan.org/videolan/vlc-android/blob/master/libvlc/jni/utils.h
 // https://code.videolan.org/videolan/vlc-android/blob/master/libvlc/jni/libvlcjni.c
 
-struct {
+struct fields {
     struct {
         jclass clazz;
         jfieldID nativePointer;
     } VideoFileConfig;
-} fields;
+};
+
+extern struct fields fields;
 
 #endif //WHATTHECODEC_UTILS_H

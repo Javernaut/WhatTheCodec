@@ -14,7 +14,7 @@ struct VideoConfig {
 };
 
 // Setting the VideoFileConfig.nativePointer is delegated to Java part
-VideoConfig *video_config_create(const char *filePath);
+void video_config_new(jobject instance, const char *filePath);
 
 VideoConfig *video_config_get(jobject jVideoConfig);
 
