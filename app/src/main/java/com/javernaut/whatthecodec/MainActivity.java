@@ -7,8 +7,6 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import ja.com.whatthecodec.R;
-
 public class MainActivity extends Activity {
 
     private static final int PICK_VIDEO_REQUEST_CODE = 42;

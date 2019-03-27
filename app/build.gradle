@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "ja.com.whatthecodec"
+        applicationId "com.javernaut.whatthecodec"
         minSdkVersion 21
         targetSdkVersion 22
         versionCode 1
