@@ -43,12 +43,9 @@ Java_com_javernaut_whatthecodec_VideoFileConfig_release(JNIEnv *env, jclass type
 
 extern "C"
 JNIEXPORT jstring JNICALL
-Java_com_javernaut_whatthecodec_VideoFileConfig_nativeGetCodecName(JNIEnv *env, jclass type,
-                                                                   jlong nativePointer) {
-    auto *videoConfig = reinterpret_cast<VideoConfig *>(nativePointer);
-    auto *avVideoCodec = videoConfig->avVideoCodec;
-
-    return env->NewStringUTF(avVideoCodec->long_name);
+Java_com_javernaut_whatthecodec_VideoFileConfig_getCodecName(JNIEnv *env, jobject instance) {
+    auto *videoConfig = video_config_get(instance);
+    return env->NewStringUTF(videoConfig->avVideoCodec->long_name);
 }
 
 extern "C"

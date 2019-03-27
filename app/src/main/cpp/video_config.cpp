@@ -51,8 +51,9 @@ void video_config_new(jobject instance, const char *filePath) {
 }
 
 VideoConfig *video_config_get(jobject jVideoConfig) {
-    // TODO implement me
-    return nullptr;
+    jlong nativePointer = utils_get_env()->GetLongField(jVideoConfig,
+                                                        fields.VideoFileConfig.nativePointer);
+    return reinterpret_cast<VideoConfig *>(nativePointer);
 }
 
 void video_config_free(jobject jVideoConfig) {

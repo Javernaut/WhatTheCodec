@@ -13,9 +13,7 @@ public class VideoFileConfig {
         return nativeGetFileFormat(nativePointer);
     }
 
-    public String getCodecName() {
-        return nativeGetCodecName(nativePointer);
-    }
+    public native String getCodecName();
 
     public int getWidth() {
         return nativeGetWidth(nativePointer);
@@ -40,8 +38,6 @@ public class VideoFileConfig {
     private native void nativeNew(String filePath);
 
     private static native String nativeGetFileFormat(long nativePointer);
-
-    private static native String nativeGetCodecName(long nativePointer);
 
     private static native int nativeGetWidth(long nativePointer);
 
