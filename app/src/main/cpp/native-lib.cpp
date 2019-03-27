@@ -22,23 +22,15 @@ void JNI_OnUnload(JavaVM *vm, void *reserved) {
 
 extern "C"
 JNIEXPORT jstring JNICALL
-Java_com_javernaut_whatthecodec_VideoFileConfig_nativeGetFileFormat(JNIEnv *env, jclass type,
-                                                                    jlong nativePointer) {
-    auto *videoConfig = reinterpret_cast<VideoConfig *>(nativePointer);
-    auto *avFormatContext = videoConfig->avFormatContext;
-
-    return env->NewStringUTF(avFormatContext->iformat->long_name);
+Java_com_javernaut_whatthecodec_VideoFileConfig_getFileFormat(JNIEnv *env, jobject instance) {
+    auto *videoConfig = video_config_get(instance);
+    return env->NewStringUTF(videoConfig->avFormatContext->iformat->long_name);
 }
 
 extern "C"
 JNIEXPORT void JNICALL
-Java_com_javernaut_whatthecodec_VideoFileConfig_release(JNIEnv *env, jclass type,
-                                                        jlong nativePointer) {
-    auto *videoConfig = reinterpret_cast<VideoConfig *>(nativePointer);
-    auto *avFormatContext = videoConfig->avFormatContext;
-
-    avformat_close_input(&avFormatContext);
-    free(videoConfig);
+Java_com_javernaut_whatthecodec_VideoFileConfig_release(JNIEnv *env, jobject instance) {
+    video_config_free(instance);
 }
 
 extern "C"
@@ -50,17 +42,15 @@ Java_com_javernaut_whatthecodec_VideoFileConfig_getCodecName(JNIEnv *env, jobjec
 
 extern "C"
 JNIEXPORT jint JNICALL
-Java_com_javernaut_whatthecodec_VideoFileConfig_nativeGetWidth(JNIEnv *env, jclass type,
-                                                               jlong nativePointer) {
-    auto *videoConfig = reinterpret_cast<VideoConfig *>(nativePointer);
+Java_com_javernaut_whatthecodec_VideoFileConfig_getWidth(JNIEnv *, jobject instance) {
+    auto *videoConfig = video_config_get(instance);
     return videoConfig->parameters->width;
 }
 
 extern "C"
 JNIEXPORT jint JNICALL
-Java_com_javernaut_whatthecodec_VideoFileConfig_nativeGetHeight(JNIEnv *env, jclass type,
-                                                                jlong nativePointer) {
-    auto *videoConfig = reinterpret_cast<VideoConfig *>(nativePointer);
+Java_com_javernaut_whatthecodec_VideoFileConfig_getHeight(JNIEnv *, jobject instance) {
+    auto *videoConfig = video_config_get(instance);
     return videoConfig->parameters->height;
 }
 

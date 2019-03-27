@@ -57,5 +57,11 @@ VideoConfig *video_config_get(jobject jVideoConfig) {
 }
 
 void video_config_free(jobject jVideoConfig) {
-    // TODO implement me
+    auto *videoConfig = video_config_get(jVideoConfig);
+    auto *avFormatContext = videoConfig->avFormatContext;
+
+    avformat_close_input(&avFormatContext);
+    free(videoConfig);
+
+    video_config_set_pointer(jVideoConfig, -1);
 }

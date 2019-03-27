@@ -9,23 +9,15 @@ public class VideoFileConfig {
         nativeNew(filePath);
     }
 
-    public String getFileFormat() {
-        return nativeGetFileFormat(nativePointer);
-    }
+    public native String getFileFormat();
 
     public native String getCodecName();
 
-    public int getWidth() {
-        return nativeGetWidth(nativePointer);
-    }
+    public native int getWidth();
 
-    public int getHeight() {
-        return nativeGetHeight(nativePointer);
-    }
+    public native int getHeight();
 
-    public void release() {
-        release(nativePointer);
-    }
+    public native void release();
 
     public static VideoFileConfig create(String filePath) {
         VideoFileConfig result = new VideoFileConfig(filePath);
@@ -36,14 +28,6 @@ public class VideoFileConfig {
     }
 
     private native void nativeNew(String filePath);
-
-    private static native String nativeGetFileFormat(long nativePointer);
-
-    private static native int nativeGetWidth(long nativePointer);
-
-    private static native int nativeGetHeight(long nativePointer);
-
-    private static native void release(long nativePointer);
 
     static {
         System.loadLibrary("avformat");
