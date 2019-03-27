@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import ja.com.whatthecodec.R;
@@ -33,28 +34,36 @@ public class MainActivity extends Activity {
         if (requestCode == PICK_VIDEO_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 String path = PathUtil.getPath(this, data.getData());
-                String messageToShow;
                 if (path != null) {
-                    messageToShow = getVideoCodecName(path);
+                    tryGetVideoConfig(path);
                 } else {
-                    messageToShow = "Couldn't convert the URI";
+                    toast("Couldn't convert the URI");
                 }
-                Toast.makeText(this, messageToShow, Toast.LENGTH_LONG).show();
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
 
-    private static String getVideoCodecName(String path) {
+    private void tryGetVideoConfig(String path) {
         VideoFileConfig videoFileConfig = VideoFileConfig.create(path);
-        if (videoFileConfig == null) {
-            return "Couldn't open the file";
+        if (videoFileConfig != null) {
+            setVideoConfig(videoFileConfig);
+            videoFileConfig.release();
+        } else {
+            toast("Couldn't open the file");
         }
+    }
 
-        String fileFormat = videoFileConfig.getCodecName();
-        videoFileConfig.release();
+    private void setVideoConfig(VideoFileConfig config) {
+        findViewById(R.id.details_panel).setVisibility(View.VISIBLE);
+        ((TextView) findViewById(R.id.file_format)).setText(config.getFileFormat());
+        ((TextView) findViewById(R.id.video_codec)).setText(config.getCodecName());
+        ((TextView) findViewById(R.id.width)).setText(String.valueOf(config.getWidth()));
+        ((TextView) findViewById(R.id.height)).setText(String.valueOf(config.getHeight()));
+    }
 
-        return fileFormat;
+    private void toast(String msg) {
+        Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
     }
 }
