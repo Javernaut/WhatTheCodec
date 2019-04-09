@@ -15,6 +15,7 @@ add_library(avcodec SHARED IMPORTED)
 set_target_properties(avcodec PROPERTIES IMPORTED_LOCATION ${ffmpeg_libs}/libavcodec.so)
 
 find_library(log-lib log)
+find_library(jnigraphics-lib jnigraphics)
 
 add_library(native-lib
         SHARED
@@ -25,6 +26,7 @@ add_library(native-lib
 target_link_libraries(
         native-lib
         ${log-lib}
+        ${jnigraphics-lib}
         avformat
         avcodec
         avutil)

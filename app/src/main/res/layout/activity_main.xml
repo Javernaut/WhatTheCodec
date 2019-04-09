@@ -16,7 +16,8 @@
         android:visibility="gone"
         tools:visibility="visible">
 
-        <com.javernaut.whatthecodec.FrameSurfaceView
+        <com.javernaut.whatthecodec.FrameDisplayingView
+            android:id="@+id/frameDisplayingView"
             android:layout_width="240dp"
             android:layout_height="135dp" />
 

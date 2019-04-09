@@ -59,6 +59,7 @@ public class MainActivity extends Activity {
         ((TextView) findViewById(R.id.video_codec)).setText(config.getCodecName());
         ((TextView) findViewById(R.id.width)).setText(String.valueOf(config.getWidth()));
         ((TextView) findViewById(R.id.height)).setText(String.valueOf(config.getHeight()));
+        ((FrameDisplayingView) findViewById(R.id.frameDisplayingView)).setVideoConfig(config);
     }
 
     private void toast(String msg) {
