@@ -1,5 +1,7 @@
 package com.javernaut.whatthecodec;
 
+import android.graphics.Bitmap;
+
 public class VideoFileConfig {
 
     // The field is handled by the native code
@@ -19,6 +21,8 @@ public class VideoFileConfig {
 
     public native void release();
 
+    public native void fillWithPreview(Bitmap bitmap);
+
     public static VideoFileConfig create(String filePath) {
         VideoFileConfig result = new VideoFileConfig(filePath);
         if (result.nativePointer == -1) {
@@ -33,6 +37,7 @@ public class VideoFileConfig {
         System.loadLibrary("avformat");
         System.loadLibrary("avcodec");
         System.loadLibrary("avutil");
+        System.loadLibrary("swscale");
         System.loadLibrary("native-lib");
     }
 }

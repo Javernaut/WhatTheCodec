@@ -12,6 +12,15 @@ public class FrameDisplayingView extends ImageView {
     }
 
     public void setVideoConfig(VideoFileConfig config) {
+        Bitmap bitmap = Bitmap.createBitmap(
+                getResources().getDimensionPixelSize(R.dimen.preview_width),
+                getResources().getDimensionPixelSize(R.dimen.preview_height),
+                Bitmap.Config.ARGB_8888);
+        config.fillWithPreview(bitmap);
+        setImageBitmap(bitmap);
+    }
+
+    public void showLauncherIcon() {
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
         doTheThingWithBitmap(bitmap);
         setImageBitmap(bitmap);

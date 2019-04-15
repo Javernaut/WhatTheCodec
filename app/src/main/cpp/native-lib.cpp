@@ -5,6 +5,7 @@
 extern "C" {
 #include <libavformat/avformat.h>
 #include <libavcodec/avcodec.h>
+#include <libswscale/swscale.h>
 }
 
 #include "video_config.h"
@@ -64,6 +65,74 @@ Java_com_javernaut_whatthecodec_VideoFileConfig_nativeNew(JNIEnv *env, jobject i
     video_config_new(instance, filePath);
 
     env->ReleaseStringUTFChars(jfilePath, filePath);
+}
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_javernaut_whatthecodec_VideoFileConfig_fillWithPreview(JNIEnv *env, jobject instance,
+                                                                jobject jBitmap) {
+    AndroidBitmapInfo bitmapInfo;
+    AndroidBitmap_getInfo(env, jBitmap, &bitmapInfo);
+
+    auto *videoConfig = video_config_get(instance);
+
+    AVCodecContext *videoCodecContext = avcodec_alloc_context3(videoConfig->avVideoCodec);
+    avcodec_parameters_to_context(videoCodecContext, videoConfig->parameters);
+    avcodec_open2(videoCodecContext, videoConfig->avVideoCodec, nullptr);
+
+    SwsContext *scalingContext =
+            sws_getContext(
+                    // srcW
+                    videoConfig->parameters->width,
+                    // srcH
+                    videoConfig->parameters->height,
+                    // srcFormat
+                    videoCodecContext->pix_fmt,
+                    // dstW
+                    bitmapInfo.width,
+                    // dstH
+                    bitmapInfo.height,
+                    // dstFormat
+                    AV_PIX_FMT_RGBA,
+                    SWS_BICUBIC, nullptr, nullptr, nullptr);
+
+    AVPacket *packet = av_packet_alloc();
+    AVFrame *frame = av_frame_alloc();
+
+    while (av_read_frame(videoConfig->avFormatContext, packet) >= 0) {
+        if (packet->stream_index == videoConfig->videoStreamIndex) {
+            avcodec_send_packet(videoCodecContext, packet);
+            int response = avcodec_receive_frame(videoCodecContext, frame);
+            if (response == AVERROR(EAGAIN)) {
+                continue;
+            }
+
+            if (response >= 0) {
+                AVFrame *frameForDrawing = av_frame_alloc();
+                void *bitmapBuffer;
+                AndroidBitmap_lockPixels(env, jBitmap, &bitmapBuffer);
+
+                // TODO replace with not deprecated API
+                avpicture_fill((AVPicture *) frameForDrawing, static_cast<const uint8_t *>(bitmapBuffer),
+                               AV_PIX_FMT_RGBA, bitmapInfo.width, bitmapInfo.height);
+
+                sws_scale(
+                        scalingContext, frame->data, frame->linesize, 0,
+                        videoConfig->parameters->height, frameForDrawing->data, frameForDrawing->linesize);
+
+                av_frame_free(&frameForDrawing);
+
+                AndroidBitmap_unlockPixels(env, jBitmap);
+                break;
+            }
+        }
+        av_packet_unref(packet);
+    }
+
+    av_packet_free(&packet);
+    av_frame_free(&frame);
+    sws_freeContext(scalingContext);
+    avcodec_free_context(&videoCodecContext);
 }
 
 extern "C"

@@ -31,6 +31,7 @@ static VideoConfig *video_config_create(const char *filePath) {
         if (parameters->codec_type == AVMEDIA_TYPE_VIDEO) {
             videoConfig->parameters = parameters;
             videoConfig->avVideoCodec = avcodec_find_decoder(parameters->codec_id);
+            videoConfig->videoStreamIndex = pos;
             break;
         }
     }

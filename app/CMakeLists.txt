@@ -14,6 +14,9 @@ set_target_properties(avformat PROPERTIES IMPORTED_LOCATION ${ffmpeg_libs}/libav
 add_library(avcodec SHARED IMPORTED)
 set_target_properties(avcodec PROPERTIES IMPORTED_LOCATION ${ffmpeg_libs}/libavcodec.so)
 
+add_library(swscale SHARED IMPORTED)
+set_target_properties(swscale PROPERTIES IMPORTED_LOCATION ${ffmpeg_libs}/libswscale.so)
+
 find_library(log-lib log)
 find_library(jnigraphics-lib jnigraphics)
 
@@ -29,4 +32,5 @@ target_link_libraries(
         ${jnigraphics-lib}
         avformat
         avcodec
+        swscale
         avutil)

@@ -11,6 +11,7 @@ struct VideoConfig {
     AVFormatContext *avFormatContext;
     AVCodecParameters *parameters;
     AVCodec *avVideoCodec;
+    int videoStreamIndex;
 };
 
 // Setting the VideoFileConfig.nativePointer is delegated to Java part

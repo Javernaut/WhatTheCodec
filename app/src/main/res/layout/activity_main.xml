@@ -18,8 +18,8 @@
 
         <com.javernaut.whatthecodec.FrameDisplayingView
             android:id="@+id/frameDisplayingView"
-            android:layout_width="240dp"
-            android:layout_height="135dp" />
+            android:layout_width="@dimen/preview_width"
+            android:layout_height="@dimen/preview_height" />
 
         <GridLayout
             android:layout_width="wrap_content"
