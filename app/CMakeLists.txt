@@ -20,14 +20,15 @@ set_target_properties(swscale PROPERTIES IMPORTED_LOCATION ${ffmpeg_libs}/libsws
 find_library(log-lib log)
 find_library(jnigraphics-lib jnigraphics)
 
-add_library(native-lib
+add_library(video-config
         SHARED
-        src/main/cpp/native-lib.cpp
+        src/main/cpp/main.cpp
         src/main/cpp/video_config.cpp
+        src/main/cpp/video_config_jni.cpp
         src/main/cpp/utils.cpp)
 
 target_link_libraries(
-        native-lib
+        video-config
         ${log-lib}
         ${jnigraphics-lib}
         avformat

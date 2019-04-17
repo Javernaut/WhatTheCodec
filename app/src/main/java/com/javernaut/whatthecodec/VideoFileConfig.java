@@ -38,6 +38,6 @@ public class VideoFileConfig {
         System.loadLibrary("avcodec");
         System.loadLibrary("avutil");
         System.loadLibrary("swscale");
-        System.loadLibrary("native-lib");
+        System.loadLibrary("video-config");
     }
 }

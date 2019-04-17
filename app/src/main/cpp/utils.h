@@ -6,7 +6,6 @@
 #define WHATTHECODEC_UTILS_H
 
 #include <jni.h>
-#include "log.h"
 
 int utils_fields_init(JavaVM *vm);
 

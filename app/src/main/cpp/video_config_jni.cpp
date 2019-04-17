@@ -1,5 +1,4 @@
 #include <jni.h>
-#include <string>
 #include <android/bitmap.h>
 
 extern "C" {
@@ -10,18 +9,7 @@ extern "C" {
 }
 
 #include "video_config.h"
-#include "utils.h"
-
-jint JNI_OnLoad(JavaVM *vm, void *reserved) {
-    if (utils_fields_init(vm) != 0) {
-        return -1;
-    }
-    return JNI_VERSION_1_6;
-}
-
-void JNI_OnUnload(JavaVM *vm, void *reserved) {
-    utils_fields_free(vm);
-}
+#include "log.h"
 
 extern "C"
 JNIEXPORT jstring JNICALL
@@ -113,12 +101,23 @@ Java_com_javernaut_whatthecodec_VideoFileConfig_fillWithPreview(JNIEnv *env, job
                 void *bitmapBuffer;
                 AndroidBitmap_lockPixels(env, jBitmap, &bitmapBuffer);
 
-                av_image_fill_arrays(frameForDrawing->data, frameForDrawing->linesize, static_cast<const uint8_t *>(bitmapBuffer),
-                                     AV_PIX_FMT_RGBA, bitmapInfo.width, bitmapInfo.height, 1);
+                av_image_fill_arrays(
+                        frameForDrawing->data,
+                        frameForDrawing->linesize,
+                        static_cast<const uint8_t *>(bitmapBuffer),
+                        AV_PIX_FMT_RGBA,
+                        bitmapInfo.width,
+                        bitmapInfo.height,
+                        1);
 
                 sws_scale(
-                        scalingContext, frame->data, frame->linesize, 0,
-                        videoConfig->parameters->height, frameForDrawing->data, frameForDrawing->linesize);
+                        scalingContext,
+                        frame->data,
+                        frame->linesize,
+                        0,
+                        videoConfig->parameters->height,
+                        frameForDrawing->data,
+                        frameForDrawing->linesize);
 
                 av_frame_free(&frameForDrawing);
 
