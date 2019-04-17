@@ -6,6 +6,7 @@ extern "C" {
 #include <libavformat/avformat.h>
 #include <libavcodec/avcodec.h>
 #include <libswscale/swscale.h>
+#include <libavutil/imgutils.h>
 }
 
 #include "video_config.h"
@@ -112,9 +113,8 @@ Java_com_javernaut_whatthecodec_VideoFileConfig_fillWithPreview(JNIEnv *env, job
                 void *bitmapBuffer;
                 AndroidBitmap_lockPixels(env, jBitmap, &bitmapBuffer);
 
-                // TODO replace with not deprecated API
-                avpicture_fill((AVPicture *) frameForDrawing, static_cast<const uint8_t *>(bitmapBuffer),
-                               AV_PIX_FMT_RGBA, bitmapInfo.width, bitmapInfo.height);
+                av_image_fill_arrays(frameForDrawing->data, frameForDrawing->linesize, static_cast<const uint8_t *>(bitmapBuffer),
+                                     AV_PIX_FMT_RGBA, bitmapInfo.width, bitmapInfo.height, 1);
 
                 sws_scale(
                         scalingContext, frame->data, frame->linesize, 0,
