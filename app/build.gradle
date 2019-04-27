@@ -4,8 +4,8 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.javernaut.whatthecodec"
-        minSdkVersion 21
-        targetSdkVersion 22
+        minSdkVersion 19
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
         ndk {

@@ -2,10 +2,14 @@ package com.javernaut.whatthecodec;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.ParcelFileDescriptor;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.io.FileNotFoundException;
 
 public class MainActivity extends Activity {
 
@@ -31,20 +35,24 @@ public class MainActivity extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == PICK_VIDEO_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-                String path = PathUtil.getPath(this, data.getData());
-                if (path != null) {
-                    tryGetVideoConfig(path);
-                } else {
-                    toast("Couldn't convert the URI");
-                }
+                tryGetVideoConfig(data.getData());
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
 
-    private void tryGetVideoConfig(String path) {
-        VideoFileConfig videoFileConfig = VideoFileConfig.create(path);
+    private void tryGetVideoConfig(Uri uri) {
+        VideoFileConfig videoFileConfig = null;
+        try {
+            ParcelFileDescriptor descriptor = getContentResolver().openFileDescriptor(uri, "r");
+            if (descriptor != null) {
+                videoFileConfig = VideoFileConfig.create(descriptor);
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
         if (videoFileConfig != null) {
             setVideoConfig(videoFileConfig);
             videoFileConfig.release();

@@ -2,6 +2,8 @@
 // Created by Alex Javernaut on 3/24/19.
 //
 
+#include "unistd.h"
+
 extern "C" {
 #include <libavformat/avformat.h>
 #include <libavcodec/avcodec.h>
@@ -10,14 +12,18 @@ extern "C" {
 #include "video_config.h"
 #include "utils.h"
 
-static VideoConfig *video_config_create(const char *filePath) {
+static VideoConfig *video_config_create(int fileDescriptor) {
     AVFormatContext *avFormatContext = nullptr;
 
-    if (avformat_open_input(&avFormatContext, filePath, nullptr, nullptr)) {
+    char str[32];
+    sprintf(str, "pipe:%d", fileDescriptor);
+
+    if (avformat_open_input(&avFormatContext, str, nullptr, nullptr)) {
         return nullptr;
     }
 
     auto *videoConfig = (VideoConfig *) malloc(sizeof(VideoConfig));;
+    videoConfig->fileDescriptor = fileDescriptor;
     videoConfig->avFormatContext = avFormatContext;
 
     if (avformat_find_stream_info(avFormatContext, nullptr) < 0) {
@@ -45,8 +51,8 @@ static void video_config_set_pointer(jobject thiz, jlong value) {
                                   value);
 }
 
-void video_config_new(jobject instance, const char *filePath) {
-    VideoConfig *videoConfig = video_config_create(filePath);
+void video_config_new(jobject instance, int fd) {
+    VideoConfig *videoConfig = video_config_create(fd);
     jlong valueToAttach = videoConfig == nullptr ? -1 : reinterpret_cast<long>(videoConfig);
     video_config_set_pointer(instance, valueToAttach);
 }
@@ -62,6 +68,8 @@ void video_config_free(jobject jVideoConfig) {
     auto *avFormatContext = videoConfig->avFormatContext;
 
     avformat_close_input(&avFormatContext);
+    close(videoConfig->fileDescriptor);
+
     free(videoConfig);
 
     video_config_set_pointer(jVideoConfig, -1);

@@ -1,14 +1,15 @@
 package com.javernaut.whatthecodec;
 
 import android.graphics.Bitmap;
+import android.os.ParcelFileDescriptor;
 
 public class VideoFileConfig {
 
     // The field is handled by the native code
     private long nativePointer;
 
-    private VideoFileConfig(String filePath) {
-        nativeNew(filePath);
+    private VideoFileConfig(int fileDescriptor) {
+        nativeNew(fileDescriptor);
     }
 
     public native String getFileFormat();
@@ -23,15 +24,15 @@ public class VideoFileConfig {
 
     public native void fillWithPreview(Bitmap bitmap);
 
-    public static VideoFileConfig create(String filePath) {
-        VideoFileConfig result = new VideoFileConfig(filePath);
+    public static VideoFileConfig create(ParcelFileDescriptor descriptor) {
+        VideoFileConfig result = new VideoFileConfig(descriptor.detachFd());
         if (result.nativePointer == -1) {
             return null;
         }
         return result;
     }
 
-    private native void nativeNew(String filePath);
+    private native void nativeNew(int fileDescriptor);
 
     static {
         System.loadLibrary("avformat");

@@ -8,6 +8,7 @@
 #include <jni.h>
 
 struct VideoConfig {
+    int fileDescriptor;
     AVFormatContext *avFormatContext;
     AVCodecParameters *parameters;
     AVCodec *avVideoCodec;
@@ -15,7 +16,7 @@ struct VideoConfig {
 };
 
 // Setting the VideoFileConfig.nativePointer is delegated to Java part
-void video_config_new(jobject instance, const char *filePath);
+void video_config_new(jobject instance, int fd);
 
 VideoConfig *video_config_get(jobject jVideoConfig);
 
