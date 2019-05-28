@@ -37,14 +37,17 @@ class VideoFileConfigTest {
         val videoFileConfig = VideoFileConfig.create(descriptor!!)
         assertThat(videoFileConfig).isNotNull()
 
-        assertThat(videoFileConfig.height).isEqualTo(1080)
-        assertThat(videoFileConfig.width).isEqualTo(1920)
+        if (videoFileConfig != null) {
+            assertThat(videoFileConfig.height).isEqualTo(1080)
+            assertThat(videoFileConfig.width).isEqualTo(1920)
 
-        assertThat(videoFileConfig.fileFormat).isEqualTo("QuickTime / MOV")
-        assertThat(videoFileConfig.codecName).isEqualTo("H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10")
+            assertThat(videoFileConfig.fileFormat).isEqualTo("QuickTime / MOV")
+            assertThat(videoFileConfig.codecName).isEqualTo("H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10")
+
+            videoFileConfig.release()
+        }
 
         // Clean up
-        videoFileConfig.release()
         testFile.delete()
     }
 
