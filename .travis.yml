@@ -6,8 +6,16 @@ android:
     - tools
     - build-tools-28.0.3
     - android-28
+    - android-25
+    - sys-img-x86-android-25
 before_install:
+  #  Installing the ndk and assembling the FFmpeg
   - yes | sdkmanager "ndk-bundle"
   - yes | sdkmanager "patcher;v4"
   - export ANDROID_NDK_HOME=/usr/local/android-sdk/ndk-bundle
   - ffmpeg-android-maker/ffmpeg-android-maker.sh
+  #  Starting an emulator
+  - echo no | android create avd --force -n test -t android-25 --abi x86
+  - emulator -avd test -memory 1500 -no-accel -gpu swiftshader -skin 720x1280 -camera-back none -camera-front none -no-boot-anim -no-window &
+  - android-wait-for-emulator
+  - adb shell input keyevent 82 &
