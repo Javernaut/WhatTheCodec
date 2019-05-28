@@ -9,10 +9,5 @@ android:
 before_install:
   - yes | sdkmanager "ndk-bundle"
   - yes | sdkmanager "patcher;v4"
-  - ls /usr/local/android-sdk
   - export ANDROID_NDK_HOME=/usr/local/android-sdk/ndk-bundle
-  - ls /usr/local/android-sdk/ndk-bundle/toolchains/llvm/prebuilt
-  #  - ls /usr/local/android-sdk/ndk-bundle/toolchains/llvm/prebuilt/darwin-x86_64/bin
-  - ls $ANDROID_NDK_HOME
-  - cat $ANDROID_NDK_HOME/source.properties
   - ffmpeg-android-maker/ffmpeg-android-maker.sh
