@@ -1,6 +1,6 @@
 # What the Codec
 
-[![Build Status](https://travis-ci.org/Javernaut/WhatTheCodec.svg?branch=ci_integration)](https://travis-ci.org/Javernaut/WhatTheCodec)
+[![Build Status](https://travis-ci.org/Javernaut/WhatTheCodec.svg?branch=master)](https://travis-ci.org/Javernaut/WhatTheCodec)
 
 A sample app that displays the basic info about a video file: format name, video codec and frame size. Also the very first frame of the video is shown.  
 The main purpose is to show how to use the output of [ffmpeg-android-maker](https://github.com/Javernaut/ffmpeg-android-maker). Basically is looks like this:  
