@@ -13,6 +13,8 @@ before_install:
   - yes | sdkmanager "ndk-bundle"
   - yes | sdkmanager "patcher;v4"
   - export ANDROID_NDK_HOME=/usr/local/android-sdk/ndk-bundle
+  # Keeping track of the NDK version that was used
+  - cat $ANDROID_NDK_HOME/source.properties
   - ffmpeg-android-maker/ffmpeg-android-maker.sh
   #  Starting an emulator
   - echo no | android create avd --force -n test -t android-25 --abi x86
