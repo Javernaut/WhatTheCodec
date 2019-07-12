@@ -26,7 +26,7 @@ class VideoFileConfig private constructor(fileDescriptor: Int) {
 
     external fun release()
 
-    external fun fillWithPreview(bitmap: Bitmap)
+    external fun fillWithPreview(bitmap: Array<Bitmap>)
 
     private external fun nativeNew(fileDescriptor: Int)
 

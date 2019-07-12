@@ -47,8 +47,8 @@ Java_com_javernaut_whatthecodec_VideoFileConfig_nativeNew(JNIEnv *, jobject inst
 extern "C"
 JNIEXPORT void JNICALL
 Java_com_javernaut_whatthecodec_VideoFileConfig_fillWithPreview(JNIEnv *env, jobject instance,
-                                                                jobject jBitmap) {
-    frame_extractor_fill_with_preview(env, instance, jBitmap);
+                                                                jobjectArray jBitmaps) {
+    frame_extractor_fill_with_preview(env, instance, jBitmaps);
 }
 
 extern "C"
