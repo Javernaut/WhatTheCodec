@@ -21,6 +21,8 @@ class MainActivity : Activity() {
                     .addCategory(Intent.CATEGORY_OPENABLE),
                     PICK_VIDEO_REQUEST_CODE)
         }
+
+        frameDisplayingView.childFramesCount = 4
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {

@@ -16,14 +16,15 @@ class FrameDisplayingView(context: Context, attrs: AttributeSet) : View(context,
 
     private var scaledViewHeight = 0
 
-    private var childFramesPerRow = 3
-    private var childFramesCount = 9
+    private var childFramesPerRow = 1
+    var childFramesCount = 1
         set(value) {
             field = value
             childFramesPerRow = sqrt(value.toDouble()).toInt()
         }
 
     private val frameSpacingBase = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 2f, context.resources.displayMetrics)
+    private var frameSpacingDelta = 0f
 
     private var childFrameWidth = 0
     private var childFrameHeight = 0
@@ -43,6 +44,12 @@ class FrameDisplayingView(context: Context, attrs: AttributeSet) : View(context,
 
         childFrameWidth = scaleChildFrameDimension(measuredWidth)
         childFrameHeight = scaleChildFrameDimension(scaledViewHeight)
+
+        frameSpacingDelta = if (childFramesPerRow == 1) {
+            0f
+        } else {
+            (measuredWidth - childFramesPerRow * childFrameWidth).toFloat() / (childFramesPerRow - 1)
+        }
 
         val bitmaps = Array<Bitmap>(childFramesCount) {
             Bitmap.createBitmap(childFrameWidth, childFrameHeight, Bitmap.Config.ARGB_8888)
@@ -66,15 +73,17 @@ class FrameDisplayingView(context: Context, attrs: AttributeSet) : View(context,
         setMeasuredDimension(targetWidth, scaledViewHeight)
     }
 
+    private fun getFinalFrameSpacing() = frameSpacingBase + frameSpacingDelta
+
     override fun onDraw(canvas: Canvas) {
         frames?.let {
             val bitmapsPerRow = sqrt(it.size.toDouble()).toInt()
             it.forEachIndexed { index, bitmap ->
                 val childFrameXPos = index.rem(bitmapsPerRow)
-                val left = childFrameXPos * childFrameWidth + childFrameXPos * frameSpacingBase
+                val left = childFrameXPos * childFrameWidth + childFrameXPos * getFinalFrameSpacing()
 
                 val childFrameYPos = index / bitmapsPerRow
-                val top = childFrameYPos * childFrameHeight + childFrameYPos * frameSpacingBase
+                val top = childFrameYPos * childFrameHeight + childFrameYPos * getFinalFrameSpacing()
 
                 canvas.drawBitmap(bitmap, left, top, null)
             }
