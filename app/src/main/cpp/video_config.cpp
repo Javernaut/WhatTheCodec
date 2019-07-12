@@ -4,11 +4,6 @@
 
 #include "unistd.h"
 
-extern "C" {
-#include <libavformat/avformat.h>
-#include <libavcodec/avcodec.h>
-}
-
 #include "video_config.h"
 #include "utils.h"
 
