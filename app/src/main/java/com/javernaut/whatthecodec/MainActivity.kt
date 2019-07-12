@@ -22,7 +22,7 @@ class MainActivity : Activity() {
                     PICK_VIDEO_REQUEST_CODE)
         }
 
-        frameDisplayingView.childFramesCount = 4
+        frameDisplayingView.childFramesCount = 9
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {

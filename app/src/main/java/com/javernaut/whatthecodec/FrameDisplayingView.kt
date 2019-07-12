@@ -39,10 +39,7 @@ class FrameDisplayingView(context: Context, attrs: AttributeSet) : View(context,
         originFrameWidth = config.width
         originFrameHeight = config.height
 
-        scaledViewHeight = measuredWidth * originFrameHeight / originFrameWidth
-
-        childFrameWidth = scaleChildFrameDimension(measuredWidth)
-        childFrameHeight = scaleChildFrameDimension(scaledViewHeight)
+        childFrameWidth = (measuredWidth - (childFramesPerRow - 1) * frameSpacingBase).toInt() / childFramesPerRow
 
         frameSpacingDelta = if (childFramesPerRow == 1) {
             0f
@@ -50,14 +47,17 @@ class FrameDisplayingView(context: Context, attrs: AttributeSet) : View(context,
             (measuredWidth - childFramesPerRow * childFrameWidth).toFloat() / (childFramesPerRow - 1)
         }
 
+        childFrameHeight = originFrameHeight * childFrameWidth / originFrameWidth
+
+        scaledViewHeight = (childFrameHeight * childFramesPerRow + (childFramesPerRow - 1) * getFinalFrameSpacing()).toInt()
+
+
         val bitmaps = Array<Bitmap>(childFramesCount) {
             Bitmap.createBitmap(childFrameWidth, childFrameHeight, Bitmap.Config.ARGB_8888)
         }
         config.fillWithPreview(bitmaps)
         frames = bitmaps
     }
-
-    private fun scaleChildFrameDimension(dimension: Int) = ((dimension - (childFramesPerRow - 1) * frameSpacingBase) / childFramesPerRow).toInt()
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         val targetWidth = MeasureSpec.getSize(widthMeasureSpec)
