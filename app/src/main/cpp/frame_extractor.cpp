@@ -15,39 +15,6 @@ extern "C" {
 #include "video_config.h"
 #include "log.h"
 
-void frame_extractor_play_with_colors(JNIEnv *env, jobject jBitmap) {
-    AndroidBitmapInfo info;
-    void *pixels;
-
-    if (AndroidBitmap_getInfo(env, jBitmap, &info) < 0) {
-        return;
-    }
-
-    if (info.format != ANDROID_BITMAP_FORMAT_RGBA_8888) {
-        return;
-    }
-
-    if (AndroidBitmap_lockPixels(env, jBitmap, &pixels) < 0) {
-        LOGV("The pixel format isn't RGBA_8888");
-    }
-
-    auto *charPixels = static_cast<unsigned char *>(pixels);
-    for (int i = 0; i < info.height; i++) {
-        for (int j = 0; j < info.width; j++) {
-            unsigned char *pixelPart = charPixels + i * info.stride + j * 4;
-            int index = 0;
-            if (i > info.height / 2) {
-                index++;
-            }
-            if (j > info.width / 2) {
-                index++;
-            }
-            *(pixelPart + index) = (unsigned char) 0x00;
-        }
-    }
-    AndroidBitmap_unlockPixels(env, jBitmap);
-}
-
 void frame_extractor_fill_with_preview(JNIEnv *env, jobject jVideoConfig, jobjectArray jBitmaps) {
     int arraySize = env->GetArrayLength(jBitmaps);
 

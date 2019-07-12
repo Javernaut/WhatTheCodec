@@ -2,7 +2,6 @@ package com.javernaut.whatthecodec
 
 import android.content.Context
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.util.AttributeSet
 import android.util.TypedValue
@@ -59,14 +58,6 @@ class FrameDisplayingView(context: Context, attrs: AttributeSet) : View(context,
     }
 
     private fun scaleChildFrameDimension(dimension: Int) = ((dimension - (childFramesPerRow - 1) * frameSpacingBase) / childFramesPerRow).toInt()
-
-    fun showLauncherIcon() {
-        val bitmap = BitmapFactory.decodeResource(resources, R.mipmap.ic_launcher)
-        doTheThingWithBitmap(bitmap)
-        frames = arrayOf(bitmap)
-    }
-
-    private external fun doTheThingWithBitmap(bitmap: Bitmap)
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         val targetWidth = MeasureSpec.getSize(widthMeasureSpec)

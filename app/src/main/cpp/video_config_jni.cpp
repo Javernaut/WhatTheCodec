@@ -50,10 +50,3 @@ Java_com_javernaut_whatthecodec_VideoFileConfig_fillWithPreview(JNIEnv *env, job
                                                                 jobjectArray jBitmaps) {
     frame_extractor_fill_with_preview(env, instance, jBitmaps);
 }
-
-extern "C"
-JNIEXPORT void JNICALL
-Java_com_javernaut_whatthecodec_FrameDisplayingView_doTheThingWithBitmap(JNIEnv *env, jclass type,
-                                                                         jobject bitmap) {
-    frame_extractor_play_with_colors(env, bitmap);
-}
