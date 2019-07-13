@@ -6,10 +6,55 @@
     android:orientation="vertical"
     tools:context="com.javernaut.whatthecodec.MainActivity">
 
-    <com.javernaut.whatthecodec.FrameDisplayingView
-        android:id="@+id/frameDisplayingView"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.javernaut.whatthecodec.FrameDisplayingView
+            android:id="@+id/frameDisplayingView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <RadioGroup
+            android:layout_marginTop="16dp"
+            android:id="@+id/frames_num_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Number of frames:" />
+
+            <RadioButton
+                android:id="@+id/frames_num_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:checked="true"
+                android:text="1" />
+
+            <RadioButton
+                android:id="@+id/frames_num_4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:text="4" />
+
+            <RadioButton
+                android:id="@+id/frames_num_9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:text="9" />
+        </RadioGroup>
+    </LinearLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"

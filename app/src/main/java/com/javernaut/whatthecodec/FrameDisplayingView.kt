@@ -10,6 +10,8 @@ import kotlin.math.sqrt
 
 class FrameDisplayingView(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
+    private var videoFileConfig: VideoFileConfig? = null
+
     private var originFrameWidth = 0
     private var originFrameHeight = 0
 
@@ -20,6 +22,9 @@ class FrameDisplayingView(context: Context, attrs: AttributeSet) : View(context,
         set(value) {
             field = value
             childFramesPerRow = sqrt(value.toDouble()).toInt()
+            videoFileConfig?.let {
+                setVideoConfig(it)
+            }
         }
 
     private val frameSpacingBase = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 2f, context.resources.displayMetrics)
@@ -36,6 +41,8 @@ class FrameDisplayingView(context: Context, attrs: AttributeSet) : View(context,
 
     // TODO move this functionality to a background thread
     fun setVideoConfig(config: VideoFileConfig) {
+        videoFileConfig = config
+
         originFrameWidth = config.width
         originFrameHeight = config.height
 

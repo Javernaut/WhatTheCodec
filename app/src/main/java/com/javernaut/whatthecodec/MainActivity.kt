@@ -11,6 +11,8 @@ import java.io.FileNotFoundException
 
 class MainActivity : Activity() {
 
+    private var videoFileConfig: VideoFileConfig? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -22,7 +24,13 @@ class MainActivity : Activity() {
                     PICK_VIDEO_REQUEST_CODE)
         }
 
-        frameDisplayingView.childFramesCount = 9
+        frames_num_group.setOnCheckedChangeListener { group, checkedId ->
+            frameDisplayingView.childFramesCount = when (checkedId) {
+                R.id.frames_num_9 -> 9
+                R.id.frames_num_4 -> 4
+                else -> 1
+            }
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
@@ -48,14 +56,17 @@ class MainActivity : Activity() {
 
         if (videoFileConfig != null) {
             setVideoConfig(videoFileConfig)
-            videoFileConfig.release()
         } else {
             toast("Couldn't open the file")
         }
     }
 
     private fun setVideoConfig(config: VideoFileConfig) {
+        videoFileConfig?.release()
+        videoFileConfig = config
+
         details_panel.visibility = View.VISIBLE
+        frames_num_group.visibility = View.VISIBLE
         file_format.text = config.fileFormat
         video_codec.text = config.codecName
         width.text = config.width.toString()
