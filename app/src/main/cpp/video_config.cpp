@@ -7,18 +7,15 @@
 #include "video_config.h"
 #include "utils.h"
 
-static VideoConfig *video_config_create(int fileDescriptor) {
+// uri can be either file: or pipe:
+static VideoConfig *video_config_create(const char *uri) {
     AVFormatContext *avFormatContext = nullptr;
 
-    char str[32];
-    sprintf(str, "pipe:%d", fileDescriptor);
-
-    if (avformat_open_input(&avFormatContext, str, nullptr, nullptr)) {
+    if (avformat_open_input(&avFormatContext, uri, nullptr, nullptr)) {
         return nullptr;
     }
 
     auto *videoConfig = (VideoConfig *) malloc(sizeof(VideoConfig));;
-    videoConfig->fileDescriptor = fileDescriptor;
     videoConfig->avFormatContext = avFormatContext;
 
     if (avformat_find_stream_info(avFormatContext, nullptr) < 0) {
@@ -40,16 +37,35 @@ static VideoConfig *video_config_create(int fileDescriptor) {
     return videoConfig;
 }
 
+static VideoConfig *video_config_create(int fileDescriptor) {
+    char str[32];
+    sprintf(str, "pipe:%d", fileDescriptor);
+
+    VideoConfig *videoConfig = video_config_create(str);
+    if (videoConfig != nullptr) {
+        videoConfig->fileDescriptor = fileDescriptor;
+    }
+
+    return videoConfig;
+}
+
 static void video_config_set_pointer(jobject thiz, jlong value) {
     utils_get_env()->SetLongField(thiz,
                                   fields.VideoFileConfig.nativePointer,
                                   value);
 }
 
-void video_config_new(jobject instance, int fd) {
-    VideoConfig *videoConfig = video_config_create(fd);
+static void video_config_attach_pointer(jobject instance, VideoConfig *videoConfig) {
     jlong valueToAttach = videoConfig == nullptr ? -1 : reinterpret_cast<long>(videoConfig);
     video_config_set_pointer(instance, valueToAttach);
+}
+
+void video_config_new(jobject instance, int fd) {
+    video_config_attach_pointer(instance, video_config_create(fd));
+}
+
+void video_config_new(jobject instance, const char *filePath) {
+    video_config_attach_pointer(instance, video_config_create(filePath));
 }
 
 VideoConfig *video_config_get(jobject jVideoConfig) {
@@ -63,7 +79,9 @@ void video_config_free(jobject jVideoConfig) {
     auto *avFormatContext = videoConfig->avFormatContext;
 
     avformat_close_input(&avFormatContext);
-    close(videoConfig->fileDescriptor);
+    if (videoConfig->fileDescriptor != 0) {
+        close(videoConfig->fileDescriptor);
+    }
 
     free(videoConfig);
 

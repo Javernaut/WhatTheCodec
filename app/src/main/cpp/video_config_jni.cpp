@@ -39,11 +39,21 @@ Java_com_javernaut_whatthecodec_VideoFileConfig_getHeight(JNIEnv *, jobject inst
 
 extern "C"
 JNIEXPORT void JNICALL
-Java_com_javernaut_whatthecodec_VideoFileConfig_nativeNew(JNIEnv *, jobject instance,
+Java_com_javernaut_whatthecodec_VideoFileConfig_nativeNewFD(JNIEnv *, jobject instance,
                                                           jint jFileDescriptor) {
     video_config_new(instance, jFileDescriptor);
 }
 
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_javernaut_whatthecodec_VideoFileConfig_nativeNewPath(JNIEnv *env, jobject instance,
+                                                          jstring jfilePath) {
+    const char *filePath = env->GetStringUTFChars(jfilePath, nullptr);
+
+    video_config_new(instance, filePath);
+
+    env->ReleaseStringUTFChars(jfilePath, filePath);
+}
 extern "C"
 JNIEXPORT void JNICALL
 Java_com_javernaut_whatthecodec_VideoFileConfig_fillWithPreview(JNIEnv *env, jobject instance,

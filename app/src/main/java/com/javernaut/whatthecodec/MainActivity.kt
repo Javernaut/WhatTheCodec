@@ -50,6 +50,10 @@ class MainActivity : Activity() {
             if (descriptor != null) {
                 videoFileConfig = VideoFileConfig.create(descriptor)
             }
+//            val path = PathUtil.getPath(this, uri)
+//            if (path != null) {
+//                videoFileConfig = VideoFileConfig.create(path)
+//            }
         } catch (e: FileNotFoundException) {
             e.printStackTrace()
         }

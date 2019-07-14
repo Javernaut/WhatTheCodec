@@ -51,12 +51,12 @@ void frame_extractor_fill_with_preview(JNIEnv *env, jobject jVideoConfig, jobjec
         AVFrame *frame = av_frame_alloc();
 
         int64_t seekPosition = videoDuration / arraySize * pos;
-        if (seekPosition > 0) {
+//        if (seekPosition > 0) {
             av_seek_frame(videoConfig->avFormatContext,
                           videoConfig->videoStreamIndex,
                           seekPosition,
                           0);
-        }
+//        }
 
         AVCodecContext *videoCodecContext = avcodec_alloc_context3(videoConfig->avVideoCodec);
         avcodec_parameters_to_context(videoCodecContext, videoConfig->parameters);
