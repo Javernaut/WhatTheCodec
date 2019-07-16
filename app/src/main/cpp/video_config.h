@@ -13,7 +13,8 @@ extern "C" {
 }
 
 struct VideoConfig {
-    int fileDescriptor = 0;
+    bool fullFeatured;
+    int fileDescriptor;
     AVFormatContext *avFormatContext;
     AVCodecParameters *parameters;
     AVCodec *avVideoCodec;

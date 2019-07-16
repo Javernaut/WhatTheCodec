@@ -18,13 +18,14 @@ class MainActivity : Activity() {
         setContentView(R.layout.activity_main)
 
         findViewById<View>(R.id.pick_video).setOnClickListener {
-            startActivityForResult(Intent(Intent.ACTION_OPEN_DOCUMENT)
+            startActivityForResult(Intent(Intent.ACTION_GET_CONTENT)
                     .setType("video/*")
+                    .putExtra(Intent.EXTRA_LOCAL_ONLY, true)
                     .addCategory(Intent.CATEGORY_OPENABLE),
                     PICK_VIDEO_REQUEST_CODE)
         }
 
-        frames_num_group.setOnCheckedChangeListener { group, checkedId ->
+        frames_num_group.setOnCheckedChangeListener { _, checkedId ->
             frameDisplayingView.childFramesCount = when (checkedId) {
                 R.id.frames_num_9 -> 9
                 R.id.frames_num_4 -> 4
@@ -33,30 +34,36 @@ class MainActivity : Activity() {
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == PICK_VIDEO_REQUEST_CODE) {
-            if (resultCode == RESULT_OK) {
-                tryGetVideoConfig(data.data)
+            if (resultCode == RESULT_OK && data?.data != null) {
+                tryGetVideoConfig(data.data!!)
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data)
         }
     }
 
-    private fun tryGetVideoConfig(uri: Uri?) {
+    private fun tryGetVideoConfig(uri: Uri) {
         var videoFileConfig: VideoFileConfig? = null
-        try {
-            val descriptor = contentResolver.openFileDescriptor(uri!!, "r")
-            if (descriptor != null) {
-                videoFileConfig = VideoFileConfig.create(descriptor)
-            }
-//            val path = PathUtil.getPath(this, uri)
-//            if (path != null) {
-//                videoFileConfig = VideoFileConfig.create(path)
-//            }
-        } catch (e: FileNotFoundException) {
-            e.printStackTrace()
+
+        // First, try get a file:// path
+        val path = PathUtil.getPath(this, uri)
+        if (path != null) {
+            videoFileConfig = VideoFileConfig.create(path)
         }
+
+        // Second, try get a FileDescriptor.
+        if (videoFileConfig == null) {
+            try {
+                val descriptor = contentResolver.openFileDescriptor(uri, "r")
+                if (descriptor != null) {
+                    videoFileConfig = VideoFileConfig.create(descriptor)
+                }
+            } catch (e: FileNotFoundException) {
+            }
+        }
+
 
         if (videoFileConfig != null) {
             setVideoConfig(videoFileConfig)
@@ -75,6 +82,7 @@ class MainActivity : Activity() {
         video_codec.text = config.codecName
         width.text = config.width.toString()
         height.text = config.height.toString()
+        protocol.text = if (config.fullFeatured) { "file" } else { "pipe" }
         frameDisplayingView.setVideoConfig(config)
     }
 

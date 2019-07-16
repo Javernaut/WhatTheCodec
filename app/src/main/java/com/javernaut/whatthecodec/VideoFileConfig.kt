@@ -3,13 +3,13 @@ package com.javernaut.whatthecodec
 import android.graphics.Bitmap
 import android.os.ParcelFileDescriptor
 
-class VideoFileConfig {
+class VideoFileConfig(val fullFeatured: Boolean) {
 
-    private constructor(fileDescriptor: Int) {
+    private constructor(fileDescriptor: Int) : this(false) {
         nativeNewFD(fileDescriptor)
     }
 
-    private constructor(filePath: String) {
+    private constructor(filePath: String) : this(true) {
         nativeNewPath(filePath)
     }
 
@@ -30,7 +30,7 @@ class VideoFileConfig {
 
     external fun release()
 
-    external fun fillWithPreview(bitmap: Array<Bitmap>)
+    external fun fillWithPreview(bitmap: Array<Bitmap>): Boolean
 
     private external fun nativeNewFD(fileDescriptor: Int)
 
@@ -48,9 +48,9 @@ class VideoFileConfig {
                 } else config
 
         init {
-            System.loadLibrary("avformat")
-            System.loadLibrary("avcodec")
             System.loadLibrary("avutil")
+            System.loadLibrary("avcodec")
+            System.loadLibrary("avformat")
             System.loadLibrary("swscale")
             System.loadLibrary("video-config")
         }

@@ -55,8 +55,9 @@ Java_com_javernaut_whatthecodec_VideoFileConfig_nativeNewPath(JNIEnv *env, jobje
     env->ReleaseStringUTFChars(jfilePath, filePath);
 }
 extern "C"
-JNIEXPORT void JNICALL
+JNIEXPORT jboolean JNICALL
 Java_com_javernaut_whatthecodec_VideoFileConfig_fillWithPreview(JNIEnv *env, jobject instance,
                                                                 jobjectArray jBitmaps) {
-    frame_extractor_fill_with_preview(env, instance, jBitmaps);
+    bool areAllFramesOk = frame_extractor_fill_with_preview(env, instance, jBitmaps);
+    return static_cast<jboolean>(areAllFramesOk);
 }

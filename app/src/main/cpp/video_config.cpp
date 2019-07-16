@@ -34,6 +34,8 @@ static VideoConfig *video_config_create(const char *uri) {
         }
     }
 
+    videoConfig->fullFeatured = true;
+
     return videoConfig;
 }
 
@@ -44,6 +46,7 @@ static VideoConfig *video_config_create(int fileDescriptor) {
     VideoConfig *videoConfig = video_config_create(str);
     if (videoConfig != nullptr) {
         videoConfig->fileDescriptor = fileDescriptor;
+        videoConfig->fullFeatured = false;
     }
 
     return videoConfig;
@@ -79,7 +82,7 @@ void video_config_free(jobject jVideoConfig) {
     auto *avFormatContext = videoConfig->avFormatContext;
 
     avformat_close_input(&avFormatContext);
-    if (videoConfig->fileDescriptor != 0) {
+    if (!videoConfig->fullFeatured) {
         close(videoConfig->fileDescriptor);
     }
 

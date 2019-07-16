@@ -35,6 +35,7 @@ class FrameDisplayingView(context: Context, attrs: AttributeSet) : View(context,
 
     private var frames: Array<Bitmap>? = null
         set(value) {
+            field?.forEach { it.recycle() }
             field = value
             requestLayout()
         }
