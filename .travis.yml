@@ -16,6 +16,7 @@ before_install:
   # Keeping track of the NDK version that was used
   - cat $ANDROID_NDK_HOME/source.properties
   - ffmpeg-android-maker/ffmpeg-android-maker.sh
+  - cat ffmpeg-android-maker/stats/text-relocations.txt
   #  Starting an emulator
   - echo no | android create avd --force -n test -t android-25 --abi x86
   - emulator -avd test -memory 1500 -no-accel -gpu swiftshader -skin 720x1280 -camera-back none -camera-front none -no-boot-anim -no-window &
