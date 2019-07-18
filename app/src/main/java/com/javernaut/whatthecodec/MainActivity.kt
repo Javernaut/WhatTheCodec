@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import android.view.ViewTreeObserver
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.FileNotFoundException
@@ -17,7 +18,7 @@ class MainActivity : Activity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        findViewById<View>(R.id.pick_video).setOnClickListener {
+        pick_video.setOnClickListener {
             startActivityForResult(Intent(Intent.ACTION_GET_CONTENT)
                     .setType("video/*")
                     .putExtra(Intent.EXTRA_LOCAL_ONLY, true)
@@ -32,6 +33,8 @@ class MainActivity : Activity() {
                 else -> 1
             }
         }
+
+        checkForActionView()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -41,6 +44,19 @@ class MainActivity : Activity() {
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data)
+        }
+    }
+
+    private fun checkForActionView() {
+        if (Intent.ACTION_VIEW == intent.action && intent.data != null) {
+            frameDisplayingView.viewTreeObserver.addOnPreDrawListener(
+                    object : ViewTreeObserver.OnPreDrawListener {
+                        override fun onPreDraw(): Boolean {
+                            frameDisplayingView.viewTreeObserver.removeOnPreDrawListener(this)
+                            tryGetVideoConfig(intent.data!!)
+                            return true
+                        }
+                    })
         }
     }
 
@@ -82,7 +98,11 @@ class MainActivity : Activity() {
         video_codec.text = config.codecName
         width.text = config.width.toString()
         height.text = config.height.toString()
-        protocol.text = if (config.fullFeatured) { "file" } else { "pipe" }
+        protocol.text = if (config.fullFeatured) {
+            "file"
+        } else {
+            "pipe"
+        }
         frameDisplayingView.setVideoConfig(config)
     }
 
