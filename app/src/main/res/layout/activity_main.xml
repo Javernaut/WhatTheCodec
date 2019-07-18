@@ -3,29 +3,73 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
     android:orientation="vertical"
     tools:context="com.javernaut.whatthecodec.MainActivity">
 
     <LinearLayout
-        android:id="@+id/details_panel"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
-        android:visibility="gone"
-        tools:visibility="visible">
+        android:orientation="vertical">
 
         <com.javernaut.whatthecodec.FrameDisplayingView
             android:id="@+id/frameDisplayingView"
-            android:layout_width="@dimen/preview_width"
-            android:layout_height="@dimen/preview_height" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <RadioGroup
+            android:layout_marginTop="16dp"
+            android:id="@+id/frames_num_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Number of frames:" />
+
+            <RadioButton
+                android:id="@+id/frames_num_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:checked="true"
+                android:text="1" />
+
+            <RadioButton
+                android:id="@+id/frames_num_4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:text="4" />
+
+            <RadioButton
+                android:id="@+id/frames_num_9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:text="9" />
+        </RadioGroup>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
 
         <GridLayout
+            android:id="@+id/details_panel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:columnCount="2">
+            android:columnCount="2"
+            android:visibility="gone"
+            tools:visibility="visible">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -78,15 +122,28 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 tools:text="1080" />
-        </GridLayout>
-    </LinearLayout>
 
-    <Button
-        android:id="@+id/pick_video"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="8dp"
-        android:text="Pick Video" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="Used protocol:" />
+
+            <TextView
+                android:id="@+id/protocol"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                tools:text="file" />
+        </GridLayout>
+
+        <Button
+            android:id="@+id/pick_video"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp"
+            android:text="Pick Video" />
+    </LinearLayout>
 
 </LinearLayout>

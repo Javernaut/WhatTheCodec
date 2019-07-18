@@ -25,6 +25,7 @@ add_library(video-config
         src/main/cpp/main.cpp
         src/main/cpp/video_config.cpp
         src/main/cpp/video_config_jni.cpp
+        src/main/cpp/frame_extractor.cpp
         src/main/cpp/utils.cpp)
 
 target_link_libraries(

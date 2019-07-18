@@ -7,7 +7,13 @@
 
 #include <jni.h>
 
+extern "C" {
+#include <libavformat/avformat.h>
+#include <libavcodec/avcodec.h>
+}
+
 struct VideoConfig {
+    bool fullFeatured;
     int fileDescriptor;
     AVFormatContext *avFormatContext;
     AVCodecParameters *parameters;
@@ -17,6 +23,7 @@ struct VideoConfig {
 
 // Setting the VideoFileConfig.nativePointer is delegated to Java part
 void video_config_new(jobject instance, int fd);
+void video_config_new(jobject instance, const char* filePath);
 
 VideoConfig *video_config_get(jobject jVideoConfig);
 

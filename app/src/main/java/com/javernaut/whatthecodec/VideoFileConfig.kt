@@ -3,7 +3,15 @@ package com.javernaut.whatthecodec
 import android.graphics.Bitmap
 import android.os.ParcelFileDescriptor
 
-class VideoFileConfig private constructor(fileDescriptor: Int) {
+class VideoFileConfig(val fullFeatured: Boolean) {
+
+    private constructor(fileDescriptor: Int) : this(false) {
+        nativeNewFD(fileDescriptor)
+    }
+
+    private constructor(filePath: String) : this(true) {
+        nativeNewPath(filePath)
+    }
 
     // The field is handled by the native code
     private val nativePointer: Long = 0
@@ -20,29 +28,29 @@ class VideoFileConfig private constructor(fileDescriptor: Int) {
     val height: Int
         external get
 
-    init {
-        nativeNew(fileDescriptor)
-    }
-
     external fun release()
 
-    external fun fillWithPreview(bitmap: Bitmap)
+    external fun fillWithPreview(bitmap: Array<Bitmap>): Boolean
 
-    private external fun nativeNew(fileDescriptor: Int)
+    private external fun nativeNewFD(fileDescriptor: Int)
+
+    private external fun nativeNewPath(filePath: String)
 
     companion object {
 
-        fun create(descriptor: ParcelFileDescriptor): VideoFileConfig? {
-            val result = VideoFileConfig(descriptor.detachFd())
-            return if (result.nativePointer == -1L) {
-                null
-            } else result
-        }
+        fun create(filePath: String) = returnIfValid(VideoFileConfig(filePath))
+
+        fun create(descriptor: ParcelFileDescriptor) = returnIfValid(VideoFileConfig(descriptor.detachFd()))
+
+        private fun returnIfValid(config: VideoFileConfig) =
+                if (config.nativePointer == -1L) {
+                    null
+                } else config
 
         init {
-            System.loadLibrary("avformat")
-            System.loadLibrary("avcodec")
             System.loadLibrary("avutil")
+            System.loadLibrary("avcodec")
+            System.loadLibrary("avformat")
             System.loadLibrary("swscale")
             System.loadLibrary("video-config")
         }

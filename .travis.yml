@@ -4,12 +4,12 @@ android:
   components:
     - platform-tools
     - tools
-    - build-tools-28.0.3
-    - android-28
+    - build-tools-29.0.1
+    - android-29
     - android-25
     - sys-img-x86-android-25
 before_install:
-  #  Installing the ndk and assembling the FFmpeg
+  # Installing the ndk and assembling the FFmpeg
   - yes | sdkmanager "ndk-bundle"
   - yes | sdkmanager "patcher;v4"
   - export ANDROID_NDK_HOME=/usr/local/android-sdk/ndk-bundle
