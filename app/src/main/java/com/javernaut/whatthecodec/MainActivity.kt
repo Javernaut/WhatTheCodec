@@ -19,11 +19,11 @@ class MainActivity : Activity() {
         setContentView(R.layout.activity_main)
 
         pick_video.setOnClickListener {
-            startActivityForResult(Intent(Intent.ACTION_GET_CONTENT)
-                    .setType("video/*")
-                    .putExtra(Intent.EXTRA_LOCAL_ONLY, true)
-                    .addCategory(Intent.CATEGORY_OPENABLE),
-                    PICK_VIDEO_REQUEST_CODE)
+            if (TinyActivityCompat.needRequestReadStoragePermission(this)) {
+                TinyActivityCompat.requestReadStoragePermission(this, REQUEST_CODE_PERMISSION_PICK)
+            } else {
+                actualPickVideoFile()
+            }
         }
 
         frames_num_group.setOnCheckedChangeListener { _, checkedId ->
@@ -38,7 +38,7 @@ class MainActivity : Activity() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == PICK_VIDEO_REQUEST_CODE) {
+        if (requestCode == REQUEST_CODE_PICK_VIDEO) {
             if (resultCode == RESULT_OK && data?.data != null) {
                 tryGetVideoConfig(data.data!!)
             }
@@ -47,17 +47,48 @@ class MainActivity : Activity() {
         }
     }
 
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        when (requestCode) {
+            REQUEST_CODE_PERMISSION_ACTION_VIEW,
+            REQUEST_CODE_PERMISSION_PICK -> {
+                if (TinyActivityCompat.wasReadStoragePermissionGranted(permissions, grantResults)) {
+                    if (requestCode == REQUEST_CODE_PERMISSION_ACTION_VIEW) {
+                        actualDisplayFileFromActionView()
+                    } else {
+                        actualPickVideoFile()
+                    }
+                } else {
+                    toast("Permission denied")
+                }
+            }
+            else -> {
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+            }
+        }
+    }
+
     private fun checkForActionView() {
         if (Intent.ACTION_VIEW == intent.action && intent.data != null) {
-            frameDisplayingView.viewTreeObserver.addOnPreDrawListener(
-                    object : ViewTreeObserver.OnPreDrawListener {
-                        override fun onPreDraw(): Boolean {
-                            frameDisplayingView.viewTreeObserver.removeOnPreDrawListener(this)
-                            tryGetVideoConfig(intent.data!!)
-                            return true
-                        }
-                    })
+            frameDisplayingView.doOnPreDraw {
+                if (TinyActivityCompat.needRequestReadStoragePermission(this@MainActivity)) {
+                    TinyActivityCompat.requestReadStoragePermission(this@MainActivity, REQUEST_CODE_PERMISSION_ACTION_VIEW)
+                } else {
+                    actualDisplayFileFromActionView()
+                }
+            }
         }
+    }
+
+    private fun actualPickVideoFile() {
+        startActivityForResult(Intent(Intent.ACTION_GET_CONTENT)
+                .setType("video/*")
+                .putExtra(Intent.EXTRA_LOCAL_ONLY, true)
+                .addCategory(Intent.CATEGORY_OPENABLE),
+                REQUEST_CODE_PICK_VIDEO)
+    }
+
+    private fun actualDisplayFileFromActionView() {
+        tryGetVideoConfig(intent.data!!)
     }
 
     private fun tryGetVideoConfig(uri: Uri) {
@@ -110,7 +141,23 @@ class MainActivity : Activity() {
         Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
     }
 
+    private inline fun View.doOnPreDraw(crossinline action: () -> Unit) {
+        viewTreeObserver.addOnPreDrawListener(
+                object : ViewTreeObserver.OnPreDrawListener {
+                    override fun onPreDraw(): Boolean {
+                        viewTreeObserver.removeOnPreDrawListener(this)
+
+                        action()
+
+                        return true
+                    }
+                })
+    }
+
     companion object {
-        private const val PICK_VIDEO_REQUEST_CODE = 42
+        private const val REQUEST_CODE_PICK_VIDEO = 42
+        private const val REQUEST_CODE_PERMISSION_ACTION_VIEW = 43
+        private const val REQUEST_CODE_PERMISSION_PICK = 44
+
     }
 }

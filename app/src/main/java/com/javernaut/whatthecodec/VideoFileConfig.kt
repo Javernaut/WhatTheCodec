@@ -3,7 +3,7 @@ package com.javernaut.whatthecodec
 import android.graphics.Bitmap
 import android.os.ParcelFileDescriptor
 
-class VideoFileConfig(val fullFeatured: Boolean) {
+class VideoFileConfig private constructor(val fullFeatured: Boolean) {
 
     private constructor(fileDescriptor: Int) : this(false) {
         nativeNewFD(fileDescriptor)
