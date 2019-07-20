@@ -4,6 +4,8 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewTreeObserver
 import android.widget.TextView
@@ -19,14 +21,6 @@ class MainActivity : Activity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        pick_video.setOnClickListener {
-            if (TinyActivityCompat.needRequestReadStoragePermission(this)) {
-                TinyActivityCompat.requestReadStoragePermission(this, REQUEST_CODE_PERMISSION_PICK)
-            } else {
-                actualPickVideoFile()
-            }
-        }
-
         frames_num_group.setOnCheckedChangeListener { _, checkedId ->
             frameDisplayingView.childFramesCount = when (checkedId) {
                 R.id.frames_num_9 -> 9
@@ -35,7 +29,7 @@ class MainActivity : Activity() {
             }
         }
 
-        checkForActionView()
+        onCheckForActionView()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -68,7 +62,23 @@ class MainActivity : Activity() {
         }
     }
 
-    private fun checkForActionView() {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menu.add("Pick Video").setOnMenuItemClickListener {
+            onPickVideoClicked()
+            true
+        }.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
+        return true
+    }
+
+    private fun onPickVideoClicked() {
+        if (TinyActivityCompat.needRequestReadStoragePermission(this)) {
+            TinyActivityCompat.requestReadStoragePermission(this, REQUEST_CODE_PERMISSION_PICK)
+        } else {
+            actualPickVideoFile()
+        }
+    }
+
+    private fun onCheckForActionView() {
         if (Intent.ACTION_VIEW == intent.action && intent.data != null) {
             frameDisplayingView.doOnPreDraw {
                 if (TinyActivityCompat.needRequestReadStoragePermission(this@MainActivity)) {

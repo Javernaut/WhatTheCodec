@@ -72,14 +72,6 @@
         <include
             android:id="@+id/protocol"
             layout="@android:layout/simple_list_item_2" />
-
-        <Button
-            android:id="@+id/pick_video"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="8dp"
-            android:text="Pick Video" />
     </LinearLayout>
 
 </ScrollView>
