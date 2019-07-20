@@ -18,17 +18,20 @@
         <RadioGroup
             android:id="@+id/frames_num_group"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_height="?android:attr/listPreferredItemHeight"
             android:gravity="center"
             android:orientation="horizontal"
+            android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
+            android:paddingRight="?android:attr/listPreferredItemPaddingRight"
             android:visibility="gone"
             tools:visibility="visible">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Number of frames:" />
+                android:layout_weight="1"
+                android:text="Frames to show:"
+                android:textAppearance="?android:attr/textAppearanceListItem" />
 
             <RadioButton
                 android:id="@+id/frames_num_1"
