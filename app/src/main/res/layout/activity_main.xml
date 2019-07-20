@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context="com.javernaut.whatthecodec.MainActivity">
 
     <LinearLayout
@@ -17,10 +16,10 @@
             android:layout_height="wrap_content" />
 
         <RadioGroup
-            android:layout_marginTop="16dp"
             android:id="@+id/frames_num_group"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:gravity="center"
             android:orientation="horizontal"
             android:visibility="gone"
@@ -53,89 +52,26 @@
                 android:layout_marginLeft="16dp"
                 android:text="9" />
         </RadioGroup>
-    </LinearLayout>
 
+        <include
+            android:id="@+id/file_format"
+            layout="@android:layout/simple_list_item_2" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:orientation="vertical">
+        <include
+            android:id="@+id/video_codec"
+            layout="@android:layout/simple_list_item_2" />
 
-        <GridLayout
-            android:id="@+id/details_panel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:columnCount="2"
-            android:visibility="gone"
-            tools:visibility="visible">
+        <include
+            android:id="@+id/width"
+            layout="@android:layout/simple_list_item_2" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="File format:" />
+        <include
+            android:id="@+id/height"
+            layout="@android:layout/simple_list_item_2" />
 
-            <TextView
-                android:id="@+id/file_format"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                tools:text="WebM" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="Video codec:" />
-
-            <TextView
-                android:id="@+id/video_codec"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                tools:text="VP8" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="Width:" />
-
-            <TextView
-                android:id="@+id/width"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                tools:text="1920" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="Height:" />
-
-            <TextView
-                android:id="@+id/height"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                tools:text="1080" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="Used protocol:" />
-
-            <TextView
-                android:id="@+id/protocol"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                tools:text="file" />
-        </GridLayout>
+        <include
+            android:id="@+id/protocol"
+            layout="@android:layout/simple_list_item_2" />
 
         <Button
             android:id="@+id/pick_video"
@@ -146,4 +82,4 @@
             android:text="Pick Video" />
     </LinearLayout>
 
-</LinearLayout>
+</ScrollView>

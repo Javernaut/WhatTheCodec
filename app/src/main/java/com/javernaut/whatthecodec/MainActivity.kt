@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.view.ViewTreeObserver
+import android.widget.TextView
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.FileNotFoundException
@@ -123,17 +124,19 @@ class MainActivity : Activity() {
         videoFileConfig?.release()
         videoFileConfig = config
 
-        details_panel.visibility = View.VISIBLE
         frames_num_group.visibility = View.VISIBLE
-        file_format.text = config.fileFormat
-        video_codec.text = config.codecName
-        width.text = config.width.toString()
-        height.text = config.height.toString()
-        protocol.text = if (config.fullFeatured) {
-            "file"
-        } else {
-            "pipe"
-        }
+
+        file_format.setupTwoLineView("File format:", config.fileFormat)
+        video_codec.setupTwoLineView("Video codec:", config.codecName)
+        width.setupTwoLineView("Width:", config.width.toString())
+        height.setupTwoLineView("Height:", config.height.toString())
+        protocol.setupTwoLineView("Used protocol:",
+                if (config.fullFeatured) {
+                    "file"
+                } else {
+                    "pipe"
+                })
+
         frameDisplayingView.setVideoConfig(config)
     }
 
@@ -152,6 +155,11 @@ class MainActivity : Activity() {
                         return true
                     }
                 })
+    }
+
+    private fun View.setupTwoLineView(text1: String, text2: String) {
+        findViewById<TextView>(android.R.id.text1).text = text1
+        findViewById<TextView>(android.R.id.text2).text = text2
     }
 
     companion object {
