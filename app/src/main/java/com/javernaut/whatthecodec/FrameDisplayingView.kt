@@ -1,8 +1,10 @@
 package com.javernaut.whatthecodec
 
+import android.app.ProgressDialog
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.os.AsyncTask
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.View
@@ -18,6 +20,7 @@ class FrameDisplayingView(context: Context, attrs: AttributeSet) : View(context,
     private var scaledViewHeight = 0
 
     private var childFramesPerRow = 1
+
     var childFramesCount = 1
         set(value) {
             field = value
@@ -37,7 +40,6 @@ class FrameDisplayingView(context: Context, attrs: AttributeSet) : View(context,
             requestLayout()
         }
 
-    // TODO move this functionality to a background thread
     fun setVideoConfig(config: VideoFileConfig) {
         videoFileConfig = config
     }
@@ -63,11 +65,8 @@ class FrameDisplayingView(context: Context, attrs: AttributeSet) : View(context,
 
     fun loadPreviews() {
         calculateValues()
-        val bitmaps = Array<Bitmap>(childFramesCount) {
-            Bitmap.createBitmap(childFrameWidth, childFrameHeight, Bitmap.Config.ARGB_8888)
-        }
-        videoFileConfig?.fillWithPreview(bitmaps)
-        frames = bitmaps
+
+        LoadingTask().execute()
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
@@ -89,6 +88,27 @@ class FrameDisplayingView(context: Context, attrs: AttributeSet) : View(context,
 
                 canvas.drawBitmap(bitmap, left, top, null)
             }
+        }
+    }
+
+    private inner class LoadingTask : AsyncTask<Unit, Unit, Array<Bitmap>>() {
+        private lateinit var progressDialog: ProgressDialog
+
+        override fun onPreExecute() {
+            progressDialog = ProgressDialog.show(context, null, "Please wait...")
+        }
+
+        override fun doInBackground(vararg param: Unit?): Array<Bitmap> {
+            val bitmaps = Array<Bitmap>(childFramesCount) {
+                Bitmap.createBitmap(childFrameWidth, childFrameHeight, Bitmap.Config.ARGB_8888)
+            }
+            videoFileConfig?.fillWithPreview(bitmaps)
+            return bitmaps
+        }
+
+        override fun onPostExecute(result: Array<Bitmap>?) {
+            progressDialog.dismiss()
+            frames = result
         }
     }
 }
