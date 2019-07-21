@@ -91,6 +91,7 @@ class FrameDisplayingView(context: Context, attrs: AttributeSet) : View(context,
         }
     }
 
+    // Well, I'm not proud of using AsyncTask, but this app doesn't need more sophisticated things at all
     private inner class LoadingTask : AsyncTask<Unit, Unit, Array<Bitmap>>() {
         private lateinit var progressDialog: ProgressDialog
 

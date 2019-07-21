@@ -48,6 +48,8 @@ class VideoFileConfig private constructor(val fullFeatured: Boolean) {
                 } else config
 
         init {
+            // The order of importing is mandatory, because otherwise the app will crash on Android API 16 and 17.
+            // See: https://android.googlesource.com/platform/bionic/+/master/android-changes-for-ndk-developers.md#changes-to-library-dependency-resolution
             System.loadLibrary("avutil")
             System.loadLibrary("avcodec")
             System.loadLibrary("avformat")
