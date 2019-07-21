@@ -1,6 +1,7 @@
 # What the Codec
 
 [![Build Status](https://travis-ci.org/Javernaut/WhatTheCodec.svg?branch=master)](https://travis-ci.org/Javernaut/WhatTheCodec)
+[![MIT license](http://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/Javernaut/WhatTheCodec/blob/master/LICENSE.txt)
 
 A sample app that displays the basic info about a video file: format name, video codec and frame size. Also the app shows 1, 4 or 9 equidistant frames from the video.  
 The main purpose is to show how to use the output of [ffmpeg-android-maker](https://github.com/Javernaut/ffmpeg-android-maker).
@@ -36,3 +37,7 @@ Then you need to setup and execute the ffmpeg-android-maker's script. More detai
 ## How to use
 
 Just import in Android Studio and run.
+
+## License
+
+WhatTheCodec app's source code is available under the MIT license. See the `LICENSE.txt` file for more details.
