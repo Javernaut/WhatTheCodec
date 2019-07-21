@@ -54,7 +54,7 @@ class MainActivity : Activity() {
                         actualPickVideoFile()
                     }
                 } else {
-                    toast("Permission denied")
+                    toast(R.string.message_permission_denied)
                 }
             }
             else -> {
@@ -64,7 +64,7 @@ class MainActivity : Activity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menu.add("Pick Video").setOnMenuItemClickListener {
+        menu.add(R.string.menu_pick_video).setOnMenuItemClickListener {
             onPickVideoClicked()
             true
         }.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
@@ -123,11 +123,10 @@ class MainActivity : Activity() {
             }
         }
 
-
         if (videoFileConfig != null) {
             setVideoConfig(videoFileConfig)
         } else {
-            toast("Couldn't open the file")
+            toast(R.string.message_couldnt_open_file)
         }
     }
 
@@ -137,16 +136,16 @@ class MainActivity : Activity() {
 
         framesNumberGroup.visibility = View.VISIBLE
 
-        fileFormat.setupTwoLineView("File format:", config.fileFormat)
-        videoCodec.setupTwoLineView("Video codec:", config.codecName)
-        width.setupTwoLineView("Width:", config.width.toString())
-        height.setupTwoLineView("Height:", config.height.toString())
-        protocol.setupTwoLineView("Used protocol:",
+        fileFormat.setupTwoLineView(R.string.info_file_format, config.fileFormat)
+        videoCodec.setupTwoLineView(R.string.info_video_codec, config.codecName)
+        width.setupTwoLineView(R.string.info_width, config.width.toString())
+        height.setupTwoLineView(R.string.info_height, config.height.toString())
+        protocol.setupTwoLineView(R.string.info_protocol_title, getString(
                 if (config.fullFeatured) {
-                    "file"
+                    R.string.info_protocol_file
                 } else {
-                    "pipe (limited functionality)"
-                })
+                    R.string.info_protocol_pipe
+                }))
 
         framesNumberGroup.forEachChild {
             it.isEnabled = config.fullFeatured
@@ -165,7 +164,7 @@ class MainActivity : Activity() {
         frameDisplayingView.childFramesCount = 4
     }
 
-    private fun toast(msg: String) {
+    private fun toast(msg: Int) {
         Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
     }
 
@@ -182,8 +181,8 @@ class MainActivity : Activity() {
                 })
     }
 
-    private fun View.setupTwoLineView(text1: String, text2: String) {
-        findViewById<TextView>(android.R.id.text1).text = text1
+    private fun View.setupTwoLineView(text1: Int, text2: String) {
+        findViewById<TextView>(android.R.id.text1).setText(text1)
         findViewById<TextView>(android.R.id.text2).text = text2
     }
 
@@ -197,6 +196,5 @@ class MainActivity : Activity() {
         private const val REQUEST_CODE_PICK_VIDEO = 42
         private const val REQUEST_CODE_PERMISSION_ACTION_VIEW = 43
         private const val REQUEST_CODE_PERMISSION_PICK = 44
-
     }
 }
