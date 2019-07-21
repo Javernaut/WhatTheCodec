@@ -22,9 +22,6 @@ class FrameDisplayingView(context: Context, attrs: AttributeSet) : View(context,
         set(value) {
             field = value
             childFramesPerRow = sqrt(value.toDouble()).toInt()
-            videoFileConfig?.let {
-                setVideoConfig(it)
-            }
         }
 
     private val frameSpacingBase = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 2f, context.resources.displayMetrics)
@@ -43,27 +40,33 @@ class FrameDisplayingView(context: Context, attrs: AttributeSet) : View(context,
     // TODO move this functionality to a background thread
     fun setVideoConfig(config: VideoFileConfig) {
         videoFileConfig = config
+    }
 
-        originFrameWidth = config.width
-        originFrameHeight = config.height
+    private fun calculateValues() {
+        videoFileConfig?.let {
+            originFrameWidth = it.width
+            originFrameHeight = it.height
 
-        childFrameWidth = (measuredWidth - (childFramesPerRow - 1) * frameSpacingBase).toInt() / childFramesPerRow
+            childFrameWidth = (measuredWidth - (childFramesPerRow - 1) * frameSpacingBase).toInt() / childFramesPerRow
 
-        frameSpacingDelta = if (childFramesPerRow == 1) {
-            0f
-        } else {
-            (measuredWidth - childFramesPerRow * childFrameWidth).toFloat() / (childFramesPerRow - 1)
+            frameSpacingDelta = if (childFramesPerRow == 1) {
+                0f
+            } else {
+                (measuredWidth - childFramesPerRow * childFrameWidth).toFloat() / (childFramesPerRow - 1)
+            }
+
+            childFrameHeight = originFrameHeight * childFrameWidth / originFrameWidth
+
+            scaledViewHeight = (childFrameHeight * childFramesPerRow + (childFramesPerRow - 1) * getFinalFrameSpacing()).toInt()
         }
+    }
 
-        childFrameHeight = originFrameHeight * childFrameWidth / originFrameWidth
-
-        scaledViewHeight = (childFrameHeight * childFramesPerRow + (childFramesPerRow - 1) * getFinalFrameSpacing()).toInt()
-
-
+    fun loadPreviews() {
+        calculateValues()
         val bitmaps = Array<Bitmap>(childFramesCount) {
             Bitmap.createBitmap(childFrameWidth, childFrameHeight, Bitmap.Config.ARGB_8888)
         }
-        config.fillWithPreview(bitmaps)
+        videoFileConfig?.fillWithPreview(bitmaps)
         frames = bitmaps
     }
 

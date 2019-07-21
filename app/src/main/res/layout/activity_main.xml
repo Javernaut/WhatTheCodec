@@ -16,7 +16,7 @@
             android:layout_height="wrap_content" />
 
         <RadioGroup
-            android:id="@+id/frames_num_group"
+            android:id="@+id/framesNumberGroup"
             android:layout_width="match_parent"
             android:layout_height="?android:attr/listPreferredItemHeight"
             android:gravity="center"
@@ -34,7 +34,7 @@
                 android:textAppearance="?android:attr/textAppearanceListItem" />
 
             <RadioButton
-                android:id="@+id/frames_num_1"
+                android:id="@+id/framesNum1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
@@ -42,14 +42,14 @@
                 android:text="1" />
 
             <RadioButton
-                android:id="@+id/frames_num_4"
+                android:id="@+id/framesNum4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
                 android:text="4" />
 
             <RadioButton
-                android:id="@+id/frames_num_9"
+                android:id="@+id/framesNum9"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
@@ -57,11 +57,11 @@
         </RadioGroup>
 
         <include
-            android:id="@+id/file_format"
+            android:id="@+id/fileFormat"
             layout="@android:layout/simple_list_item_2" />
 
         <include
-            android:id="@+id/video_codec"
+            android:id="@+id/videoCodec"
             layout="@android:layout/simple_list_item_2" />
 
         <include

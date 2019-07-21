@@ -4,10 +4,8 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewTreeObserver
+import android.view.*
+import android.widget.RadioGroup
 import android.widget.TextView
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
@@ -17,17 +15,20 @@ class MainActivity : Activity() {
 
     private var videoFileConfig: VideoFileConfig? = null
 
+    private val framesNumberChangeListener = RadioGroup.OnCheckedChangeListener { _, checkedId ->
+        frameDisplayingView.childFramesCount = when (checkedId) {
+            R.id.framesNum9 -> 9
+            R.id.framesNum4 -> 4
+            else -> 1
+        }
+        frameDisplayingView.loadPreviews()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        frames_num_group.setOnCheckedChangeListener { _, checkedId ->
-            frameDisplayingView.childFramesCount = when (checkedId) {
-                R.id.frames_num_9 -> 9
-                R.id.frames_num_4 -> 4
-                else -> 1
-            }
-        }
+        framesNumberGroup.setOnCheckedChangeListener(framesNumberChangeListener)
 
         onCheckForActionView()
     }
@@ -134,20 +135,34 @@ class MainActivity : Activity() {
         videoFileConfig?.release()
         videoFileConfig = config
 
-        frames_num_group.visibility = View.VISIBLE
+        framesNumberGroup.visibility = View.VISIBLE
 
-        file_format.setupTwoLineView("File format:", config.fileFormat)
-        video_codec.setupTwoLineView("Video codec:", config.codecName)
+        fileFormat.setupTwoLineView("File format:", config.fileFormat)
+        videoCodec.setupTwoLineView("Video codec:", config.codecName)
         width.setupTwoLineView("Width:", config.width.toString())
         height.setupTwoLineView("Height:", config.height.toString())
         protocol.setupTwoLineView("Used protocol:",
                 if (config.fullFeatured) {
                     "file"
                 } else {
-                    "pipe"
+                    "pipe (limited functionality)"
                 })
 
+        framesNumberGroup.forEachChild {
+            it.isEnabled = config.fullFeatured
+        }
+        if (!config.fullFeatured) {
+            force4FramesToShow()
+        }
         frameDisplayingView.setVideoConfig(config)
+        frameDisplayingView.loadPreviews()
+    }
+
+    private fun force4FramesToShow() {
+        framesNumberGroup.setOnCheckedChangeListener(null)
+        framesNumberGroup.check(R.id.framesNum4)
+        framesNumberGroup.setOnCheckedChangeListener(framesNumberChangeListener)
+        frameDisplayingView.childFramesCount = 4
     }
 
     private fun toast(msg: String) {
@@ -170,6 +185,12 @@ class MainActivity : Activity() {
     private fun View.setupTwoLineView(text1: String, text2: String) {
         findViewById<TextView>(android.R.id.text1).text = text1
         findViewById<TextView>(android.R.id.text2).text = text2
+    }
+
+    private inline fun ViewGroup.forEachChild(action: (View) -> Unit) {
+        for (pos in 0 until childCount) {
+            action(getChildAt(pos))
+        }
     }
 
     companion object {
