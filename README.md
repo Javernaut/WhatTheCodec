@@ -6,6 +6,10 @@
 A sample app that displays the basic info about a video file: format name, video codec and frame size. Also the app shows 1, 4 or 9 equidistant frames from the video.  
 The main purpose is to show how to use the output of [ffmpeg-android-maker](https://github.com/Javernaut/ffmpeg-android-maker).
 
+[<img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png"
+      alt="Get it on Google Play"
+      height="90">](https://play.google.com/store/apps/details?id=com.javernaut.whatthecodec)
+
 # How does it work?
 
 The codebase has a native part that glues FFmpeg libs to jvm part.  
