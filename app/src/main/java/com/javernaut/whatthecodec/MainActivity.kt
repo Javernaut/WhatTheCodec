@@ -81,12 +81,10 @@ class MainActivity : Activity() {
 
     private fun onCheckForActionView() {
         if (Intent.ACTION_VIEW == intent.action && intent.data != null) {
-            frameDisplayingView.doOnPreDraw {
-                if (TinyActivityCompat.needRequestReadStoragePermission(this@MainActivity)) {
-                    TinyActivityCompat.requestReadStoragePermission(this@MainActivity, REQUEST_CODE_PERMISSION_ACTION_VIEW)
-                } else {
-                    actualDisplayFileFromActionView()
-                }
+            if (TinyActivityCompat.needRequestReadStoragePermission(this@MainActivity)) {
+                TinyActivityCompat.requestReadStoragePermission(this@MainActivity, REQUEST_CODE_PERMISSION_ACTION_VIEW)
+            } else {
+                actualDisplayFileFromActionView()
             }
         }
     }
@@ -154,7 +152,10 @@ class MainActivity : Activity() {
             force4FramesToShow()
         }
         frameDisplayingView.setVideoConfig(config)
-        frameDisplayingView.loadPreviews()
+        // This deferring is used here because loading previews needs to know the actual width of the view
+        frameDisplayingView.doOnPreDraw {
+            frameDisplayingView.loadPreviews()
+        }
     }
 
     private fun force4FramesToShow() {
