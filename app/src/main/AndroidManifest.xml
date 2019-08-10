@@ -10,7 +10,7 @@
         android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:label="WhatTheCodec"
-        android:supportsRtl="true">
+        android:supportsRtl="false">
         <activity android:name=".MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
