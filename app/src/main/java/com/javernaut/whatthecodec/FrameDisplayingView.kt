@@ -45,28 +45,28 @@ class FrameDisplayingView(context: Context, attrs: AttributeSet) : View(context,
     }
 
     private fun calculateValues() {
-        videoFileConfig?.let {
-            originFrameWidth = it.width
-            originFrameHeight = it.height
+        originFrameWidth = videoFileConfig!!.width
+        originFrameHeight = videoFileConfig!!.height
 
-            childFrameWidth = (measuredWidth - (childFramesPerRow - 1) * frameSpacingBase).toInt() / childFramesPerRow
+        childFrameWidth = (measuredWidth - (childFramesPerRow - 1) * frameSpacingBase).toInt() / childFramesPerRow
 
-            frameSpacingDelta = if (childFramesPerRow == 1) {
-                0f
-            } else {
-                (measuredWidth - childFramesPerRow * childFrameWidth).toFloat() / (childFramesPerRow - 1)
-            }
-
-            childFrameHeight = originFrameHeight * childFrameWidth / originFrameWidth
-
-            scaledViewHeight = (childFrameHeight * childFramesPerRow + (childFramesPerRow - 1) * getFinalFrameSpacing()).toInt()
+        frameSpacingDelta = if (childFramesPerRow == 1) {
+            0f
+        } else {
+            (measuredWidth - childFramesPerRow * childFrameWidth).toFloat() / (childFramesPerRow - 1)
         }
+
+        childFrameHeight = originFrameHeight * childFrameWidth / originFrameWidth
+
+        scaledViewHeight = (childFrameHeight * childFramesPerRow + (childFramesPerRow - 1) * getFinalFrameSpacing()).toInt()
     }
 
     fun loadPreviews() {
-        calculateValues()
+        videoFileConfig?.let {
+            calculateValues()
 
-        LoadingTask().execute()
+            LoadingTask().execute()
+        }
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
