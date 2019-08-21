@@ -52,8 +52,8 @@ static VideoConfig *video_config_create(int fileDescriptor) {
     return videoConfig;
 }
 
-static void video_config_set_pointer(jobject thiz, jlong value) {
-    utils_get_env()->SetLongField(thiz,
+static void video_config_set_pointer(jobject jVideoConfig, jlong value) {
+    utils_get_env()->SetLongField(jVideoConfig,
                                   fields.VideoFileConfig.nativePointer,
                                   value);
 }

@@ -26,7 +26,7 @@ bool frame_extractor_fill_with_preview(JNIEnv *env, jobject jVideoConfig, jobjec
     auto pixelFormat = static_cast<AVPixelFormat>(videoConfig->parameters->format);
     if (pixelFormat == AV_PIX_FMT_NONE) {
         // With pipe protocol some files fail to provide pixel format info.
-        // In this case we can't establish neither scaling nor simple frame extracting.
+        // In this case we can't establish neither scaling nor even a frame extracting.
         return false;
     }
 
@@ -60,6 +60,8 @@ bool frame_extractor_fill_with_preview(JNIEnv *env, jobject jVideoConfig, jobjec
         AVFrame *frame = av_frame_alloc();
 
         int64_t seekPosition = videoDuration / arraySize * pos;
+        // We call the av_seek_frame() for 0 position only if the media was opened for file path.
+        // In case of file descriptor we omit this, as it can lead to reading error.
         if (videoConfig->fullFeatured || seekPosition > 0) {
             av_seek_frame(videoConfig->avFormatContext,
                           videoConfig->videoStreamIndex,
@@ -73,6 +75,7 @@ bool frame_extractor_fill_with_preview(JNIEnv *env, jobject jVideoConfig, jobjec
 
         while (true) {
             if (av_read_frame(videoConfig->avFormatContext, packet) < 0) {
+                // Couldn't read a packet, so we skip the whole frame
                 resultValue = false;
                 break;
             }
@@ -81,6 +84,7 @@ bool frame_extractor_fill_with_preview(JNIEnv *env, jobject jVideoConfig, jobjec
                 avcodec_send_packet(videoCodecContext, packet);
                 int response = avcodec_receive_frame(videoCodecContext, frame);
                 if (response == AVERROR(EAGAIN)) {
+                    // A frame can be split across several packets, so continue reading in this case
                     continue;
                 }
 
@@ -89,6 +93,7 @@ bool frame_extractor_fill_with_preview(JNIEnv *env, jobject jVideoConfig, jobjec
                     void *bitmapBuffer;
                     AndroidBitmap_lockPixels(env, jBitmap, &bitmapBuffer);
 
+                    // Prepare a FFmpeg's frame to use Android Bitmap's buffer
                     av_image_fill_arrays(
                             frameForDrawing->data,
                             frameForDrawing->linesize,
@@ -98,6 +103,7 @@ bool frame_extractor_fill_with_preview(JNIEnv *env, jobject jVideoConfig, jobjec
                             bitmapMetricInfo.height,
                             1);
 
+                    // Scale the frame that was read from the media to a frame that wraps Android Bitmap's buffer
                     sws_scale(
                             scalingContext,
                             frame->data,

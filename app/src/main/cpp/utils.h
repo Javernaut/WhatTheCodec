@@ -7,10 +7,19 @@
 
 #include <jni.h>
 
+/**
+ * Initializes the fields struct that keeps handles to VideoFileConfig's internal fields in order to read/write to them.
+ */
 int utils_fields_init(JavaVM *vm);
 
+/**
+ * Frees resources created in utils_fields_init(JavaVM *vm).
+ */
 void utils_fields_free(JavaVM *vm);
 
+/**
+ * Returns a pointer to JNIEnv struct to use in various JNI-specific functions.
+ */
 JNIEnv *utils_get_env();
 
 // The approach was taken from here:
