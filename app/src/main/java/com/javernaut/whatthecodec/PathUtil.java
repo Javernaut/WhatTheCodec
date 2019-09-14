@@ -36,6 +36,11 @@ public class PathUtil {
                 if (id.startsWith("raw:/")) {
                     return id.replace("raw:/", "file:///");
                 } else {
+                    if (id.startsWith("msf:")) {
+                        // Case: Android 10 emulator, a video file downloaded via Chrome app.
+                        // No knowledge how to reconstruct the file path. So just fail fast.
+                        return null;
+                    }
                     uri = ContentUris.withAppendedId(
                             Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
                 }
