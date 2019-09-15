@@ -11,6 +11,8 @@ The main purpose is to show how to use the output of [ffmpeg-android-maker](http
 
 # How does it work?
 
+And extensive description can be found in [this article](https://proandroiddev.com/a-story-about-ffmpeg-in-android-part-ii-integration-55fb217251f0).
+
 The codebase has a native part that glues FFmpeg libs to jvm part.  
 
 FFmpeg accepts 2 types of input: File paths and File Descriptors. *File paths* are better and allow the FFmpeg to use all the functionality it has. *File Descriptors* can be passed to FFmpeg via pipe protocol, but it has certain [problems](https://ffmpeg.org/ffmpeg-protocols.html#pipe) like inability to seek backward. That is why the number of frames shown when pipe protocol is used is limited to 4 only. File protocol doesn't have this problem.  
