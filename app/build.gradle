@@ -51,6 +51,13 @@ android {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
+    implementation 'com.google.android.material:material:1.0.0'
+
+    def appcompat_version = "1.1.0"
+
+    implementation "androidx.appcompat:appcompat:$appcompat_version"
+    implementation "androidx.appcompat:appcompat-resources:$appcompat_version"
+
     def testLibsVersion = "1.2.0"
 
     // Core library

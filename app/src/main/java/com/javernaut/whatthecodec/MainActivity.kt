@@ -1,6 +1,5 @@
 package com.javernaut.whatthecodec
 
-import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -8,10 +7,11 @@ import android.view.*
 import android.widget.RadioGroup
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.FileNotFoundException
 
-class MainActivity : Activity() {
+class MainActivity : AppCompatActivity() {
 
     private var videoFileConfig: VideoFileConfig? = null
 
