@@ -8,27 +8,75 @@ import android.widget.RadioGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import kotlinx.android.synthetic.main.activity_main.*
-import java.io.FileNotFoundException
 
 class MainActivity : AppCompatActivity() {
 
-    private var videoFileConfig: VideoFileConfig? = null
+    private val videoInfoViewModel by lazy(LazyThreadSafetyMode.NONE) {
+        ViewModelProviders.of(this).get(VideoInfoViewModel::class.java)
+    }
 
     private val framesNumberChangeListener = RadioGroup.OnCheckedChangeListener { _, checkedId ->
-        frameDisplayingView.childFramesCount = when (checkedId) {
-            R.id.framesNum9 -> 9
-            R.id.framesNum4 -> 4
-            else -> 1
-        }
-        frameDisplayingView.loadPreviews()
+        videoInfoViewModel.setFramesToShow(when (checkedId) {
+            R.id.framesNum9 -> FramesToShow.NINE
+            R.id.framesNum4 -> FramesToShow.FOUR
+            else -> FramesToShow.ONE
+        })
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        framesNumberGroup.setOnCheckedChangeListener(framesNumberChangeListener)
+        videoInfoViewModel.basicInfoLiveData.observe(this, Observer {
+            fileFormat.setupTwoLineView(R.string.info_file_format, it.fileFormat)
+            videoCodec.setupTwoLineView(R.string.info_video_codec, it.codecName)
+            width.setupTwoLineView(R.string.info_width, it.frameWidth.toString())
+            height.setupTwoLineView(R.string.info_height, it.frameHeight.toString())
+        })
+
+        videoInfoViewModel.isFullFeaturedLiveData.observe(this, Observer { isFullFeatured ->
+            protocol.setupTwoLineView(R.string.info_protocol_title, getString(
+                    if (isFullFeatured) {
+                        R.string.info_protocol_file
+                    } else {
+                        R.string.info_protocol_pipe
+                    }))
+
+            framesNumberGroup.forEachChild {
+                it.isEnabled = isFullFeatured
+            }
+
+            framesNumberGroup.visibility = View.VISIBLE
+        })
+
+        videoInfoViewModel.framesToShowNumber.observe(this, Observer {
+            framesNumberGroup.setOnCheckedChangeListener(null)
+            val idToCheck = when (it) {
+                FramesToShow.ONE -> R.id.framesNum1
+                FramesToShow.FOUR -> R.id.framesNum4
+                FramesToShow.NINE -> R.id.framesNum9
+            }
+            framesNumberGroup.check(idToCheck)
+            framesNumberGroup.setOnCheckedChangeListener(framesNumberChangeListener)
+
+            frameDisplayingView.childFramesCount = it.value
+            frameDisplayingView.loadPreviews()
+        })
+
+        videoInfoViewModel.videoFileConfigLiveData.observe(this, Observer {
+            if (it != null) {
+                frameDisplayingView.setVideoConfig(it)
+                // This deferring is used here because loading previews needs to know the actual width of the view
+                frameDisplayingView.doOnPreDraw {
+                    frameDisplayingView.loadPreviews()
+                }
+            } else {
+                toast(R.string.message_couldnt_open_file)
+            }
+        })
 
         onCheckForActionView()
     }
@@ -102,67 +150,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun tryGetVideoConfig(uri: Uri) {
-        var videoFileConfig: VideoFileConfig? = null
-
-        // First, try get a file:// path
-        val path = PathUtil.getPath(this, uri)
-        if (path != null) {
-            videoFileConfig = VideoFileConfig.create(path)
-        }
-
-        // Second, try get a FileDescriptor.
-        if (videoFileConfig == null) {
-            try {
-                val descriptor = contentResolver.openFileDescriptor(uri, "r")
-                if (descriptor != null) {
-                    videoFileConfig = VideoFileConfig.create(descriptor)
-                }
-            } catch (e: FileNotFoundException) {
-            }
-        }
-
-        if (videoFileConfig != null) {
-            setVideoConfig(videoFileConfig)
-        } else {
-            toast(R.string.message_couldnt_open_file)
-        }
-    }
-
-    private fun setVideoConfig(config: VideoFileConfig) {
-        videoFileConfig?.release()
-        videoFileConfig = config
-
-        framesNumberGroup.visibility = View.VISIBLE
-
-        fileFormat.setupTwoLineView(R.string.info_file_format, config.fileFormat)
-        videoCodec.setupTwoLineView(R.string.info_video_codec, config.codecName)
-        width.setupTwoLineView(R.string.info_width, config.width.toString())
-        height.setupTwoLineView(R.string.info_height, config.height.toString())
-        protocol.setupTwoLineView(R.string.info_protocol_title, getString(
-                if (config.fullFeatured) {
-                    R.string.info_protocol_file
-                } else {
-                    R.string.info_protocol_pipe
-                }))
-
-        framesNumberGroup.forEachChild {
-            it.isEnabled = config.fullFeatured
-        }
-        if (!config.fullFeatured) {
-            force4FramesToShow()
-        }
-        frameDisplayingView.setVideoConfig(config)
-        // This deferring is used here because loading previews needs to know the actual width of the view
-        frameDisplayingView.doOnPreDraw {
-            frameDisplayingView.loadPreviews()
-        }
-    }
-
-    private fun force4FramesToShow() {
-        framesNumberGroup.setOnCheckedChangeListener(null)
-        framesNumberGroup.check(R.id.framesNum4)
-        framesNumberGroup.setOnCheckedChangeListener(framesNumberChangeListener)
-        frameDisplayingView.childFramesCount = 4
+        videoInfoViewModel.tryGetVideoConfig(this, uri)
     }
 
     private fun toast(msg: Int) {

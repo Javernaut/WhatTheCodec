@@ -61,6 +61,7 @@ class FrameDisplayingView(context: Context, attrs: AttributeSet) : View(context,
         scaledViewHeight = (childFrameHeight * childFramesPerRow + (childFramesPerRow - 1) * getFinalFrameSpacing()).toInt()
     }
 
+    @Deprecated("Loading data in a View class? Seriously?")
     fun loadPreviews() {
         videoFileConfig?.let {
             calculateValues()
