@@ -1,5 +1,7 @@
 package com.javernaut.whatthecodec
 
+import android.app.Dialog
+import android.app.ProgressDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -15,8 +17,12 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity() {
 
     private val videoInfoViewModel by lazy(LazyThreadSafetyMode.NONE) {
-        ViewModelProviders.of(this).get(VideoInfoViewModel::class.java)
+        ViewModelProviders.of(
+                this, VideoInfoViewModelFactory(windowManager)
+        ).get(VideoInfoViewModel::class.java)
     }
+
+    private var progressDialog: Dialog? = null
 
     private val framesNumberChangeListener = RadioGroup.OnCheckedChangeListener { _, checkedId ->
         videoInfoViewModel.setFramesToShow(when (checkedId) {
@@ -63,19 +69,26 @@ class MainActivity : AppCompatActivity() {
             framesNumberGroup.setOnCheckedChangeListener(framesNumberChangeListener)
 
             frameDisplayingView.childFramesCount = it.value
-            frameDisplayingView.loadPreviews()
         })
 
         videoInfoViewModel.videoFileConfigLiveData.observe(this, Observer {
-            if (it != null) {
-                frameDisplayingView.setVideoConfig(it)
-                // This deferring is used here because loading previews needs to know the actual width of the view
-                frameDisplayingView.doOnPreDraw {
-                    frameDisplayingView.loadPreviews()
-                }
-            } else {
+            // TODO trigger this action only once
+            if (it == null) {
                 toast(R.string.message_couldnt_open_file)
             }
+        })
+
+        videoInfoViewModel.modalProgressLiveData.observe(this, Observer {
+            progressDialog?.dismiss()
+            progressDialog = if (it) {
+                ProgressDialog.show(this, null, getString(R.string.message_progress))
+            } else {
+                null
+            }
+        })
+
+        videoInfoViewModel.framesLiveData.observe(this, Observer {
+            frameDisplayingView.setFrames(it)
         })
 
         onCheckForActionView()
