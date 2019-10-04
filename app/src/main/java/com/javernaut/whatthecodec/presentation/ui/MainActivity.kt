@@ -65,15 +65,12 @@ class MainActivity : AppCompatActivity() {
 
         videoInfoViewModel.framesToShowNumber.observe(this, Observer {
             framesNumberGroup.setOnCheckedChangeListener(null)
-            val idToCheck = when (it) {
+            framesNumberGroup.check(when (it) {
                 FramesToShow.ONE -> R.id.framesNum1
                 FramesToShow.FOUR -> R.id.framesNum4
                 FramesToShow.NINE -> R.id.framesNum9
-            }
-            framesNumberGroup.check(idToCheck)
+            })
             framesNumberGroup.setOnCheckedChangeListener(framesNumberChangeListener)
-
-            frameDisplayingView.childFramesCount = it.value
         })
 
         videoInfoViewModel.videoFileConfigLiveData.observe(this, Observer {
@@ -97,6 +94,12 @@ class MainActivity : AppCompatActivity() {
         })
 
         onCheckForActionView()
+    }
+
+    override fun onDestroy() {
+        progressDialog?.dismiss()
+        progressDialog = null
+        super.onDestroy()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -173,19 +176,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun toast(msg: Int) {
         Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
-    }
-
-    private inline fun View.doOnPreDraw(crossinline action: () -> Unit) {
-        viewTreeObserver.addOnPreDrawListener(
-                object : ViewTreeObserver.OnPreDrawListener {
-                    override fun onPreDraw(): Boolean {
-                        viewTreeObserver.removeOnPreDrawListener(this)
-
-                        action()
-
-                        return true
-                    }
-                })
     }
 
     private fun View.setupTwoLineView(text1: Int, text2: String) {
