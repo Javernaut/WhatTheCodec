@@ -50,7 +50,7 @@ int utils_fields_init(JavaVM *vm) {
     // Actual work
 
     GET_CLASS(fields.VideoFileConfig.clazz,
-              "com/javernaut/whatthecodec/VideoFileConfig", true);
+              "com/javernaut/whatthecodec/domain/VideoFileConfig", true);
 
     GET_ID(GetFieldID,
            fields.VideoFileConfig.nativePointer,

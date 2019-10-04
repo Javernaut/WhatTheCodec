@@ -1,4 +1,4 @@
-package com.javernaut.whatthecodec
+package com.javernaut.whatthecodec.domain
 
 import android.graphics.Bitmap
 import android.os.ParcelFileDescriptor

@@ -3,14 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.javernaut.whatthecodec.MainActivity">
+    tools:context="com.javernaut.whatthecodec.presentation.ui.MainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <com.javernaut.whatthecodec.FrameDisplayingView
+        <com.javernaut.whatthecodec.presentation.ui.view.FrameDisplayingView
             android:id="@+id/frameDisplayingView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />

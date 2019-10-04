@@ -1,4 +1,4 @@
-package com.javernaut.whatthecodec
+package com.javernaut.whatthecodec.presentation.ui.view
 
 import android.content.Context
 import android.graphics.Bitmap

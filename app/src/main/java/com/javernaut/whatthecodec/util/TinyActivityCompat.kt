@@ -1,4 +1,4 @@
-package com.javernaut.whatthecodec
+package com.javernaut.whatthecodec.util
 
 import android.Manifest
 import android.annotation.TargetApi

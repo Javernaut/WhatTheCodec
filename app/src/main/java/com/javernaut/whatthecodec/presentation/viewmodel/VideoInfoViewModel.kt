@@ -1,4 +1,4 @@
-package com.javernaut.whatthecodec
+package com.javernaut.whatthecodec.presentation.viewmodel
 
 import android.app.Activity
 import android.graphics.Bitmap
@@ -7,6 +7,8 @@ import android.os.AsyncTask
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.javernaut.whatthecodec.util.PathUtil
+import com.javernaut.whatthecodec.domain.VideoFileConfig
 import java.io.FileNotFoundException
 import kotlin.math.sqrt
 

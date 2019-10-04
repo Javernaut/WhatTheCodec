@@ -1,4 +1,4 @@
-package com.javernaut.whatthecodec
+package com.javernaut.whatthecodec.presentation.ui
 
 import android.app.Dialog
 import android.app.ProgressDialog
@@ -12,6 +12,11 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.javernaut.whatthecodec.R
+import com.javernaut.whatthecodec.util.TinyActivityCompat
+import com.javernaut.whatthecodec.presentation.viewmodel.FramesToShow
+import com.javernaut.whatthecodec.presentation.viewmodel.VideoInfoViewModel
+import com.javernaut.whatthecodec.presentation.viewmodel.VideoInfoViewModelFactory
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {

@@ -1,4 +1,4 @@
-package com.javernaut.whatthecodec;
+package com.javernaut.whatthecodec.util;
 
 import android.annotation.SuppressLint;
 import android.content.ContentUris;

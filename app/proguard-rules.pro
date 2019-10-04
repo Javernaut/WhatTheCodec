@@ -20,6 +20,6 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
--keepclassmembers class com.javernaut.whatthecodec.VideoFileConfig {
+-keepclassmembers class com.javernaut.whatthecodec.domain.VideoFileConfig {
     private long nativePointer;
 }

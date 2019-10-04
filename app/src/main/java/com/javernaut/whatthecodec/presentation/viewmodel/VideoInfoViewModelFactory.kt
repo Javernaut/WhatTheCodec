@@ -1,4 +1,4 @@
-package com.javernaut.whatthecodec
+package com.javernaut.whatthecodec.presentation.viewmodel
 
 import android.graphics.Point
 import android.view.WindowManager
