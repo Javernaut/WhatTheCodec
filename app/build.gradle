@@ -66,6 +66,8 @@ dependencies {
 
     implementation "androidx.gridlayout:gridlayout:1.0.0"
 
+    implementation "androidx.palette:palette:1.0.0"
+
     def testLibsVersion = "1.2.0"
 
     // Core library

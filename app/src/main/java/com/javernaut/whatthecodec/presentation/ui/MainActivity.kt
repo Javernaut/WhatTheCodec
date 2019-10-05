@@ -93,6 +93,11 @@ class MainActivity : AppCompatActivity() {
             frameDisplayingView.setFrames(it)
         })
 
+        videoInfoViewModel.framesBackgroundLiveData.observe(this, Observer {
+            // TODO apply it with animation
+            frameDisplayingView.setBackgroundColor(it)
+        })
+
         onCheckForActionView()
     }
 

@@ -2,11 +2,13 @@ package com.javernaut.whatthecodec.presentation.viewmodel
 
 import android.app.Activity
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.net.Uri
 import android.os.AsyncTask
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.palette.graphics.Palette
 import com.javernaut.whatthecodec.util.PathUtil
 import com.javernaut.whatthecodec.domain.VideoFileConfig
 import java.io.FileNotFoundException
@@ -22,6 +24,7 @@ class VideoInfoViewModel(private val frameFullWidth: Int) : ViewModel() {
     private val _videoFileConfigLiveData = MutableLiveData<VideoFileConfig?>()
     private val _modalProgressLiveData = MutableLiveData<Boolean>()
     private val _framesLiveData = MutableLiveData<Array<Bitmap>>()
+    private val _framesBackgroundLiveData = MutableLiveData<Int>(Color.TRANSPARENT)
 
     val basicInfoLiveData: LiveData<BasicInfo>
         get() = _basicInfoLiveData
@@ -41,6 +44,9 @@ class VideoInfoViewModel(private val frameFullWidth: Int) : ViewModel() {
 
     val framesLiveData: LiveData<Array<Bitmap>>
         get() = _framesLiveData
+
+    val framesBackgroundLiveData: LiveData<Int>
+        get() = _framesBackgroundLiveData
 
     // TODO get rid of an Activity as a parameter
     fun tryGetVideoConfig(activity: Activity, uri: Uri) {
@@ -82,24 +88,24 @@ class VideoInfoViewModel(private val frameFullWidth: Int) : ViewModel() {
         if (!videoFileConfig.fullFeatured) {
             _framesToShowNumber.value = FramesToShow.FOUR
         }
-        LoadingTask().execute()
+        LoadingTask(true).execute()
     }
 
     fun setFramesToShow(framesToShow: FramesToShow) {
         _framesToShowNumber.value = framesToShow
         // Temporary fix for crash due to RadioGroup state restoring logic
         if (_basicInfoLiveData.value != null) {
-            LoadingTask().execute()
+            LoadingTask(false).execute()
         }
     }
 
     // Well, I'm not proud of using AsyncTask, but this app doesn't need more sophisticated things at all
-    private inner class LoadingTask : AsyncTask<Unit, Unit, Array<Bitmap>>() {
+    private inner class LoadingTask(private val generateBackgroundColor: Boolean) : AsyncTask<Unit, Unit, VideoProcessingResult>() {
         override fun onPreExecute() {
             _modalProgressLiveData.value = true
         }
 
-        override fun doInBackground(vararg param: Unit?): Array<Bitmap> {
+        override fun doInBackground(vararg param: Unit?): VideoProcessingResult {
             val framesToShow = framesToShowNumber.value!!.value
             val basicInfo = basicInfoLiveData.value!!
 
@@ -113,14 +119,28 @@ class VideoInfoViewModel(private val frameFullWidth: Int) : ViewModel() {
 
             videoFileConfig?.fillWithPreview(bitmaps)
 
-            return bitmaps
+            var backgroundColor = Color.TRANSPARENT
+            if (generateBackgroundColor) {
+                val palette = Palette.from(bitmaps.first()).generate()
+                backgroundColor = palette.getDominantColor(backgroundColor)
+            }
+
+            return VideoProcessingResult(bitmaps, backgroundColor)
         }
 
-        override fun onPostExecute(result: Array<Bitmap>) {
-            _framesLiveData.value = result
+        override fun onPostExecute(result: VideoProcessingResult) {
+            if (generateBackgroundColor) {
+                _framesBackgroundLiveData.value = result.backgroundColor
+            }
+            _framesLiveData.value = result.frames
             _modalProgressLiveData.value = false
         }
     }
+
+    private data class VideoProcessingResult(
+            val frames: Array<Bitmap>,
+            val backgroundColor: Int
+    )
 }
 
 enum class FramesToShow(val value: Int) {
