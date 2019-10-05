@@ -87,7 +87,10 @@ class VideoInfoViewModel(private val frameFullWidth: Int) : ViewModel() {
 
     fun setFramesToShow(framesToShow: FramesToShow) {
         _framesToShowNumber.value = framesToShow
-        LoadingTask().execute()
+        // Temporary fix for crash due to RadioGroup state restoring logic
+        if (_basicInfoLiveData.value != null) {
+            LoadingTask().execute()
+        }
     }
 
     // Well, I'm not proud of using AsyncTask, but this app doesn't need more sophisticated things at all
