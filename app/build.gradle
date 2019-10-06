@@ -68,6 +68,8 @@ dependencies {
 
     implementation "androidx.palette:palette:1.0.0"
 
+    implementation "com.github.hadilq.liveevent:liveevent:1.0.1"
+
     def testLibsVersion = "1.2.0"
 
     // Core library

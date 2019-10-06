@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.palette.graphics.Palette
+import com.hadilq.liveevent.LiveEvent
 import com.javernaut.whatthecodec.domain.VideoFileConfig
 import kotlin.math.sqrt
 
@@ -18,10 +19,10 @@ class VideoInfoViewModel(private val frameFullWidth: Int,
     private val _basicInfoLiveData = MutableLiveData<BasicInfo>()
     private val _isFullFeaturedLiveData = MutableLiveData<Boolean>()
     private val _framesToShowNumber = MutableLiveData<FramesToShow>(FramesToShow.ONE)
-    private val _videoFileConfigLiveData = MutableLiveData<VideoFileConfig?>()
     private val _modalProgressLiveData = MutableLiveData<Boolean>()
     private val _framesLiveData = MutableLiveData<Array<Bitmap>>()
     private val _framesBackgroundLiveData = MutableLiveData<Int>(Color.TRANSPARENT)
+    private val _errorMessageLiveEvent = LiveEvent<Boolean>()
 
     val basicInfoLiveData: LiveData<BasicInfo>
         get() = _basicInfoLiveData
@@ -32,9 +33,8 @@ class VideoInfoViewModel(private val frameFullWidth: Int,
     val framesToShowNumber: LiveData<FramesToShow>
         get() = _framesToShowNumber
 
-    @Deprecated("We shouldn't cache video config object. We need to cache bitmaps from it and do only once")
-    val videoFileConfigLiveData: LiveData<VideoFileConfig?>
-        get() = _videoFileConfigLiveData
+    val errorMessageLiveEvent: LiveData<Boolean>
+        get() = _errorMessageLiveEvent
 
     val modalProgressLiveData: LiveData<Boolean>
         get() = _modalProgressLiveData
@@ -46,12 +46,13 @@ class VideoInfoViewModel(private val frameFullWidth: Int,
         get() = _framesBackgroundLiveData
 
     fun tryGetVideoConfig(uri: String) {
-        videoFileConfig?.release()
-        videoFileConfig = configProvider.obtainConfig(uri)
-        if (videoFileConfig != null) {
-            applyVideoConfig(videoFileConfig!!)
+        val newVideoConfig = configProvider.obtainConfig(uri)
+        if (newVideoConfig != null) {
+            videoFileConfig?.release()
+            videoFileConfig = newVideoConfig
+            applyVideoConfig(newVideoConfig)
         } else {
-            _videoFileConfigLiveData.value = videoFileConfig
+            _errorMessageLiveEvent.value = true
         }
     }
 
@@ -90,7 +91,6 @@ class VideoInfoViewModel(private val frameFullWidth: Int,
             val childFrameWidth = frameFullWidth / sqrt(framesToShow.toDouble()).toInt()
             val childFrameHeight = (childFrameWidth * basicInfo.frameHeight / basicInfo.frameWidth.toDouble()).toInt()
 
-            // TODO Need to recycle previously created bitmaps
             val bitmaps = Array<Bitmap>(framesToShow) {
                 Bitmap.createBitmap(childFrameWidth, childFrameHeight, Bitmap.Config.ARGB_8888)
             }

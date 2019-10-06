@@ -82,9 +82,8 @@ class MainActivity : AppCompatActivity() {
             framesNumberGroup.setOnCheckedChangeListener(framesNumberChangeListener)
         })
 
-        videoInfoViewModel.videoFileConfigLiveData.observe(this, Observer {
-            // TODO trigger this action only once
-            if (it == null) {
+        videoInfoViewModel.errorMessageLiveEvent.observe(this, Observer {
+            if (it) {
                 toast(R.string.message_couldnt_open_file)
             }
         })
