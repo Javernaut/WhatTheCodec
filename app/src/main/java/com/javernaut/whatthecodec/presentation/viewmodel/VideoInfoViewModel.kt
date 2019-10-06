@@ -1,20 +1,17 @@
 package com.javernaut.whatthecodec.presentation.viewmodel
 
-import android.app.Activity
 import android.graphics.Bitmap
 import android.graphics.Color
-import android.net.Uri
 import android.os.AsyncTask
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.palette.graphics.Palette
-import com.javernaut.whatthecodec.util.PathUtil
 import com.javernaut.whatthecodec.domain.VideoFileConfig
-import java.io.FileNotFoundException
 import kotlin.math.sqrt
 
-class VideoInfoViewModel(private val frameFullWidth: Int) : ViewModel() {
+class VideoInfoViewModel(private val frameFullWidth: Int,
+                         private val configProvider: ConfigProvider) : ViewModel() {
 
     private var videoFileConfig: VideoFileConfig? = null
 
@@ -48,32 +45,13 @@ class VideoInfoViewModel(private val frameFullWidth: Int) : ViewModel() {
     val framesBackgroundLiveData: LiveData<Int>
         get() = _framesBackgroundLiveData
 
-    // TODO get rid of an Activity as a parameter
-    fun tryGetVideoConfig(activity: Activity, uri: Uri) {
-        var config: VideoFileConfig? = null
-
-        // First, try get a file:// path
-        val path = PathUtil.getPath(activity, uri)
-        if (path != null) {
-            config = VideoFileConfig.create(path)
-        }
-
-        // Second, try get a FileDescriptor.
-        if (config == null) {
-            try {
-                val descriptor = activity.contentResolver.openFileDescriptor(uri, "r")
-                if (descriptor != null) {
-                    config = VideoFileConfig.create(descriptor)
-                }
-            } catch (e: FileNotFoundException) {
-            }
-        }
-
-        videoFileConfig = config
-        if (config != null) {
-            applyVideoConfig(config)
+    fun tryGetVideoConfig(uri: String) {
+        videoFileConfig?.release()
+        videoFileConfig = configProvider.obtainConfig(uri)
+        if (videoFileConfig != null) {
+            applyVideoConfig(videoFileConfig!!)
         } else {
-            _videoFileConfigLiveData.value = config
+            _videoFileConfigLiveData.value = videoFileConfig
         }
     }
 
@@ -139,12 +117,16 @@ class VideoInfoViewModel(private val frameFullWidth: Int) : ViewModel() {
             if (generateBackgroundColor) {
                 _framesBackgroundLiveData.value = result.backgroundColor
             }
+
+            val previousFrames = _framesLiveData.value
             _framesLiveData.value = result.frames
+            previousFrames?.forEach { it.recycle() }
+
             _modalProgressLiveData.value = false
         }
     }
 
-    private data class VideoProcessingResult(
+    private class VideoProcessingResult(
             val frames: Array<Bitmap>,
             val backgroundColor: Int
     )

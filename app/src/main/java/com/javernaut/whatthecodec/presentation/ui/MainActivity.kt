@@ -9,7 +9,10 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
-import android.view.*
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import android.widget.RadioGroup
 import android.widget.TextView
 import android.widget.Toast
@@ -17,10 +20,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.javernaut.whatthecodec.R
-import com.javernaut.whatthecodec.util.TinyActivityCompat
 import com.javernaut.whatthecodec.presentation.viewmodel.FramesToShow
 import com.javernaut.whatthecodec.presentation.viewmodel.VideoInfoViewModel
 import com.javernaut.whatthecodec.presentation.viewmodel.VideoInfoViewModelFactory
+import com.javernaut.whatthecodec.util.TinyActivityCompat
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.inline_video_left_panel.*
 import kotlinx.android.synthetic.main.inline_video_right_panel.*
@@ -29,7 +32,7 @@ class MainActivity : AppCompatActivity() {
 
     private val videoInfoViewModel by lazy(LazyThreadSafetyMode.NONE) {
         ViewModelProviders.of(
-                this, VideoInfoViewModelFactory(windowManager)
+                this, VideoInfoViewModelFactory(this)
         ).get(VideoInfoViewModel::class.java)
     }
 
@@ -192,7 +195,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun tryGetVideoConfig(uri: Uri) {
-        videoInfoViewModel.tryGetVideoConfig(this, uri)
+        videoInfoViewModel.tryGetVideoConfig(uri.toString())
     }
 
     private fun toast(msg: Int) {
