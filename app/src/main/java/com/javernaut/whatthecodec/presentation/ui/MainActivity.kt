@@ -22,6 +22,8 @@ import com.javernaut.whatthecodec.presentation.viewmodel.FramesToShow
 import com.javernaut.whatthecodec.presentation.viewmodel.VideoInfoViewModel
 import com.javernaut.whatthecodec.presentation.viewmodel.VideoInfoViewModelFactory
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.inline_video_left_panel.*
+import kotlinx.android.synthetic.main.inline_video_right_panel.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -97,18 +99,20 @@ class MainActivity : AppCompatActivity() {
             frameDisplayingView.setFrames(it)
         })
 
-        videoInfoViewModel.framesBackgroundLiveData.observe(this, Observer { newColor ->
-            val currentColor = (frameDisplayingView.background as? ColorDrawable)?.color
-                    ?: Color.TRANSPARENT
-            ObjectAnimator.ofObject(frameDisplayingView,
-                    "backgroundColor",
-                    ArgbEvaluator(),
-                    currentColor,
-                    newColor
-            )
-                    .setDuration(300)
-                    .start()
-        })
+        if (frameBackground != null) {
+            videoInfoViewModel.framesBackgroundLiveData.observe(this, Observer { newColor ->
+                val currentColor = (frameBackground.background as? ColorDrawable)?.color
+                        ?: Color.TRANSPARENT
+                ObjectAnimator.ofObject(frameBackground,
+                        "backgroundColor",
+                        ArgbEvaluator(),
+                        currentColor,
+                        newColor
+                )
+                        .setDuration(300)
+                        .start()
+            })
+        }
 
         onCheckForActionView()
     }

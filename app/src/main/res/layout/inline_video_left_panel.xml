@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <RadioGroup
+        android:id="@+id/framesNumberGroup"
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/listPreferredItemHeight"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
+        android:paddingRight="?android:attr/listPreferredItemPaddingRight"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/info_frames_to_show"
+            android:textAppearance="?android:attr/textAppearanceListItem" />
+
+        <RadioButton
+            android:id="@+id/framesNum1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:checked="true"
+            android:text="@string/frames_1" />
+
+        <RadioButton
+            android:id="@+id/framesNum4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:text="@string/frames_4" />
+
+        <RadioButton
+            android:id="@+id/framesNum9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:text="@string/frames_9" />
+    </RadioGroup>
+
+    <include
+        android:id="@+id/fileFormat"
+        layout="@android:layout/simple_list_item_2" />
+
+    <include
+        android:id="@+id/videoCodec"
+        layout="@android:layout/simple_list_item_2" />
+</merge>

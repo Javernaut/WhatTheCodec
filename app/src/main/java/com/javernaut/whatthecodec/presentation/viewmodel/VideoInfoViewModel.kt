@@ -126,7 +126,6 @@ class VideoInfoViewModel(private val frameFullWidth: Int) : ViewModel() {
                 backgroundColor = listOf(
                         palette::getDarkMutedSwatch,
                         palette::getMutedSwatch,
-                        palette::getLightMutedSwatch,
                         palette::getDominantSwatch
                 ).firstOrNull {
                     it() != null
