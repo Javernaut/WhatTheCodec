@@ -1,8 +1,12 @@
 package com.javernaut.whatthecodec.presentation.ui
 
+import android.animation.ArgbEvaluator
+import android.animation.ObjectAnimator
 import android.app.Dialog
 import android.app.ProgressDialog
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.view.*
@@ -93,9 +97,17 @@ class MainActivity : AppCompatActivity() {
             frameDisplayingView.setFrames(it)
         })
 
-        videoInfoViewModel.framesBackgroundLiveData.observe(this, Observer {
-            // TODO apply it with animation
-            frameDisplayingView.setBackgroundColor(it)
+        videoInfoViewModel.framesBackgroundLiveData.observe(this, Observer { newColor ->
+            val currentColor = (frameDisplayingView.background as? ColorDrawable)?.color
+                    ?: Color.TRANSPARENT
+            ObjectAnimator.ofObject(frameDisplayingView,
+                    "backgroundColor",
+                    ArgbEvaluator(),
+                    currentColor,
+                    newColor
+            )
+                    .setDuration(300)
+                    .start()
         })
 
         onCheckForActionView()
