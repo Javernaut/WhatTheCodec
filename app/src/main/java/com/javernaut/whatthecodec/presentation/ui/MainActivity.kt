@@ -101,20 +101,18 @@ class MainActivity : AppCompatActivity() {
             frameDisplayingView.setFrames(it)
         })
 
-        if (frameBackground != null) {
-            videoInfoViewModel.framesBackgroundLiveData.observe(this, Observer { newColor ->
-                val currentColor = (frameBackground.background as? ColorDrawable)?.color
-                        ?: Color.TRANSPARENT
-                ObjectAnimator.ofObject(frameBackground,
-                        "backgroundColor",
-                        ArgbEvaluator(),
-                        currentColor,
-                        newColor
-                )
-                        .setDuration(300)
-                        .start()
-            })
-        }
+        videoInfoViewModel.framesBackgroundLiveData.observe(this, Observer { newColor ->
+            val currentColor = (frameBackground.background as? ColorDrawable)?.color
+                    ?: Color.TRANSPARENT
+            ObjectAnimator.ofObject(frameBackground,
+                    "backgroundColor",
+                    ArgbEvaluator(),
+                    currentColor,
+                    newColor
+            )
+                    .setDuration(300)
+                    .start()
+        })
 
         onCheckForActionView()
     }
