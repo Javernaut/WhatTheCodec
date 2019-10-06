@@ -119,10 +119,18 @@ class VideoInfoViewModel(private val frameFullWidth: Int) : ViewModel() {
 
             videoFileConfig?.fillWithPreview(bitmaps)
 
-            var backgroundColor = Color.TRANSPARENT
+            var backgroundColor: Int = Color.TRANSPARENT
             if (generateBackgroundColor) {
                 val palette = Palette.from(bitmaps.first()).generate()
-                backgroundColor = palette.getDominantColor(backgroundColor)
+                // Pick the first swatch in this order that isn't null and use its color
+                backgroundColor = listOf(
+                        palette::getDarkMutedSwatch,
+                        palette::getMutedSwatch,
+                        palette::getLightMutedSwatch,
+                        palette::getDominantSwatch
+                ).firstOrNull {
+                    it() != null
+                }?.invoke()?.rgb ?: backgroundColor
             }
 
             return VideoProcessingResult(bitmaps, backgroundColor)
