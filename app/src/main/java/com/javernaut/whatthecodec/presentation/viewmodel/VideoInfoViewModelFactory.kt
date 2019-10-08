@@ -1,13 +1,13 @@
 package com.javernaut.whatthecodec.presentation.viewmodel
 
-import android.app.Activity
 import android.graphics.Point
+import androidx.activity.ComponentActivity
+import androidx.lifecycle.AbstractSavedStateViewModelFactory
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import kotlin.math.min
 
-class VideoInfoViewModelFactory(activity: Activity) : ViewModelProvider.Factory {
-
+class VideoInfoViewModelFactory(activity: ComponentActivity) : AbstractSavedStateViewModelFactory(activity, null) {
     private val frameFullWidth = Point().let {
         activity.windowManager.defaultDisplay.getSize(it)
         min(it.x, it.y)
@@ -15,7 +15,7 @@ class VideoInfoViewModelFactory(activity: Activity) : ViewModelProvider.Factory 
 
     private val configProvider = ConfigProviderImpl(activity)
 
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return VideoInfoViewModel(frameFullWidth, configProvider) as T
+    override fun <T : ViewModel?> create(key: String, modelClass: Class<T>, handle: SavedStateHandle): T {
+        return VideoInfoViewModel(frameFullWidth, configProvider, handle) as T
     }
 }

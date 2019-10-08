@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.os.AsyncTask
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.palette.graphics.Palette
 import com.hadilq.liveevent.LiveEvent
@@ -12,17 +13,25 @@ import com.javernaut.whatthecodec.domain.VideoFileConfig
 import kotlin.math.sqrt
 
 class VideoInfoViewModel(private val frameFullWidth: Int,
-                         private val configProvider: ConfigProvider) : ViewModel() {
+                         private val configProvider: ConfigProvider,
+                         private val savedStateHandle: SavedStateHandle) : ViewModel() {
 
     private var videoFileConfig: VideoFileConfig? = null
 
     private val _basicInfoLiveData = MutableLiveData<BasicInfo>()
     private val _isFullFeaturedLiveData = MutableLiveData<Boolean>()
-    private val _framesToShowNumber = MutableLiveData<FramesToShow>(FramesToShow.ONE)
+    private val _framesToShowNumber = MutableLiveData<FramesToShow>(framesInitialValue())
     private val _modalProgressLiveData = MutableLiveData<Boolean>()
     private val _framesLiveData = MutableLiveData<Array<Bitmap>>()
     private val _framesBackgroundLiveData = MutableLiveData<Int>(Color.TRANSPARENT)
     private val _errorMessageLiveEvent = LiveEvent<Boolean>()
+
+    init {
+        val savedFileUri: String? = savedStateHandle[KEY_VIDEO_FILE_URI]
+        if (savedFileUri != null) {
+            tryGetVideoConfig(savedFileUri)
+        }
+    }
 
     val basicInfoLiveData: LiveData<BasicInfo>
         get() = _basicInfoLiveData
@@ -48,6 +57,7 @@ class VideoInfoViewModel(private val frameFullWidth: Int,
     fun tryGetVideoConfig(uri: String) {
         val newVideoConfig = configProvider.obtainConfig(uri)
         if (newVideoConfig != null) {
+            savedStateHandle.set(KEY_VIDEO_FILE_URI, uri)
             videoFileConfig?.release()
             videoFileConfig = newVideoConfig
             applyVideoConfig(newVideoConfig)
@@ -71,6 +81,7 @@ class VideoInfoViewModel(private val frameFullWidth: Int,
     }
 
     fun setFramesToShow(framesToShow: FramesToShow) {
+        savedStateHandle.set(KEY_FRAMES_NUMBER, framesToShow.toString())
         _framesToShowNumber.value = framesToShow
         // Temporary fix for crash due to RadioGroup state restoring logic
         if (_basicInfoLiveData.value != null) {
@@ -124,6 +135,20 @@ class VideoInfoViewModel(private val frameFullWidth: Int,
 
             _modalProgressLiveData.value = false
         }
+    }
+
+    private fun framesInitialValue(): FramesToShow {
+        val savedFramesNumber = savedStateHandle.get<String?>(KEY_FRAMES_NUMBER)
+        return if (savedFramesNumber != null) {
+            FramesToShow.valueOf(savedFramesNumber)
+        } else {
+            FramesToShow.ONE
+        }
+    }
+
+    companion object {
+        const val KEY_VIDEO_FILE_URI = "key_video_file_uri"
+        const val KEY_FRAMES_NUMBER = "key_frames_number"
     }
 
     private class VideoProcessingResult(
