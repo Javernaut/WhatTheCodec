@@ -37,6 +37,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private var progressDialog: Dialog? = null
+    private var intentActionViewConsumed = false
 
     private val framesNumberChangeListener = RadioGroup.OnCheckedChangeListener { _, checkedId ->
         videoInfoViewModel.setFramesToShow(when (checkedId) {
@@ -114,7 +115,20 @@ class MainActivity : AppCompatActivity() {
                     .start()
         })
 
-        onCheckForActionView()
+        intentActionViewConsumed = savedInstanceState?.getBoolean(EXTRA_INTENT_ACTION_VIEW_CONSUMED) == true
+        if (!intentActionViewConsumed) {
+            onCheckForActionView()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        videoInfoViewModel.applyPendingVideoConfigIfNeeded()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putBoolean(EXTRA_INTENT_ACTION_VIEW_CONSUMED, intentActionViewConsumed)
     }
 
     override fun onDestroy() {
@@ -126,7 +140,7 @@ class MainActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == REQUEST_CODE_PICK_VIDEO) {
             if (resultCode == RESULT_OK && data?.data != null) {
-                tryGetVideoConfig(data.data!!)
+                openVideoConfig(data.data!!)
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data)
@@ -188,11 +202,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun actualDisplayFileFromActionView() {
-        tryGetVideoConfig(intent.data!!)
+        intentActionViewConsumed = true
+        openVideoConfig(intent.data!!)
     }
 
-    private fun tryGetVideoConfig(uri: Uri) {
-        videoInfoViewModel.tryGetVideoConfig(uri.toString())
+    private fun openVideoConfig(uri: Uri) {
+        videoInfoViewModel.openVideoConfig(uri.toString())
     }
 
     private fun toast(msg: Int) {
@@ -214,5 +229,7 @@ class MainActivity : AppCompatActivity() {
         private const val REQUEST_CODE_PICK_VIDEO = 42
         private const val REQUEST_CODE_PERMISSION_ACTION_VIEW = 43
         private const val REQUEST_CODE_PERMISSION_PICK = 44
+
+        private const val EXTRA_INTENT_ACTION_VIEW_CONSUMED = "extra_intent_action_view_consumed"
     }
 }

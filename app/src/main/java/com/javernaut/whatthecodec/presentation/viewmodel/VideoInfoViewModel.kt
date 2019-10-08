@@ -16,6 +16,8 @@ class VideoInfoViewModel(private val frameFullWidth: Int,
                          private val configProvider: ConfigProvider,
                          private val savedStateHandle: SavedStateHandle) : ViewModel() {
 
+    private var pendingVideoFileUri: String? = null
+
     private var videoFileConfig: VideoFileConfig? = null
 
     private val _basicInfoLiveData = MutableLiveData<BasicInfo>()
@@ -27,10 +29,7 @@ class VideoInfoViewModel(private val frameFullWidth: Int,
     private val _errorMessageLiveEvent = LiveEvent<Boolean>()
 
     init {
-        val savedFileUri: String? = savedStateHandle[KEY_VIDEO_FILE_URI]
-        if (savedFileUri != null) {
-            tryGetVideoConfig(savedFileUri)
-        }
+        pendingVideoFileUri = savedStateHandle[KEY_VIDEO_FILE_URI]
     }
 
     val basicInfoLiveData: LiveData<BasicInfo>
@@ -54,7 +53,15 @@ class VideoInfoViewModel(private val frameFullWidth: Int,
     val framesBackgroundLiveData: LiveData<Int>
         get() = _framesBackgroundLiveData
 
-    fun tryGetVideoConfig(uri: String) {
+    fun applyPendingVideoConfigIfNeeded() {
+        if (pendingVideoFileUri != null) {
+            openVideoConfig(pendingVideoFileUri!!)
+        }
+    }
+
+    fun openVideoConfig(uri: String) {
+        clearPendingUri()
+
         val newVideoConfig = configProvider.obtainConfig(uri)
         if (newVideoConfig != null) {
             savedStateHandle.set(KEY_VIDEO_FILE_URI, uri)
@@ -87,6 +94,10 @@ class VideoInfoViewModel(private val frameFullWidth: Int,
         if (_basicInfoLiveData.value != null) {
             LoadingTask(false).execute()
         }
+    }
+
+    private fun clearPendingUri() {
+        pendingVideoFileUri = null
     }
 
     // Well, I'm not proud of using AsyncTask, but this app doesn't need more sophisticated things at all
