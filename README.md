@@ -29,9 +29,9 @@ The rest is pretty standard Android-related burden.
 
 And here is how it looks like:
 
-| Files from Download folder | Handling ACTION_VIEW from Dropbox app | File from Google Drive app |
+| Files from Downloads folder | Handling ACTION_VIEW from Dropbox app | File from Google Drive app that isn't downloaded yet |
 | :---:  | :---: | :---: |
-| <img src="images/download.gif"> | <img src="images/dropbox.gif"> | <img src="images/drive.gif"> |
+| <img src="images/downloads.gif"> | <img src="images/dropbox.gif"> | <img src="images/drive.gif"> |
 
 ## Prerequisites
 
