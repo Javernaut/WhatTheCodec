@@ -25,6 +25,7 @@ import com.javernaut.whatthecodec.presentation.viewmodel.VideoInfoViewModel
 import com.javernaut.whatthecodec.presentation.viewmodel.VideoInfoViewModelFactory
 import com.javernaut.whatthecodec.util.TinyActivityCompat
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_video_page.*
 import kotlinx.android.synthetic.main.inline_video_left_panel.*
 import kotlinx.android.synthetic.main.inline_video_right_panel.*
 
@@ -50,12 +51,16 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        setSupportActionBar(toolbar)
 
         videoInfoViewModel.basicInfoLiveData.observe(this, Observer {
             fileFormat.setupTwoLineView(R.string.info_file_format, it.fileFormat)
             videoCodec.setupTwoLineView(R.string.info_video_codec, it.codecName)
             width.setupTwoLineView(R.string.info_width, it.frameWidth.toString())
             height.setupTwoLineView(R.string.info_height, it.frameHeight.toString())
+
+            tabs.visibility = View.VISIBLE
+            supportActionBar?.title = null
         })
 
         videoInfoViewModel.isFullFeaturedLiveData.observe(this, Observer { isFullFeatured ->

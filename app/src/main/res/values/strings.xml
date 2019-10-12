@@ -15,4 +15,7 @@
     <string name="frames_1">1</string>
     <string name="frames_4">4</string>
     <string name="frames_9">9</string>
+    <string name="tab_video">Video</string>
+    <string name="tab_audio">Audio</string>
+    <string name="tab_subtitles">Subtitles</string>
 </resources>
