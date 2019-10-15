@@ -4,7 +4,7 @@ import android.net.Uri
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.google.common.truth.Truth.assertThat
-import com.javernaut.whatthecodec.domain.VideoFileConfig
+import com.javernaut.whatthecodec.domain.VideoFileConfigBuilder
 import org.junit.Test
 import org.junit.runner.RunWith
 import java.io.File
@@ -35,15 +35,17 @@ class VideoFileConfigTest {
         // Actual test
         val descriptor = targetContext.contentResolver.openFileDescriptor(Uri.parse("file://" + testFile.absolutePath), "r")
 
-        val videoFileConfig = VideoFileConfig.create(descriptor!!)
+        val videoFileConfig = VideoFileConfigBuilder().from(descriptor!!).create()
         assertThat(videoFileConfig).isNotNull()
 
         if (videoFileConfig != null) {
-            assertThat(videoFileConfig.height).isEqualTo(1080)
-            assertThat(videoFileConfig.width).isEqualTo(1920)
+            val videoStream = videoFileConfig.videoStream
 
-            assertThat(videoFileConfig.fileFormat).isEqualTo("QuickTime / MOV")
-            assertThat(videoFileConfig.codecName).isEqualTo("H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10")
+            assertThat(videoStream.frameHeight).isEqualTo(1080)
+            assertThat(videoStream.frameWidth).isEqualTo(1920)
+
+            assertThat(videoFileConfig.fileFormatName).isEqualTo("QuickTime / MOV")
+            assertThat(videoStream.codecName).isEqualTo("H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10")
 
             videoFileConfig.release()
         }
