@@ -30,6 +30,9 @@ class RootActivity : AppCompatActivity(R.layout.root_main) {
         super.onCreate(savedInstanceState)
         setSupportActionBar(toolbar)
 
+        pager.adapter = RootPagerAdapter(supportFragmentManager, resources)
+        tabs.setupWithViewPager(pager)
+
         videoInfoViewModel.basicInfoLiveData.observe(this, Observer {
             tabs.visibility = View.VISIBLE
             supportActionBar?.title = null
