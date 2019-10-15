@@ -53,6 +53,10 @@ class VideoInfoViewModel(private val frameFullWidth: Int,
     val framesBackgroundLiveData: LiveData<Int>
         get() = _framesBackgroundLiveData
 
+    override fun onCleared() {
+        videoFileConfig?.release()
+    }
+
     fun applyPendingVideoConfigIfNeeded() {
         if (pendingVideoFileUri != null) {
             openVideoConfig(pendingVideoFileUri!!)
@@ -75,13 +79,13 @@ class VideoInfoViewModel(private val frameFullWidth: Int,
 
     private fun applyVideoConfig(videoFileConfig: VideoFileConfig) {
         _basicInfoLiveData.value = BasicInfo(
-                videoFileConfig.fileFormat,
-                videoFileConfig.codecName,
-                videoFileConfig.width,
-                videoFileConfig.height
+                videoFileConfig.fileFormatName,
+                videoFileConfig.videoStream.codecName,
+                videoFileConfig.videoStream.frameWidth,
+                videoFileConfig.videoStream.frameHeight
         )
-        _isFullFeaturedLiveData.value = videoFileConfig.fullFeatured
-        if (!videoFileConfig.fullFeatured) {
+        _isFullFeaturedLiveData.value = videoFileConfig.videoStream.fullFeatured
+        if (!videoFileConfig.videoStream.fullFeatured) {
             _framesToShowNumber.value = FramesToShow.FOUR
         }
         LoadingTask(true).execute()
@@ -117,7 +121,7 @@ class VideoInfoViewModel(private val frameFullWidth: Int,
                 Bitmap.createBitmap(childFrameWidth, childFrameHeight, Bitmap.Config.ARGB_8888)
             }
 
-            videoFileConfig?.fillWithPreview(bitmaps)
+            videoFileConfig?.videoStream?.fillWithPreview(bitmaps)
 
             var backgroundColor: Int = Color.TRANSPARENT
             if (generateBackgroundColor) {

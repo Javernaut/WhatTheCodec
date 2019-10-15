@@ -1,5 +1,5 @@
 //
-// Created by Alex Javernaut on 3/25/19.
+// Created by Alexander Berezhnoi on 25/03/19.
 //
 
 #include "utils.h"
@@ -49,13 +49,35 @@ int utils_fields_init(JavaVM *vm) {
 
     // Actual work
 
-    GET_CLASS(fields.VideoFileConfig.clazz,
-              "com/javernaut/whatthecodec/domain/VideoFileConfig", true);
+    GET_CLASS(fields.VideoStream.clazz,
+              "com/javernaut/whatthecodec/domain/VideoStream", true);
 
     GET_ID(GetFieldID,
-           fields.VideoFileConfig.nativePointer,
-           fields.VideoFileConfig.clazz,
+           fields.VideoStream.nativePointer,
+           fields.VideoStream.clazz,
            "nativePointer", "J");
+    GET_ID(GetFieldID,
+           fields.VideoStream.fullFeatured,
+           fields.VideoStream.clazz,
+           "fullFeatured", "Z");
+
+    GET_CLASS(fields.VideoFileConfigBuilder.clazz,
+              "com/javernaut/whatthecodec/domain/VideoFileConfigBuilder", true);
+
+    GET_ID(GetMethodID,
+           fields.VideoFileConfigBuilder.onErrorID,
+           fields.VideoFileConfigBuilder.clazz,
+           "onError", "()V");
+
+    GET_ID(GetMethodID,
+           fields.VideoFileConfigBuilder.onVideoConfigFoundID,
+           fields.VideoFileConfigBuilder.clazz,
+           "onVideoConfigFound", "(Ljava/lang/String;)V");
+
+    GET_ID(GetMethodID,
+           fields.VideoFileConfigBuilder.onVideoStreamFoundID,
+           fields.VideoFileConfigBuilder.clazz,
+           "onVideoStreamFound", "(IILjava/lang/String;J)V");
 
     return 0;
 }
@@ -66,7 +88,15 @@ void utils_fields_free(JavaVM *vm) {
         return;
     }
 
-    env->DeleteGlobalRef(fields.VideoFileConfig.clazz);
+    env->DeleteGlobalRef(fields.VideoStream.clazz);
+    env->DeleteGlobalRef(fields.VideoFileConfigBuilder.clazz);
 
     javaVM = nullptr;
+}
+
+void utils_call_instance_method(jobject instance, jmethodID methodID, ...) {
+    va_list args;
+    va_start(args, methodID);
+    utils_get_env()->CallVoidMethodV(instance, methodID, args);
+    va_end(args);
 }
