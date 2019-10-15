@@ -1,4 +1,4 @@
-package com.javernaut.whatthecodec.presentation.viewmodel
+package com.javernaut.whatthecodec.presentation.root.viewmodel
 
 import android.content.Context
 import android.net.Uri

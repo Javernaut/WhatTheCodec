@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.javernaut.whatthecodec.presentation.ui.MainActivity">
+    tools:context=".presentation.root.ui.RootActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -30,10 +30,9 @@
         </com.google.android.material.tabs.TabLayout>
     </androidx.appcompat.widget.Toolbar>
 
-    <ScrollView
+    <fragment
+        android:id="@+id/videoPage"
+        class="com.javernaut.whatthecodec.presentation.video.ui.VideoPageFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <include layout="@layout/fragment_video_page" />
-    </ScrollView>
+        android:layout_height="match_parent" />
 </LinearLayout>
