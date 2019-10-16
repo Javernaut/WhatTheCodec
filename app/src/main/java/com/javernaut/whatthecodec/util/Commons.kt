@@ -17,3 +17,7 @@ inline fun ViewGroup.forEachChild(action: (View) -> Unit) {
         action(getChildAt(pos))
     }
 }
+
+fun View.setVisible(visible: Boolean) {
+    visibility = if (visible) View.VISIBLE else View.GONE
+}

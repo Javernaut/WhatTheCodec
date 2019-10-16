@@ -82,7 +82,7 @@ int utils_fields_init(JavaVM *vm) {
     GET_ID(GetMethodID,
            fields.VideoFileConfigBuilder.onAudioStreamFoundID,
            fields.VideoFileConfigBuilder.clazz,
-           "onAudioStreamFound", "(ILjava/lang/String;)V");
+           "onAudioStreamFound", "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;I)V");
 
     return 0;
 }

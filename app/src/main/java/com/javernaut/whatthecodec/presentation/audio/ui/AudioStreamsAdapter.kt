@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.domain.AudioStream
+import com.javernaut.whatthecodec.util.setVisible
 import com.javernaut.whatthecodec.util.setupTwoLineView
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_audio_stream.view.*
@@ -36,7 +37,21 @@ class AudioStreamViewHolder(override val containerView: View) : RecyclerView.Vie
 
     fun bindTo(stream: AudioStream) {
         containerView.streamIndex.setupTwoLineView(R.string.page_audio_stream_index, stream.index.toString())
+
+        containerView.streamTitle.setVisible(stream.title != null)
+        if (stream.title != null) {
+            containerView.streamTitle.setupTwoLineView(R.string.page_audio_stream_title, stream.title)
+        }
+
         containerView.codecName.setupTwoLineView(R.string.page_audio_codec_name, stream.codecName)
+
+        containerView.streamLanguage.setVisible(stream.language != null)
+        if (stream.language != null) {
+            containerView.streamLanguage.setupTwoLineView(R.string.page_audio_stream_language, stream.language)
+        }
+
+        // TODO hide if 0
+        containerView.streamDisposition.setupTwoLineView(R.string.page_audio_stream_disposition, stream.disposition.toString())
     }
 
 }

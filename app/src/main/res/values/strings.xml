@@ -20,4 +20,7 @@
     <string name="page_video_frames_to_show_9">9</string>
     <string name="page_audio_stream_index">Stream index:</string>
     <string name="page_audio_codec_name">Audio codec:</string>
+    <string name="page_audio_stream_title">Title:</string>
+    <string name="page_audio_stream_language">Language:</string>
+    <string name="page_audio_stream_disposition">Disposition:</string>
 </resources>

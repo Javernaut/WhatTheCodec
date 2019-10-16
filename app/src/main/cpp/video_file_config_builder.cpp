@@ -11,6 +11,23 @@ extern "C" {
 #include <libavcodec/avcodec.h>
 }
 
+static jstring get_string(AVDictionary *metadata, const char *key) {
+    jstring result = nullptr;
+    AVDictionaryEntry *tag = av_dict_get(metadata, key, nullptr, 0);
+    if (tag != nullptr) {
+        result = utils_get_env()->NewStringUTF(tag->value);
+    }
+    return result;
+}
+
+static jstring get_title(AVDictionary *metadata) {
+    return get_string(metadata, "title");
+}
+
+static jstring get_language(AVDictionary *metadata) {
+    return get_string(metadata, "language");
+}
+
 static void onError(jobject jVideoFileConfigBuilder) {
     utils_call_instance_method(jVideoFileConfigBuilder,
                                fields.VideoFileConfigBuilder.onErrorID);
@@ -50,7 +67,8 @@ static void onVideoStreamFound(jobject jVideoFileConfigBuilder,
 static void onAudioStreamFound(jobject jVideoFileConfigBuilder,
                                AVFormatContext *avFormatContext,
                                int index) {
-    AVCodecParameters *parameters = avFormatContext->streams[index]->codecpar;
+    AVStream *stream = avFormatContext->streams[index];
+    AVCodecParameters *parameters = stream->codecpar;
 
     auto codecDescriptor = avcodec_descriptor_get(parameters->codec_id);
     jstring jCodecName = utils_get_env()->NewStringUTF(codecDescriptor->long_name);
@@ -58,7 +76,10 @@ static void onAudioStreamFound(jobject jVideoFileConfigBuilder,
     utils_call_instance_method(jVideoFileConfigBuilder,
                                fields.VideoFileConfigBuilder.onAudioStreamFoundID,
                                index,
-                               jCodecName);
+                               jCodecName,
+                               get_title(stream->metadata),
+                               get_language(stream->metadata),
+                               stream->disposition);
 }
 
 // uri can be either file: or pipe:

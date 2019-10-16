@@ -14,7 +14,19 @@
             layout="@android:layout/simple_list_item_2" />
 
         <include
+            android:id="@+id/streamTitle"
+            layout="@android:layout/simple_list_item_2" />
+
+        <include
             android:id="@+id/codecName"
+            layout="@android:layout/simple_list_item_2" />
+
+        <include
+            android:id="@+id/streamLanguage"
+            layout="@android:layout/simple_list_item_2" />
+
+        <include
+            android:id="@+id/streamDisposition"
             layout="@android:layout/simple_list_item_2" />
 
     </LinearLayout>
