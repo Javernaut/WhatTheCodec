@@ -47,6 +47,20 @@ static void onVideoStreamFound(jobject jVideoFileConfigBuilder,
                                video_stream_get_handle(videoStream));
 }
 
+static void onAudioStreamFound(jobject jVideoFileConfigBuilder,
+                               AVFormatContext *avFormatContext,
+                               int index) {
+    AVCodecParameters *parameters = avFormatContext->streams[index]->codecpar;
+
+    auto codecDescriptor = avcodec_descriptor_get(parameters->codec_id);
+    jstring jCodecName = utils_get_env()->NewStringUTF(codecDescriptor->long_name);
+
+    utils_call_instance_method(jVideoFileConfigBuilder,
+                               fields.VideoFileConfigBuilder.onAudioStreamFoundID,
+                               index,
+                               jCodecName);
+}
+
 // uri can be either file: or pipe:
 void video_file_config_build(jobject jVideoFileConfigBuilder, const char *uri) {
     AVFormatContext *avFormatContext = nullptr;
@@ -65,11 +79,12 @@ void video_file_config_build(jobject jVideoFileConfigBuilder, const char *uri) {
     onVideoConfigFound(jVideoFileConfigBuilder, avFormatContext);
 
     for (int pos = 0; pos < avFormatContext->nb_streams; pos++) {
-        // Processing the very first video stream
         AVCodecParameters *parameters = avFormatContext->streams[pos]->codecpar;
-        if (parameters->codec_type == AVMEDIA_TYPE_VIDEO) {
+        AVMediaType type = parameters->codec_type;
+        if (type == AVMEDIA_TYPE_VIDEO) {
             onVideoStreamFound(jVideoFileConfigBuilder, avFormatContext, pos);
-            break;
+        } else if (type == AVMEDIA_TYPE_AUDIO) {
+            onAudioStreamFound(jVideoFileConfigBuilder, avFormatContext, pos);
         }
     }
 }

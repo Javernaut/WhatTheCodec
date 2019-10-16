@@ -16,6 +16,7 @@ class VideoFileConfigBuilder {
     private var fileFormatName: String? = null
 
     private var videoStream: VideoStream? = null
+    private var audioStreams = mutableListOf<AudioStream>()
 
     /**
      * Tries reading all metadata for a [VideoFileConfig] object from a file path.
@@ -39,7 +40,7 @@ class VideoFileConfigBuilder {
      */
     fun create(): VideoFileConfig? {
         return if (!error) {
-            VideoFileConfig(fileFormatName!!, videoStream!!, parcelFileDescriptor)
+            VideoFileConfig(fileFormatName!!, videoStream!!, audioStreams, parcelFileDescriptor)
         } else {
             null
         }
@@ -67,6 +68,12 @@ class VideoFileConfigBuilder {
                     parcelFileDescriptor == null,
                     nativePointer)
         }
+    }
+
+    @Keep
+    /* Used from JNI */
+    private fun onAudioStreamFound(index: Int, codecName: String) {
+        audioStreams.add(AudioStream(index, codecName))
     }
 
     private external fun nativeCreateFromFD(fileDescriptor: Int)

@@ -45,6 +45,7 @@ struct fields {
         jclass clazz;
         jmethodID onVideoConfigFoundID;
         jmethodID onVideoStreamFoundID;
+        jmethodID onAudioStreamFoundID;
         jmethodID onErrorID;
     } VideoFileConfigBuilder;
 };

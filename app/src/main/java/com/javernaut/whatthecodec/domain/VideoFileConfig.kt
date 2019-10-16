@@ -8,6 +8,7 @@ import android.os.ParcelFileDescriptor
 class VideoFileConfig(
         val fileFormatName: String,
         val videoStream: VideoStream,
+        val audioStreams: List<AudioStream>,
         private val parcelFileDescriptor: ParcelFileDescriptor?
 ) {
 
