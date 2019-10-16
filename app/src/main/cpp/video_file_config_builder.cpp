@@ -15,7 +15,7 @@ extern "C" {
 static jstring toJString(const char *cString) {
     jstring result = nullptr;
     if (cString != nullptr) {
-        utils_get_env()->NewStringUTF(cString);
+        result = utils_get_env()->NewStringUTF(cString);
     }
     return result;
 }
