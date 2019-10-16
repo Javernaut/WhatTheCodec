@@ -38,20 +38,35 @@ class AudioStreamViewHolder(override val containerView: View) : RecyclerView.Vie
     fun bindTo(stream: AudioStream) {
         containerView.streamIndex.setupTwoLineView(R.string.page_audio_stream_index, stream.index.toString())
 
-        containerView.streamTitle.setVisible(stream.title != null)
-        if (stream.title != null) {
-            containerView.streamTitle.setupTwoLineView(R.string.page_audio_stream_title, stream.title)
-        }
+        containerView.streamTitle.applyText(R.string.page_audio_stream_title, stream.title)
 
         containerView.codecName.setupTwoLineView(R.string.page_audio_codec_name, stream.codecName)
 
-        containerView.streamLanguage.setVisible(stream.language != null)
-        if (stream.language != null) {
-            containerView.streamLanguage.setupTwoLineView(R.string.page_audio_stream_language, stream.language)
-        }
+        // TODO convert to proper form
+        containerView.streamBitRate.setupTwoLineView(R.string.page_audio_bit_rate, stream.bitRate.toString())
+
+        containerView.channels.setupTwoLineView(R.string.page_audio_channels, stream.channels.toString())
+
+        containerView.channelLayout.applyText(R.string.page_audio_channel_layout, stream.channelLayout)
+
+        containerView.sampleFormat.applyText(R.string.page_audio_sample_format, stream.sampleFormat)
+
+        // TODO add Hz or something
+        containerView.sampleRate.setupTwoLineView(R.string.page_audio_sample_rate, stream.sampleRate.toString())
+
+        containerView.streamLanguage.applyText(R.string.page_audio_stream_language, stream.language)
 
         // TODO hide if 0
         containerView.streamDisposition.setupTwoLineView(R.string.page_audio_stream_disposition, stream.disposition.toString())
+
+        // TODO check where are sample format and channel layout
+    }
+
+    private fun View.applyText(text1: Int, text2: String?) {
+        setVisible(text2 != null)
+        if (text2 != null) {
+            setupTwoLineView(text1, text2)
+        }
     }
 
 }

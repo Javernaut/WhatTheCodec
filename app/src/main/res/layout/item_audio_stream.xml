@@ -22,6 +22,26 @@
             layout="@android:layout/simple_list_item_2" />
 
         <include
+            android:id="@+id/streamBitRate"
+            layout="@android:layout/simple_list_item_2" />
+
+        <include
+            android:id="@+id/channels"
+            layout="@android:layout/simple_list_item_2" />
+
+        <include
+            android:id="@+id/channelLayout"
+            layout="@android:layout/simple_list_item_2" />
+
+        <include
+            android:id="@+id/sampleRate"
+            layout="@android:layout/simple_list_item_2" />
+
+        <include
+            android:id="@+id/sampleFormat"
+            layout="@android:layout/simple_list_item_2" />
+
+        <include
             android:id="@+id/streamLanguage"
             layout="@android:layout/simple_list_item_2" />
 
