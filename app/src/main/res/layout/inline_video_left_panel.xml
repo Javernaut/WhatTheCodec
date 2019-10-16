@@ -17,7 +17,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/info_frames_to_show"
+            android:text="@string/page_video_frames_to_show"
             android:textAppearance="?android:attr/textAppearanceListItem" />
 
         <RadioButton
@@ -26,21 +26,21 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:checked="true"
-            android:text="@string/frames_1" />
+            android:text="@string/page_video_frames_to_show_1" />
 
         <RadioButton
             android:id="@+id/framesNum4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
-            android:text="@string/frames_4" />
+            android:text="@string/page_video_frames_to_show_4" />
 
         <RadioButton
             android:id="@+id/framesNum9"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
-            android:text="@string/frames_9" />
+            android:text="@string/page_video_frames_to_show_9" />
     </RadioGroup>
 
     <include
@@ -48,6 +48,6 @@
         layout="@android:layout/simple_list_item_2" />
 
     <include
-        android:id="@+id/videoCodec"
+        android:id="@+id/codecName"
         layout="@android:layout/simple_list_item_2" />
 </merge>

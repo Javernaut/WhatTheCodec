@@ -26,16 +26,21 @@ class RootActivity : AppCompatActivity(R.layout.root_main) {
 
     private var intentActionViewConsumed = false
 
+    private lateinit var pagerAdapter: RootPagerAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setSupportActionBar(toolbar)
 
-        pager.adapter = RootPagerAdapter(supportFragmentManager, resources)
+        pagerAdapter = RootPagerAdapter(supportFragmentManager, resources)
+        pager.adapter = pagerAdapter
         tabs.setupWithViewPager(pager)
 
-        videoInfoViewModel.basicInfoLiveData.observe(this, Observer {
+        videoInfoViewModel.availableTabsLiveData.observe(this, Observer {
             tabs.visibility = View.VISIBLE
             supportActionBar?.title = null
+
+            pagerAdapter.availableTabs = it
         })
 
         videoInfoViewModel.errorMessageLiveEvent.observe(this, Observer {

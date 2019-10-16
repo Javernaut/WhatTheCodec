@@ -9,7 +9,11 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.palette.graphics.Palette
 import com.hadilq.liveevent.LiveEvent
+import com.javernaut.whatthecodec.domain.AudioStream
 import com.javernaut.whatthecodec.domain.VideoFileConfig
+import com.javernaut.whatthecodec.presentation.root.viewmodel.model.AvailableTab
+import com.javernaut.whatthecodec.presentation.root.viewmodel.model.BasicVideoInfo
+import com.javernaut.whatthecodec.presentation.root.viewmodel.model.FramesToShow
 import kotlin.math.sqrt
 
 class VideoInfoViewModel(private val frameFullWidth: Int,
@@ -20,20 +24,22 @@ class VideoInfoViewModel(private val frameFullWidth: Int,
 
     private var videoFileConfig: VideoFileConfig? = null
 
-    private val _basicInfoLiveData = MutableLiveData<BasicInfo>()
+    private val _basicVideoInfoLiveData = MutableLiveData<BasicVideoInfo>()
     private val _isFullFeaturedLiveData = MutableLiveData<Boolean>()
     private val _framesToShowNumber = MutableLiveData<FramesToShow>(framesInitialValue())
     private val _modalProgressLiveData = MutableLiveData<Boolean>()
     private val _framesLiveData = MutableLiveData<Array<Bitmap>>()
     private val _framesBackgroundLiveData = MutableLiveData<Int>(Color.TRANSPARENT)
     private val _errorMessageLiveEvent = LiveEvent<Boolean>()
+    private val _availableTabsLiveData = MutableLiveData<List<AvailableTab>>()
+    private val _audioStreamsLiveData = MutableLiveData<List<AudioStream>>()
 
     init {
         pendingVideoFileUri = savedStateHandle[KEY_VIDEO_FILE_URI]
     }
 
-    val basicInfoLiveData: LiveData<BasicInfo>
-        get() = _basicInfoLiveData
+    val basicVideoInfoLiveData: LiveData<BasicVideoInfo>
+        get() = _basicVideoInfoLiveData
 
     val isFullFeaturedLiveData: LiveData<Boolean>
         get() = _isFullFeaturedLiveData
@@ -52,6 +58,12 @@ class VideoInfoViewModel(private val frameFullWidth: Int,
 
     val framesBackgroundLiveData: LiveData<Int>
         get() = _framesBackgroundLiveData
+
+    val availableTabsLiveData: LiveData<List<AvailableTab>>
+        get() = _availableTabsLiveData
+
+    val audioStreamsLiveData: LiveData<List<AudioStream>>
+        get() = _audioStreamsLiveData
 
     override fun onCleared() {
         videoFileConfig?.release()
@@ -78,7 +90,7 @@ class VideoInfoViewModel(private val frameFullWidth: Int,
     }
 
     private fun applyVideoConfig(videoFileConfig: VideoFileConfig) {
-        _basicInfoLiveData.value = BasicInfo(
+        _basicVideoInfoLiveData.value = BasicVideoInfo(
                 videoFileConfig.fileFormatName,
                 videoFileConfig.videoStream.codecName,
                 videoFileConfig.videoStream.frameWidth,
@@ -88,14 +100,25 @@ class VideoInfoViewModel(private val frameFullWidth: Int,
         if (!videoFileConfig.videoStream.fullFeatured) {
             _framesToShowNumber.value = FramesToShow.FOUR
         }
+        _audioStreamsLiveData.value = videoFileConfig.audioStreams
+        setupTabsAvailable(videoFileConfig)
         LoadingTask(true).execute()
+    }
+
+    private fun setupTabsAvailable(videoFileConfig: VideoFileConfig) {
+        val tabs = mutableListOf<AvailableTab>()
+        tabs.add(AvailableTab.VIDEO)
+        if (videoFileConfig.audioStreams.isNotEmpty()) {
+            tabs.add(AvailableTab.AUDIO)
+        }
+        _availableTabsLiveData.value = tabs
     }
 
     fun setFramesToShow(framesToShow: FramesToShow) {
         savedStateHandle.set(KEY_FRAMES_NUMBER, framesToShow.toString())
         _framesToShowNumber.value = framesToShow
         // Temporary fix for crash due to RadioGroup state restoring logic
-        if (_basicInfoLiveData.value != null) {
+        if (_basicVideoInfoLiveData.value != null) {
             LoadingTask(false).execute()
         }
     }
@@ -112,7 +135,7 @@ class VideoInfoViewModel(private val frameFullWidth: Int,
 
         override fun doInBackground(vararg param: Unit?): VideoProcessingResult {
             val framesToShow = framesToShowNumber.value!!.value
-            val basicInfo = basicInfoLiveData.value!!
+            val basicInfo = basicVideoInfoLiveData.value!!
 
             val childFrameWidth = frameFullWidth / sqrt(framesToShow.toDouble()).toInt()
             val childFrameHeight = (childFrameWidth * basicInfo.frameHeight / basicInfo.frameWidth.toDouble()).toInt()
@@ -172,15 +195,3 @@ class VideoInfoViewModel(private val frameFullWidth: Int,
     )
 }
 
-enum class FramesToShow(val value: Int) {
-    ONE(1),
-    FOUR(4),
-    NINE(9)
-}
-
-data class BasicInfo(
-        val fileFormat: String,
-        val codecName: String,
-        val frameWidth: Int,
-        val frameHeight: Int
-)

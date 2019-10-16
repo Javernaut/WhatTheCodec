@@ -4,21 +4,32 @@ import android.content.res.Resources
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import com.javernaut.whatthecodec.R
+import com.javernaut.whatthecodec.presentation.audio.ui.AudioPageFragment
+import com.javernaut.whatthecodec.presentation.root.viewmodel.model.AvailableTab
 import com.javernaut.whatthecodec.presentation.video.ui.VideoPageFragment
 
 class RootPagerAdapter(fm: FragmentManager, private val resources: Resources) : FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
-    override fun getItem(position: Int) = VideoPageFragment()
+    var availableTabs: List<AvailableTab> = emptyList()
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
 
-    override fun getPageTitle(position: Int) = when (position) {
-        POSITION_VIDEO -> resources.getString(R.string.tab_video)
-        else -> null
+    override fun getItem(position: Int) = when (availableTabs[position]) {
+        AvailableTab.VIDEO -> VideoPageFragment()
+        AvailableTab.AUDIO -> AudioPageFragment()
+        AvailableTab.SUBTITLES -> TODO()
     }
 
-    // TODO This value is variable actually. It depends on a particular video file.
-    override fun getCount() = 1
+    override fun getPageTitle(position: Int) = resources.getString(
+            when (availableTabs[position]) {
+                AvailableTab.VIDEO -> R.string.tab_video
+                AvailableTab.AUDIO -> R.string.tab_audio
+                AvailableTab.SUBTITLES -> R.string.tab_subtitles
+            }
+    )
 
-    companion object {
-        private const val POSITION_VIDEO = 0
-    }
+    override fun getCount() = availableTabs.size
+
 }

@@ -8,15 +8,15 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.View
-import android.view.ViewGroup
 import android.widget.RadioGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.javernaut.whatthecodec.R
-import com.javernaut.whatthecodec.presentation.root.viewmodel.FramesToShow
+import com.javernaut.whatthecodec.presentation.root.viewmodel.model.FramesToShow
 import com.javernaut.whatthecodec.presentation.root.viewmodel.VideoInfoViewModel
+import com.javernaut.whatthecodec.util.forEachChild
+import com.javernaut.whatthecodec.util.setupTwoLineView
 import kotlinx.android.synthetic.main.fragment_video_page.*
 import kotlinx.android.synthetic.main.inline_video_left_panel.*
 import kotlinx.android.synthetic.main.inline_video_right_panel.*
@@ -38,11 +38,11 @@ class VideoPageFragment : Fragment(R.layout.fragment_video_page) {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        videoInfoViewModel.basicInfoLiveData.observe(this, Observer {
+        videoInfoViewModel.basicVideoInfoLiveData.observe(this, Observer {
             fileFormat.setupTwoLineView(R.string.info_file_format, it.fileFormat)
-            videoCodec.setupTwoLineView(R.string.info_video_codec, it.codecName)
-            width.setupTwoLineView(R.string.info_width, it.frameWidth.toString())
-            height.setupTwoLineView(R.string.info_height, it.frameHeight.toString())
+            codecName.setupTwoLineView(R.string.page_video_codec_name, it.codecName)
+            width.setupTwoLineView(R.string.page_video_frame_width, it.frameWidth.toString())
+            height.setupTwoLineView(R.string.page_video_frame_height, it.frameHeight.toString())
         })
 
         videoInfoViewModel.isFullFeaturedLiveData.observe(this, Observer { isFullFeatured ->
@@ -102,16 +102,5 @@ class VideoPageFragment : Fragment(R.layout.fragment_video_page) {
         progressDialog?.dismiss()
         progressDialog = null
         super.onDestroy()
-    }
-
-    private fun View.setupTwoLineView(text1: Int, text2: String) {
-        findViewById<TextView>(android.R.id.text1).setText(text1)
-        findViewById<TextView>(android.R.id.text2).text = text2
-    }
-
-    private inline fun ViewGroup.forEachChild(action: (View) -> Unit) {
-        for (pos in 0 until childCount) {
-            action(getChildAt(pos))
-        }
     }
 }
