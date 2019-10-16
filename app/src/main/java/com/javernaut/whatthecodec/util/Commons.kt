@@ -3,13 +3,14 @@ package com.javernaut.whatthecodec.util
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import com.javernaut.whatthecodec.R
 
 /**
- * Function to setup a view inflated from @android:layout/simple_list_item_2
+ * Function to setup a view inflated from @layout/inline_simple_list_item_2
  */
 fun View.setupTwoLineView(text1: Int, text2: String) {
-    findViewById<TextView>(android.R.id.text1).setText(text1)
-    findViewById<TextView>(android.R.id.text2).text = text2
+    findViewById<TextView>(R.id.text1).setText(text1)
+    findViewById<TextView>(R.id.text2).text = text2
 }
 
 inline fun ViewGroup.forEachChild(action: (View) -> Unit) {

@@ -11,43 +11,43 @@
 
         <include
             android:id="@+id/streamIndex"
-            layout="@android:layout/simple_list_item_2" />
+            layout="@layout/inline_simple_list_item_2" />
 
         <include
             android:id="@+id/streamTitle"
-            layout="@android:layout/simple_list_item_2" />
+            layout="@layout/inline_simple_list_item_2" />
 
         <include
             android:id="@+id/codecName"
-            layout="@android:layout/simple_list_item_2" />
+            layout="@layout/inline_simple_list_item_2" />
 
         <include
             android:id="@+id/streamBitRate"
-            layout="@android:layout/simple_list_item_2" />
+            layout="@layout/inline_simple_list_item_2" />
 
         <include
             android:id="@+id/channels"
-            layout="@android:layout/simple_list_item_2" />
+            layout="@layout/inline_simple_list_item_2" />
 
         <include
             android:id="@+id/channelLayout"
-            layout="@android:layout/simple_list_item_2" />
+            layout="@layout/inline_simple_list_item_2" />
 
         <include
             android:id="@+id/sampleRate"
-            layout="@android:layout/simple_list_item_2" />
+            layout="@layout/inline_simple_list_item_2" />
 
         <include
             android:id="@+id/sampleFormat"
-            layout="@android:layout/simple_list_item_2" />
+            layout="@layout/inline_simple_list_item_2" />
 
         <include
             android:id="@+id/streamLanguage"
-            layout="@android:layout/simple_list_item_2" />
+            layout="@layout/inline_simple_list_item_2" />
 
         <include
             android:id="@+id/streamDisposition"
-            layout="@android:layout/simple_list_item_2" />
+            layout="@layout/inline_simple_list_item_2" />
 
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>
