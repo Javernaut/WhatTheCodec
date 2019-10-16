@@ -9,6 +9,15 @@
 extern "C" {
 #include <libavformat/avformat.h>
 #include <libavcodec/avcodec.h>
+#include <libavutil/bprint.h>
+}
+
+static jstring toJString(const char *cString) {
+    jstring result = nullptr;
+    if (cString != nullptr) {
+        utils_get_env()->NewStringUTF(cString);
+    }
+    return result;
 }
 
 static jstring get_string(AVDictionary *metadata, const char *key) {
@@ -73,12 +82,30 @@ static void onAudioStreamFound(jobject jVideoFileConfigBuilder,
     auto codecDescriptor = avcodec_descriptor_get(parameters->codec_id);
     jstring jCodecName = utils_get_env()->NewStringUTF(codecDescriptor->long_name);
 
+    auto avSampleFormat = static_cast<AVSampleFormat>(parameters->format);
+    auto jSampleFormat = toJString(av_get_sample_fmt_name(avSampleFormat));
+
+    jstring jChannelLayout = nullptr;
+    if (parameters->channel_layout) {
+        AVBPrint printBuffer;
+        av_bprint_init(&printBuffer, 1, AV_BPRINT_SIZE_UNLIMITED);
+        av_bprint_clear(&printBuffer);
+        av_bprint_channel_layout(&printBuffer, parameters->channels, parameters->channel_layout);
+        jChannelLayout = toJString(printBuffer.str);
+        av_bprint_finalize(&printBuffer, NULL);
+    }
+
     utils_call_instance_method(jVideoFileConfigBuilder,
                                fields.VideoFileConfigBuilder.onAudioStreamFoundID,
                                index,
                                jCodecName,
                                get_title(stream->metadata),
                                get_language(stream->metadata),
+                               parameters->bit_rate,
+                               jSampleFormat,
+                               parameters->sample_rate,
+                               parameters->channels,
+                               jChannelLayout,
                                stream->disposition);
 }
 

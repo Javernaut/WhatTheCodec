@@ -5,5 +5,10 @@ class AudioStream(
         val codecName: String,
         val title: String?,
         val language: String?,
+        val bitRate: Long,
+        val sampleFormat: String?,
+        val sampleRate: Int,
+        val channels: Int,
+        val channelLayout: String?,
         val disposition: Int
 )

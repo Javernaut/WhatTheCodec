@@ -72,8 +72,20 @@ class VideoFileConfigBuilder {
 
     @Keep
     /* Used from JNI */
-    private fun onAudioStreamFound(index: Int, codecName: String, title: String?, language: String?, disposition: Int) {
-        audioStreams.add(AudioStream(index, codecName, title, language, disposition))
+    private fun onAudioStreamFound(
+            index: Int,
+            codecName: String,
+            title: String?,
+            language: String?,
+            bitRate: Long,
+            sampleFormat: String?,
+            sampleRate: Int,
+            channels: Int,
+            channelLayout: String?,
+            disposition: Int) {
+        audioStreams.add(
+                AudioStream(index, codecName, title, language, bitRate, sampleFormat, sampleRate, channels, channelLayout, disposition)
+        )
     }
 
     private external fun nativeCreateFromFD(fileDescriptor: Int)
