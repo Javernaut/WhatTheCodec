@@ -7,9 +7,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp">
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/streamTitle"
@@ -23,7 +21,9 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/streamFeatures"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:paddingBottom="8dp" />
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>
