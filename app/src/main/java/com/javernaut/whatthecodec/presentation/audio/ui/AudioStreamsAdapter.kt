@@ -51,8 +51,7 @@ class AudioStreamViewHolder(override val containerView: View) : RecyclerView.Vie
 
         containerView.sampleFormat.applyText(R.string.page_audio_sample_format, stream.sampleFormat)
 
-        // TODO add Hz or something
-        containerView.sampleRate.setupTwoLineView(R.string.page_audio_sample_rate, stream.sampleRate.toString())
+        containerView.sampleRate.setupTwoLineView(R.string.page_audio_sample_rate, SampleRateHelper.toString(stream.sampleRate, containerView.resources))
 
         containerView.streamLanguage.applyText(R.string.page_audio_stream_language, stream.language?.capitalize())
 

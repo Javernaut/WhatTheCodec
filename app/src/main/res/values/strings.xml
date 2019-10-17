@@ -40,4 +40,5 @@
     <string name="stream_disposition_clean_effects">Clean effects</string>
     <string name="stream_disposition_attached_pic">Attached pic</string>
     <string name="stream_disposition_timed_thumbnails">Timed thumbnails</string>
+    <string name="page_audio_sample_rate_postfix">kHz</string>
 </resources>
