@@ -10,7 +10,6 @@ class VideoStream(
         val frameWidth: Int,
         val frameHeight: Int,
         val codecName: String,
-        @Keep
         val fullFeatured: Boolean,
         @Keep
         private val nativePointer: Long

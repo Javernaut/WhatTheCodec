@@ -49,12 +49,4 @@ long video_stream_get_handle(VideoStream *videoStream);
  */
 void video_stream_free(jobject jVideoStream);
 
-/**
- * Funtion to get value of the 'fullFeatured' field of VideoStream java object.
- *
- * @param jVideoStream a VideoStream java object
- * @return value of jVideoStream.fullFeatured
- */
-bool video_stream_is_full_featured(jobject jVideoStream);
-
 #endif //WHATTHECODEC_VIDEO_STREAM_H

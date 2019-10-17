@@ -56,10 +56,6 @@ int utils_fields_init(JavaVM *vm) {
            fields.VideoStream.nativePointer,
            fields.VideoStream.clazz,
            "nativePointer", "J");
-    GET_ID(GetFieldID,
-           fields.VideoStream.fullFeatured,
-           fields.VideoStream.clazz,
-           "fullFeatured", "Z");
 
     GET_CLASS(fields.VideoFileConfigBuilder.clazz,
               "com/javernaut/whatthecodec/domain/VideoFileConfigBuilder", true);

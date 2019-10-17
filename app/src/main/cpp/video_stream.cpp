@@ -31,8 +31,3 @@ void video_stream_free(jobject jVideoConfig) {
 
     video_config_set_pointer(jVideoConfig, -1);
 }
-
-bool video_stream_is_full_featured(jobject jVideoStream) {
-    return utils_get_env()->GetBooleanField(jVideoStream,
-                                            fields.VideoStream.fullFeatured);
-}

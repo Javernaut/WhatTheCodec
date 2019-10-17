@@ -52,22 +52,20 @@ bool frame_extractor_fill_with_preview(JNIEnv *env, jobject jVideoStream, jobjec
             streams[videoStream->videoStreamIndex]->
             duration;
 
+    // We extract frames right from the middle of a region, so the offset equals to a half of a region
+    int64_t offset = videoDuration / arraySize / 2;
+
     for (int pos = 0; pos < arraySize; pos++) {
         jobject jBitmap = env->GetObjectArrayElement(jBitmaps, pos);
 
         AVPacket *packet = av_packet_alloc();
         AVFrame *frame = av_frame_alloc();
 
-        int64_t seekPosition = videoDuration / arraySize * pos;
-        // We call the av_seek_frame() for 0 position only if the media was opened for file path.
-        // In case of file descriptor we omit this, as it can lead to reading error.
-        bool fullFeatured = video_stream_is_full_featured(jVideoStream);
-        if (fullFeatured || seekPosition > 0) {
-            av_seek_frame(videoStream->avFormatContext,
-                          videoStream->videoStreamIndex,
-                          seekPosition,
-                          0);
-        }
+        int64_t seekPosition = videoDuration / arraySize * pos + offset;
+        av_seek_frame(videoStream->avFormatContext,
+                      videoStream->videoStreamIndex,
+                      seekPosition,
+                      0);
 
         AVCodecContext *videoCodecContext = avcodec_alloc_context3(videoStream->avVideoCodec);
         avcodec_parameters_to_context(videoCodecContext, videoStream->parameters);

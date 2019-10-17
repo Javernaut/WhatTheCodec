@@ -39,7 +39,6 @@ struct fields {
     struct {
         jclass clazz;
         jfieldID nativePointer;
-        jfieldID fullFeatured;
     } VideoStream;
     struct {
         jclass clazz;
