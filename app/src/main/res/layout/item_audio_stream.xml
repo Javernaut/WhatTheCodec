@@ -9,13 +9,17 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <include
-            android:id="@+id/streamIndex"
-            layout="@layout/inline_simple_list_item_2" />
-
-        <include
+        <TextView
             android:id="@+id/streamTitle"
-            layout="@layout/inline_simple_list_item_2" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:minHeight="?attr/listPreferredItemHeight"
+            android:paddingStart="?attr/listPreferredItemPaddingStart"
+            android:paddingLeft="?attr/listPreferredItemPaddingLeft"
+            android:paddingEnd="?attr/listPreferredItemPaddingEnd"
+            android:paddingRight="?attr/listPreferredItemPaddingRight"
+            android:textAppearance="?attr/textAppearanceSubtitle1" />
 
         <include
             android:id="@+id/codecName"

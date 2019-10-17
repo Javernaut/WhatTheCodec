@@ -36,9 +36,13 @@ class AudioStreamsAdapter : RecyclerView.Adapter<AudioStreamViewHolder>() {
 class AudioStreamViewHolder(override val containerView: View) : RecyclerView.ViewHolder(containerView), LayoutContainer {
 
     fun bindTo(stream: AudioStream) {
-        containerView.streamIndex.setupTwoLineView(R.string.page_audio_stream_index, stream.index.toString())
-
-        containerView.streamTitle.applyText(R.string.page_audio_stream_title, stream.title)
+        containerView.streamTitle.apply {
+            setText(R.string.page_audio_stream_title_prefix)
+            append(stream.index.toString())
+            if (stream.title != null) {
+                append(" - " + stream.title)
+            }
+        }
 
         containerView.codecName.setupTwoLineView(R.string.page_audio_codec_name, stream.codecName)
 
