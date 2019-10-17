@@ -42,8 +42,7 @@ class AudioStreamViewHolder(override val containerView: View) : RecyclerView.Vie
 
         containerView.codecName.setupTwoLineView(R.string.page_audio_codec_name, stream.codecName)
 
-        // TODO convert to proper form
-        containerView.streamBitRate.setupTwoLineView(R.string.page_audio_bit_rate, stream.bitRate.toString())
+        containerView.streamBitRate.setupTwoLineView(R.string.page_audio_bit_rate, BitRateHelper.toString(stream.bitRate, containerView.resources))
 
         containerView.channels.setupTwoLineView(R.string.page_audio_channels, stream.channels.toString())
 
