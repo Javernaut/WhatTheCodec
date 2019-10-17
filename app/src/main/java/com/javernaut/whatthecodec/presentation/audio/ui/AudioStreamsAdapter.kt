@@ -71,8 +71,9 @@ class AudioStreamViewHolder(override val containerView: View) : RecyclerView.Vie
 
                 add(StreamFeature(R.string.page_audio_sample_rate, SampleRateHelper.toString(stream.sampleRate, containerView.resources)))
 
-                if (stream.language != null) {
-                    add(StreamFeature(R.string.page_audio_stream_language, stream.language.capitalize()))
+                val language = LanguageHelper.getDisplayName(stream.language)
+                if (language != null) {
+                    add(StreamFeature(R.string.page_audio_stream_language, language))
                 }
 
                 if (DispositionHelper.isDisplayable(stream.disposition)) {
