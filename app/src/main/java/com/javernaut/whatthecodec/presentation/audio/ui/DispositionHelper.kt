@@ -5,7 +5,7 @@ import androidx.annotation.StringRes
 import com.javernaut.whatthecodec.R
 
 object DispositionHelper {
-    fun isEmpty(disposition: Int) = disposition == 0
+    fun isDisplayable(disposition: Int) = disposition != 0
 
     fun toString(disposition: Int, resources: Resources) =
             DispositionFeature.values().filter {

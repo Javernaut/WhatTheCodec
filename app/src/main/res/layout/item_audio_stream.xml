@@ -2,56 +2,28 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="4dp">
+    android:layout_margin="8dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp">
 
         <TextView
             android:id="@+id/streamTitle"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/common_list_item_height"
             android:gravity="center_vertical"
-            android:minHeight="?attr/listPreferredItemHeight"
-            android:paddingStart="?attr/listPreferredItemPaddingStart"
-            android:paddingLeft="?attr/listPreferredItemPaddingLeft"
-            android:paddingEnd="?attr/listPreferredItemPaddingEnd"
-            android:paddingRight="?attr/listPreferredItemPaddingRight"
+            android:paddingLeft="@dimen/common_horizontal_spacing"
+            android:paddingRight="@dimen/common_horizontal_spacing"
             android:textAppearance="?attr/textAppearanceSubtitle1" />
 
-        <include
-            android:id="@+id/codecName"
-            layout="@layout/inline_simple_list_item_2" />
-
-        <include
-            android:id="@+id/streamBitRate"
-            layout="@layout/inline_simple_list_item_2" />
-
-        <include
-            android:id="@+id/channels"
-            layout="@layout/inline_simple_list_item_2" />
-
-        <include
-            android:id="@+id/channelLayout"
-            layout="@layout/inline_simple_list_item_2" />
-
-        <include
-            android:id="@+id/sampleRate"
-            layout="@layout/inline_simple_list_item_2" />
-
-        <include
-            android:id="@+id/sampleFormat"
-            layout="@layout/inline_simple_list_item_2" />
-
-        <include
-            android:id="@+id/streamLanguage"
-            layout="@layout/inline_simple_list_item_2" />
-
-        <include
-            android:id="@+id/streamDisposition"
-            layout="@layout/inline_simple_list_item_2" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/streamFeatures"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>

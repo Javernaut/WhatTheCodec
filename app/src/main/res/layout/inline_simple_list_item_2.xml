@@ -4,12 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
-    android:minHeight="?attr/listPreferredItemHeight"
+    android:minHeight="@dimen/common_list_item_height"
     android:orientation="vertical"
-    android:paddingStart="?attr/listPreferredItemPaddingStart"
-    android:paddingLeft="?attr/listPreferredItemPaddingLeft"
-    android:paddingEnd="?attr/listPreferredItemPaddingEnd"
-    android:paddingRight="?attr/listPreferredItemPaddingRight">
+    android:paddingLeft="@dimen/common_horizontal_spacing"
+    android:paddingRight="@dimen/common_horizontal_spacing">
 
     <TextView
         android:id="@+id/text1"
@@ -23,7 +21,7 @@
         android:id="@+id/text2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
+        android:layout_marginTop="4dp"
         android:layout_marginBottom="8dp"
         android:textAppearance="?attr/textAppearanceBody1" />
 

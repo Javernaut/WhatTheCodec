@@ -5,13 +5,11 @@
     <RadioGroup
         android:id="@+id/framesNumberGroup"
         android:layout_width="match_parent"
-        android:layout_height="?android:attr/listPreferredItemHeight"
+        android:layout_height="@dimen/common_list_item_height"
         android:gravity="center"
         android:orientation="horizontal"
-        android:paddingStart="?attr/listPreferredItemPaddingStart"
-        android:paddingLeft="?attr/listPreferredItemPaddingLeft"
-        android:paddingEnd="?attr/listPreferredItemPaddingEnd"
-        android:paddingRight="?attr/listPreferredItemPaddingRight"
+        android:paddingLeft="@dimen/common_horizontal_spacing"
+        android:paddingRight="@dimen/common_horizontal_spacing"
         android:visibility="gone"
         tools:visibility="visible">
 

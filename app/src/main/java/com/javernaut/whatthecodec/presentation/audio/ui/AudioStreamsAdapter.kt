@@ -3,11 +3,12 @@ package com.javernaut.whatthecodec.presentation.audio.ui
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.domain.AudioStream
-import com.javernaut.whatthecodec.util.setVisible
-import com.javernaut.whatthecodec.util.setupTwoLineView
+import com.javernaut.whatthecodec.presentation.audio.ui.streamfeature.StreamFeature
+import com.javernaut.whatthecodec.presentation.audio.ui.streamfeature.StreamFeaturesAdapter
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_audio_stream.view.*
 
@@ -35,6 +36,14 @@ class AudioStreamsAdapter : RecyclerView.Adapter<AudioStreamViewHolder>() {
 
 class AudioStreamViewHolder(override val containerView: View) : RecyclerView.ViewHolder(containerView), LayoutContainer {
 
+    private val subAdapter = StreamFeaturesAdapter()
+
+    init {
+        val layoutManager = GridLayoutManager(containerView.context, 2)
+        containerView.streamFeatures.layoutManager = layoutManager
+        containerView.streamFeatures.adapter = subAdapter
+    }
+
     fun bindTo(stream: AudioStream) {
         containerView.streamTitle.apply {
             setText(R.string.page_audio_stream_title_prefix)
@@ -44,36 +53,34 @@ class AudioStreamViewHolder(override val containerView: View) : RecyclerView.Vie
             }
         }
 
-        containerView.codecName.setupTwoLineView(R.string.page_audio_codec_name, stream.codecName)
-
-        containerView.streamBitRate.setupTwoLineView(R.string.page_audio_bit_rate, BitRateHelper.toString(stream.bitRate, containerView.resources))
-
-        containerView.channels.setupTwoLineView(R.string.page_audio_channels, stream.channels.toString())
-
-        containerView.channelLayout.applyText(R.string.page_audio_channel_layout, stream.channelLayout)
-
-        containerView.sampleFormat.applyText(R.string.page_audio_sample_format, stream.sampleFormat)
-
-        containerView.sampleRate.setupTwoLineView(R.string.page_audio_sample_rate, SampleRateHelper.toString(stream.sampleRate, containerView.resources))
-
-        containerView.streamLanguage.applyText(R.string.page_audio_stream_language, stream.language?.capitalize())
-
-        containerView.streamDisposition.setVisible(!DispositionHelper.isEmpty(stream.disposition))
-        if (!DispositionHelper.isEmpty(stream.disposition)) {
-            containerView.streamDisposition.setupTwoLineView(
-                    R.string.page_audio_stream_disposition,
-                    DispositionHelper.toString(stream.disposition, containerView.resources)
-            )
-        }
-
-        // TODO check where are sample format and channel layout
+        subAdapter.items = getFeaturesList(stream)
     }
 
-    private fun View.applyText(text1: Int, text2: String?) {
-        setVisible(text2 != null)
-        if (text2 != null) {
-            setupTwoLineView(text1, text2)
-        }
-    }
+    private fun getFeaturesList(stream: AudioStream): List<StreamFeature> =
+            mutableListOf<StreamFeature>().apply {
+                add(StreamFeature(R.string.page_audio_codec_name, stream.codecName))
+                add(StreamFeature(R.string.page_audio_bit_rate, BitRateHelper.toString(stream.bitRate, containerView.resources)))
+                add(StreamFeature(R.string.page_audio_channels, stream.channels.toString()))
+
+                if (stream.channelLayout != null) {
+                    add(StreamFeature(R.string.page_audio_channel_layout, stream.channelLayout))
+                }
+                if (stream.sampleFormat != null) {
+                    add(StreamFeature(R.string.page_audio_sample_format, stream.sampleFormat))
+                }
+
+                add(StreamFeature(R.string.page_audio_sample_rate, SampleRateHelper.toString(stream.sampleRate, containerView.resources)))
+
+                if (stream.language != null) {
+                    add(StreamFeature(R.string.page_audio_stream_language, stream.language.capitalize()))
+                }
+
+                if (DispositionHelper.isDisplayable(stream.disposition)) {
+                    add(StreamFeature(
+                            R.string.page_audio_stream_disposition,
+                            DispositionHelper.toString(stream.disposition, containerView.resources))
+                    )
+                }
+            }
 
 }
