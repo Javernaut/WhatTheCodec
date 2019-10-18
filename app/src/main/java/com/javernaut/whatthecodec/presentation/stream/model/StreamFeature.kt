@@ -1,4 +1,4 @@
-package com.javernaut.whatthecodec.presentation.audio.ui.streamfeature
+package com.javernaut.whatthecodec.presentation.stream.model
 
 class StreamFeature(
         val title: Int,

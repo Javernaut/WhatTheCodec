@@ -1,9 +1,10 @@
-package com.javernaut.whatthecodec.presentation.audio.ui.streamfeature
+package com.javernaut.whatthecodec.presentation.stream.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.javernaut.whatthecodec.R
+import com.javernaut.whatthecodec.presentation.stream.model.StreamFeature
 
 class StreamFeaturesAdapter : RecyclerView.Adapter<StreamFeatureViewHolder>() {
 
