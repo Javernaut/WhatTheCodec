@@ -1,4 +1,4 @@
-package com.javernaut.whatthecodec.presentation.audio.ui
+package com.javernaut.whatthecodec.presentation.stream.helper
 
 import android.content.res.Resources
 import androidx.annotation.StringRes

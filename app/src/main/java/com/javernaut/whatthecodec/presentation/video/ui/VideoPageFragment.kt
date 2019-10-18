@@ -13,8 +13,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.javernaut.whatthecodec.R
-import com.javernaut.whatthecodec.presentation.root.viewmodel.model.FramesToShow
 import com.javernaut.whatthecodec.presentation.root.viewmodel.MediaFileViewModel
+import com.javernaut.whatthecodec.presentation.root.viewmodel.model.FramesToShow
 import com.javernaut.whatthecodec.util.forEachChild
 import com.javernaut.whatthecodec.util.setupTwoLineView
 import kotlinx.android.synthetic.main.fragment_video_page.*

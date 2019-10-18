@@ -1,38 +1,26 @@
-package com.javernaut.whatthecodec.presentation.audio.ui
+package com.javernaut.whatthecodec.presentation.subtitle.ui
 
 import androidx.lifecycle.Observer
 import com.javernaut.whatthecodec.R
-import com.javernaut.whatthecodec.domain.AudioStream
+import com.javernaut.whatthecodec.domain.SubtitleStream
 import com.javernaut.whatthecodec.presentation.stream.BasePageFragment
 import com.javernaut.whatthecodec.presentation.stream.helper.DispositionHelper
 import com.javernaut.whatthecodec.presentation.stream.helper.LanguageHelper
 import com.javernaut.whatthecodec.presentation.stream.model.Stream
 import com.javernaut.whatthecodec.presentation.stream.model.StreamFeature
 
-class AudioPageFragment : BasePageFragment() {
-
+class SubtitlePageFragment : BasePageFragment() {
     override fun onSubscribeToViewModel() {
-        mediaFileViewModel.audioStreamsLiveData.observe(this, Observer {
-            displayStreams(it.map { audioStream ->
-                Stream(audioStream.index, audioStream.title, getFeaturesList(audioStream))
+        mediaFileViewModel.subtitleStreamsLiveData.observe(this, Observer {
+            displayStreams(it.map { subtitleStream ->
+                Stream(subtitleStream.index, subtitleStream.title, getFeaturesList(subtitleStream))
             })
         })
     }
 
-    private fun getFeaturesList(stream: AudioStream): List<StreamFeature> =
+    private fun getFeaturesList(stream: SubtitleStream): List<StreamFeature> =
             mutableListOf<StreamFeature>().apply {
                 add(StreamFeature(R.string.page_audio_codec_name, stream.codecName))
-                add(StreamFeature(R.string.page_audio_bit_rate, BitRateHelper.toString(stream.bitRate, resources)))
-                add(StreamFeature(R.string.page_audio_channels, stream.channels.toString()))
-
-                if (stream.channelLayout != null) {
-                    add(StreamFeature(R.string.page_audio_channel_layout, stream.channelLayout))
-                }
-                if (stream.sampleFormat != null) {
-                    add(StreamFeature(R.string.page_audio_sample_format, stream.sampleFormat))
-                }
-
-                add(StreamFeature(R.string.page_audio_sample_rate, SampleRateHelper.toString(stream.sampleRate, resources)))
 
                 val language = LanguageHelper.getDisplayName(stream.language)
                 if (language != null) {

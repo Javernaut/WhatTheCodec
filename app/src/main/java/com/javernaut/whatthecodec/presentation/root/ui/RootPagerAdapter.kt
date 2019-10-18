@@ -7,6 +7,7 @@ import androidx.viewpager.widget.PagerAdapter
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.presentation.audio.ui.AudioPageFragment
 import com.javernaut.whatthecodec.presentation.root.viewmodel.model.AvailableTab
+import com.javernaut.whatthecodec.presentation.subtitle.ui.SubtitlePageFragment
 import com.javernaut.whatthecodec.presentation.video.ui.VideoPageFragment
 
 class RootPagerAdapter(fm: FragmentManager, private val resources: Resources) : FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
@@ -20,7 +21,7 @@ class RootPagerAdapter(fm: FragmentManager, private val resources: Resources) : 
     override fun getItem(position: Int) = when (availableTabs[position]) {
         AvailableTab.VIDEO -> VideoPageFragment()
         AvailableTab.AUDIO -> AudioPageFragment()
-        AvailableTab.SUBTITLES -> TODO()
+        AvailableTab.SUBTITLES -> SubtitlePageFragment()
     }
 
     override fun getPageTitle(position: Int) = resources.getString(

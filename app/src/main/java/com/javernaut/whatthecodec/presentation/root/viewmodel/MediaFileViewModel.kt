@@ -11,6 +11,7 @@ import androidx.palette.graphics.Palette
 import com.hadilq.liveevent.LiveEvent
 import com.javernaut.whatthecodec.domain.AudioStream
 import com.javernaut.whatthecodec.domain.MediaFile
+import com.javernaut.whatthecodec.domain.SubtitleStream
 import com.javernaut.whatthecodec.presentation.root.viewmodel.model.AvailableTab
 import com.javernaut.whatthecodec.presentation.root.viewmodel.model.BasicVideoInfo
 import com.javernaut.whatthecodec.presentation.root.viewmodel.model.FramesToShow
@@ -33,6 +34,7 @@ class MediaFileViewModel(private val frameFullWidth: Int,
     private val _errorMessageLiveEvent = LiveEvent<Boolean>()
     private val _availableTabsLiveData = MutableLiveData<List<AvailableTab>>()
     private val _audioStreamsLiveData = MutableLiveData<List<AudioStream>>()
+    private val _subtitleStreamsLiveData = MutableLiveData<List<SubtitleStream>>()
 
     init {
         pendingMediaFileUri = savedStateHandle[KEY_VIDEO_FILE_URI]
@@ -65,6 +67,9 @@ class MediaFileViewModel(private val frameFullWidth: Int,
     val audioStreamsLiveData: LiveData<List<AudioStream>>
         get() = _audioStreamsLiveData
 
+    val subtitleStreamsLiveData: LiveData<List<SubtitleStream>>
+        get() = _subtitleStreamsLiveData
+
     override fun onCleared() {
         mediaFile?.release()
     }
@@ -96,6 +101,7 @@ class MediaFileViewModel(private val frameFullWidth: Int,
             _framesToShowNumber.value = FramesToShow.FOUR
         }
         _audioStreamsLiveData.value = mediaFile.audioStreams
+        _subtitleStreamsLiveData.value = mediaFile.subtitleStreams
         setupTabsAvailable(mediaFile)
         tryLoadVideoFrames(true)
     }
@@ -107,6 +113,9 @@ class MediaFileViewModel(private val frameFullWidth: Int,
         }
         if (mediaFile.audioStreams.isNotEmpty()) {
             tabs.add(AvailableTab.AUDIO)
+        }
+        if (mediaFile.subtitleStreams.isNotEmpty()) {
+            tabs.add(AvailableTab.SUBTITLES)
         }
         _availableTabsLiveData.value = tabs
     }
