@@ -3,6 +3,7 @@ package com.javernaut.whatthecodec.presentation.root.ui
 import android.content.res.Resources
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
+import androidx.viewpager.widget.PagerAdapter
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.presentation.audio.ui.AudioPageFragment
 import com.javernaut.whatthecodec.presentation.root.viewmodel.model.AvailableTab
@@ -30,6 +31,12 @@ class RootPagerAdapter(fm: FragmentManager, private val resources: Resources) : 
             }
     )
 
-    override fun getCount() = availableTabs.size
+    override fun getItemPosition(obj: Any): Int {
+        // We just recreate fragments completely
+        return PagerAdapter.POSITION_NONE
+    }
 
+    override fun getItemId(position: Int) = availableTabs[position].ordinal.toLong()
+
+    override fun getCount() = availableTabs.size
 }

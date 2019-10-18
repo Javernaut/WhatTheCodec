@@ -12,7 +12,8 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/colorPrimary"
-        android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar">
+        android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.MaterialComponents.Light">
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabs"

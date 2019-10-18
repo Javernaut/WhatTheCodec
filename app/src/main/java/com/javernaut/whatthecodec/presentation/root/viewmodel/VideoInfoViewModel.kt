@@ -24,7 +24,7 @@ class VideoInfoViewModel(private val frameFullWidth: Int,
 
     private var videoFileConfig: VideoFileConfig? = null
 
-    private val _basicVideoInfoLiveData = MutableLiveData<BasicVideoInfo>()
+    private val _basicVideoInfoLiveData = MutableLiveData<BasicVideoInfo?>()
     private val _isFullFeaturedLiveData = MutableLiveData<Boolean>()
     private val _framesToShowNumber = MutableLiveData<FramesToShow>(framesInitialValue())
     private val _modalProgressLiveData = MutableLiveData<Boolean>()
@@ -38,7 +38,7 @@ class VideoInfoViewModel(private val frameFullWidth: Int,
         pendingVideoFileUri = savedStateHandle[KEY_VIDEO_FILE_URI]
     }
 
-    val basicVideoInfoLiveData: LiveData<BasicVideoInfo>
+    val basicVideoInfoLiveData: LiveData<BasicVideoInfo?>
         get() = _basicVideoInfoLiveData
 
     val isFullFeaturedLiveData: LiveData<Boolean>
@@ -90,24 +90,21 @@ class VideoInfoViewModel(private val frameFullWidth: Int,
     }
 
     private fun applyVideoConfig(videoFileConfig: VideoFileConfig) {
-        _basicVideoInfoLiveData.value = BasicVideoInfo(
-                videoFileConfig.fileFormatName,
-                videoFileConfig.videoStream.codecName,
-                videoFileConfig.videoStream.frameWidth,
-                videoFileConfig.videoStream.frameHeight
-        )
-        _isFullFeaturedLiveData.value = videoFileConfig.videoStream.fullFeatured
-        if (!videoFileConfig.videoStream.fullFeatured) {
+        _basicVideoInfoLiveData.value = videoFileConfig.toBasicInfo()
+        _isFullFeaturedLiveData.value = videoFileConfig.videoStream?.fullFeatured ?: true
+        if (videoFileConfig.videoStream?.fullFeatured == false) {
             _framesToShowNumber.value = FramesToShow.FOUR
         }
         _audioStreamsLiveData.value = videoFileConfig.audioStreams
         setupTabsAvailable(videoFileConfig)
-        LoadingTask(true).execute()
+        tryLoadVideoFrames(true)
     }
 
     private fun setupTabsAvailable(videoFileConfig: VideoFileConfig) {
         val tabs = mutableListOf<AvailableTab>()
-        tabs.add(AvailableTab.VIDEO)
+        if (videoFileConfig.videoStream != null) {
+            tabs.add(AvailableTab.VIDEO)
+        }
         if (videoFileConfig.audioStreams.isNotEmpty()) {
             tabs.add(AvailableTab.AUDIO)
         }
@@ -117,9 +114,12 @@ class VideoInfoViewModel(private val frameFullWidth: Int,
     fun setFramesToShow(framesToShow: FramesToShow) {
         savedStateHandle.set(KEY_FRAMES_NUMBER, framesToShow.toString())
         _framesToShowNumber.value = framesToShow
-        // Temporary fix for crash due to RadioGroup state restoring logic
+        tryLoadVideoFrames(false)
+    }
+
+    private fun tryLoadVideoFrames(generateBackgroundColor: Boolean) {
         if (_basicVideoInfoLiveData.value != null) {
-            LoadingTask(false).execute()
+            LoadingTask(generateBackgroundColor).execute()
         }
     }
 
@@ -182,6 +182,18 @@ class VideoInfoViewModel(private val frameFullWidth: Int,
         } else {
             FramesToShow.ONE
         }
+    }
+
+    private fun VideoFileConfig.toBasicInfo(): BasicVideoInfo? {
+        if (videoStream == null) {
+            return null
+        }
+        return BasicVideoInfo(
+                fileFormatName,
+                videoStream.codecName,
+                videoStream.frameWidth,
+                videoStream.frameHeight
+        )
     }
 
     companion object {

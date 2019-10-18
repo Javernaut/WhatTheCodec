@@ -7,13 +7,13 @@ import android.os.ParcelFileDescriptor
  */
 class VideoFileConfig(
         val fileFormatName: String,
-        val videoStream: VideoStream,
+        val videoStream: VideoStream?,
         val audioStreams: List<AudioStream>,
         private val parcelFileDescriptor: ParcelFileDescriptor?
 ) {
 
     fun release() {
-        videoStream.release()
+        videoStream?.release()
         parcelFileDescriptor?.close()
     }
 

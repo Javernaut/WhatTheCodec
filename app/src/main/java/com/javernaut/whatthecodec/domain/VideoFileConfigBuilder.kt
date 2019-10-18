@@ -40,7 +40,7 @@ class VideoFileConfigBuilder {
      */
     fun create(): VideoFileConfig? {
         return if (!error) {
-            VideoFileConfig(fileFormatName!!, videoStream!!, audioStreams, parcelFileDescriptor)
+            VideoFileConfig(fileFormatName!!, videoStream, audioStreams, parcelFileDescriptor)
         } else {
             null
         }

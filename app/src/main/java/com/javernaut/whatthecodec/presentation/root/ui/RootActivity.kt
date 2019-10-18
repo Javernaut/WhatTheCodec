@@ -66,7 +66,7 @@ class RootActivity : AppCompatActivity(R.layout.root_main) {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == REQUEST_CODE_PICK_VIDEO) {
+        if (requestCode == REQUEST_CODE_PICK_VIDEO || requestCode == REQUEST_CODE_PICK_AUDIO) {
             if (resultCode == RESULT_OK && data?.data != null) {
                 openVideoConfig(data.data!!)
             }
@@ -78,12 +78,13 @@ class RootActivity : AppCompatActivity(R.layout.root_main) {
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         when (requestCode) {
             REQUEST_CODE_PERMISSION_ACTION_VIEW,
-            REQUEST_CODE_PERMISSION_PICK -> {
+            REQUEST_CODE_PERMISSION_PICK_VIDEO,
+            REQUEST_CODE_PERMISSION_PICK_AUDIO -> {
                 if (TinyActivityCompat.wasReadStoragePermissionGranted(permissions, grantResults)) {
-                    if (requestCode == REQUEST_CODE_PERMISSION_ACTION_VIEW) {
-                        actualDisplayFileFromActionView()
-                    } else {
-                        actualPickVideoFile()
+                    when (requestCode) {
+                        REQUEST_CODE_PERMISSION_ACTION_VIEW -> actualDisplayFileFromActionView()
+                        REQUEST_CODE_PERMISSION_PICK_VIDEO -> actualPickVideoFile()
+                        else -> actualPickAudioFile()
                     }
                 } else {
                     toast(R.string.message_permission_denied)
@@ -96,42 +97,66 @@ class RootActivity : AppCompatActivity(R.layout.root_main) {
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menu.add(R.string.menu_pick_video).setOnMenuItemClickListener {
+        val subMenu = menu.addSubMenu(R.string.menu_pick_file)
+        subMenu.item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
+        subMenu.add(R.string.menu_pick_video).setOnMenuItemClickListener {
             onPickVideoClicked()
             true
-        }.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
+        }
+        subMenu.add(R.string.menu_pick_audio).setOnMenuItemClickListener {
+            onPickAudioClicked()
+            true
+        }
         return true
     }
 
     private fun onPickVideoClicked() {
-        if (TinyActivityCompat.needRequestReadStoragePermission(this)) {
-            TinyActivityCompat.requestReadStoragePermission(this, REQUEST_CODE_PERMISSION_PICK)
-        } else {
+        checkPermissionAndTryOpenMedia(REQUEST_CODE_PERMISSION_PICK_VIDEO) {
             actualPickVideoFile()
+        }
+    }
+
+    private fun onPickAudioClicked() {
+        checkPermissionAndTryOpenMedia(REQUEST_CODE_PERMISSION_PICK_AUDIO) {
+            actualPickAudioFile()
         }
     }
 
     private fun onCheckForActionView() {
         if (Intent.ACTION_VIEW == intent.action && intent.data != null) {
-            if (TinyActivityCompat.needRequestReadStoragePermission(this@RootActivity)) {
-                TinyActivityCompat.requestReadStoragePermission(this@RootActivity, REQUEST_CODE_PERMISSION_ACTION_VIEW)
-            } else {
+            checkPermissionAndTryOpenMedia(REQUEST_CODE_PERMISSION_ACTION_VIEW) {
                 actualDisplayFileFromActionView()
             }
         }
     }
 
+    private inline fun checkPermissionAndTryOpenMedia(requestCode: Int, actualAction: () -> Unit) {
+        if (TinyActivityCompat.needRequestReadStoragePermission(this)) {
+            TinyActivityCompat.requestReadStoragePermission(this, requestCode)
+        } else {
+            actualAction()
+        }
+    }
+
     private fun actualPickVideoFile() {
-        startActivityForResult(Intent(Intent.ACTION_GET_CONTENT)
-                .setType("video/*")
-                .putExtra(Intent.EXTRA_LOCAL_ONLY, true)
-                .addCategory(Intent.CATEGORY_OPENABLE),
-                REQUEST_CODE_PICK_VIDEO)
+        startActivityForMediaFile("video/*", REQUEST_CODE_PICK_VIDEO)
+    }
+
+    private fun actualPickAudioFile() {
+        startActivityForMediaFile("audio/*", REQUEST_CODE_PICK_AUDIO)
     }
 
     private fun actualDisplayFileFromActionView() {
         intentActionViewConsumed = true
         openVideoConfig(intent.data!!)
+    }
+
+    private fun startActivityForMediaFile(type: String, requestCode: Int) {
+        startActivityForResult(Intent(Intent.ACTION_GET_CONTENT)
+                .setType(type)
+                .putExtra(Intent.EXTRA_LOCAL_ONLY, true)
+                .addCategory(Intent.CATEGORY_OPENABLE),
+                requestCode)
     }
 
     private fun openVideoConfig(uri: Uri) {
@@ -143,9 +168,11 @@ class RootActivity : AppCompatActivity(R.layout.root_main) {
     }
 
     companion object {
-        private const val REQUEST_CODE_PICK_VIDEO = 42
+        private const val REQUEST_CODE_PICK_VIDEO = 41
+        private const val REQUEST_CODE_PICK_AUDIO = 42
         private const val REQUEST_CODE_PERMISSION_ACTION_VIEW = 43
-        private const val REQUEST_CODE_PERMISSION_PICK = 44
+        private const val REQUEST_CODE_PERMISSION_PICK_VIDEO = 44
+        private const val REQUEST_CODE_PERMISSION_PICK_AUDIO = 45
 
         private const val EXTRA_INTENT_ACTION_VIEW_CONSUMED = "extra_intent_action_view_consumed"
     }

@@ -39,10 +39,12 @@ class VideoPageFragment : Fragment(R.layout.fragment_video_page) {
         super.onActivityCreated(savedInstanceState)
 
         videoInfoViewModel.basicVideoInfoLiveData.observe(this, Observer {
-            fileFormat.setupTwoLineView(R.string.info_file_format, it.fileFormat)
-            codecName.setupTwoLineView(R.string.page_video_codec_name, it.codecName)
-            width.setupTwoLineView(R.string.page_video_frame_width, it.frameWidth.toString())
-            height.setupTwoLineView(R.string.page_video_frame_height, it.frameHeight.toString())
+            if (it != null) {
+                fileFormat.setupTwoLineView(R.string.info_file_format, it.fileFormat)
+                codecName.setupTwoLineView(R.string.page_video_codec_name, it.codecName)
+                width.setupTwoLineView(R.string.page_video_frame_width, it.frameWidth.toString())
+                height.setupTwoLineView(R.string.page_video_frame_height, it.frameHeight.toString())
+            }
         })
 
         videoInfoViewModel.isFullFeaturedLiveData.observe(this, Observer { isFullFeatured ->
