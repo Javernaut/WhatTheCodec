@@ -9,7 +9,13 @@ object LanguageHelper {
             return null
         }
 
-        return (Locale.forLanguageTag(language)?.getDisplayLanguage(Locale.US)
+        val capitalizedLanguage = (Locale.forLanguageTag(language)?.getDisplayLanguage(Locale.US)
                 ?: language).capitalize()
+
+        return if (capitalizedLanguage.isNotEmpty()) {
+            capitalizedLanguage
+        } else {
+            null
+        }
     }
 }
