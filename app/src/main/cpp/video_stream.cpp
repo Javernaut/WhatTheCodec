@@ -5,14 +5,14 @@
 #include "video_stream.h"
 #include "utils.h"
 
-static void video_config_set_pointer(jobject jVideoConfig, jlong value) {
-    utils_get_env()->SetLongField(jVideoConfig,
+static void video_config_set_pointer(jobject jVideoStream, jlong value) {
+    utils_get_env()->SetLongField(jVideoStream,
                                   fields.VideoStream.nativePointer,
                                   value);
 }
 
-VideoStream *video_stream_get(jobject jVideoConfig) {
-    jlong nativePointer = utils_get_env()->GetLongField(jVideoConfig,
+VideoStream *video_stream_get(jobject jVideoStream) {
+    jlong nativePointer = utils_get_env()->GetLongField(jVideoStream,
                                                         fields.VideoStream.nativePointer);
     return reinterpret_cast<VideoStream *>(nativePointer);
 }
@@ -21,13 +21,13 @@ long video_stream_get_handle(VideoStream *videoStream) {
     return reinterpret_cast<long>(videoStream);
 }
 
-void video_stream_free(jobject jVideoConfig) {
-    auto *videoConfig = video_stream_get(jVideoConfig);
-    auto *avFormatContext = videoConfig->avFormatContext;
+void video_stream_free(jobject jVideoStream) {
+    auto *videoStream = video_stream_get(jVideoStream);
+    auto *avFormatContext = videoStream->avFormatContext;
 
     avformat_close_input(&avFormatContext);
 
-    free(videoConfig);
+    free(videoStream);
 
-    video_config_set_pointer(jVideoConfig, -1);
+    video_config_set_pointer(jVideoStream, -1);
 }

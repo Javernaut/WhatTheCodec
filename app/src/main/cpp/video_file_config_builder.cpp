@@ -37,22 +37,22 @@ static jstring get_language(AVDictionary *metadata) {
     return get_string(metadata, "language");
 }
 
-static void onError(jobject jVideoFileConfigBuilder) {
-    utils_call_instance_method(jVideoFileConfigBuilder,
-                               fields.VideoFileConfigBuilder.onErrorID);
+static void onError(jobject jMediaFileBuilder) {
+    utils_call_instance_method(jMediaFileBuilder,
+                               fields.MediaFileBuilder.onErrorID);
 }
 
-static void onVideoConfigFound(jobject jVideoFileConfigBuilder, AVFormatContext *avFormatContext) {
+static void onMediaFileFound(jobject jMediaFileBuilder, AVFormatContext *avFormatContext) {
     const char *fileFormatName = avFormatContext->iformat->long_name;
 
     jstring jFileFormatName = utils_get_env()->NewStringUTF(fileFormatName);
 
-    utils_call_instance_method(jVideoFileConfigBuilder,
-                               fields.VideoFileConfigBuilder.onVideoConfigFoundID,
+    utils_call_instance_method(jMediaFileBuilder,
+                               fields.MediaFileBuilder.onMediaFileFoundID,
                                jFileFormatName);
 }
 
-static void onVideoStreamFound(jobject jVideoFileConfigBuilder,
+static void onVideoStreamFound(jobject jMediaFileBuilder,
                                AVFormatContext *avFormatContext,
                                int index) {
     AVCodecParameters *parameters = avFormatContext->streams[index]->codecpar;
@@ -65,15 +65,15 @@ static void onVideoStreamFound(jobject jVideoFileConfigBuilder,
 
     jstring jCodecName = utils_get_env()->NewStringUTF(videoStream->avVideoCodec->long_name);
 
-    utils_call_instance_method(jVideoFileConfigBuilder,
-                               fields.VideoFileConfigBuilder.onVideoStreamFoundID,
+    utils_call_instance_method(jMediaFileBuilder,
+                               fields.MediaFileBuilder.onVideoStreamFoundID,
                                parameters->width,
                                parameters->height,
                                jCodecName,
                                video_stream_get_handle(videoStream));
 }
 
-static void onAudioStreamFound(jobject jVideoFileConfigBuilder,
+static void onAudioStreamFound(jobject jMediaFileBuilder,
                                AVFormatContext *avFormatContext,
                                int index) {
     AVStream *stream = avFormatContext->streams[index];
@@ -95,8 +95,8 @@ static void onAudioStreamFound(jobject jVideoFileConfigBuilder,
         av_bprint_finalize(&printBuffer, NULL);
     }
 
-    utils_call_instance_method(jVideoFileConfigBuilder,
-                               fields.VideoFileConfigBuilder.onAudioStreamFoundID,
+    utils_call_instance_method(jMediaFileBuilder,
+                               fields.MediaFileBuilder.onAudioStreamFoundID,
                                index,
                                jCodecName,
                                get_title(stream->metadata),
@@ -110,36 +110,36 @@ static void onAudioStreamFound(jobject jVideoFileConfigBuilder,
 }
 
 // uri can be either file: or pipe:
-void video_file_config_build(jobject jVideoFileConfigBuilder, const char *uri) {
+void video_file_config_build(jobject jMediaFileBuilder, const char *uri) {
     AVFormatContext *avFormatContext = nullptr;
 
     if (avformat_open_input(&avFormatContext, uri, nullptr, nullptr)) {
-        onError(jVideoFileConfigBuilder);
+        onError(jMediaFileBuilder);
         return;
     }
 
     if (avformat_find_stream_info(avFormatContext, nullptr) < 0) {
         avformat_free_context(avFormatContext);
-        onError(jVideoFileConfigBuilder);
+        onError(jMediaFileBuilder);
         return;
     };
 
-    onVideoConfigFound(jVideoFileConfigBuilder, avFormatContext);
+    onMediaFileFound(jMediaFileBuilder, avFormatContext);
 
     for (int pos = 0; pos < avFormatContext->nb_streams; pos++) {
         AVCodecParameters *parameters = avFormatContext->streams[pos]->codecpar;
         AVMediaType type = parameters->codec_type;
         if (type == AVMEDIA_TYPE_VIDEO) {
-            onVideoStreamFound(jVideoFileConfigBuilder, avFormatContext, pos);
+            onVideoStreamFound(jMediaFileBuilder, avFormatContext, pos);
         } else if (type == AVMEDIA_TYPE_AUDIO) {
-            onAudioStreamFound(jVideoFileConfigBuilder, avFormatContext, pos);
+            onAudioStreamFound(jMediaFileBuilder, avFormatContext, pos);
         }
     }
 }
 
-void video_file_config_build(jobject jVideoFileConfigBuilder, int fileDescriptor) {
+void video_file_config_build(jobject jMediaFileBuilder, int fileDescriptor) {
     char str[32];
     sprintf(str, "pipe:%d", fileDescriptor);
 
-    video_file_config_build(jVideoFileConfigBuilder, str);
+    video_file_config_build(jMediaFileBuilder, str);
 }

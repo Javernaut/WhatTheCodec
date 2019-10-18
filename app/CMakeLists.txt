@@ -25,7 +25,7 @@ endforeach ()
 
 add_library(
         # Name for a library to build
-        video-config
+        media-file
         # Type of a library
         SHARED
         # All cpp files to compile
@@ -39,7 +39,7 @@ add_library(
 
 target_link_libraries(
         # Library to link
-        video-config
+        media-file
         # List of libraries to link against:
         # Library for writing messages in LogCat
         log

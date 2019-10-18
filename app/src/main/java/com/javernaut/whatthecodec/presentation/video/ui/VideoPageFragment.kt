@@ -14,7 +14,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.presentation.root.viewmodel.model.FramesToShow
-import com.javernaut.whatthecodec.presentation.root.viewmodel.VideoInfoViewModel
+import com.javernaut.whatthecodec.presentation.root.viewmodel.MediaFileViewModel
 import com.javernaut.whatthecodec.util.forEachChild
 import com.javernaut.whatthecodec.util.setupTwoLineView
 import kotlinx.android.synthetic.main.fragment_video_page.*
@@ -23,7 +23,7 @@ import kotlinx.android.synthetic.main.inline_video_right_panel.*
 
 class VideoPageFragment : Fragment(R.layout.fragment_video_page) {
 
-    private val videoInfoViewModel by activityViewModels<VideoInfoViewModel>()
+    private val videoInfoViewModel by activityViewModels<MediaFileViewModel>()
 
     private var progressDialog: Dialog? = null
 

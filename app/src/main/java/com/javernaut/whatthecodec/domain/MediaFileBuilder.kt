@@ -4,10 +4,10 @@ import android.os.ParcelFileDescriptor
 import androidx.annotation.Keep
 
 /**
- * Class that aggregates a creation process of a [VideoFileConfig] object. Certain private methods are
+ * Class that aggregates a creation process of a [MediaFile] object. Certain private methods are
  * called from JNI layer.
  */
-class VideoFileConfigBuilder {
+class MediaFileBuilder {
 
     private var error = false
 
@@ -19,15 +19,15 @@ class VideoFileConfigBuilder {
     private var audioStreams = mutableListOf<AudioStream>()
 
     /**
-     * Tries reading all metadata for a [VideoFileConfig] object from a file path.
+     * Tries reading all metadata for a [MediaFile] object from a file path.
      */
     fun from(filePath: String) = apply {
         nativeCreateFromPath(filePath)
     }
 
     /**
-     * Tries reading all metadata for a [VideoFileConfig] object from a file descriptor. The file descriptor is saved and
-     * closed when [VideoFileConfig.release] method is called.
+     * Tries reading all metadata for a [MediaFile] object from a file descriptor. The file descriptor is saved and
+     * closed when [MediaFile.release] method is called.
      */
     fun from(descriptor: ParcelFileDescriptor) = apply {
         this.parcelFileDescriptor = descriptor
@@ -35,12 +35,12 @@ class VideoFileConfigBuilder {
     }
 
     /**
-     * Combines all data read from FFmpeg into a [VideoFileConfig] object. If there was error during
+     * Combines all data read from FFmpeg into a [MediaFile] object. If there was error during
      * metadata reading then null is returned.
      */
-    fun create(): VideoFileConfig? {
+    fun create(): MediaFile? {
         return if (!error) {
-            VideoFileConfig(fileFormatName!!, videoStream, audioStreams, parcelFileDescriptor)
+            MediaFile(fileFormatName!!, videoStream, audioStreams, parcelFileDescriptor)
         } else {
             null
         }
@@ -54,7 +54,7 @@ class VideoFileConfigBuilder {
 
     @Keep
     /* Used from JNI */
-    private fun onVideoConfigFound(fileFormatName: String) {
+    private fun onMediaFileFound(fileFormatName: String) {
         this.fileFormatName = fileFormatName
     }
 
@@ -99,6 +99,6 @@ class VideoFileConfigBuilder {
         System.loadLibrary("avcodec")
         System.loadLibrary("avformat")
         System.loadLibrary("swscale")
-        System.loadLibrary("video-config")
+        System.loadLibrary("media-file")
     }
 }

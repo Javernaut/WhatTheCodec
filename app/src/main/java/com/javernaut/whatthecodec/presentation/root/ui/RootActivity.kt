@@ -11,17 +11,17 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.javernaut.whatthecodec.R
-import com.javernaut.whatthecodec.presentation.root.viewmodel.VideoInfoViewModel
-import com.javernaut.whatthecodec.presentation.root.viewmodel.VideoInfoViewModelFactory
+import com.javernaut.whatthecodec.presentation.root.viewmodel.MediaFileViewModel
+import com.javernaut.whatthecodec.presentation.root.viewmodel.MediaFileViewModelFactory
 import com.javernaut.whatthecodec.util.TinyActivityCompat
-import kotlinx.android.synthetic.main.root_main.*
+import kotlinx.android.synthetic.main.activity_root.*
 
-class RootActivity : AppCompatActivity(R.layout.root_main) {
+class RootActivity : AppCompatActivity(R.layout.activity_root) {
 
-    private val videoInfoViewModel by lazy(LazyThreadSafetyMode.NONE) {
+    private val mediaFileViewModel by lazy(LazyThreadSafetyMode.NONE) {
         ViewModelProviders.of(
-                this, VideoInfoViewModelFactory(this)
-        ).get(VideoInfoViewModel::class.java)
+                this, MediaFileViewModelFactory(this)
+        ).get(MediaFileViewModel::class.java)
     }
 
     private var intentActionViewConsumed = false
@@ -36,14 +36,14 @@ class RootActivity : AppCompatActivity(R.layout.root_main) {
         pager.adapter = pagerAdapter
         tabs.setupWithViewPager(pager)
 
-        videoInfoViewModel.availableTabsLiveData.observe(this, Observer {
+        mediaFileViewModel.availableTabsLiveData.observe(this, Observer {
             tabs.visibility = View.VISIBLE
             supportActionBar?.title = null
 
             pagerAdapter.availableTabs = it
         })
 
-        videoInfoViewModel.errorMessageLiveEvent.observe(this, Observer {
+        mediaFileViewModel.errorMessageLiveEvent.observe(this, Observer {
             if (it) {
                 toast(R.string.message_couldnt_open_file)
             }
@@ -57,7 +57,7 @@ class RootActivity : AppCompatActivity(R.layout.root_main) {
 
     override fun onResume() {
         super.onResume()
-        videoInfoViewModel.applyPendingVideoConfigIfNeeded()
+        mediaFileViewModel.applyPendingMediaFileIfNeeded()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -68,7 +68,7 @@ class RootActivity : AppCompatActivity(R.layout.root_main) {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == REQUEST_CODE_PICK_VIDEO || requestCode == REQUEST_CODE_PICK_AUDIO) {
             if (resultCode == RESULT_OK && data?.data != null) {
-                openVideoConfig(data.data!!)
+                openMediaFile(data.data!!)
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data)
@@ -148,7 +148,7 @@ class RootActivity : AppCompatActivity(R.layout.root_main) {
 
     private fun actualDisplayFileFromActionView() {
         intentActionViewConsumed = true
-        openVideoConfig(intent.data!!)
+        openMediaFile(intent.data!!)
     }
 
     private fun startActivityForMediaFile(type: String, requestCode: Int) {
@@ -159,8 +159,8 @@ class RootActivity : AppCompatActivity(R.layout.root_main) {
                 requestCode)
     }
 
-    private fun openVideoConfig(uri: Uri) {
-        videoInfoViewModel.openVideoConfig(uri.toString())
+    private fun openMediaFile(uri: Uri) {
+        mediaFileViewModel.openMediaFile(uri.toString())
     }
 
     private fun toast(msg: Int) {

@@ -10,19 +10,19 @@ import androidx.lifecycle.ViewModel
 import androidx.palette.graphics.Palette
 import com.hadilq.liveevent.LiveEvent
 import com.javernaut.whatthecodec.domain.AudioStream
-import com.javernaut.whatthecodec.domain.VideoFileConfig
+import com.javernaut.whatthecodec.domain.MediaFile
 import com.javernaut.whatthecodec.presentation.root.viewmodel.model.AvailableTab
 import com.javernaut.whatthecodec.presentation.root.viewmodel.model.BasicVideoInfo
 import com.javernaut.whatthecodec.presentation.root.viewmodel.model.FramesToShow
 import kotlin.math.sqrt
 
-class VideoInfoViewModel(private val frameFullWidth: Int,
-                         private val configProvider: ConfigProvider,
+class MediaFileViewModel(private val frameFullWidth: Int,
+                         private val mediaFileProvider: MediaFileProvider,
                          private val savedStateHandle: SavedStateHandle) : ViewModel() {
 
-    private var pendingVideoFileUri: String? = null
+    private var pendingMediaFileUri: String? = null
 
-    private var videoFileConfig: VideoFileConfig? = null
+    private var mediaFile: MediaFile? = null
 
     private val _basicVideoInfoLiveData = MutableLiveData<BasicVideoInfo?>()
     private val _isFullFeaturedLiveData = MutableLiveData<Boolean>()
@@ -35,7 +35,7 @@ class VideoInfoViewModel(private val frameFullWidth: Int,
     private val _audioStreamsLiveData = MutableLiveData<List<AudioStream>>()
 
     init {
-        pendingVideoFileUri = savedStateHandle[KEY_VIDEO_FILE_URI]
+        pendingMediaFileUri = savedStateHandle[KEY_VIDEO_FILE_URI]
     }
 
     val basicVideoInfoLiveData: LiveData<BasicVideoInfo?>
@@ -66,46 +66,46 @@ class VideoInfoViewModel(private val frameFullWidth: Int,
         get() = _audioStreamsLiveData
 
     override fun onCleared() {
-        videoFileConfig?.release()
+        mediaFile?.release()
     }
 
-    fun applyPendingVideoConfigIfNeeded() {
-        if (pendingVideoFileUri != null) {
-            openVideoConfig(pendingVideoFileUri!!)
+    fun applyPendingMediaFileIfNeeded() {
+        if (pendingMediaFileUri != null) {
+            openMediaFile(pendingMediaFileUri!!)
         }
     }
 
-    fun openVideoConfig(uri: String) {
+    fun openMediaFile(uri: String) {
         clearPendingUri()
 
-        val newVideoConfig = configProvider.obtainConfig(uri)
-        if (newVideoConfig != null) {
+        val newMediaFile = mediaFileProvider.obtainMediaFile(uri)
+        if (newMediaFile != null) {
             savedStateHandle.set(KEY_VIDEO_FILE_URI, uri)
-            videoFileConfig?.release()
-            videoFileConfig = newVideoConfig
-            applyVideoConfig(newVideoConfig)
+            mediaFile?.release()
+            mediaFile = newMediaFile
+            applyMediaFile(newMediaFile)
         } else {
             _errorMessageLiveEvent.value = true
         }
     }
 
-    private fun applyVideoConfig(videoFileConfig: VideoFileConfig) {
-        _basicVideoInfoLiveData.value = videoFileConfig.toBasicInfo()
-        _isFullFeaturedLiveData.value = videoFileConfig.videoStream?.fullFeatured ?: true
-        if (videoFileConfig.videoStream?.fullFeatured == false) {
+    private fun applyMediaFile(mediaFile: MediaFile) {
+        _basicVideoInfoLiveData.value = mediaFile.toBasicInfo()
+        _isFullFeaturedLiveData.value = mediaFile.videoStream?.fullFeatured ?: true
+        if (mediaFile.videoStream?.fullFeatured == false) {
             _framesToShowNumber.value = FramesToShow.FOUR
         }
-        _audioStreamsLiveData.value = videoFileConfig.audioStreams
-        setupTabsAvailable(videoFileConfig)
+        _audioStreamsLiveData.value = mediaFile.audioStreams
+        setupTabsAvailable(mediaFile)
         tryLoadVideoFrames(true)
     }
 
-    private fun setupTabsAvailable(videoFileConfig: VideoFileConfig) {
+    private fun setupTabsAvailable(mediaFile: MediaFile) {
         val tabs = mutableListOf<AvailableTab>()
-        if (videoFileConfig.videoStream != null) {
+        if (mediaFile.videoStream != null) {
             tabs.add(AvailableTab.VIDEO)
         }
-        if (videoFileConfig.audioStreams.isNotEmpty()) {
+        if (mediaFile.audioStreams.isNotEmpty()) {
             tabs.add(AvailableTab.AUDIO)
         }
         _availableTabsLiveData.value = tabs
@@ -124,7 +124,7 @@ class VideoInfoViewModel(private val frameFullWidth: Int,
     }
 
     private fun clearPendingUri() {
-        pendingVideoFileUri = null
+        pendingMediaFileUri = null
     }
 
     // Well, I'm not proud of using AsyncTask, but this app doesn't need more sophisticated things at all
@@ -144,7 +144,7 @@ class VideoInfoViewModel(private val frameFullWidth: Int,
                 Bitmap.createBitmap(childFrameWidth, childFrameHeight, Bitmap.Config.ARGB_8888)
             }
 
-            videoFileConfig?.videoStream?.fillWithPreview(bitmaps)
+            mediaFile?.videoStream?.fillWithPreview(bitmaps)
 
             var backgroundColor: Int = Color.TRANSPARENT
             if (generateBackgroundColor) {
@@ -184,7 +184,7 @@ class VideoInfoViewModel(private val frameFullWidth: Int,
         }
     }
 
-    private fun VideoFileConfig.toBasicInfo(): BasicVideoInfo? {
+    private fun MediaFile.toBasicInfo(): BasicVideoInfo? {
         if (videoStream == null) {
             return null
         }

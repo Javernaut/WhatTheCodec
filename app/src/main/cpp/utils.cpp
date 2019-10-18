@@ -57,27 +57,27 @@ int utils_fields_init(JavaVM *vm) {
            fields.VideoStream.clazz,
            "nativePointer", "J");
 
-    GET_CLASS(fields.VideoFileConfigBuilder.clazz,
-              "com/javernaut/whatthecodec/domain/VideoFileConfigBuilder", true);
+    GET_CLASS(fields.MediaFileBuilder.clazz,
+              "com/javernaut/whatthecodec/domain/MediaFileBuilder", true);
 
     GET_ID(GetMethodID,
-           fields.VideoFileConfigBuilder.onErrorID,
-           fields.VideoFileConfigBuilder.clazz,
+           fields.MediaFileBuilder.onErrorID,
+           fields.MediaFileBuilder.clazz,
            "onError", "()V");
 
     GET_ID(GetMethodID,
-           fields.VideoFileConfigBuilder.onVideoConfigFoundID,
-           fields.VideoFileConfigBuilder.clazz,
-           "onVideoConfigFound", "(Ljava/lang/String;)V");
+           fields.MediaFileBuilder.onMediaFileFoundID,
+           fields.MediaFileBuilder.clazz,
+           "onMediaFileFound", "(Ljava/lang/String;)V");
 
     GET_ID(GetMethodID,
-           fields.VideoFileConfigBuilder.onVideoStreamFoundID,
-           fields.VideoFileConfigBuilder.clazz,
+           fields.MediaFileBuilder.onVideoStreamFoundID,
+           fields.MediaFileBuilder.clazz,
            "onVideoStreamFound", "(IILjava/lang/String;J)V");
 
     GET_ID(GetMethodID,
-           fields.VideoFileConfigBuilder.onAudioStreamFoundID,
-           fields.VideoFileConfigBuilder.clazz,
+           fields.MediaFileBuilder.onAudioStreamFoundID,
+           fields.MediaFileBuilder.clazz,
            "onAudioStreamFound", "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;JLjava/lang/String;IILjava/lang/String;I)V");
 
     return 0;
@@ -90,7 +90,7 @@ void utils_fields_free(JavaVM *vm) {
     }
 
     env->DeleteGlobalRef(fields.VideoStream.clazz);
-    env->DeleteGlobalRef(fields.VideoFileConfigBuilder.clazz);
+    env->DeleteGlobalRef(fields.MediaFileBuilder.clazz);
 
     javaVM = nullptr;
 }

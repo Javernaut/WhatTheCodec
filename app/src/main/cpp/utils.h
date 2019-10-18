@@ -8,7 +8,7 @@
 #include <jni.h>
 
 /**
- * Initializes the fields struct that keeps handles to VideoFileConfig's internal fields in order to read/write to them.
+ * Initializes the fields struct that keeps handles to MediaFileConfig's internal fields in order to read/write to them.
  */
 int utils_fields_init(JavaVM *vm);
 
@@ -42,11 +42,11 @@ struct fields {
     } VideoStream;
     struct {
         jclass clazz;
-        jmethodID onVideoConfigFoundID;
+        jmethodID onMediaFileFoundID;
         jmethodID onVideoStreamFoundID;
         jmethodID onAudioStreamFoundID;
         jmethodID onErrorID;
-    } VideoFileConfigBuilder;
+    } MediaFileBuilder;
 };
 
 extern struct fields fields;

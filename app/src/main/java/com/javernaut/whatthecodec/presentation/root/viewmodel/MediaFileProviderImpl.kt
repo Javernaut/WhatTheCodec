@@ -2,22 +2,22 @@ package com.javernaut.whatthecodec.presentation.root.viewmodel
 
 import android.content.Context
 import android.net.Uri
-import com.javernaut.whatthecodec.domain.VideoFileConfig
-import com.javernaut.whatthecodec.domain.VideoFileConfigBuilder
+import com.javernaut.whatthecodec.domain.MediaFile
+import com.javernaut.whatthecodec.domain.MediaFileBuilder
 import com.javernaut.whatthecodec.util.PathUtil
 import java.io.FileNotFoundException
 
-class ConfigProviderImpl(context: Context) : ConfigProvider {
+class MediaFileProviderImpl(context: Context) : MediaFileProvider {
     private val appContext = context.applicationContext
 
-    override fun obtainConfig(uri: String): VideoFileConfig? {
+    override fun obtainMediaFile(uri: String): MediaFile? {
         val androidUri = Uri.parse(uri)
-        var config: VideoFileConfig? = null
+        var config: MediaFile? = null
 
         // First, try get a file:// path
         val path = PathUtil.getPath(appContext, androidUri)
         if (path != null) {
-            config = VideoFileConfigBuilder().from(path).create()
+            config = MediaFileBuilder().from(path).create()
         }
 
         // Second, try get a FileDescriptor.
@@ -25,7 +25,7 @@ class ConfigProviderImpl(context: Context) : ConfigProvider {
             try {
                 val descriptor = appContext.contentResolver.openFileDescriptor(androidUri, "r")
                 if (descriptor != null) {
-                    config = VideoFileConfigBuilder().from(descriptor).create()
+                    config = MediaFileBuilder().from(descriptor).create()
                 }
             } catch (e: FileNotFoundException) {
             }
