@@ -109,6 +109,25 @@ static void onAudioStreamFound(jobject jMediaFileBuilder,
                                stream->disposition);
 }
 
+static void onSubtitleStreamFound(jobject jMediaFileBuilder,
+                                  AVFormatContext *avFormatContext,
+                                  int index) {
+
+    AVStream *stream = avFormatContext->streams[index];
+    AVCodecParameters *parameters = stream->codecpar;
+
+    auto codecDescriptor = avcodec_descriptor_get(parameters->codec_id);
+    jstring jCodecName = utils_get_env()->NewStringUTF(codecDescriptor->long_name);
+
+    utils_call_instance_method(jMediaFileBuilder,
+                               fields.MediaFileBuilder.onSubtitleStreamFoundID,
+                               index,
+                               jCodecName,
+                               stream->disposition,
+                               get_title(stream->metadata),
+                               get_language(stream->metadata));
+}
+
 // uri can be either file: or pipe:
 void video_file_config_build(jobject jMediaFileBuilder, const char *uri) {
     AVFormatContext *avFormatContext = nullptr;
@@ -129,10 +148,16 @@ void video_file_config_build(jobject jMediaFileBuilder, const char *uri) {
     for (int pos = 0; pos < avFormatContext->nb_streams; pos++) {
         AVCodecParameters *parameters = avFormatContext->streams[pos]->codecpar;
         AVMediaType type = parameters->codec_type;
-        if (type == AVMEDIA_TYPE_VIDEO) {
-            onVideoStreamFound(jMediaFileBuilder, avFormatContext, pos);
-        } else if (type == AVMEDIA_TYPE_AUDIO) {
-            onAudioStreamFound(jMediaFileBuilder, avFormatContext, pos);
+        switch (type) {
+            case AVMEDIA_TYPE_VIDEO:
+                onVideoStreamFound(jMediaFileBuilder, avFormatContext, pos);
+                break;
+            case AVMEDIA_TYPE_AUDIO:
+                onAudioStreamFound(jMediaFileBuilder, avFormatContext, pos);
+                break;
+            case AVMEDIA_TYPE_SUBTITLE:
+                onSubtitleStreamFound(jMediaFileBuilder, avFormatContext, pos);
+                break;
         }
     }
 }

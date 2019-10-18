@@ -9,6 +9,7 @@ class MediaFile(
         val fileFormatName: String,
         val videoStream: VideoStream?,
         val audioStreams: List<AudioStream>,
+        val subtitleStreams: List<SubtitleStream>,
         private val parcelFileDescriptor: ParcelFileDescriptor?
 ) {
 

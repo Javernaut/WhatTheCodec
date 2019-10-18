@@ -45,6 +45,7 @@ struct fields {
         jmethodID onMediaFileFoundID;
         jmethodID onVideoStreamFoundID;
         jmethodID onAudioStreamFoundID;
+        jmethodID onSubtitleStreamFoundID;
         jmethodID onErrorID;
     } MediaFileBuilder;
 };

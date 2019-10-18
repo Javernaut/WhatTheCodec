@@ -17,6 +17,7 @@ class MediaFileBuilder {
 
     private var videoStream: VideoStream? = null
     private var audioStreams = mutableListOf<AudioStream>()
+    private var subtitleStream = mutableListOf<SubtitleStream>()
 
     /**
      * Tries reading all metadata for a [MediaFile] object from a file path.
@@ -40,7 +41,7 @@ class MediaFileBuilder {
      */
     fun create(): MediaFile? {
         return if (!error) {
-            MediaFile(fileFormatName!!, videoStream, audioStreams, parcelFileDescriptor)
+            MediaFile(fileFormatName!!, videoStream, audioStreams, subtitleStream, parcelFileDescriptor)
         } else {
             null
         }
@@ -85,6 +86,19 @@ class MediaFileBuilder {
             disposition: Int) {
         audioStreams.add(
                 AudioStream(index, codecName, title, language, bitRate, sampleFormat, sampleRate, channels, channelLayout, disposition)
+        )
+    }
+
+    @Keep
+    /* Used from JNI */
+    private fun onSubtitleStreamFound(
+            index: Int,
+            codecName: String,
+            disposition: Int,
+            title: String?,
+            language: String?) {
+        subtitleStream.add(
+                SubtitleStream(index, codecName, disposition, title, language)
         )
     }
 

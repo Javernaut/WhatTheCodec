@@ -80,6 +80,11 @@ int utils_fields_init(JavaVM *vm) {
            fields.MediaFileBuilder.clazz,
            "onAudioStreamFound", "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;JLjava/lang/String;IILjava/lang/String;I)V");
 
+    GET_ID(GetMethodID,
+           fields.MediaFileBuilder.onSubtitleStreamFoundID,
+           fields.MediaFileBuilder.clazz,
+           "onSubtitleStreamFound", "(ILjava/lang/String;ILjava/lang/String;Ljava/lang/String;)V");
+
     return 0;
 }
 
