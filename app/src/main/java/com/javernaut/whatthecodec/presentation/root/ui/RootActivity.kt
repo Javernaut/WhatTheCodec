@@ -97,17 +97,21 @@ class RootActivity : AppCompatActivity(R.layout.activity_root) {
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        val subMenu = menu.addSubMenu(R.string.menu_pick_file)
-        subMenu.item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
-        subMenu.add(R.string.menu_pick_video).setOnMenuItemClickListener {
+        addMenuItem(menu, R.string.menu_pick_video, R.drawable.ic_menu_video) {
             onPickVideoClicked()
-            true
         }
-        subMenu.add(R.string.menu_pick_audio).setOnMenuItemClickListener {
+        addMenuItem(menu, R.string.menu_pick_audio, R.drawable.ic_menu_audio) {
             onPickAudioClicked()
-            true
         }
         return true
+    }
+
+    private inline fun addMenuItem(menu: Menu, title: Int, icon: Int, crossinline actualAction: () -> Unit) {
+        menu.add(title).setIcon(icon)
+                .setOnMenuItemClickListener {
+                    actualAction()
+                    true
+                }.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
     }
 
     private fun onPickVideoClicked() {
