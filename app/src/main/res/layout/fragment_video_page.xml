@@ -2,32 +2,28 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFF"
     android:fillViewport="true">
 
-    <androidx.cardview.widget.CardView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <LinearLayout
+        <FrameLayout
+            android:id="@+id/frameBackground"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_marginBottom="8dp">
 
-            <FrameLayout
-                android:id="@+id/frameBackground"
+            <com.javernaut.whatthecodec.presentation.video.ui.view.FrameDisplayingView
+                android:id="@+id/frameDisplayingView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp">
+                android:layout_height="wrap_content" />
+        </FrameLayout>
 
-                <com.javernaut.whatthecodec.presentation.video.ui.view.FrameDisplayingView
-                    android:id="@+id/frameDisplayingView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-            </FrameLayout>
+        <include layout="@layout/inline_video_left_panel" />
 
-            <include layout="@layout/inline_video_left_panel" />
-
-            <include layout="@layout/inline_video_right_panel" />
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
+        <include layout="@layout/inline_video_right_panel" />
+    </LinearLayout>
 </ScrollView>
