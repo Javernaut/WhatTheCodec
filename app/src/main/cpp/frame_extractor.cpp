@@ -47,10 +47,16 @@ bool frame_extractor_fill_with_preview(JNIEnv *env, jobject jVideoStream, jobjec
                     AV_PIX_FMT_RGBA,
                     SWS_BICUBIC, nullptr, nullptr, nullptr);
 
-    int64_t videoDuration = videoStream->
+    AVStream *avVideoStream = videoStream->
             avFormatContext->
-            streams[videoStream->videoStreamIndex]->
-            duration;
+            streams[videoStream->videoStreamIndex];
+
+    int64_t videoDuration = avVideoStream->duration;
+
+    // In some cases the duration is of a video stream is set to Long.MIN_VALUE and we need compute it in another way
+    if (videoDuration == LONG_LONG_MIN) {
+        videoDuration = videoStream->avFormatContext->duration / avVideoStream->time_base.den;
+    }
 
     // We extract frames right from the middle of a region, so the offset equals to a half of a region
     int64_t offset = videoDuration / arraySize / 2;
