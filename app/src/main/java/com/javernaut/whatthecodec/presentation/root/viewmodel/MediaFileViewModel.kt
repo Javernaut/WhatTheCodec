@@ -40,33 +40,63 @@ class MediaFileViewModel(private val frameFullWidth: Int,
         pendingMediaFileUri = savedStateHandle[KEY_VIDEO_FILE_URI]
     }
 
+    /**
+     * Basic info about video stream. See [BasicVideoInfo] for details.
+     */
     val basicVideoInfoLiveData: LiveData<BasicVideoInfo?>
         get() = _basicVideoInfoLiveData
 
+    /**
+     * True if the file: protocol was used for a media file. False if pipe: protocol was used.
+     */
     val isFullFeaturedLiveData: LiveData<Boolean>
         get() = _isFullFeaturedLiveData
 
+    /**
+     * How many frames need to be shown in UI.
+     */
     val framesToShowNumber: LiveData<FramesToShow>
         get() = _framesToShowNumber
 
+    /**
+     * Notifies about error during opening a file.
+     */
     val errorMessageLiveEvent: LiveData<Boolean>
         get() = _errorMessageLiveEvent
 
+    /**
+     * Locks the UI while frames are being read from a media file.
+     */
     val modalProgressLiveData: LiveData<Boolean>
         get() = _modalProgressLiveData
 
+    /**
+     * Exposes actual Bitmap objects that need to be shown as frames.
+     */
     val framesLiveData: LiveData<Array<Bitmap>>
         get() = _framesLiveData
 
+    /**
+     * The color for being a background for frames that are shown.
+     */
     val framesBackgroundLiveData: LiveData<Int>
         get() = _framesBackgroundLiveData
 
+    /**
+     * Tabs that should be visible in UI.
+     */
     val availableTabsLiveData: LiveData<List<AvailableTab>>
         get() = _availableTabsLiveData
 
+    /**
+     * List of [AudioStream] object for displaying in UI.
+     */
     val audioStreamsLiveData: LiveData<List<AudioStream>>
         get() = _audioStreamsLiveData
 
+    /**
+     * List of [SubtitleStream] object for displaying in UI.
+     */
     val subtitleStreamsLiveData: LiveData<List<SubtitleStream>>
         get() = _subtitleStreamsLiveData
 
@@ -137,6 +167,7 @@ class MediaFileViewModel(private val frameFullWidth: Int,
     }
 
     // Well, I'm not proud of using AsyncTask, but this app doesn't need more sophisticated things at all
+    // TODO replace the AsyncTask with something else
     private inner class LoadingTask(private val generateBackgroundColor: Boolean) : AsyncTask<Unit, Unit, VideoProcessingResult>() {
         override fun onPreExecute() {
             _modalProgressLiveData.value = true
@@ -215,4 +246,3 @@ class MediaFileViewModel(private val frameFullWidth: Int,
             val backgroundColor: Int
     )
 }
-
