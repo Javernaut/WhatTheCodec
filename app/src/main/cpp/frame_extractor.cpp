@@ -54,7 +54,7 @@ bool frame_extractor_fill_with_preview(JNIEnv *env, jobject jVideoStream, jobjec
     int64_t videoDuration = avVideoStream->duration;
 
     // In some cases the duration is of a video stream is set to Long.MIN_VALUE and we need compute it in another way
-    if (videoDuration == LONG_LONG_MIN) {
+    if (videoDuration == LONG_LONG_MIN && avVideoStream->time_base.den != 0) {
         videoDuration = videoStream->avFormatContext->duration / avVideoStream->time_base.den;
     }
 
