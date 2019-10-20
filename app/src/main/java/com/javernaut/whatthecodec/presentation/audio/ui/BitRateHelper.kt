@@ -3,6 +3,7 @@ package com.javernaut.whatthecodec.presentation.audio.ui
 import android.content.res.Resources
 import com.javernaut.whatthecodec.R
 import java.text.DecimalFormat
+import kotlin.math.roundToInt
 
 object BitRateHelper {
     fun toString(bitRate: Long, resources: Resources): String {
@@ -26,7 +27,7 @@ object BitRateHelper {
 
     private fun format(number: Float, postfixResId: Int, resources: Resources): String {
         val formattedNumber = if (number >= 100) {
-            number.toInt().toString()
+            number.roundToInt().toString()
         } else {
             DecimalFormat("0.#").format(number)
         }
