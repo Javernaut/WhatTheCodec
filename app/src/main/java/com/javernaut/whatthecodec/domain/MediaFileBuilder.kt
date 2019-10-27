@@ -7,7 +7,7 @@ import androidx.annotation.Keep
  * Class that aggregates a creation process of a [MediaFile] object. Certain private methods are
  * called from JNI layer.
  */
-class MediaFileBuilder {
+class MediaFileBuilder(private val mediaType: MediaType) {
 
     private var error = false
 
@@ -23,7 +23,7 @@ class MediaFileBuilder {
      * Tries reading all metadata for a [MediaFile] object from a file path.
      */
     fun from(filePath: String) = apply {
-        nativeCreateFromPath(filePath)
+        nativeCreateFromPath(filePath, mediaType.mediaStreamsMask)
     }
 
     /**
@@ -32,7 +32,7 @@ class MediaFileBuilder {
      */
     fun from(descriptor: ParcelFileDescriptor) = apply {
         this.parcelFileDescriptor = descriptor
-        nativeCreateFromFD(descriptor.fd)
+        nativeCreateFromFD(descriptor.fd, mediaType.mediaStreamsMask)
     }
 
     /**
@@ -102,9 +102,9 @@ class MediaFileBuilder {
         )
     }
 
-    private external fun nativeCreateFromFD(fileDescriptor: Int)
+    private external fun nativeCreateFromFD(fileDescriptor: Int, mediaStreamsMask: Int)
 
-    private external fun nativeCreateFromPath(filePath: String)
+    private external fun nativeCreateFromPath(filePath: String, mediaStreamsMask: Int)
 
     init {
         // The order of importing is mandatory, because otherwise the app will crash on Android API 16 and 17.

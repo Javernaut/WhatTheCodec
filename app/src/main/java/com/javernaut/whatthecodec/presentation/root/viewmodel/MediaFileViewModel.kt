@@ -21,7 +21,7 @@ class MediaFileViewModel(private val frameFullWidth: Int,
                          private val mediaFileProvider: MediaFileProvider,
                          private val savedStateHandle: SavedStateHandle) : ViewModel() {
 
-    private var pendingMediaFileUri: String? = null
+    private var pendingMediaFileArgument: MediaFileArgument? = null
 
     private var mediaFile: MediaFile? = null
 
@@ -37,7 +37,7 @@ class MediaFileViewModel(private val frameFullWidth: Int,
     private val _subtitleStreamsLiveData = MutableLiveData<List<SubtitleStream>>()
 
     init {
-        pendingMediaFileUri = savedStateHandle[KEY_VIDEO_FILE_URI]
+        pendingMediaFileArgument = savedStateHandle[KEY_MEDIA_FILE_ARGUMENT]
     }
 
     /**
@@ -105,17 +105,17 @@ class MediaFileViewModel(private val frameFullWidth: Int,
     }
 
     fun applyPendingMediaFileIfNeeded() {
-        if (pendingMediaFileUri != null) {
-            openMediaFile(pendingMediaFileUri!!)
+        if (pendingMediaFileArgument != null) {
+            openMediaFile(pendingMediaFileArgument!!)
         }
     }
 
-    fun openMediaFile(uri: String) {
+    fun openMediaFile(argument: MediaFileArgument) {
         clearPendingUri()
 
-        val newMediaFile = mediaFileProvider.obtainMediaFile(uri)
+        val newMediaFile = mediaFileProvider.obtainMediaFile(argument)
         if (newMediaFile != null) {
-            savedStateHandle.set(KEY_VIDEO_FILE_URI, uri)
+            savedStateHandle.set(KEY_MEDIA_FILE_ARGUMENT, argument)
             mediaFile?.release()
             mediaFile = newMediaFile
             applyMediaFile(newMediaFile)
@@ -163,7 +163,7 @@ class MediaFileViewModel(private val frameFullWidth: Int,
     }
 
     private fun clearPendingUri() {
-        pendingMediaFileUri = null
+        pendingMediaFileArgument = null
     }
 
     // Well, I'm not proud of using AsyncTask, but this app doesn't need more sophisticated things at all
@@ -237,7 +237,7 @@ class MediaFileViewModel(private val frameFullWidth: Int,
     }
 
     companion object {
-        const val KEY_VIDEO_FILE_URI = "key_video_file_uri"
+        const val KEY_MEDIA_FILE_ARGUMENT = "key_video_file_uri"
         const val KEY_FRAMES_NUMBER = "key_frames_number"
     }
 

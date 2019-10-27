@@ -5,6 +5,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.google.common.truth.Truth.assertThat
 import com.javernaut.whatthecodec.domain.MediaFileBuilder
+import com.javernaut.whatthecodec.domain.MediaType
 import org.junit.Test
 import org.junit.runner.RunWith
 import java.io.File
@@ -35,7 +36,7 @@ class MediaFileTest {
         // Actual test
         val descriptor = targetContext.contentResolver.openFileDescriptor(Uri.parse("file://" + testFile.absolutePath), "r")
 
-        val mediaFile = MediaFileBuilder().from(descriptor!!).create()
+        val mediaFile = MediaFileBuilder(MediaType.VIDEO).from(descriptor!!).create()
         assertThat(mediaFile).isNotNull()
 
         if (mediaFile != null) {

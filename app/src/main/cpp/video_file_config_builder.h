@@ -13,8 +13,9 @@
  *
  * @param jMediaFileBuilder a MediaFileBuilder java object
  * @param fd a file descriptor to a local file
+ * @param mediaStreamsMask a bit set of media streams to extract from the file
  */
-void video_file_config_build(jobject jMediaFileBuilder, int fd);
+void video_file_config_build(jobject jMediaFileBuilder, int fd, int mediaStreamsMask);
 
 /**
  * Creates an AVFormatContext struct according to the parameter. Notifies a MediaFileBuilder
@@ -22,7 +23,8 @@ void video_file_config_build(jobject jMediaFileBuilder, int fd);
  *
  * @param jMediaFileBuilder a MediaFileBuilder java object
  * @param filePath a file path to a local file
+ * @param mediaStreamsMask a bit set of media streams to extract from the file
  */
-void video_file_config_build(jobject jMediaFileBuilder, const char *filePath);
+void video_file_config_build(jobject jMediaFileBuilder, const char *filePath, int mediaStreamsMask);
 
 #endif //WHATTHECODEC_VIDEO_FILE_CONFIG_BUILDER_H

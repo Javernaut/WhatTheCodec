@@ -8,9 +8,12 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.MimeTypeFilter
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.javernaut.whatthecodec.R
+import com.javernaut.whatthecodec.domain.MediaType
+import com.javernaut.whatthecodec.presentation.root.viewmodel.MediaFileArgument
 import com.javernaut.whatthecodec.presentation.root.viewmodel.MediaFileViewModel
 import com.javernaut.whatthecodec.presentation.root.viewmodel.MediaFileViewModelFactory
 import com.javernaut.whatthecodec.util.TinyActivityCompat
@@ -68,7 +71,11 @@ class RootActivity : AppCompatActivity(R.layout.activity_root) {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == REQUEST_CODE_PICK_VIDEO || requestCode == REQUEST_CODE_PICK_AUDIO) {
             if (resultCode == RESULT_OK && data?.data != null) {
-                openMediaFile(data.data!!)
+                openMediaFile(data.data!!, if (requestCode == REQUEST_CODE_PICK_VIDEO) {
+                    MediaType.VIDEO
+                } else {
+                    MediaType.AUDIO
+                })
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data)
@@ -143,16 +150,20 @@ class RootActivity : AppCompatActivity(R.layout.activity_root) {
     }
 
     private fun actualPickVideoFile() {
-        startActivityForMediaFile("video/*", REQUEST_CODE_PICK_VIDEO)
+        startActivityForMediaFile(MIME_TYPE_VIDEO, REQUEST_CODE_PICK_VIDEO)
     }
 
     private fun actualPickAudioFile() {
-        startActivityForMediaFile("audio/*", REQUEST_CODE_PICK_AUDIO)
+        startActivityForMediaFile(MIME_TYPE_AUDIO, REQUEST_CODE_PICK_AUDIO)
     }
 
     private fun actualDisplayFileFromActionView() {
         intentActionViewConsumed = true
-        openMediaFile(intent.data!!)
+        openMediaFile(intent.data!!, if (MimeTypeFilter.matches(intent.type, MIME_TYPE_AUDIO)) {
+            MediaType.AUDIO
+        } else {
+            MediaType.VIDEO
+        })
     }
 
     private fun startActivityForMediaFile(type: String, requestCode: Int) {
@@ -163,8 +174,8 @@ class RootActivity : AppCompatActivity(R.layout.activity_root) {
                 requestCode)
     }
 
-    private fun openMediaFile(uri: Uri) {
-        mediaFileViewModel.openMediaFile(uri.toString())
+    private fun openMediaFile(uri: Uri, mediaType: MediaType) {
+        mediaFileViewModel.openMediaFile(MediaFileArgument(uri.toString(), mediaType))
     }
 
     private fun toast(msg: Int) {
@@ -179,5 +190,8 @@ class RootActivity : AppCompatActivity(R.layout.activity_root) {
         private const val REQUEST_CODE_PERMISSION_PICK_AUDIO = 45
 
         private const val EXTRA_INTENT_ACTION_VIEW_CONSUMED = "extra_intent_action_view_consumed"
+
+        private const val MIME_TYPE_VIDEO = "video/*"
+        private const val MIME_TYPE_AUDIO = "audio/*"
     }
 }

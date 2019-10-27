@@ -128,8 +128,12 @@ static void onSubtitleStreamFound(jobject jMediaFileBuilder,
                                get_language(stream->metadata));
 }
 
+static int STREAM_VIDEO = 1;
+static int STREAM_AUDIO = 1 << 1;
+static int STREAM_SUBTITLE = 1 << 2;
+
 // uri can be either file: or pipe:
-void video_file_config_build(jobject jMediaFileBuilder, const char *uri) {
+void video_file_config_build(jobject jMediaFileBuilder, const char *uri, int mediaStreamsMask) {
     AVFormatContext *avFormatContext = nullptr;
 
     if (avformat_open_input(&avFormatContext, uri, nullptr, nullptr)) {
@@ -150,21 +154,27 @@ void video_file_config_build(jobject jMediaFileBuilder, const char *uri) {
         AVMediaType type = parameters->codec_type;
         switch (type) {
             case AVMEDIA_TYPE_VIDEO:
-                onVideoStreamFound(jMediaFileBuilder, avFormatContext, pos);
+                if (mediaStreamsMask & STREAM_VIDEO) {
+                    onVideoStreamFound(jMediaFileBuilder, avFormatContext, pos);
+                }
                 break;
             case AVMEDIA_TYPE_AUDIO:
-                onAudioStreamFound(jMediaFileBuilder, avFormatContext, pos);
+                if (mediaStreamsMask & STREAM_AUDIO) {
+                    onAudioStreamFound(jMediaFileBuilder, avFormatContext, pos);
+                }
                 break;
             case AVMEDIA_TYPE_SUBTITLE:
-                onSubtitleStreamFound(jMediaFileBuilder, avFormatContext, pos);
+                if (mediaStreamsMask & STREAM_SUBTITLE) {
+                    onSubtitleStreamFound(jMediaFileBuilder, avFormatContext, pos);
+                }
                 break;
         }
     }
 }
 
-void video_file_config_build(jobject jMediaFileBuilder, int fileDescriptor) {
+void video_file_config_build(jobject jMediaFileBuilder, int fileDescriptor, int mediaStreamsMask) {
     char str[32];
     sprintf(str, "pipe:%d", fileDescriptor);
 
-    video_file_config_build(jMediaFileBuilder, str);
+    video_file_config_build(jMediaFileBuilder, str, mediaStreamsMask);
 }

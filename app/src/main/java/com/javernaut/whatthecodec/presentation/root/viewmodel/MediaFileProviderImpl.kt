@@ -4,20 +4,21 @@ import android.content.Context
 import android.net.Uri
 import com.javernaut.whatthecodec.domain.MediaFile
 import com.javernaut.whatthecodec.domain.MediaFileBuilder
+import com.javernaut.whatthecodec.domain.MediaType
 import com.javernaut.whatthecodec.util.PathUtil
 import java.io.FileNotFoundException
 
 class MediaFileProviderImpl(context: Context) : MediaFileProvider {
     private val appContext = context.applicationContext
 
-    override fun obtainMediaFile(uri: String): MediaFile? {
-        val androidUri = Uri.parse(uri)
+    override fun obtainMediaFile(argument: MediaFileArgument): MediaFile? {
+        val androidUri = Uri.parse(argument.uri)
         var config: MediaFile? = null
 
         // First, try get a file:// path
         val path = PathUtil.getPath(appContext, androidUri)
         if (path != null) {
-            config = MediaFileBuilder().from(path).create()
+            config = MediaFileBuilder(argument.type).from(path).create()
         }
 
         // Second, try get a FileDescriptor.
@@ -25,7 +26,7 @@ class MediaFileProviderImpl(context: Context) : MediaFileProvider {
             try {
                 val descriptor = appContext.contentResolver.openFileDescriptor(androidUri, "r")
                 if (descriptor != null) {
-                    config = MediaFileBuilder().from(descriptor).create()
+                    config = MediaFileBuilder(argument.type).from(descriptor).create()
                 }
             } catch (e: FileNotFoundException) {
             }
