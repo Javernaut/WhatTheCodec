@@ -17,7 +17,10 @@ import com.javernaut.whatthecodec.presentation.root.viewmodel.MediaFileArgument
 import com.javernaut.whatthecodec.presentation.root.viewmodel.MediaFileViewModel
 import com.javernaut.whatthecodec.presentation.root.viewmodel.MediaFileViewModelFactory
 import com.javernaut.whatthecodec.util.TinyActivityCompat
+import com.javernaut.whatthecodec.util.isVisible
+import com.javernaut.whatthecodec.util.setVisible
 import kotlinx.android.synthetic.main.activity_root.*
+import kotlinx.android.synthetic.main.inline_empty_root.*
 
 class RootActivity : AppCompatActivity(R.layout.activity_root) {
 
@@ -39,11 +42,19 @@ class RootActivity : AppCompatActivity(R.layout.activity_root) {
         pager.adapter = pagerAdapter
         tabs.setupWithViewPager(pager)
 
+        pickVideo.setOnClickListener { onPickVideoClicked() }
+        pickAudio.setOnClickListener { onPickAudioClicked() }
+
         mediaFileViewModel.availableTabsLiveData.observe(this, Observer {
             tabs.visibility = View.VISIBLE
             supportActionBar?.title = null
 
             pagerAdapter.availableTabs = it
+
+            emptyRootPanel.setVisible(false)
+            pager.setVisible(true)
+
+            invalidateOptionsMenu()
         })
 
         mediaFileViewModel.errorMessageLiveEvent.observe(this, Observer {
@@ -104,11 +115,13 @@ class RootActivity : AppCompatActivity(R.layout.activity_root) {
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        addMenuItem(menu, R.string.menu_pick_video, R.drawable.ic_menu_video) {
-            onPickVideoClicked()
-        }
-        addMenuItem(menu, R.string.menu_pick_audio, R.drawable.ic_menu_audio) {
-            onPickAudioClicked()
+        if (!emptyRootPanel.isVisible()) {
+            addMenuItem(menu, R.string.menu_pick_video, R.drawable.ic_menu_video) {
+                onPickVideoClicked()
+            }
+            addMenuItem(menu, R.string.menu_pick_audio, R.drawable.ic_menu_audio) {
+                onPickAudioClicked()
+            }
         }
         return true
     }

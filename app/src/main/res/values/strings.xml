@@ -45,4 +45,7 @@
     <string name="stream_bitrate_mbps">Mbps</string>
     <string name="stream_bitrate_gbps">Gbps</string>
     <string name="page_audio_sample_rate_postfix">kHz</string>
+    <string name="empty_root_description">Open a video or audio file\nto see its details</string>
+    <string name="empty_root_choose">Choose:</string>
+    <string name="empty_root_or">or</string>
 </resources>
