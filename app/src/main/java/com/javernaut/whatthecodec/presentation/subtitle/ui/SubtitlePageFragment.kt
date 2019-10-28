@@ -20,7 +20,7 @@ class SubtitlePageFragment : BasePageFragment() {
 
     private fun getFeaturesList(stream: SubtitleStream): List<StreamFeature> =
             mutableListOf<StreamFeature>().apply {
-                add(StreamFeature(R.string.page_audio_codec_name, stream.codecName))
+                add(StreamFeature(R.string.page_subtitle_codec_name, stream.codecName))
 
                 val language = LanguageHelper.getDisplayName(stream.language)
                 if (language != null) {
