@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/streamTitle"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/common_list_item_height"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/common_horizontal_spacing"
+            android:paddingRight="@dimen/common_horizontal_spacing"
+            android:textAppearance="?attr/textAppearanceSubtitle1" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/streamFeatures"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:paddingBottom="8dp" />
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

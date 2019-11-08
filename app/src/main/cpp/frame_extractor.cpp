@@ -1,5 +1,5 @@
 //
-// Created by Alex Javernaut on 2019-07-12.
+// Created by Alexander Berezhnoi on 12/07/19.
 //
 
 #include "frame_extractor.h"
@@ -12,18 +12,17 @@ extern "C" {
 }
 
 #include <android/bitmap.h>
-#include "video_config.h"
-#include "log.h"
+#include "video_stream.h"
 
-bool frame_extractor_fill_with_preview(JNIEnv *env, jobject jVideoConfig, jobjectArray jBitmaps) {
+bool frame_extractor_fill_with_preview(JNIEnv *env, jobject jVideoStream, jobjectArray jBitmaps) {
     int arraySize = env->GetArrayLength(jBitmaps);
 
     AndroidBitmapInfo bitmapMetricInfo;
     AndroidBitmap_getInfo(env, env->GetObjectArrayElement(jBitmaps, 0), &bitmapMetricInfo);
 
-    auto *videoConfig = video_config_get(jVideoConfig);
+    auto *videoStream = video_stream_get(jVideoStream);
 
-    auto pixelFormat = static_cast<AVPixelFormat>(videoConfig->parameters->format);
+    auto pixelFormat = static_cast<AVPixelFormat>(videoStream->parameters->format);
     if (pixelFormat == AV_PIX_FMT_NONE) {
         // With pipe protocol some files fail to provide pixel format info.
         // In this case we can't establish neither scaling nor even a frame extracting.
@@ -35,9 +34,9 @@ bool frame_extractor_fill_with_preview(JNIEnv *env, jobject jVideoConfig, jobjec
     SwsContext *scalingContext =
             sws_getContext(
                     // srcW
-                    videoConfig->parameters->width,
+                    videoStream->parameters->width,
                     // srcH
-                    videoConfig->parameters->height,
+                    videoStream->parameters->height,
                     // srcFormat
                     pixelFormat,
                     // dstW
@@ -48,10 +47,19 @@ bool frame_extractor_fill_with_preview(JNIEnv *env, jobject jVideoConfig, jobjec
                     AV_PIX_FMT_RGBA,
                     SWS_BICUBIC, nullptr, nullptr, nullptr);
 
-    int64_t videoDuration = videoConfig->
+    AVStream *avVideoStream = videoStream->
             avFormatContext->
-            streams[videoConfig->videoStreamIndex]->
-            duration;
+            streams[videoStream->videoStreamIndex];
+
+    int64_t videoDuration = avVideoStream->duration;
+
+    // In some cases the duration is of a video stream is set to Long.MIN_VALUE and we need compute it in another way
+    if (videoDuration == LONG_LONG_MIN && avVideoStream->time_base.den != 0) {
+        videoDuration = videoStream->avFormatContext->duration / avVideoStream->time_base.den;
+    }
+
+    // We extract frames right from the middle of a region, so the offset equals to a half of a region
+    int64_t offset = videoDuration / arraySize / 2;
 
     for (int pos = 0; pos < arraySize; pos++) {
         jobject jBitmap = env->GetObjectArrayElement(jBitmaps, pos);
@@ -59,28 +67,24 @@ bool frame_extractor_fill_with_preview(JNIEnv *env, jobject jVideoConfig, jobjec
         AVPacket *packet = av_packet_alloc();
         AVFrame *frame = av_frame_alloc();
 
-        int64_t seekPosition = videoDuration / arraySize * pos;
-        // We call the av_seek_frame() for 0 position only if the media was opened for file path.
-        // In case of file descriptor we omit this, as it can lead to reading error.
-        if (videoConfig->fullFeatured || seekPosition > 0) {
-            av_seek_frame(videoConfig->avFormatContext,
-                          videoConfig->videoStreamIndex,
-                          seekPosition,
-                          0);
-        }
+        int64_t seekPosition = videoDuration / arraySize * pos + offset;
+        av_seek_frame(videoStream->avFormatContext,
+                      videoStream->videoStreamIndex,
+                      seekPosition,
+                      0);
 
-        AVCodecContext *videoCodecContext = avcodec_alloc_context3(videoConfig->avVideoCodec);
-        avcodec_parameters_to_context(videoCodecContext, videoConfig->parameters);
-        avcodec_open2(videoCodecContext, videoConfig->avVideoCodec, nullptr);
+        AVCodecContext *videoCodecContext = avcodec_alloc_context3(videoStream->avVideoCodec);
+        avcodec_parameters_to_context(videoCodecContext, videoStream->parameters);
+        avcodec_open2(videoCodecContext, videoStream->avVideoCodec, nullptr);
 
         while (true) {
-            if (av_read_frame(videoConfig->avFormatContext, packet) < 0) {
+            if (av_read_frame(videoStream->avFormatContext, packet) < 0) {
                 // Couldn't read a packet, so we skip the whole frame
                 resultValue = false;
                 break;
             }
 
-            if (packet->stream_index == videoConfig->videoStreamIndex) {
+            if (packet->stream_index == videoStream->videoStreamIndex) {
                 avcodec_send_packet(videoCodecContext, packet);
                 int response = avcodec_receive_frame(videoCodecContext, frame);
                 if (response == AVERROR(EAGAIN)) {
@@ -109,7 +113,7 @@ bool frame_extractor_fill_with_preview(JNIEnv *env, jobject jVideoConfig, jobjec
                             frame->data,
                             frame->linesize,
                             0,
-                            videoConfig->parameters->height,
+                            videoStream->parameters->height,
                             frameForDrawing->data,
                             frameForDrawing->linesize);
 

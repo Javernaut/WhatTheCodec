@@ -5,11 +5,11 @@
     <RadioGroup
         android:id="@+id/framesNumberGroup"
         android:layout_width="match_parent"
-        android:layout_height="?android:attr/listPreferredItemHeight"
+        android:layout_height="@dimen/common_list_item_height"
         android:gravity="center"
         android:orientation="horizontal"
-        android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
-        android:paddingRight="?android:attr/listPreferredItemPaddingRight"
+        android:paddingLeft="@dimen/common_horizontal_spacing"
+        android:paddingRight="@dimen/common_horizontal_spacing"
         android:visibility="gone"
         tools:visibility="visible">
 
@@ -17,8 +17,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/info_frames_to_show"
-            android:textAppearance="?android:attr/textAppearanceListItem" />
+            android:text="@string/page_video_frames_to_show"
+            android:textAppearance="?attr/textAppearanceBody1" />
 
         <RadioButton
             android:id="@+id/framesNum1"
@@ -26,28 +26,28 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:checked="true"
-            android:text="@string/frames_1" />
+            android:text="@string/page_video_frames_to_show_1" />
 
         <RadioButton
             android:id="@+id/framesNum4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
-            android:text="@string/frames_4" />
+            android:text="@string/page_video_frames_to_show_4" />
 
         <RadioButton
             android:id="@+id/framesNum9"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
-            android:text="@string/frames_9" />
+            android:text="@string/page_video_frames_to_show_9" />
     </RadioGroup>
 
     <include
         android:id="@+id/fileFormat"
-        layout="@android:layout/simple_list_item_2" />
+        layout="@layout/inline_simple_list_item_2" />
 
     <include
-        android:id="@+id/videoCodec"
-        layout="@android:layout/simple_list_item_2" />
+        android:id="@+id/codecName"
+        layout="@layout/inline_simple_list_item_2" />
 </merge>

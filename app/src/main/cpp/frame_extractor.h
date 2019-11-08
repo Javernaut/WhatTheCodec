@@ -1,5 +1,5 @@
 //
-// Created by Alex Javernaut on 2019-07-12.
+// Created by Alexander Berezhnoi on 12/07/19.
 //
 
 #ifndef WHATTHECODEC_FRAME_EXTRACTOR_H
@@ -12,10 +12,11 @@
  * Decoded frames are scaled to the size of Bitmaps in jBitmaps.
  *
  * @param env a part of jBitmaps accessing
- * @param jVideoConfig a VideoFileConfig java object.
- * @param jBitmaps an array of java Bitmap objects to write frames.
- * @return true if all frames were successfully extracted, false otherwise.
+ * @param jVideoStream a VideoStream java object
+ * @param jBitmaps an array of java Bitmap objects to write frames
+ *
+ * @return true if all frames were successfully extracted, false otherwise
  */
-bool frame_extractor_fill_with_preview(JNIEnv *env, jobject jVideoConfig, jobjectArray jBitmaps);
+bool frame_extractor_fill_with_preview(JNIEnv *env, jobject jVideoStream, jobjectArray jBitmaps);
 
 #endif //WHATTHECODEC_FRAME_EXTRACTOR_H

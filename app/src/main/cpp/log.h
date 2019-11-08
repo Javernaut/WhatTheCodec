@@ -1,5 +1,5 @@
 //
-// Created by Alex Javernaut on 3/25/19.
+// Created by Alexander Berezhnoi on 25/03/19.
 //
 
 #ifndef WHATTHECODEC_LOG_H

@@ -1,5 +1,5 @@
 //
-// Created by Alex Javernaut on 3/25/19.
+// Created by Alexander Berezhnoi on 25/03/19.
 //
 
 #ifndef WHATTHECODEC_UTILS_H
@@ -8,7 +8,7 @@
 #include <jni.h>
 
 /**
- * Initializes the fields struct that keeps handles to VideoFileConfig's internal fields in order to read/write to them.
+ * Initializes the fields struct that keeps handles to MediaFileConfig's internal fields in order to read/write to them.
  */
 int utils_fields_init(JavaVM *vm);
 
@@ -22,6 +22,15 @@ void utils_fields_free(JavaVM *vm);
  */
 JNIEnv *utils_get_env();
 
+/**
+ * Helper function for calling an instance methods of Java objects with arbitrary arguments.
+ *
+ * @param instance Java object to call a method on
+ * @param methodID an ID of a method to call
+ * @param ... arguments to pass to the method
+ */
+void utils_call_instance_method(jobject instance, jmethodID methodID, ...);
+
 // The approach was taken from here:
 // https://code.videolan.org/videolan/vlc-android/blob/master/libvlc/jni/utils.h
 // https://code.videolan.org/videolan/vlc-android/blob/master/libvlc/jni/libvlcjni.c
@@ -30,7 +39,15 @@ struct fields {
     struct {
         jclass clazz;
         jfieldID nativePointer;
-    } VideoFileConfig;
+    } VideoStream;
+    struct {
+        jclass clazz;
+        jmethodID onMediaFileFoundID;
+        jmethodID onVideoStreamFoundID;
+        jmethodID onAudioStreamFoundID;
+        jmethodID onSubtitleStreamFoundID;
+        jmethodID onErrorID;
+    } MediaFileBuilder;
 };
 
 extern struct fields fields;

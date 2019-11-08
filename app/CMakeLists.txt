@@ -25,19 +25,21 @@ endforeach ()
 
 add_library(
         # Name for a library to build
-        video-config
+        media-file
         # Type of a library
         SHARED
         # All cpp files to compile
         src/main/cpp/main.cpp
-        src/main/cpp/video_config.cpp
-        src/main/cpp/video_config_jni.cpp
+        src/main/cpp/video_file_config_builder.cpp
+        src/main/cpp/video_file_config_builder_jni.cpp
+        src/main/cpp/video_stream.cpp
+        src/main/cpp/video_stream_jni.cpp
         src/main/cpp/frame_extractor.cpp
         src/main/cpp/utils.cpp)
 
 target_link_libraries(
         # Library to link
-        video-config
+        media-file
         # List of libraries to link against:
         # Library for writing messages in LogCat
         log

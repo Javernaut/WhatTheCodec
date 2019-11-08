@@ -4,7 +4,23 @@
 [![API](https://img.shields.io/badge/API-16%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=16)
 [![MIT license](http://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/Javernaut/WhatTheCodec/blob/master/LICENSE.txt)
 
-A sample app that displays the basic info about a video file: format name, video codec and frame size. Also the app shows 1, 4 or 9 equidistant frames from the video.  
+This app shows information about all media streams inside a video or audio files.
+
+For **video** streams the app shows: 
+* File format name
+* Video codec name 
+* Frame size
+* 1, 4 or 9 equidistant frames from the video stream
+
+For **audio** streams: 
+* Audio codec name
+* Bit rate
+* Number of channels
+* Channel layout
+* Sample rate and format
+
+For **subtitle** streams: title and language from stream’s metadata.
+  
 The main purpose is to show how to use the output of [ffmpeg-android-maker](https://github.com/Javernaut/ffmpeg-android-maker).
 
 Extensive description can be found in [this article](https://proandroiddev.com/a-story-about-ffmpeg-in-android-part-ii-integration-55fb217251f0).
@@ -27,11 +43,15 @@ The app is simply structured: it uses the MVVM approach with components from [An
   
 The rest is pretty standard Android-related burden.  
 
-And here is how it looks like:
+And here is what it looks like:
 
-| Files from Downloads folder | Handling ACTION_VIEW from Dropbox app | File from Google Drive app that isn't downloaded yet |
-| :---:  | :---: | :---: |
-| <img src="images/downloads.gif"> | <img src="images/dropbox.gif"> | <img src="images/drive.gif"> |
+| Video file with video, audio and subtitle streams | Audio file |
+| :---:  | :---: |
+| <img src="images/video.gif"> | <img src="images/audio.gif"> |
+
+| Handling ACTION_VIEW from Dropbox app | Picking file from Google Drive app |
+| :---:  | :---: |
+| <img src="images/dropbox.gif"> | <img src="images/drive.gif"> |
 
 ## Prerequisites
 

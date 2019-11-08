@@ -1,5 +1,5 @@
 //
-// Created by Alex Javernaut on 3/25/19.
+// Created by Alexander Berezhnoi on 25/03/19.
 //
 
 #include "utils.h"
@@ -49,13 +49,41 @@ int utils_fields_init(JavaVM *vm) {
 
     // Actual work
 
-    GET_CLASS(fields.VideoFileConfig.clazz,
-              "com/javernaut/whatthecodec/domain/VideoFileConfig", true);
+    GET_CLASS(fields.VideoStream.clazz,
+              "com/javernaut/whatthecodec/domain/VideoStream", true);
 
     GET_ID(GetFieldID,
-           fields.VideoFileConfig.nativePointer,
-           fields.VideoFileConfig.clazz,
+           fields.VideoStream.nativePointer,
+           fields.VideoStream.clazz,
            "nativePointer", "J");
+
+    GET_CLASS(fields.MediaFileBuilder.clazz,
+              "com/javernaut/whatthecodec/domain/MediaFileBuilder", true);
+
+    GET_ID(GetMethodID,
+           fields.MediaFileBuilder.onErrorID,
+           fields.MediaFileBuilder.clazz,
+           "onError", "()V");
+
+    GET_ID(GetMethodID,
+           fields.MediaFileBuilder.onMediaFileFoundID,
+           fields.MediaFileBuilder.clazz,
+           "onMediaFileFound", "(Ljava/lang/String;)V");
+
+    GET_ID(GetMethodID,
+           fields.MediaFileBuilder.onVideoStreamFoundID,
+           fields.MediaFileBuilder.clazz,
+           "onVideoStreamFound", "(IILjava/lang/String;J)V");
+
+    GET_ID(GetMethodID,
+           fields.MediaFileBuilder.onAudioStreamFoundID,
+           fields.MediaFileBuilder.clazz,
+           "onAudioStreamFound", "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;JLjava/lang/String;IILjava/lang/String;I)V");
+
+    GET_ID(GetMethodID,
+           fields.MediaFileBuilder.onSubtitleStreamFoundID,
+           fields.MediaFileBuilder.clazz,
+           "onSubtitleStreamFound", "(ILjava/lang/String;ILjava/lang/String;Ljava/lang/String;)V");
 
     return 0;
 }
@@ -66,7 +94,15 @@ void utils_fields_free(JavaVM *vm) {
         return;
     }
 
-    env->DeleteGlobalRef(fields.VideoFileConfig.clazz);
+    env->DeleteGlobalRef(fields.VideoStream.clazz);
+    env->DeleteGlobalRef(fields.MediaFileBuilder.clazz);
 
     javaVM = nullptr;
+}
+
+void utils_call_instance_method(jobject instance, jmethodID methodID, ...) {
+    va_list args;
+    va_start(args, methodID);
+    utils_get_env()->CallVoidMethodV(instance, methodID, args);
+    va_end(args);
 }

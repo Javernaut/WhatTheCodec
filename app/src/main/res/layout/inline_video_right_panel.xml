@@ -3,13 +3,13 @@
 
     <include
         android:id="@+id/width"
-        layout="@android:layout/simple_list_item_2" />
+        layout="@layout/inline_simple_list_item_2" />
 
     <include
         android:id="@+id/height"
-        layout="@android:layout/simple_list_item_2" />
+        layout="@layout/inline_simple_list_item_2" />
 
     <include
         android:id="@+id/protocol"
-        layout="@android:layout/simple_list_item_2" />
+        layout="@layout/inline_simple_list_item_2" />
 </merge>
