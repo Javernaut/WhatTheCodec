@@ -43,7 +43,7 @@ The app is simply structured: it uses the MVVM approach with components from [An
   
 The rest is pretty standard Android-related burden.  
 
-And here is what it looks like::
+And here is what it looks like:
 
 | Video file with video, audio and subtitle streams | Audio file |
 | :---:  | :---: |
