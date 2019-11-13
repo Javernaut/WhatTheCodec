@@ -43,6 +43,7 @@ class StreamViewHolder(override val containerView: View, listener: OnExpandStatu
 
         subListHeightAnimator.setExpanded(stream.isExpanded)
 
+        containerView.expandToggle.rotation = if (stream.isExpanded) 0f else 180f
         containerView.streamFeatures.alpha = if (stream.isExpanded) 1f else 0f
     }
 
@@ -50,6 +51,10 @@ class StreamViewHolder(override val containerView: View, listener: OnExpandStatu
         containerView.streamFeatures
                 .animate()
                 .alpha(if (isExpanded) 1f else 0f)
+
+        containerView.expandToggle
+                .animate()
+                .rotation(if (isExpanded) 0f else 180f)
 
         subListHeightAnimator.animateExpandedTo(isExpanded)
     }

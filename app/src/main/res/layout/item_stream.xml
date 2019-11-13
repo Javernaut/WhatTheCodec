@@ -19,6 +19,7 @@
                 android:layout_width="0dp"
                 android:layout_height="@dimen/common_list_item_height"
                 android:layout_weight="1"
+                android:ellipsize="end"
                 android:gravity="center_vertical"
                 android:paddingLeft="@dimen/common_horizontal_spacing"
                 android:paddingRight="@dimen/common_horizontal_spacing"
@@ -26,11 +27,13 @@
 
             <ImageButton
                 android:id="@+id/expandToggle"
-                android:layout_width="@dimen/common_list_item_height"
-                android:layout_height="@dimen/common_list_item_height"
+                android:layout_width="@dimen/common_clickable_item_height"
+                android:layout_height="@dimen/common_clickable_item_height"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="5dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:scaleType="center"
-                android:src="@mipmap/ic_launcher" />
+                android:src="@drawable/ic_item_fold" />
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
