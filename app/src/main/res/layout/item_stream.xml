@@ -9,14 +9,29 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/streamTitle"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/common_list_item_height"
-            android:gravity="center_vertical"
-            android:paddingLeft="@dimen/common_horizontal_spacing"
-            android:paddingRight="@dimen/common_horizontal_spacing"
-            android:textAppearance="?attr/textAppearanceSubtitle1" />
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/streamTitle"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/common_list_item_height"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:paddingLeft="@dimen/common_horizontal_spacing"
+                android:paddingRight="@dimen/common_horizontal_spacing"
+                android:textAppearance="?attr/textAppearanceSubtitle1" />
+
+            <ImageButton
+                android:id="@+id/expandToggle"
+                android:layout_width="@dimen/common_list_item_height"
+                android:layout_height="@dimen/common_list_item_height"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:scaleType="center"
+                android:src="@mipmap/ic_launcher" />
+        </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/streamFeatures"

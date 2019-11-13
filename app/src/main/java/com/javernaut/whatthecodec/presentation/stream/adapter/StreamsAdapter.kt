@@ -14,10 +14,25 @@ class StreamsAdapter : RecyclerView.Adapter<StreamViewHolder>() {
             notifyDataSetChanged()
         }
 
+    private val expandStatusChangeListener = object : StreamViewHolder.OnExpandStatusChangeListener {
+        override fun onExpandStatusChange(viewHolder: StreamViewHolder, isExpanded: Boolean) {
+            notifyItemChanged(viewHolder.adapterPosition, isExpanded)
+        }
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StreamViewHolder {
         val itemView = LayoutInflater.from(parent.context)
                 .inflate(R.layout.item_stream, parent, false)
-        return StreamViewHolder(itemView)
+        return StreamViewHolder(itemView, expandStatusChangeListener)
+    }
+
+    override fun onBindViewHolder(holder: StreamViewHolder, position: Int, payloads: MutableList<Any>) {
+        if (payloads.isEmpty()) {
+            onBindViewHolder(holder, position)
+        } else {
+            val isExpanded = payloads.first() as? Boolean == true
+            holder.animateList(isExpanded)
+        }
     }
 
     override fun onBindViewHolder(holder: StreamViewHolder, position: Int) {
