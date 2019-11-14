@@ -18,7 +18,7 @@ object DispositionHelper {
      * Class that maps a certain bit in a 'disposition' integer to a string res id.
      * Values for masks got from libavformat/avformat.h.
      */
-    private enum class DispositionFeature(val mask: Int, @StringRes val stringIdRes: Int) {
+    enum class DispositionFeature(val mask: Int, @StringRes val stringIdRes: Int) {
         DEFAULT(0x0001, R.string.stream_disposition_default),
         DUB(0x0002, R.string.stream_disposition_dub),
         ORIGINAL(0x0004, R.string.stream_disposition_original),
