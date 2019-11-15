@@ -132,10 +132,7 @@ static int STREAM_VIDEO = 1;
 static int STREAM_AUDIO = 1 << 1;
 static int STREAM_SUBTITLE = 1 << 2;
 
-// uri can be either file: or pipe:
-void video_file_config_build(jobject jMediaFileBuilder, const char *uri, int mediaStreamsMask) {
-    AVFormatContext *avFormatContext = nullptr;
-
+static void video_file_config_build(jobject jMediaFileBuilder, const char *uri, int mediaStreamsMask, AVFormatContext *avFormatContext) {
     if (avformat_open_input(&avFormatContext, uri, nullptr, nullptr)) {
         onError(jMediaFileBuilder);
         return;
@@ -172,9 +169,24 @@ void video_file_config_build(jobject jMediaFileBuilder, const char *uri, int med
     }
 }
 
-void video_file_config_build(jobject jMediaFileBuilder, int fileDescriptor, int mediaStreamsMask) {
-    char str[32];
-    sprintf(str, "pipe:%d", fileDescriptor);
+void video_file_config_build(jobject jMediaFileBuilder, const char *uri, int mediaStreamsMask) {
+    video_file_config_build(jMediaFileBuilder, uri, mediaStreamsMask, nullptr);
+}
 
-    video_file_config_build(jMediaFileBuilder, str, mediaStreamsMask);
+void video_file_config_build(jobject jMediaFileBuilder, int fileDescriptor, int mediaStreamsMask) {
+    char pipe[32];
+    sprintf(pipe, "pipe:%d", fileDescriptor);
+
+    video_file_config_build(jMediaFileBuilder, pipe, mediaStreamsMask, nullptr);
+}
+
+void video_file_config_build(jobject jMediaFileBuilder, int assetFileDescriptor, int64_t startOffset, const char *shortFormatName, int mediaStreamsMask) {
+    char str[32];
+    sprintf(str, "pipe:%d", assetFileDescriptor);
+
+    AVFormatContext *predefinedContext = avformat_alloc_context();
+    predefinedContext->skip_initial_bytes = startOffset;
+    predefinedContext->iformat = av_find_input_format(shortFormatName);
+
+    video_file_config_build(jMediaFileBuilder, str, mediaStreamsMask, predefinedContext);
 }

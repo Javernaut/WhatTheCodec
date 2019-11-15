@@ -9,9 +9,23 @@ extern "C" {
 JNIEXPORT void JNICALL
 Java_com_javernaut_whatthecodec_domain_MediaFileBuilder_nativeCreateFromFD(JNIEnv *,
                                                                            jobject instance,
-                                                                           jint jFileDescriptor,
+                                                                           jint fileDescriptor,
                                                                            jint mediaStreamsMask) {
-    video_file_config_build(instance, jFileDescriptor, mediaStreamsMask);
+    video_file_config_build(instance, fileDescriptor, mediaStreamsMask);
+}
+
+JNIEXPORT void JNICALL
+Java_com_javernaut_whatthecodec_domain_MediaFileBuilder_nativeCreateFromAssetFD(JNIEnv *env,
+                                                                                jobject instance,
+                                                                                jint assetFileDescriptor,
+                                                                                jlong startOffset,
+                                                                                jstring jShortFormatName,
+                                                                                jint mediaStreamsMask) {
+    const char *cShortFormatName = env->GetStringUTFChars(jShortFormatName, nullptr);
+
+    video_file_config_build(instance, assetFileDescriptor, startOffset, cShortFormatName, mediaStreamsMask);
+
+    env->ReleaseStringUTFChars(jShortFormatName, cShortFormatName);
 }
 
 JNIEXPORT void JNICALL
@@ -19,10 +33,10 @@ Java_com_javernaut_whatthecodec_domain_MediaFileBuilder_nativeCreateFromPath(JNI
                                                                              jobject instance,
                                                                              jstring jFilePath,
                                                                              jint mediaStreamsMask) {
-    const char *filePath = env->GetStringUTFChars(jFilePath, nullptr);
+    const char *cFilePath = env->GetStringUTFChars(jFilePath, nullptr);
 
-    video_file_config_build(instance, filePath, mediaStreamsMask);
+    video_file_config_build(instance, cFilePath, mediaStreamsMask);
 
-    env->ReleaseStringUTFChars(jFilePath, filePath);
+    env->ReleaseStringUTFChars(jFilePath, cFilePath);
 }
 }

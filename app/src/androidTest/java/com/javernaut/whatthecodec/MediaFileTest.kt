@@ -1,6 +1,5 @@
 package com.javernaut.whatthecodec
 
-import android.net.Uri
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.google.common.truth.Truth.assertThat
@@ -9,7 +8,6 @@ import com.javernaut.whatthecodec.domain.MediaType
 import com.javernaut.whatthecodec.presentation.stream.helper.DispositionHelper
 import org.junit.Test
 import org.junit.runner.RunWith
-import java.io.File
 
 @RunWith(AndroidJUnit4::class)
 class MediaFileTest {
@@ -20,25 +18,10 @@ class MediaFileTest {
     @Test
     fun testVideoFile() {
         val context = InstrumentationRegistry.getInstrumentation().context
-        val targetContext = InstrumentationRegistry.getInstrumentation().targetContext
 
-        // Writing a video file from assets to internal memory
-        val inputStream = context.assets.open(testVideoFileName)
+        val assetFileDescriptor = context.assets.openFd(testVideoFileName)
 
-        val testFile = File(targetContext.filesDir, testVideoFileName)
-        testFile.createNewFile()
-
-        val outputStream = testFile.outputStream()
-        inputStream.copyTo(outputStream)
-
-        outputStream.flush()
-        outputStream.close()
-        inputStream.close()
-
-        // Actual test
-        val descriptor = targetContext.contentResolver.openFileDescriptor(Uri.parse("file://" + testFile.absolutePath), "r")
-
-        val mediaFile = MediaFileBuilder(MediaType.VIDEO).from(descriptor!!).create()
+        val mediaFile = MediaFileBuilder(MediaType.VIDEO).from(assetFileDescriptor, "matroska").create()
 
         assertThat(mediaFile).isNotNull()
 
@@ -83,32 +66,17 @@ class MediaFileTest {
 
         // Clean up
         mediaFile.release()
-
-        testFile.delete()
+        assetFileDescriptor.close()
     }
 
     @Test
     fun testAudioFile() {
         val context = InstrumentationRegistry.getInstrumentation().context
-        val targetContext = InstrumentationRegistry.getInstrumentation().targetContext
-
-        // Writing a video file from assets to internal memory
-        val inputStream = context.assets.open(testAudioFileName)
-
-        val testFile = File(targetContext.filesDir, testAudioFileName)
-        testFile.createNewFile()
-
-        val outputStream = testFile.outputStream()
-        inputStream.copyTo(outputStream)
-
-        outputStream.flush()
-        outputStream.close()
-        inputStream.close()
 
         // Actual test
-        val descriptor = targetContext.contentResolver.openFileDescriptor(Uri.parse("file://" + testFile.absolutePath), "r")
+        val assetFileDescriptor = context.assets.openFd(testAudioFileName)
 
-        val mediaFile = MediaFileBuilder(MediaType.AUDIO).from(descriptor!!).create()
+        val mediaFile = MediaFileBuilder(MediaType.AUDIO).from(assetFileDescriptor, "aac").create()
 
         assertThat(mediaFile).isNotNull()
 
@@ -137,8 +105,7 @@ class MediaFileTest {
 
         // Clean up
         mediaFile.release()
-
-        testFile.delete()
+        assetFileDescriptor.close()
     }
 
 }
