@@ -17,8 +17,8 @@ VideoStream *video_stream_get(jobject jVideoStream) {
     return reinterpret_cast<VideoStream *>(nativePointer);
 }
 
-long video_stream_get_handle(VideoStream *videoStream) {
-    return reinterpret_cast<long>(videoStream);
+int64_t video_stream_get_handle(VideoStream *videoStream) {
+    return reinterpret_cast<int64_t>(videoStream);
 }
 
 void video_stream_free(jobject jVideoStream) {

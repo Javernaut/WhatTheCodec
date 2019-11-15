@@ -40,7 +40,7 @@ VideoStream *video_stream_get(jobject jVideoStream);
  * @param videoStream a pointer to convert
  * @return a converted pointer
  */
-long video_stream_get_handle(VideoStream *videoStream);
+int64_t video_stream_get_handle(VideoStream *videoStream);
 
 /**
  * Frees the VideoStream struct that is stored in jVideoStream.nativePointer. Sets this field to -1.
