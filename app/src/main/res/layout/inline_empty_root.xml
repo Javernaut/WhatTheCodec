@@ -32,6 +32,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/menu_pick_video"
             android:src="@drawable/ic_menu_video"
             android:tint="@color/colorPrimary" />
 
@@ -49,6 +50,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/menu_pick_audio"
             android:src="@drawable/ic_menu_audio"
             android:tint="@color/colorPrimary" />
 
