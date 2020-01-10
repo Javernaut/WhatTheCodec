@@ -23,13 +23,23 @@ void utils_fields_free(JavaVM *vm);
 JNIEnv *utils_get_env();
 
 /**
- * Helper function for calling an instance methods of Java objects with arbitrary arguments.
+ * Helper function for calling an instance void methods of Java objects with arbitrary arguments.
  *
  * @param instance Java object to call a method on
  * @param methodID an ID of a method to call
  * @param ... arguments to pass to the method
  */
-void utils_call_instance_method(jobject instance, jmethodID methodID, ...);
+void utils_call_instance_method_void(jobject instance, jmethodID methodID, ...);
+
+/**
+ * Helper function for calling an instance methods of Java objects with arbitrary arguments.
+ * Such methods return a jobject.
+ *
+ * @param instance Java object to call a method on
+ * @param methodID an ID of a method to call
+ * @param ... arguments to pass to the method
+ */
+jobject utils_call_instance_method_result(jobject instance, jmethodID methodID, ...);
 
 // The approach was taken from here:
 // https://code.videolan.org/videolan/vlc-android/blob/master/libvlc/jni/utils.h
@@ -47,6 +57,7 @@ struct fields {
         jmethodID onAudioStreamFoundID;
         jmethodID onSubtitleStreamFoundID;
         jmethodID onErrorID;
+        jmethodID createBasicInfoID;
     } MediaFileBuilder;
 };
 

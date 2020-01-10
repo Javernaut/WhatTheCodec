@@ -76,10 +76,14 @@ class MediaFileBuilder(private val mediaType: MediaType) {
 
     @Keep
     /* Used from JNI */
-    private fun onVideoStreamFound(frameWidth: Int, frameHeight: Int, codecName: String, nativePointer: Long) {
+    private fun onVideoStreamFound(
+            basicStreamInfo: BasicStreamInfo,
+            frameWidth: Int,
+            frameHeight: Int,
+            nativePointer: Long) {
         if (videoStream == null) {
             videoStream = VideoStream(
-                    BasicStreamInfo(0, null, codecName, null, 0),
+                    basicStreamInfo,
                     frameWidth,
                     frameHeight,
                     parcelFileDescriptor == null,
@@ -90,33 +94,32 @@ class MediaFileBuilder(private val mediaType: MediaType) {
     @Keep
     /* Used from JNI */
     private fun onAudioStreamFound(
-            index: Int,
-            codecName: String,
-            title: String?,
-            language: String?,
+            basicStreamInfo: BasicStreamInfo,
             bitRate: Long,
             sampleFormat: String?,
             sampleRate: Int,
             channels: Int,
-            channelLayout: String?,
-            disposition: Int) {
+            channelLayout: String?) {
         audioStreams.add(
-                AudioStream(BasicStreamInfo(index, title, codecName, language, disposition), bitRate, sampleFormat, sampleRate, channels, channelLayout)
+                AudioStream(basicStreamInfo, bitRate, sampleFormat, sampleRate, channels, channelLayout)
         )
     }
 
     @Keep
     /* Used from JNI */
-    private fun onSubtitleStreamFound(
-            index: Int,
-            codecName: String,
-            disposition: Int,
-            title: String?,
-            language: String?) {
+    private fun onSubtitleStreamFound(basicStreamInfo: BasicStreamInfo) {
         subtitleStream.add(
-                SubtitleStream(BasicStreamInfo(index, title, codecName, language, disposition))
+                SubtitleStream(basicStreamInfo)
         )
     }
+
+    @Keep
+    /* Used from JNI */
+    private fun createBasicInfo(index: Int,
+                                title: String?,
+                                codecName: String,
+                                language: String?,
+                                disposition: Int) = BasicStreamInfo(index, title, codecName, language, disposition)
 
     private external fun nativeCreateFromFD(fileDescriptor: Int, mediaStreamsMask: Int)
 

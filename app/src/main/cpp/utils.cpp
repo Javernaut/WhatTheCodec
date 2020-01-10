@@ -66,6 +66,11 @@ int utils_fields_init(JavaVM *vm) {
            "onError", "()V");
 
     GET_ID(GetMethodID,
+           fields.MediaFileBuilder.createBasicInfoID,
+           fields.MediaFileBuilder.clazz,
+           "createBasicInfo", "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;I)Lcom/javernaut/whatthecodec/domain/BasicStreamInfo;");
+
+    GET_ID(GetMethodID,
            fields.MediaFileBuilder.onMediaFileFoundID,
            fields.MediaFileBuilder.clazz,
            "onMediaFileFound", "(Ljava/lang/String;)V");
@@ -73,17 +78,17 @@ int utils_fields_init(JavaVM *vm) {
     GET_ID(GetMethodID,
            fields.MediaFileBuilder.onVideoStreamFoundID,
            fields.MediaFileBuilder.clazz,
-           "onVideoStreamFound", "(IILjava/lang/String;J)V");
+           "onVideoStreamFound", "(Lcom/javernaut/whatthecodec/domain/BasicStreamInfo;IIJ)V");
 
     GET_ID(GetMethodID,
            fields.MediaFileBuilder.onAudioStreamFoundID,
            fields.MediaFileBuilder.clazz,
-           "onAudioStreamFound", "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;JLjava/lang/String;IILjava/lang/String;I)V");
+           "onAudioStreamFound", "(Lcom/javernaut/whatthecodec/domain/BasicStreamInfo;JLjava/lang/String;IILjava/lang/String;)V");
 
     GET_ID(GetMethodID,
            fields.MediaFileBuilder.onSubtitleStreamFoundID,
            fields.MediaFileBuilder.clazz,
-           "onSubtitleStreamFound", "(ILjava/lang/String;ILjava/lang/String;Ljava/lang/String;)V");
+           "onSubtitleStreamFound", "(Lcom/javernaut/whatthecodec/domain/BasicStreamInfo;)V");
 
     return 0;
 }
@@ -100,9 +105,17 @@ void utils_fields_free(JavaVM *vm) {
     javaVM = nullptr;
 }
 
-void utils_call_instance_method(jobject instance, jmethodID methodID, ...) {
+void utils_call_instance_method_void(jobject instance, jmethodID methodID, ...) {
     va_list args;
     va_start(args, methodID);
     utils_get_env()->CallVoidMethodV(instance, methodID, args);
     va_end(args);
+}
+
+jobject utils_call_instance_method_result(jobject instance, jmethodID methodID, ...) {
+    va_list args;
+    va_start(args, methodID);
+    jobject result = utils_get_env()->CallObjectMethodV(instance, methodID, args);
+    va_end(args);
+    return result;
 }

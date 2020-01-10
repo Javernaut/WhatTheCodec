@@ -37,9 +37,28 @@ static jstring get_language(AVDictionary *metadata) {
     return get_string(metadata, "language");
 }
 
+static jobject createBasicStreamInfo(jobject jMediaFileBuilder,
+                                     AVFormatContext *avFormatContext,
+                                     int index) {
+
+    AVStream *stream = avFormatContext->streams[index];
+    AVCodecParameters *parameters = stream->codecpar;
+
+    auto codecDescriptor = avcodec_descriptor_get(parameters->codec_id);
+    jstring jCodecName = utils_get_env()->NewStringUTF(codecDescriptor->long_name);
+
+    return utils_call_instance_method_result(jMediaFileBuilder,
+                                             fields.MediaFileBuilder.createBasicInfoID,
+                                             index,
+                                             get_title(stream->metadata),
+                                             jCodecName,
+                                             get_language(stream->metadata),
+                                             stream->disposition);
+}
+
 static void onError(jobject jMediaFileBuilder) {
-    utils_call_instance_method(jMediaFileBuilder,
-                               fields.MediaFileBuilder.onErrorID);
+    utils_call_instance_method_void(jMediaFileBuilder,
+                                    fields.MediaFileBuilder.onErrorID);
 }
 
 static void onMediaFileFound(jobject jMediaFileBuilder, AVFormatContext *avFormatContext) {
@@ -47,9 +66,9 @@ static void onMediaFileFound(jobject jMediaFileBuilder, AVFormatContext *avForma
 
     jstring jFileFormatName = utils_get_env()->NewStringUTF(fileFormatName);
 
-    utils_call_instance_method(jMediaFileBuilder,
-                               fields.MediaFileBuilder.onMediaFileFoundID,
-                               jFileFormatName);
+    utils_call_instance_method_void(jMediaFileBuilder,
+                                    fields.MediaFileBuilder.onMediaFileFoundID,
+                                    jFileFormatName);
 }
 
 static void onVideoStreamFound(jobject jMediaFileBuilder,
@@ -57,20 +76,20 @@ static void onVideoStreamFound(jobject jMediaFileBuilder,
                                int index) {
     AVCodecParameters *parameters = avFormatContext->streams[index]->codecpar;
 
+    jobject jBasicStreamInfo = createBasicStreamInfo(jMediaFileBuilder, avFormatContext, index);
+
     auto *videoStream = (VideoStream *) malloc(sizeof(VideoStream));;
     videoStream->avFormatContext = avFormatContext;
     videoStream->parameters = parameters;
     videoStream->avVideoCodec = avcodec_find_decoder(parameters->codec_id);
     videoStream->videoStreamIndex = index;
 
-    jstring jCodecName = utils_get_env()->NewStringUTF(videoStream->avVideoCodec->long_name);
-
-    utils_call_instance_method(jMediaFileBuilder,
-                               fields.MediaFileBuilder.onVideoStreamFoundID,
-                               parameters->width,
-                               parameters->height,
-                               jCodecName,
-                               video_stream_get_handle(videoStream));
+    utils_call_instance_method_void(jMediaFileBuilder,
+                                    fields.MediaFileBuilder.onVideoStreamFoundID,
+                                    jBasicStreamInfo,
+                                    parameters->width,
+                                    parameters->height,
+                                    video_stream_get_handle(videoStream));
 }
 
 static void onAudioStreamFound(jobject jMediaFileBuilder,
@@ -79,8 +98,7 @@ static void onAudioStreamFound(jobject jMediaFileBuilder,
     AVStream *stream = avFormatContext->streams[index];
     AVCodecParameters *parameters = stream->codecpar;
 
-    auto codecDescriptor = avcodec_descriptor_get(parameters->codec_id);
-    jstring jCodecName = utils_get_env()->NewStringUTF(codecDescriptor->long_name);
+    jobject jBasicStreamInfo = createBasicStreamInfo(jMediaFileBuilder, avFormatContext, index);
 
     auto avSampleFormat = static_cast<AVSampleFormat>(parameters->format);
     auto jSampleFormat = toJString(av_get_sample_fmt_name(avSampleFormat));
@@ -95,37 +113,25 @@ static void onAudioStreamFound(jobject jMediaFileBuilder,
         av_bprint_finalize(&printBuffer, NULL);
     }
 
-    utils_call_instance_method(jMediaFileBuilder,
-                               fields.MediaFileBuilder.onAudioStreamFoundID,
-                               index,
-                               jCodecName,
-                               get_title(stream->metadata),
-                               get_language(stream->metadata),
-                               parameters->bit_rate,
-                               jSampleFormat,
-                               parameters->sample_rate,
-                               parameters->channels,
-                               jChannelLayout,
-                               stream->disposition);
+    utils_call_instance_method_void(jMediaFileBuilder,
+                                    fields.MediaFileBuilder.onAudioStreamFoundID,
+                                    jBasicStreamInfo,
+                                    parameters->bit_rate,
+                                    jSampleFormat,
+                                    parameters->sample_rate,
+                                    parameters->channels,
+                                    jChannelLayout);
 }
 
 static void onSubtitleStreamFound(jobject jMediaFileBuilder,
                                   AVFormatContext *avFormatContext,
                                   int index) {
 
-    AVStream *stream = avFormatContext->streams[index];
-    AVCodecParameters *parameters = stream->codecpar;
+    jobject jBasicStreamInfo = createBasicStreamInfo(jMediaFileBuilder, avFormatContext, index);
 
-    auto codecDescriptor = avcodec_descriptor_get(parameters->codec_id);
-    jstring jCodecName = utils_get_env()->NewStringUTF(codecDescriptor->long_name);
-
-    utils_call_instance_method(jMediaFileBuilder,
-                               fields.MediaFileBuilder.onSubtitleStreamFoundID,
-                               index,
-                               jCodecName,
-                               stream->disposition,
-                               get_title(stream->metadata),
-                               get_language(stream->metadata));
+    utils_call_instance_method_void(jMediaFileBuilder,
+                                    fields.MediaFileBuilder.onSubtitleStreamFoundID,
+                                    jBasicStreamInfo);
 }
 
 static int STREAM_VIDEO = 1;
