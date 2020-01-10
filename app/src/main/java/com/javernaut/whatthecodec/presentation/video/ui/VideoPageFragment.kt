@@ -7,15 +7,11 @@ import android.app.ProgressDialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.view.View
-import android.widget.RadioGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.presentation.root.viewmodel.MediaFileViewModel
-import com.javernaut.whatthecodec.presentation.root.viewmodel.model.FramesToShow
-import com.javernaut.whatthecodec.util.forEachChild
 import com.javernaut.whatthecodec.util.setupTwoLineView
 import kotlinx.android.synthetic.main.fragment_video_page.*
 import kotlinx.android.synthetic.main.inline_video_left_panel.*
@@ -26,14 +22,6 @@ class VideoPageFragment : Fragment(R.layout.fragment_video_page) {
     private val videoInfoViewModel by activityViewModels<MediaFileViewModel>()
 
     private var progressDialog: Dialog? = null
-
-    private val framesNumberChangeListener = RadioGroup.OnCheckedChangeListener { _, checkedId ->
-        videoInfoViewModel.setFramesToShow(when (checkedId) {
-            R.id.framesNum9 -> FramesToShow.NINE
-            R.id.framesNum4 -> FramesToShow.FOUR
-            else -> FramesToShow.ONE
-        })
-    }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -54,24 +42,7 @@ class VideoPageFragment : Fragment(R.layout.fragment_video_page) {
                     } else {
                         R.string.info_protocol_pipe
                     }))
-
-            framesNumberGroup.forEachChild {
-                it.isEnabled = isFullFeatured
-            }
-
-            framesNumberGroup.visibility = View.VISIBLE
         })
-
-        videoInfoViewModel.framesToShowNumber.observe(this, Observer {
-            framesNumberGroup.setOnCheckedChangeListener(null)
-            framesNumberGroup.check(when (it) {
-                FramesToShow.ONE -> R.id.framesNum1
-                FramesToShow.FOUR -> R.id.framesNum4
-                FramesToShow.NINE -> R.id.framesNum9
-            })
-            framesNumberGroup.setOnCheckedChangeListener(framesNumberChangeListener)
-        })
-
 
         videoInfoViewModel.modalProgressLiveData.observe(this, Observer {
             progressDialog?.dismiss()

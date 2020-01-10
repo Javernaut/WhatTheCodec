@@ -10,7 +10,6 @@ import com.javernaut.whatthecodec.domain.MediaFile
 import com.javernaut.whatthecodec.domain.SubtitleStream
 import com.javernaut.whatthecodec.presentation.root.viewmodel.model.AvailableTab
 import com.javernaut.whatthecodec.presentation.root.viewmodel.model.BasicVideoInfo
-import com.javernaut.whatthecodec.presentation.root.viewmodel.model.FramesToShow
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -26,7 +25,6 @@ class MediaFileViewModel(private val frameFullWidth: Int,
 
     private val _basicVideoInfoLiveData = MutableLiveData<BasicVideoInfo?>()
     private val _isFullFeaturedLiveData = MutableLiveData<Boolean>()
-    private val _framesToShowNumber = MutableLiveData<FramesToShow>(framesInitialValue())
     private val _modalProgressLiveData = MutableLiveData<Boolean>()
     private val _framesLiveData = MutableLiveData<Array<Bitmap>>()
     private val _framesBackgroundLiveData = MutableLiveData<Int>(Color.TRANSPARENT)
@@ -50,12 +48,6 @@ class MediaFileViewModel(private val frameFullWidth: Int,
      */
     val isFullFeaturedLiveData: LiveData<Boolean>
         get() = _isFullFeaturedLiveData
-
-    /**
-     * How many frames need to be shown in UI.
-     */
-    val framesToShowNumber: LiveData<FramesToShow>
-        get() = _framesToShowNumber
 
     /**
      * Notifies about error during opening a file.
@@ -123,22 +115,13 @@ class MediaFileViewModel(private val frameFullWidth: Int,
         }
     }
 
-    fun setFramesToShow(framesToShow: FramesToShow) {
-        savedStateHandle.set(KEY_FRAMES_NUMBER, framesToShow.toString())
-        _framesToShowNumber.value = framesToShow
-        tryLoadVideoFrames(false)
-    }
-
     private fun applyMediaFile(mediaFile: MediaFile) {
         _basicVideoInfoLiveData.value = mediaFile.toBasicInfo()
         _isFullFeaturedLiveData.value = mediaFile.videoStream?.fullFeatured ?: true
-        if (mediaFile.videoStream?.fullFeatured == false) {
-            _framesToShowNumber.value = FramesToShow.FOUR
-        }
         _audioStreamsLiveData.value = mediaFile.audioStreams
         _subtitleStreamsLiveData.value = mediaFile.subtitleStreams
         setupTabsAvailable(mediaFile)
-        tryLoadVideoFrames(true)
+        tryLoadVideoFrames()
     }
 
     private fun setupTabsAvailable(mediaFile: MediaFile) {
@@ -155,18 +138,16 @@ class MediaFileViewModel(private val frameFullWidth: Int,
         _availableTabsLiveData.value = tabs
     }
 
-    private fun tryLoadVideoFrames(generateBackgroundColor: Boolean) {
+    private fun tryLoadVideoFrames() {
         if (_basicVideoInfoLiveData.value != null) {
             viewModelScope.launch(Dispatchers.Main) {
                 _modalProgressLiveData.value = true
 
                 val result = withContext(Dispatchers.IO) {
-                    loadFrames(generateBackgroundColor)
+                    loadFrames()
                 }
 
-                if (generateBackgroundColor) {
-                    _framesBackgroundLiveData.value = result.backgroundColor
-                }
+                _framesBackgroundLiveData.value = result.backgroundColor
 
                 val previousFrames = _framesLiveData.value
                 _framesLiveData.value = result.frames
@@ -177,46 +158,34 @@ class MediaFileViewModel(private val frameFullWidth: Int,
         }
     }
 
-    private fun loadFrames(generateBackgroundColor: Boolean): VideoProcessingResult {
-        val framesToShow = framesToShowNumber.value!!.value
+    private fun loadFrames(): VideoProcessingResult {
         val basicInfo = basicVideoInfoLiveData.value!!
 
-        val childFrameWidth = frameFullWidth / sqrt(framesToShow.toDouble()).toInt()
+        val childFrameWidth = frameFullWidth / sqrt(FRAMES_NUMBER.toDouble()).toInt()
         val childFrameHeight = (childFrameWidth * basicInfo.frameHeight / basicInfo.frameWidth.toDouble()).toInt()
 
-        val bitmaps = Array<Bitmap>(framesToShow) {
+        val bitmaps = Array<Bitmap>(FRAMES_NUMBER) {
             Bitmap.createBitmap(childFrameWidth, childFrameHeight, Bitmap.Config.ARGB_8888)
         }
 
         mediaFile?.videoStream?.fillWithPreview(bitmaps)
 
         var backgroundColor: Int = Color.TRANSPARENT
-        if (generateBackgroundColor) {
-            val palette = Palette.from(bitmaps.first()).generate()
-            // Pick the first swatch in this order that isn't null and use its color
-            backgroundColor = listOf(
-                    palette::getDarkMutedSwatch,
-                    palette::getMutedSwatch,
-                    palette::getDominantSwatch
-            ).firstOrNull {
-                it() != null
-            }?.invoke()?.rgb ?: backgroundColor
-        }
+        val palette = Palette.from(bitmaps.first()).generate()
+        // Pick the first swatch in this order that isn't null and use its color
+        backgroundColor = listOf(
+                palette::getDarkMutedSwatch,
+                palette::getMutedSwatch,
+                palette::getDominantSwatch
+        ).firstOrNull {
+            it() != null
+        }?.invoke()?.rgb ?: backgroundColor
 
         return VideoProcessingResult(bitmaps, backgroundColor)
     }
 
     private fun clearPendingUri() {
         pendingMediaFileArgument = null
-    }
-
-    private fun framesInitialValue(): FramesToShow {
-        val savedFramesNumber = savedStateHandle.get<String?>(KEY_FRAMES_NUMBER)
-        return if (savedFramesNumber != null) {
-            FramesToShow.valueOf(savedFramesNumber)
-        } else {
-            FramesToShow.ONE
-        }
     }
 
     private fun MediaFile.toBasicInfo(): BasicVideoInfo? {
@@ -233,7 +202,7 @@ class MediaFileViewModel(private val frameFullWidth: Int,
 
     companion object {
         const val KEY_MEDIA_FILE_ARGUMENT = "key_video_file_uri"
-        const val KEY_FRAMES_NUMBER = "key_frames_number"
+        const val FRAMES_NUMBER = 4
     }
 
     private class VideoProcessingResult(

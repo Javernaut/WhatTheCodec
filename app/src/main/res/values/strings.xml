@@ -15,10 +15,6 @@
     <string name="page_video_codec_name">Video codec:</string>
     <string name="page_video_frame_width">Width:</string>
     <string name="page_video_frame_height">Height:</string>
-    <string name="page_video_frames_to_show">Frames to show:</string>
-    <string name="page_video_frames_to_show_1">1</string>
-    <string name="page_video_frames_to_show_4">4</string>
-    <string name="page_video_frames_to_show_9">9</string>
     <string name="page_stream_title_prefix">Stream #</string>
     <string name="page_audio_codec_name">Audio codec:</string>
     <string name="page_audio_bit_rate">Bit rate:</string>
