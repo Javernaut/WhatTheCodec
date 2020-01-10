@@ -1,5 +1,6 @@
 package com.javernaut.whatthecodec.presentation.audio.ui
 
+import android.os.Bundle
 import androidx.lifecycle.Observer
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.domain.AudioStream
@@ -11,7 +12,9 @@ import com.javernaut.whatthecodec.presentation.stream.model.StreamFeature
 
 class AudioPageFragment : BasePageFragment() {
 
-    override fun onSubscribeToViewModel() {
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
         mediaFileViewModel.audioStreamsLiveData.observe(this, Observer {
             displayStreams(it.map { audioStream ->
                 Stream(audioStream.index, audioStream.title, getFeaturesList(audioStream))

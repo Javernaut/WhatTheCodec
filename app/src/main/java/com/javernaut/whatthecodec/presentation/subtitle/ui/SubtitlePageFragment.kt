@@ -1,5 +1,6 @@
 package com.javernaut.whatthecodec.presentation.subtitle.ui
 
+import android.os.Bundle
 import androidx.lifecycle.Observer
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.domain.SubtitleStream
@@ -10,7 +11,10 @@ import com.javernaut.whatthecodec.presentation.stream.model.Stream
 import com.javernaut.whatthecodec.presentation.stream.model.StreamFeature
 
 class SubtitlePageFragment : BasePageFragment() {
-    override fun onSubscribeToViewModel() {
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
         mediaFileViewModel.subtitleStreamsLiveData.observe(this, Observer {
             displayStreams(it.map { subtitleStream ->
                 Stream(subtitleStream.index, subtitleStream.title, getFeaturesList(subtitleStream))

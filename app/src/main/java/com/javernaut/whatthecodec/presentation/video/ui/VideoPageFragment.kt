@@ -7,44 +7,28 @@ import android.app.ProgressDialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.javernaut.whatthecodec.R
-import com.javernaut.whatthecodec.presentation.root.viewmodel.MediaFileViewModel
-import com.javernaut.whatthecodec.util.setupTwoLineView
+import com.javernaut.whatthecodec.presentation.root.viewmodel.model.BasicVideoInfo
+import com.javernaut.whatthecodec.presentation.stream.BasePageFragment
+import com.javernaut.whatthecodec.presentation.stream.model.Stream
+import com.javernaut.whatthecodec.presentation.stream.model.StreamFeature
 import kotlinx.android.synthetic.main.fragment_video_page.*
-import kotlinx.android.synthetic.main.inline_video_left_panel.*
-import kotlinx.android.synthetic.main.inline_video_right_panel.*
 
-class VideoPageFragment : Fragment(R.layout.fragment_video_page) {
-
-    private val videoInfoViewModel by activityViewModels<MediaFileViewModel>()
+class VideoPageFragment : BasePageFragment(R.layout.fragment_video_page) {
 
     private var progressDialog: Dialog? = null
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        videoInfoViewModel.basicVideoInfoLiveData.observe(this, Observer {
+        mediaFileViewModel.basicVideoInfoLiveData.observe(this, Observer {
             if (it != null) {
-                fileFormat.setupTwoLineView(R.string.info_file_format, it.fileFormat)
-                codecName.setupTwoLineView(R.string.page_video_codec_name, it.codecName)
-                width.setupTwoLineView(R.string.page_video_frame_width, it.frameWidth.toString())
-                height.setupTwoLineView(R.string.page_video_frame_height, it.frameHeight.toString())
+                displayStreams(listOf(convertToStream(it)))
             }
         })
 
-        videoInfoViewModel.isFullFeaturedLiveData.observe(this, Observer { isFullFeatured ->
-            protocol.setupTwoLineView(R.string.info_protocol_title, getString(
-                    if (isFullFeatured) {
-                        R.string.info_protocol_file
-                    } else {
-                        R.string.info_protocol_pipe
-                    }))
-        })
-
-        videoInfoViewModel.modalProgressLiveData.observe(this, Observer {
+        mediaFileViewModel.modalProgressLiveData.observe(this, Observer {
             progressDialog?.dismiss()
             progressDialog = if (it) {
                 ProgressDialog.show(requireContext(), null, getString(R.string.message_progress))
@@ -53,11 +37,11 @@ class VideoPageFragment : Fragment(R.layout.fragment_video_page) {
             }
         })
 
-        videoInfoViewModel.framesLiveData.observe(this, Observer {
+        mediaFileViewModel.framesLiveData.observe(this, Observer {
             frameDisplayingView.setFrames(it)
         })
 
-        videoInfoViewModel.framesBackgroundLiveData.observe(this, Observer { newColor ->
+        mediaFileViewModel.framesBackgroundLiveData.observe(this, Observer { newColor ->
             val currentColor = (frameBackground.background as? ColorDrawable)?.color
                     ?: Color.TRANSPARENT
             ObjectAnimator.ofObject(frameBackground,
@@ -68,6 +52,22 @@ class VideoPageFragment : Fragment(R.layout.fragment_video_page) {
             )
                     .setDuration(300)
                     .start()
+        })
+    }
+
+    private fun convertToStream(basicVideoInfo: BasicVideoInfo): Stream {
+        // TODO get actual values of index and title of the video stream
+        return Stream(0, null, mutableListOf<StreamFeature>().apply {
+            add(StreamFeature(R.string.info_file_format, basicVideoInfo.fileFormat))
+            add(StreamFeature(R.string.page_video_codec_name, basicVideoInfo.codecName))
+            add(StreamFeature(R.string.page_video_frame_width, basicVideoInfo.frameWidth.toString()))
+            add(StreamFeature(R.string.page_video_frame_height, basicVideoInfo.frameHeight.toString()))
+            add(StreamFeature(R.string.info_protocol_title, getString(
+                    if (basicVideoInfo.fullFeatured) {
+                        R.string.info_protocol_file
+                    } else {
+                        R.string.info_protocol_pipe
+                    })))
         })
     }
 

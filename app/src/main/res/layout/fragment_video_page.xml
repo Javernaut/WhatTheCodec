@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFF"
     android:fillViewport="true">
 
     <LinearLayout
@@ -13,17 +12,21 @@
         <FrameLayout
             android:id="@+id/frameBackground"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp">
+            android:layout_height="wrap_content">
 
             <com.javernaut.whatthecodec.presentation.video.ui.view.FrameDisplayingView
+                android:layout_gravity="center"
                 android:id="@+id/frameDisplayingView"
-                android:layout_width="match_parent"
+                android:layout_width="@dimen/preview_frames_view_width"
                 android:layout_height="wrap_content" />
         </FrameLayout>
 
-        <include layout="@layout/inline_video_left_panel" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:padding="8dp" />
 
-        <include layout="@layout/inline_video_right_panel" />
     </LinearLayout>
-</ScrollView>
+</androidx.core.widget.NestedScrollView>

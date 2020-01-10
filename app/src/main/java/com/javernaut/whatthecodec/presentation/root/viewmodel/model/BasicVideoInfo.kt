@@ -4,5 +4,6 @@ data class BasicVideoInfo(
         val fileFormat: String,
         val codecName: String,
         val frameWidth: Int,
-        val frameHeight: Int
+        val frameHeight: Int,
+        val fullFeatured: Boolean
 )

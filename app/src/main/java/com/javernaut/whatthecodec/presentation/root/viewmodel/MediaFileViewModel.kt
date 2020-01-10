@@ -196,7 +196,8 @@ class MediaFileViewModel(private val frameFullWidth: Int,
                 fileFormatName,
                 videoStream.codecName,
                 videoStream.frameWidth,
-                videoStream.frameHeight
+                videoStream.frameHeight,
+                videoStream.fullFeatured
         )
     }
 
