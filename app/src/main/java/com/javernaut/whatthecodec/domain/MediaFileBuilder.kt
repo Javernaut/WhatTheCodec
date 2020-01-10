@@ -78,9 +78,10 @@ class MediaFileBuilder(private val mediaType: MediaType) {
     /* Used from JNI */
     private fun onVideoStreamFound(frameWidth: Int, frameHeight: Int, codecName: String, nativePointer: Long) {
         if (videoStream == null) {
-            videoStream = VideoStream(frameWidth,
+            videoStream = VideoStream(
+                    BasicStreamInfo(0, null, codecName, null, 0),
+                    frameWidth,
                     frameHeight,
-                    codecName,
                     parcelFileDescriptor == null,
                     nativePointer)
         }
@@ -100,7 +101,7 @@ class MediaFileBuilder(private val mediaType: MediaType) {
             channelLayout: String?,
             disposition: Int) {
         audioStreams.add(
-                AudioStream(index, codecName, title, language, bitRate, sampleFormat, sampleRate, channels, channelLayout, disposition)
+                AudioStream(BasicStreamInfo(index, title, codecName, language, disposition), bitRate, sampleFormat, sampleRate, channels, channelLayout)
         )
     }
 
@@ -113,7 +114,7 @@ class MediaFileBuilder(private val mediaType: MediaType) {
             title: String?,
             language: String?) {
         subtitleStream.add(
-                SubtitleStream(index, codecName, disposition, title, language)
+                SubtitleStream(BasicStreamInfo(index, title, codecName, language, disposition))
         )
     }
 

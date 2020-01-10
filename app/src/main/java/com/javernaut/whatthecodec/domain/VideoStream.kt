@@ -7,10 +7,11 @@ import androidx.annotation.Keep
  * Represents metadata of a video stream in a video file. Allows video frames reading.
  */
 class VideoStream(
+        val basicInfo: BasicStreamInfo,
         val frameWidth: Int,
         val frameHeight: Int,
-        val codecName: String,
         val fullFeatured: Boolean,
+        // TODO move to another class
         @Keep
         private val nativePointer: Long
 ) {

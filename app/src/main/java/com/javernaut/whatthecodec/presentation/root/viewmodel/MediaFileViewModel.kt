@@ -162,7 +162,7 @@ class MediaFileViewModel(private val frameFullWidth: Int,
         val basicInfo = basicVideoInfoLiveData.value!!
 
         val childFrameWidth = frameFullWidth / sqrt(FRAMES_NUMBER.toDouble()).toInt()
-        val childFrameHeight = (childFrameWidth * basicInfo.frameHeight / basicInfo.frameWidth.toDouble()).toInt()
+        val childFrameHeight = (childFrameWidth * basicInfo.videoStream.frameHeight / basicInfo.videoStream.frameWidth.toDouble()).toInt()
 
         val bitmaps = Array<Bitmap>(FRAMES_NUMBER) {
             Bitmap.createBitmap(childFrameWidth, childFrameHeight, Bitmap.Config.ARGB_8888)
@@ -194,10 +194,7 @@ class MediaFileViewModel(private val frameFullWidth: Int,
         }
         return BasicVideoInfo(
                 fileFormatName,
-                videoStream.codecName,
-                videoStream.frameWidth,
-                videoStream.frameHeight,
-                videoStream.fullFeatured
+                videoStream
         )
     }
 

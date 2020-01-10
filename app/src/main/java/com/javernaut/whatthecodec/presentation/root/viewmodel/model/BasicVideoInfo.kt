@@ -1,9 +1,8 @@
 package com.javernaut.whatthecodec.presentation.root.viewmodel.model
 
+import com.javernaut.whatthecodec.domain.VideoStream
+
 data class BasicVideoInfo(
         val fileFormat: String,
-        val codecName: String,
-        val frameWidth: Int,
-        val frameHeight: Int,
-        val fullFeatured: Boolean
+        val videoStream: VideoStream
 )
