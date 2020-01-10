@@ -2,11 +2,7 @@ package com.javernaut.whatthecodec.presentation.root.viewmodel
 
 import android.graphics.Bitmap
 import android.graphics.Color
-import android.os.AsyncTask
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import androidx.palette.graphics.Palette
 import com.hadilq.liveevent.LiveEvent
 import com.javernaut.whatthecodec.domain.AudioStream
@@ -15,6 +11,9 @@ import com.javernaut.whatthecodec.domain.SubtitleStream
 import com.javernaut.whatthecodec.presentation.root.viewmodel.model.AvailableTab
 import com.javernaut.whatthecodec.presentation.root.viewmodel.model.BasicVideoInfo
 import com.javernaut.whatthecodec.presentation.root.viewmodel.model.FramesToShow
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlin.math.sqrt
 
 class MediaFileViewModel(private val frameFullWidth: Int,
@@ -124,6 +123,12 @@ class MediaFileViewModel(private val frameFullWidth: Int,
         }
     }
 
+    fun setFramesToShow(framesToShow: FramesToShow) {
+        savedStateHandle.set(KEY_FRAMES_NUMBER, framesToShow.toString())
+        _framesToShowNumber.value = framesToShow
+        tryLoadVideoFrames(false)
+    }
+
     private fun applyMediaFile(mediaFile: MediaFile) {
         _basicVideoInfoLiveData.value = mediaFile.toBasicInfo()
         _isFullFeaturedLiveData.value = mediaFile.videoStream?.fullFeatured ?: true
@@ -150,69 +155,59 @@ class MediaFileViewModel(private val frameFullWidth: Int,
         _availableTabsLiveData.value = tabs
     }
 
-    fun setFramesToShow(framesToShow: FramesToShow) {
-        savedStateHandle.set(KEY_FRAMES_NUMBER, framesToShow.toString())
-        _framesToShowNumber.value = framesToShow
-        tryLoadVideoFrames(false)
-    }
-
     private fun tryLoadVideoFrames(generateBackgroundColor: Boolean) {
         if (_basicVideoInfoLiveData.value != null) {
-            LoadingTask(generateBackgroundColor).execute()
+            viewModelScope.launch(Dispatchers.Main) {
+                _modalProgressLiveData.value = true
+
+                val result = withContext(Dispatchers.IO) {
+                    loadFrames(generateBackgroundColor)
+                }
+
+                if (generateBackgroundColor) {
+                    _framesBackgroundLiveData.value = result.backgroundColor
+                }
+
+                val previousFrames = _framesLiveData.value
+                _framesLiveData.value = result.frames
+                previousFrames?.forEach { it.recycle() }
+
+                _modalProgressLiveData.value = false
+            }
         }
+    }
+
+    private fun loadFrames(generateBackgroundColor: Boolean): VideoProcessingResult {
+        val framesToShow = framesToShowNumber.value!!.value
+        val basicInfo = basicVideoInfoLiveData.value!!
+
+        val childFrameWidth = frameFullWidth / sqrt(framesToShow.toDouble()).toInt()
+        val childFrameHeight = (childFrameWidth * basicInfo.frameHeight / basicInfo.frameWidth.toDouble()).toInt()
+
+        val bitmaps = Array<Bitmap>(framesToShow) {
+            Bitmap.createBitmap(childFrameWidth, childFrameHeight, Bitmap.Config.ARGB_8888)
+        }
+
+        mediaFile?.videoStream?.fillWithPreview(bitmaps)
+
+        var backgroundColor: Int = Color.TRANSPARENT
+        if (generateBackgroundColor) {
+            val palette = Palette.from(bitmaps.first()).generate()
+            // Pick the first swatch in this order that isn't null and use its color
+            backgroundColor = listOf(
+                    palette::getDarkMutedSwatch,
+                    palette::getMutedSwatch,
+                    palette::getDominantSwatch
+            ).firstOrNull {
+                it() != null
+            }?.invoke()?.rgb ?: backgroundColor
+        }
+
+        return VideoProcessingResult(bitmaps, backgroundColor)
     }
 
     private fun clearPendingUri() {
         pendingMediaFileArgument = null
-    }
-
-    // Well, I'm not proud of using AsyncTask, but this app doesn't need more sophisticated things at all
-    // TODO replace the AsyncTask with something else
-    private inner class LoadingTask(private val generateBackgroundColor: Boolean) : AsyncTask<Unit, Unit, VideoProcessingResult>() {
-        override fun onPreExecute() {
-            _modalProgressLiveData.value = true
-        }
-
-        override fun doInBackground(vararg param: Unit?): VideoProcessingResult {
-            val framesToShow = framesToShowNumber.value!!.value
-            val basicInfo = basicVideoInfoLiveData.value!!
-
-            val childFrameWidth = frameFullWidth / sqrt(framesToShow.toDouble()).toInt()
-            val childFrameHeight = (childFrameWidth * basicInfo.frameHeight / basicInfo.frameWidth.toDouble()).toInt()
-
-            val bitmaps = Array<Bitmap>(framesToShow) {
-                Bitmap.createBitmap(childFrameWidth, childFrameHeight, Bitmap.Config.ARGB_8888)
-            }
-
-            mediaFile?.videoStream?.fillWithPreview(bitmaps)
-
-            var backgroundColor: Int = Color.TRANSPARENT
-            if (generateBackgroundColor) {
-                val palette = Palette.from(bitmaps.first()).generate()
-                // Pick the first swatch in this order that isn't null and use its color
-                backgroundColor = listOf(
-                        palette::getDarkMutedSwatch,
-                        palette::getMutedSwatch,
-                        palette::getDominantSwatch
-                ).firstOrNull {
-                    it() != null
-                }?.invoke()?.rgb ?: backgroundColor
-            }
-
-            return VideoProcessingResult(bitmaps, backgroundColor)
-        }
-
-        override fun onPostExecute(result: VideoProcessingResult) {
-            if (generateBackgroundColor) {
-                _framesBackgroundLiveData.value = result.backgroundColor
-            }
-
-            val previousFrames = _framesLiveData.value
-            _framesLiveData.value = result.frames
-            previousFrames?.forEach { it.recycle() }
-
-            _modalProgressLiveData.value = false
-        }
     }
 
     private fun framesInitialValue(): FramesToShow {
