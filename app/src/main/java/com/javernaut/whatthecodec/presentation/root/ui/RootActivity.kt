@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.MimeTypeFilter
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.google.android.material.tabs.TabLayoutMediator
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.domain.MediaType
 import com.javernaut.whatthecodec.presentation.root.viewmodel.MediaFileArgument
@@ -38,9 +39,9 @@ class RootActivity : AppCompatActivity(R.layout.activity_root) {
         super.onCreate(savedInstanceState)
         setSupportActionBar(toolbar)
 
-        pagerAdapter = RootPagerAdapter(supportFragmentManager, resources)
+        pagerAdapter = RootPagerAdapter(this)
         pager.adapter = pagerAdapter
-        tabs.setupWithViewPager(pager)
+        TabLayoutMediator(tabs, pager, pagerAdapter.tabConfigurationStrategy).attach()
 
         pickVideo.setOnClickListener { onPickVideoClicked() }
         pickAudio.setOnClickListener { onPickAudioClicked() }
