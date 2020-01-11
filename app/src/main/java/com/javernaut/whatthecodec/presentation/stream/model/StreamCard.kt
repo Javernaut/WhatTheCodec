@@ -6,19 +6,19 @@ import com.javernaut.whatthecodec.domain.BasicStreamInfo
 import com.javernaut.whatthecodec.presentation.stream.helper.DispositionHelper
 import com.javernaut.whatthecodec.presentation.stream.helper.LanguageHelper
 
-class Stream(
-        val index: Int,
-        val title: String?,
+class StreamCard(
+        val title: String,
         val features: List<StreamFeature>,
         var isExpanded: Boolean = true
 )
 
 /**
- * Creates a [Stream] object with index and title of a given [BasicStreamInfo].
+ * Creates a [StreamCard] object with index and title of a given [BasicStreamInfo].
  * Also language and disposition elements are added to the end of the list.
  */
-inline fun makeStream(basicStreamInfo: BasicStreamInfo, resources: Resources, filler: MutableList<StreamFeature>.() -> Unit): Stream {
-    return Stream(basicStreamInfo.index, basicStreamInfo.title,
+fun makeStream(basicStreamInfo: BasicStreamInfo, resources: Resources, filler: MutableList<StreamFeature>.() -> Unit): StreamCard {
+    return StreamCard(
+            makeCardTitle(basicStreamInfo.index, basicStreamInfo.title, resources),
             mutableListOf<StreamFeature>().apply {
 
                 filler(this)
@@ -36,4 +36,13 @@ inline fun makeStream(basicStreamInfo: BasicStreamInfo, resources: Resources, fi
                 }
             }
     )
+}
+
+private fun makeCardTitle(index: Int, title: String?, resources: Resources): String {
+    val prefix = resources.getString(R.string.page_stream_title_prefix)
+    return if (title == null) {
+        prefix + index
+    } else {
+        "$prefix$index - $title"
+    }
 }

@@ -8,10 +8,11 @@
     <string name="tab_video">Video</string>
     <string name="tab_audio">Audio</string>
     <string name="tab_subtitles">Subtitles</string>
+    <string name="info_container">Container</string>
     <string name="info_file_format">File format:</string>
     <string name="info_protocol_title">Used protocol:</string>
     <string name="info_protocol_file">file</string>
-    <string name="info_protocol_pipe">pipe (limited functionality)</string>
+    <string name="info_protocol_pipe">pipe</string>
     <string name="page_video_codec_name">Video codec:</string>
     <string name="page_video_frame_width">Width:</string>
     <string name="page_video_frame_height">Height:</string>

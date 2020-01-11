@@ -4,29 +4,29 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.javernaut.whatthecodec.R
-import com.javernaut.whatthecodec.presentation.stream.model.Stream
+import com.javernaut.whatthecodec.presentation.stream.model.StreamCard
 
-class StreamsAdapter : RecyclerView.Adapter<StreamViewHolder>() {
+class StreamsAdapter : RecyclerView.Adapter<StreamCardViewHolder>() {
 
-    var streams = emptyList<Stream>()
+    var streamCards = emptyList<StreamCard>()
         set(value) {
             field = value
             notifyDataSetChanged()
         }
 
-    private val expandStatusChangeListener = object : StreamViewHolder.OnExpandStatusChangeListener {
-        override fun onExpandStatusChange(viewHolder: StreamViewHolder, isExpanded: Boolean) {
+    private val expandStatusChangeListener = object : StreamCardViewHolder.OnExpandStatusChangeListener {
+        override fun onExpandStatusChange(viewHolder: StreamCardViewHolder, isExpanded: Boolean) {
             notifyItemChanged(viewHolder.adapterPosition, isExpanded)
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StreamViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StreamCardViewHolder {
         val itemView = LayoutInflater.from(parent.context)
                 .inflate(R.layout.item_stream, parent, false)
-        return StreamViewHolder(itemView, expandStatusChangeListener)
+        return StreamCardViewHolder(itemView, expandStatusChangeListener)
     }
 
-    override fun onBindViewHolder(holder: StreamViewHolder, position: Int, payloads: MutableList<Any>) {
+    override fun onBindViewHolder(holder: StreamCardViewHolder, position: Int, payloads: MutableList<Any>) {
         if (payloads.isEmpty()) {
             onBindViewHolder(holder, position)
         } else {
@@ -35,10 +35,10 @@ class StreamsAdapter : RecyclerView.Adapter<StreamViewHolder>() {
         }
     }
 
-    override fun onBindViewHolder(holder: StreamViewHolder, position: Int) {
-        holder.bindTo(streams[position])
+    override fun onBindViewHolder(holder: StreamCardViewHolder, position: Int) {
+        holder.bindTo(streamCards[position])
     }
 
-    override fun getItemCount() = streams.size
+    override fun getItemCount() = streamCards.size
 
 }

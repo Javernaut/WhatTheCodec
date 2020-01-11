@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.presentation.root.viewmodel.MediaFileViewModel
 import com.javernaut.whatthecodec.presentation.stream.adapter.StreamsAdapter
-import com.javernaut.whatthecodec.presentation.stream.model.Stream
+import com.javernaut.whatthecodec.presentation.stream.model.StreamCard
 import kotlinx.android.synthetic.main.fragment_base_page.*
 
 abstract class BasePageFragment(@LayoutRes layoutId: Int = R.layout.fragment_base_page) : Fragment(layoutId) {
@@ -26,7 +26,7 @@ abstract class BasePageFragment(@LayoutRes layoutId: Int = R.layout.fragment_bas
         recyclerView.layoutManager = LinearLayoutManager(context)
     }
 
-    protected fun displayStreams(streams: List<Stream>) {
-        adapter.streams = streams
+    protected fun displayStreams(streamCards: List<StreamCard>) {
+        adapter.streamCards = streamCards
     }
 }
