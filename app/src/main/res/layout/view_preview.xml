@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/framesRecyclerView"
+        android:layout_width="@dimen/preview_frames_view_width"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/decodingUnavailableView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingTop="16dp"
+        android:text="@string/page_video_preview_missing_decoder"
+        android:textAppearance="?attr/textAppearanceSubtitle1"
+        android:textColor="?android:textColorSecondary"
+        android:visibility="gone" />
+</merge>

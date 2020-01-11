@@ -1,9 +1,5 @@
 package com.javernaut.whatthecodec.presentation.video.ui
 
-import android.animation.ArgbEvaluator
-import android.animation.ObjectAnimator
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import com.javernaut.whatthecodec.R
@@ -30,18 +26,7 @@ class VideoPageFragment : BasePageFragment(R.layout.fragment_video_page) {
         })
 
         mediaFileViewModel.previewLiveData.observe(this, Observer {
-            frameDisplayingView.setPreview(it)
-
-            val currentColor = (frameBackground.background as? ColorDrawable)?.color
-                    ?: Color.TRANSPARENT
-            ObjectAnimator.ofObject(frameBackground,
-                    "backgroundColor",
-                    ArgbEvaluator(),
-                    currentColor,
-                    it.backgroundColor
-            )
-                    .setDuration(300)
-                    .start()
+            previewView.setPreview(it)
         })
     }
 

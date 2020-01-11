@@ -9,17 +9,10 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <FrameLayout
-            android:id="@+id/frameBackground"
+        <com.javernaut.whatthecodec.presentation.video.ui.view.PreviewView
+            android:id="@+id/previewView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <com.javernaut.whatthecodec.presentation.video.ui.view.FrameDisplayingView
-                android:layout_gravity="center"
-                android:id="@+id/frameDisplayingView"
-                android:layout_width="@dimen/preview_frames_view_width"
-                android:layout_height="wrap_content" />
-        </FrameLayout>
+            android:layout_height="wrap_content" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"

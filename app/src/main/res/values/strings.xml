@@ -13,6 +13,7 @@
     <string name="info_protocol_file">file</string>
     <string name="info_protocol_pipe">pipe</string>
     <string name="info_bit_rate">Bit rate:</string>
+    <string name="page_video_preview_missing_decoder">Missing decoder\nPreview is unavailable</string>
     <string name="page_video_codec_name">Video codec:</string>
     <string name="page_video_bit_rate">@string/info_bit_rate</string>
     <string name="page_video_frame_width">Width:</string>
@@ -24,6 +25,7 @@
     <string name="page_audio_channel_layout">Channel layout:</string>
     <string name="page_audio_sample_rate">Sample rate:</string>
     <string name="page_audio_sample_format">Sample format:</string>
+    <string name="page_audio_sample_rate_postfix">kHz</string>
     <string name="page_subtitle_codec_name">Subtitle codec:</string>
     <string name="page_stream_language">Language:</string>
     <string name="page_stream_disposition">Disposition:</string>
@@ -43,7 +45,6 @@
     <string name="stream_bitrate_kbps">kbps</string>
     <string name="stream_bitrate_mbps">Mbps</string>
     <string name="stream_bitrate_gbps">Gbps</string>
-    <string name="page_audio_sample_rate_postfix">kHz</string>
     <string name="empty_root_description">Open a video or audio file\nto see its details</string>
     <string name="empty_root_choose">Choose:</string>
     <string name="empty_root_or">or</string>

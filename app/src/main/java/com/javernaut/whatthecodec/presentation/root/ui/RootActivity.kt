@@ -17,7 +17,7 @@ import com.javernaut.whatthecodec.domain.MediaType
 import com.javernaut.whatthecodec.presentation.root.viewmodel.MediaFileArgument
 import com.javernaut.whatthecodec.presentation.root.viewmodel.MediaFileViewModel
 import com.javernaut.whatthecodec.presentation.root.viewmodel.MediaFileViewModelFactory
-import com.javernaut.whatthecodec.presentation.video.ui.view.FrameDisplayingView
+import com.javernaut.whatthecodec.presentation.video.ui.view.PreviewView
 import com.javernaut.whatthecodec.util.TinyActivityCompat
 import com.javernaut.whatthecodec.util.isVisible
 import com.javernaut.whatthecodec.util.setVisible
@@ -28,7 +28,7 @@ class RootActivity : AppCompatActivity(R.layout.activity_root) {
 
     private val mediaFileViewModel by lazy(LazyThreadSafetyMode.NONE) {
         ViewModelProviders.of(
-                this, MediaFileViewModelFactory(this, FrameDisplayingView.getDesiredFrameWidth(this))
+                this, MediaFileViewModelFactory(this, PreviewView.getDesiredFrameWidth(this))
         ).get(MediaFileViewModel::class.java)
     }
 
