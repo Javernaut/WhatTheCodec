@@ -9,6 +9,7 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import com.javernaut.whatthecodec.R
+import com.javernaut.whatthecodec.presentation.audio.ui.BitRateHelper
 import com.javernaut.whatthecodec.presentation.root.viewmodel.model.BasicVideoInfo
 import com.javernaut.whatthecodec.presentation.stream.BasePageFragment
 import com.javernaut.whatthecodec.presentation.stream.model.StreamCard
@@ -64,6 +65,9 @@ class VideoPageFragment : BasePageFragment(R.layout.fragment_video_page) {
 
         return makeStream(videoStream.basicInfo, resources) {
             add(StreamFeature(R.string.page_video_codec_name, videoStream.basicInfo.codecName))
+            if (videoStream.bitRate > 0) {
+                add(StreamFeature(R.string.page_video_bit_rate, BitRateHelper.toString(videoStream.bitRate, resources)))
+            }
 
             add(StreamFeature(R.string.page_video_frame_width, videoStream.frameWidth.toString()))
             add(StreamFeature(R.string.page_video_frame_height, videoStream.frameHeight.toString()))

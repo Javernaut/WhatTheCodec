@@ -87,6 +87,7 @@ static void onVideoStreamFound(jobject jMediaFileBuilder,
     utils_call_instance_method_void(jMediaFileBuilder,
                                     fields.MediaFileBuilder.onVideoStreamFoundID,
                                     jBasicStreamInfo,
+                                    parameters->bit_rate,
                                     parameters->width,
                                     parameters->height,
                                     video_stream_get_handle(videoStream));

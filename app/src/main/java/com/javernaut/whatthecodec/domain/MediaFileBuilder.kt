@@ -78,12 +78,14 @@ class MediaFileBuilder(private val mediaType: MediaType) {
     /* Used from JNI */
     private fun onVideoStreamFound(
             basicStreamInfo: BasicStreamInfo,
+            bitRate: Long,
             frameWidth: Int,
             frameHeight: Int,
             nativePointer: Long) {
         if (videoStream == null) {
             videoStream = VideoStream(
                     basicStreamInfo,
+                    bitRate,
                     frameWidth,
                     frameHeight,
                     parcelFileDescriptor == null,

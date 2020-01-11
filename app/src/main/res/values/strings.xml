@@ -13,12 +13,14 @@
     <string name="info_protocol_title">Used protocol:</string>
     <string name="info_protocol_file">file</string>
     <string name="info_protocol_pipe">pipe</string>
+    <string name="info_bit_rate">Bit rate:</string>
     <string name="page_video_codec_name">Video codec:</string>
+    <string name="page_video_bit_rate">@string/info_bit_rate</string>
     <string name="page_video_frame_width">Width:</string>
     <string name="page_video_frame_height">Height:</string>
     <string name="page_stream_title_prefix">Stream #</string>
     <string name="page_audio_codec_name">Audio codec:</string>
-    <string name="page_audio_bit_rate">Bit rate:</string>
+    <string name="page_audio_bit_rate">@string/info_bit_rate</string>
     <string name="page_audio_channels">Channels:</string>
     <string name="page_audio_channel_layout">Channel layout:</string>
     <string name="page_audio_sample_rate">Sample rate:</string>

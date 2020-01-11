@@ -8,6 +8,7 @@ import androidx.annotation.Keep
  */
 class VideoStream(
         val basicInfo: BasicStreamInfo,
+        val bitRate: Long,
         val frameWidth: Int,
         val frameHeight: Int,
         val fullFeatured: Boolean,

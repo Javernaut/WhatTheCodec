@@ -78,7 +78,7 @@ int utils_fields_init(JavaVM *vm) {
     GET_ID(GetMethodID,
            fields.MediaFileBuilder.onVideoStreamFoundID,
            fields.MediaFileBuilder.clazz,
-           "onVideoStreamFound", "(Lcom/javernaut/whatthecodec/domain/BasicStreamInfo;IIJ)V");
+           "onVideoStreamFound", "(Lcom/javernaut/whatthecodec/domain/BasicStreamInfo;JIIJ)V");
 
     GET_ID(GetMethodID,
            fields.MediaFileBuilder.onAudioStreamFoundID,
