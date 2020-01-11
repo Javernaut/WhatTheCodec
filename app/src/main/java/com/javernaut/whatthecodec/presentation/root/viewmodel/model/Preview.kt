@@ -1,10 +1,11 @@
 package com.javernaut.whatthecodec.presentation.root.viewmodel.model
 
-class Preview(
-        val decodingAvailable: Boolean,
-        val frameMetrics: FrameMetrics,
-        val frames: List<Frame>,
-        val backgroundColor: Int
-)
+sealed class Preview
+
+object NoPreviewAvailable : Preview()
+
+class ActualPreview(val frameMetrics: FrameMetrics,
+                    val frames: List<Frame>,
+                    val backgroundColor: Int) : Preview()
 
 class FrameMetrics(val width: Int, val height: Int)

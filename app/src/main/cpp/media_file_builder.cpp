@@ -78,11 +78,16 @@ static void onVideoStreamFound(jobject jMediaFileBuilder,
 
     jobject jBasicStreamInfo = createBasicStreamInfo(jMediaFileBuilder, avFormatContext, index);
 
-    auto *videoStream = (FrameLoaderContext *) malloc(sizeof(FrameLoaderContext));;
-    videoStream->avFormatContext = avFormatContext;
-    videoStream->parameters = parameters;
-    videoStream->avVideoCodec = avcodec_find_decoder(parameters->codec_id);
-    videoStream->videoStreamIndex = index;
+    int64_t frameLoaderContextHandle = -1;
+    auto *decoder = avcodec_find_decoder(parameters->codec_id);
+    if (decoder != nullptr) {
+        auto *videoStream = (FrameLoaderContext *) malloc(sizeof(FrameLoaderContext));;
+        videoStream->avFormatContext = avFormatContext;
+        videoStream->parameters = parameters;
+        videoStream->avVideoCodec = decoder;
+        videoStream->videoStreamIndex = index;
+        frameLoaderContextHandle = frame_loader_context_to_handle(videoStream);
+    }
 
     utils_call_instance_method_void(jMediaFileBuilder,
                                     fields.MediaFileBuilder.onVideoStreamFoundID,
@@ -90,7 +95,7 @@ static void onVideoStreamFound(jobject jMediaFileBuilder,
                                     parameters->bit_rate,
                                     parameters->width,
                                     parameters->height,
-                                    frame_loader_context_to_handle(videoStream));
+                                    frameLoaderContextHandle);
 }
 
 static void onAudioStreamFound(jobject jMediaFileBuilder,

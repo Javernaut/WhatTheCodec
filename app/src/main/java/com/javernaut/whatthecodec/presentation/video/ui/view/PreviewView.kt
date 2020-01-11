@@ -11,6 +11,8 @@ import android.util.AttributeSet
 import android.widget.FrameLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import com.javernaut.whatthecodec.R
+import com.javernaut.whatthecodec.presentation.root.viewmodel.model.ActualPreview
+import com.javernaut.whatthecodec.presentation.root.viewmodel.model.NoPreviewAvailable
 import com.javernaut.whatthecodec.presentation.root.viewmodel.model.Preview
 import com.javernaut.whatthecodec.util.setVisible
 import kotlinx.android.extensions.LayoutContainer
@@ -35,13 +37,16 @@ class PreviewView(context: Context, attrs: AttributeSet) : FrameLayout(context, 
     }
 
     fun setPreview(preview: Preview) {
-        setVisibilities(preview.decodingAvailable)
-
-        if (preview.decodingAvailable) {
-            framesAdapter.setFrames(preview.frames, preview.frameMetrics)
+        setVisibilities(preview != NoPreviewAvailable)
+        when (preview) {
+            NoPreviewAvailable -> {
+                applyBackground(Color.TRANSPARENT)
+            }
+            is ActualPreview -> {
+                framesAdapter.setFrames(preview.frames, preview.frameMetrics)
+                applyBackground(preview.backgroundColor)
+            }
         }
-
-        applyBackground(preview.backgroundColor)
     }
 
     private fun applyBackground(color: Int) {

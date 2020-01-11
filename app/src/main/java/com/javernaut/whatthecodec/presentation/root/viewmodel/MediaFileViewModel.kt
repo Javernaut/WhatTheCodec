@@ -132,9 +132,9 @@ class MediaFileViewModel(private val desiredFrameWidth: Int,
     private var cachedFrameBitmaps = emptyList<Bitmap>()
 
     private fun tryLoadVideoFrames() {
-        if (_basicVideoInfoLiveData.value != null) {
+        if (mediaFile?.supportsFrameLoading() == true) {
             viewModelScope.launch(Dispatchers.Main) {
-                _previewLiveData.value = Preview(true,
+                _previewLiveData.value = ActualPreview(
                         frameMetrics,
                         listOf(LoadingFrame, LoadingFrame, LoadingFrame, LoadingFrame),
                         Color.TRANSPARENT
@@ -144,7 +144,7 @@ class MediaFileViewModel(private val desiredFrameWidth: Int,
                     loadFrames()
                 }
 
-                _previewLiveData.value = Preview(true,
+                _previewLiveData.value = ActualPreview(
                         frameMetrics,
                         result.frames.map { ActualFrame(it) },
                         result.backgroundColor)
@@ -152,6 +152,8 @@ class MediaFileViewModel(private val desiredFrameWidth: Int,
                 cachedFrameBitmaps.forEach { it.recycle() }
                 cachedFrameBitmaps = result.frames.toList()
             }
+        } else {
+            _previewLiveData.value = NoPreviewAvailable
         }
     }
 

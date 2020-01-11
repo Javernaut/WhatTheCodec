@@ -17,6 +17,8 @@ class MediaFile(
     var frameLoader = frameLoaderContextHandle?.let { FrameLoader(frameLoaderContextHandle) }
         private set
 
+    fun supportsFrameLoading() = videoStream != null && frameLoader != null
+
     fun release() {
         frameLoader?.release()
         frameLoader = null

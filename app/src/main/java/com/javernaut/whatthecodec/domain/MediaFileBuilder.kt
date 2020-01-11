@@ -90,7 +90,9 @@ class MediaFileBuilder(private val mediaType: MediaType) {
                     frameWidth,
                     frameHeight,
                     parcelFileDescriptor == null)
-            frameLoaderContextHandle = frameLoaderContext
+            if (frameLoaderContext != -1L) {
+                frameLoaderContextHandle = frameLoaderContext
+            }
         }
     }
 
