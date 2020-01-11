@@ -2,8 +2,6 @@ package com.javernaut.whatthecodec.presentation.video.ui
 
 import android.animation.ArgbEvaluator
 import android.animation.ObjectAnimator
-import android.app.Dialog
-import android.app.ProgressDialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -19,8 +17,6 @@ import kotlinx.android.synthetic.main.fragment_video_page.*
 
 class VideoPageFragment : BasePageFragment(R.layout.fragment_video_page) {
 
-    private var progressDialog: Dialog? = null
-
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
@@ -33,27 +29,16 @@ class VideoPageFragment : BasePageFragment(R.layout.fragment_video_page) {
             }
         })
 
-        mediaFileViewModel.modalProgressLiveData.observe(this, Observer {
-            progressDialog?.dismiss()
-            progressDialog = if (it) {
-                ProgressDialog.show(requireContext(), null, getString(R.string.message_progress))
-            } else {
-                null
-            }
-        })
+        mediaFileViewModel.previewLiveData.observe(this, Observer {
+            frameDisplayingView.setPreview(it)
 
-        mediaFileViewModel.framesLiveData.observe(this, Observer {
-            frameDisplayingView.setFrames(it)
-        })
-
-        mediaFileViewModel.framesBackgroundLiveData.observe(this, Observer { newColor ->
             val currentColor = (frameBackground.background as? ColorDrawable)?.color
                     ?: Color.TRANSPARENT
             ObjectAnimator.ofObject(frameBackground,
                     "backgroundColor",
                     ArgbEvaluator(),
                     currentColor,
-                    newColor
+                    it.backgroundColor
             )
                     .setDuration(300)
                     .start()
@@ -89,11 +74,5 @@ class VideoPageFragment : BasePageFragment(R.layout.fragment_video_page) {
 
                 )
         )
-    }
-
-    override fun onDestroy() {
-        progressDialog?.dismiss()
-        progressDialog = null
-        super.onDestroy()
     }
 }

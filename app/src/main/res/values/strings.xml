@@ -2,7 +2,6 @@
 <resources>
     <string name="message_permission_denied">Permission denied</string>
     <string name="message_couldnt_open_file">Couldn\'t open the file</string>
-    <string name="message_progress">Please wait…</string>
     <string name="menu_pick_video">Pick Video</string>
     <string name="menu_pick_audio">Pick Audio</string>
     <string name="tab_video">Video</string>

@@ -7,4 +7,5 @@
     <dimen name="common_list_item_height">58dp</dimen>
     <dimen name="common_clickable_item_height">48dp</dimen>
     <dimen name="preview_frames_view_width">@dimen/match_parent</dimen>
+    <dimen name="preview_frames_spacing">2dp</dimen>
 </resources>

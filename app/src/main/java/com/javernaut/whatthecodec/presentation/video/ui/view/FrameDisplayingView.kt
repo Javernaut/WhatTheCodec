@@ -1,72 +1,47 @@
 package com.javernaut.whatthecodec.presentation.video.ui.view
 
+import android.app.Activity
 import android.content.Context
-import android.graphics.Bitmap
+import android.graphics.Point
 import android.util.AttributeSet
-import android.util.TypedValue
-import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlin.math.sqrt
+import com.javernaut.whatthecodec.R
+import com.javernaut.whatthecodec.presentation.root.viewmodel.model.Preview
+import kotlin.math.min
 
+// TODO Hide the RecyclerView and the background as implementation details
 class FrameDisplayingView(context: Context, attrs: AttributeSet) : RecyclerView(context, attrs) {
 
-    private val commonSpacing = TypedValue.applyDimension(
-            TypedValue.COMPLEX_UNIT_DIP,
-            2f,
-            context.resources.displayMetrics).toInt()
-
     init {
+        val commonSpacing = resources.getDimensionPixelSize(R.dimen.preview_frames_spacing)
         setPadding(commonSpacing, commonSpacing, commonSpacing, commonSpacing)
     }
 
-    private val framesAdapter = Adapter(commonSpacing).also {
+    private val framesAdapter = FramesAdapter().also {
         adapter = it
     }
 
-    fun setFrames(frames: Array<Bitmap>) {
-        val childFramesPerRow = sqrt(frames.size.toDouble()).toInt()
+    fun setPreview(preview: Preview) {
+        // TODO use all the data from preview object
 
-        layoutManager = GridLayoutManager(context, childFramesPerRow)
+        // TODO consider height of this view when frames are not decoded at all. It should be fixed
 
-        framesAdapter.frames = frames
+        layoutManager = GridLayoutManager(context, 2)
+
+        framesAdapter.setFrames(preview.frames, preview.frameMetrics)
     }
 
-    private class Adapter(private val commonSpacing: Int) : RecyclerView.Adapter<ViewHolder>() {
+    companion object {
+        fun getDesiredFrameWidth(activity: Activity): Int {
+            val point = Point()
+            activity.windowManager.defaultDisplay.getSize(point)
+            val minSide = min(point.x, point.y)
 
-        var frames: Array<Bitmap> = emptyArray()
-            set(value) {
-                field = value
-                notifyDataSetChanged()
-            }
+            // 2 (the resource value is only a half of the actual spacing) * 3 (there are 3 such spacings) = 6
+            val totalSpacing = activity.resources.getDimensionPixelSize(R.dimen.preview_frames_spacing) * 6
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-            val layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
-
-            layoutParams.setMargins(commonSpacing, commonSpacing, commonSpacing, commonSpacing)
-
-            val itemView = ImageView(parent.context)
-
-            itemView.adjustViewBounds = true
-            itemView.layoutParams = layoutParams
-
-            return ViewHolder(itemView)
+            return (minSide - totalSpacing) / 2
         }
-
-        override fun getItemCount() = frames.size
-
-        override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-            holder.bind(frames[position])
-        }
-
-    }
-
-    private class ViewHolder(private val imageView: ImageView) : RecyclerView.ViewHolder(imageView) {
-
-        fun bind(bitmap: Bitmap) {
-            imageView.setImageBitmap(bitmap)
-        }
-
     }
 }
