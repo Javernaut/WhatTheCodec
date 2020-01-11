@@ -8,15 +8,17 @@
 #include <jni.h>
 
 /**
- * Extracts N equidistant frames from the video, where N is jBitmaps.size. Typically 1, 4 or 9.
- * Decoded frames are scaled to the size of Bitmaps in jBitmaps.
+ * Loads one frame from the jFrameLoaderContextHandle at a specific index.
+ * Decoded frame is scaled to the size of the Bitmap.
  *
- * @param env a part of jBitmaps accessing
- * @param jVideoStream a VideoStream java object
- * @param jBitmaps an array of java Bitmap objects to write frames
+ * @param env a part of jBitmap accessing
+ * @param jFrameLoaderContextHandle a handle to FrameLoaderContext struct
+ * @param index an index of a frame. Should be 0, 1, 2 or 3. For a single video the frame_extractor_load_frame() method
+ * should be called 4 times. Indexes should be in increasing order.
+ * @param jBitmap a destination to load a frame
  *
- * @return true if all frames were successfully extracted, false otherwise
+ * @return true if the frame was successfully loaded, false otherwise
  */
-bool frame_extractor_fill_with_preview(JNIEnv *env, jobject jVideoStream, jobjectArray jBitmaps);
+bool frame_extractor_load_frame(JNIEnv *env, int64_t jFrameLoaderContextHandle, int index, jobject jBitmap);
 
 #endif //WHATTHECODEC_FRAME_EXTRACTOR_H

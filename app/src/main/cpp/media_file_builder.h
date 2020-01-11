@@ -2,8 +2,8 @@
 // Created by Alexander Berezhnoi on 14/10/19.
 //
 
-#ifndef WHATTHECODEC_VIDEO_FILE_CONFIG_BUILDER_H
-#define WHATTHECODEC_VIDEO_FILE_CONFIG_BUILDER_H
+#ifndef WHATTHECODEC_MEDIA_FILE_BUILDER_H
+#define WHATTHECODEC_MEDIA_FILE_BUILDER_H
 
 #include <jni.h>
 
@@ -15,7 +15,7 @@
  * @param fileDescriptor a file descriptor to a local file
  * @param mediaStreamsMask a bit set of media streams to extract from the file
  */
-void video_file_config_build(jobject jMediaFileBuilder, int fileDescriptor, int mediaStreamsMask);
+void media_file_build(jobject jMediaFileBuilder, int fileDescriptor, int mediaStreamsMask);
 
 /**
  * Creates an AVFormatContext struct according to the parameter. Notifies a MediaFileBuilder
@@ -27,7 +27,7 @@ void video_file_config_build(jobject jMediaFileBuilder, int fileDescriptor, int 
  * @param shortFormatName the name of the media container, as there is a problem probing it this case
  * @param mediaStreamsMask a bit set of media streams to extract from the file
  */
-void video_file_config_build(jobject jMediaFileBuilder, int assetFileDescriptor, int64_t startOffset, const char *shortFormatName, int mediaStreamsMask);
+void media_file_build(jobject jMediaFileBuilder, int assetFileDescriptor, int64_t startOffset, const char *shortFormatName, int mediaStreamsMask);
 
 /**
  * Creates an AVFormatContext struct according to the parameter. Notifies a MediaFileBuilder
@@ -37,6 +37,6 @@ void video_file_config_build(jobject jMediaFileBuilder, int assetFileDescriptor,
  * @param filePath a file path to a local file
  * @param mediaStreamsMask a bit set of media streams to extract from the file
  */
-void video_file_config_build(jobject jMediaFileBuilder, const char *filePath, int mediaStreamsMask);
+void media_file_build(jobject jMediaFileBuilder, const char *filePath, int mediaStreamsMask);
 
-#endif //WHATTHECODEC_VIDEO_FILE_CONFIG_BUILDER_H
+#endif //WHATTHECODEC_MEDIA_FILE_BUILDER_H

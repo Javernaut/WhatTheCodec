@@ -8,7 +8,7 @@
 #include <jni.h>
 
 /**
- * Initializes the fields struct that keeps handles to MediaFileConfig's internal fields in order to read/write to them.
+ * Initializes the fields struct that keeps handles to MediaFile's internal fields in order to read/write to them.
  */
 int utils_fields_init(JavaVM *vm);
 
@@ -46,10 +46,6 @@ jobject utils_call_instance_method_result(jobject instance, jmethodID methodID, 
 // https://code.videolan.org/videolan/vlc-android/blob/master/libvlc/jni/libvlcjni.c
 
 struct fields {
-    struct {
-        jclass clazz;
-        jfieldID nativePointer;
-    } VideoStream;
     struct {
         jclass clazz;
         jmethodID onMediaFileFoundID;

@@ -6,6 +6,7 @@ import androidx.lifecycle.*
 import androidx.palette.graphics.Palette
 import com.hadilq.liveevent.LiveEvent
 import com.javernaut.whatthecodec.domain.AudioStream
+import com.javernaut.whatthecodec.domain.FrameLoader
 import com.javernaut.whatthecodec.domain.MediaFile
 import com.javernaut.whatthecodec.domain.SubtitleStream
 import com.javernaut.whatthecodec.presentation.root.viewmodel.model.*
@@ -155,24 +156,30 @@ class MediaFileViewModel(private val desiredFrameWidth: Int,
     }
 
     private fun loadFrames(): VideoProcessingResult {
-        val bitmaps = Array<Bitmap>(FRAMES_NUMBER) {
+        val bitmaps = Array<Bitmap>(FrameLoader.TOTAL_FRAMES_TO_LOAD) {
             Bitmap.createBitmap(frameMetrics.width, frameMetrics.height, Bitmap.Config.ARGB_8888)
         }
 
-        mediaFile?.videoStream?.fillWithPreview(bitmaps)
+        // TODO publish the progress of each frame
+        for (i in 0..3) {
+            val bitmap = bitmaps[i]
+            mediaFile?.frameLoader?.loadNextFrameInto(bitmap)
+        }
+        mediaFile?.release()
 
-        var backgroundColor: Int = Color.TRANSPARENT
-        val palette = Palette.from(bitmaps.first()).generate()
+        return VideoProcessingResult(bitmaps, computeBackground(bitmaps.first()))
+    }
+
+    private fun computeBackground(bitmap: Bitmap): Int {
+        val palette = Palette.from(bitmap).generate()
         // Pick the first swatch in this order that isn't null and use its color
-        backgroundColor = listOf(
+        return listOf(
                 palette::getDarkMutedSwatch,
                 palette::getMutedSwatch,
                 palette::getDominantSwatch
         ).firstOrNull {
             it() != null
-        }?.invoke()?.rgb ?: backgroundColor
-
-        return VideoProcessingResult(bitmaps, backgroundColor)
+        }?.invoke()?.rgb ?: Color.TRANSPARENT
     }
 
     private fun clearPendingUri() {
@@ -199,7 +206,6 @@ class MediaFileViewModel(private val desiredFrameWidth: Int,
 
     companion object {
         const val KEY_MEDIA_FILE_ARGUMENT = "key_video_file_uri"
-        const val FRAMES_NUMBER = 4
     }
 
     private class VideoProcessingResult(

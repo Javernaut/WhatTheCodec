@@ -2,8 +2,8 @@
 // Created by Alexander Berezhnoi on 24/03/19.
 //
 
-#include "video_file_config_builder.h"
-#include "video_stream.h"
+#include "media_file_builder.h"
+#include "frame_loader_context.h"
 #include "utils.h"
 
 extern "C" {
@@ -78,7 +78,7 @@ static void onVideoStreamFound(jobject jMediaFileBuilder,
 
     jobject jBasicStreamInfo = createBasicStreamInfo(jMediaFileBuilder, avFormatContext, index);
 
-    auto *videoStream = (VideoStream *) malloc(sizeof(VideoStream));;
+    auto *videoStream = (FrameLoaderContext *) malloc(sizeof(FrameLoaderContext));;
     videoStream->avFormatContext = avFormatContext;
     videoStream->parameters = parameters;
     videoStream->avVideoCodec = avcodec_find_decoder(parameters->codec_id);
@@ -90,7 +90,7 @@ static void onVideoStreamFound(jobject jMediaFileBuilder,
                                     parameters->bit_rate,
                                     parameters->width,
                                     parameters->height,
-                                    video_stream_get_handle(videoStream));
+                                    frame_loader_context_to_handle(videoStream));
 }
 
 static void onAudioStreamFound(jobject jMediaFileBuilder,
@@ -139,7 +139,7 @@ static int STREAM_VIDEO = 1;
 static int STREAM_AUDIO = 1 << 1;
 static int STREAM_SUBTITLE = 1 << 2;
 
-static void video_file_config_build(jobject jMediaFileBuilder, const char *uri, int mediaStreamsMask, AVFormatContext *avFormatContext) {
+static void media_file_build(jobject jMediaFileBuilder, const char *uri, int mediaStreamsMask, AVFormatContext *avFormatContext) {
     if (avformat_open_input(&avFormatContext, uri, nullptr, nullptr)) {
         onError(jMediaFileBuilder);
         return;
@@ -176,18 +176,18 @@ static void video_file_config_build(jobject jMediaFileBuilder, const char *uri, 
     }
 }
 
-void video_file_config_build(jobject jMediaFileBuilder, const char *uri, int mediaStreamsMask) {
-    video_file_config_build(jMediaFileBuilder, uri, mediaStreamsMask, nullptr);
+void media_file_build(jobject jMediaFileBuilder, const char *filePath, int mediaStreamsMask) {
+    media_file_build(jMediaFileBuilder, filePath, mediaStreamsMask, nullptr);
 }
 
-void video_file_config_build(jobject jMediaFileBuilder, int fileDescriptor, int mediaStreamsMask) {
+void media_file_build(jobject jMediaFileBuilder, int fileDescriptor, int mediaStreamsMask) {
     char pipe[32];
     sprintf(pipe, "pipe:%d", fileDescriptor);
 
-    video_file_config_build(jMediaFileBuilder, pipe, mediaStreamsMask, nullptr);
+    media_file_build(jMediaFileBuilder, pipe, mediaStreamsMask, nullptr);
 }
 
-void video_file_config_build(jobject jMediaFileBuilder, int assetFileDescriptor, int64_t startOffset, const char *shortFormatName, int mediaStreamsMask) {
+void media_file_build(jobject jMediaFileBuilder, int assetFileDescriptor, int64_t startOffset, const char *shortFormatName, int mediaStreamsMask) {
     char str[32];
     sprintf(str, "pipe:%d", assetFileDescriptor);
 
@@ -195,5 +195,5 @@ void video_file_config_build(jobject jMediaFileBuilder, int assetFileDescriptor,
     predefinedContext->skip_initial_bytes = startOffset;
     predefinedContext->iformat = av_find_input_format(shortFormatName);
 
-    video_file_config_build(jMediaFileBuilder, str, mediaStreamsMask, predefinedContext);
+    media_file_build(jMediaFileBuilder, str, mediaStreamsMask, predefinedContext);
 }

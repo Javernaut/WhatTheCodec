@@ -10,13 +10,16 @@ class MediaFile(
         val videoStream: VideoStream?,
         val audioStreams: List<AudioStream>,
         val subtitleStreams: List<SubtitleStream>,
-        private val parcelFileDescriptor: ParcelFileDescriptor?
+        private val parcelFileDescriptor: ParcelFileDescriptor?,
+        frameLoaderContextHandle: Long?
 ) {
 
+    var frameLoader = frameLoaderContextHandle?.let { FrameLoader(frameLoaderContextHandle) }
+        private set
+
     fun release() {
-        videoStream?.release()
+        frameLoader?.release()
+        frameLoader = null
         parcelFileDescriptor?.close()
     }
-
 }
-

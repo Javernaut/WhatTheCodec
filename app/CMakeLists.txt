@@ -30,10 +30,10 @@ add_library(
         SHARED
         # All cpp files to compile
         src/main/cpp/main.cpp
-        src/main/cpp/video_file_config_builder.cpp
-        src/main/cpp/video_file_config_builder_jni.cpp
-        src/main/cpp/video_stream.cpp
-        src/main/cpp/video_stream_jni.cpp
+        src/main/cpp/media_file_builder.cpp
+        src/main/cpp/media_file_builder_jni.cpp
+        src/main/cpp/frame_loader_context.cpp
+        src/main/cpp/frame_loader_context_jni.cpp
         src/main/cpp/frame_extractor.cpp
         src/main/cpp/utils.cpp)
 

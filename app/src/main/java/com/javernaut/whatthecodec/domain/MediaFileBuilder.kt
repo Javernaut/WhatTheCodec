@@ -17,6 +17,7 @@ class MediaFileBuilder(private val mediaType: MediaType) {
     private var fileFormatName: String? = null
 
     private var videoStream: VideoStream? = null
+    private var frameLoaderContextHandle: Long? = null
     private var audioStreams = mutableListOf<AudioStream>()
     private var subtitleStream = mutableListOf<SubtitleStream>()
 
@@ -56,7 +57,7 @@ class MediaFileBuilder(private val mediaType: MediaType) {
      */
     fun create(): MediaFile? {
         return if (!error) {
-            MediaFile(fileFormatName!!, videoStream, audioStreams, subtitleStream, parcelFileDescriptor)
+            MediaFile(fileFormatName!!, videoStream, audioStreams, subtitleStream, parcelFileDescriptor, frameLoaderContextHandle)
         } else {
             null
         }
@@ -81,15 +82,15 @@ class MediaFileBuilder(private val mediaType: MediaType) {
             bitRate: Long,
             frameWidth: Int,
             frameHeight: Int,
-            nativePointer: Long) {
+            frameLoaderContext: Long) {
         if (videoStream == null) {
             videoStream = VideoStream(
                     basicStreamInfo,
                     bitRate,
                     frameWidth,
                     frameHeight,
-                    parcelFileDescriptor == null,
-                    nativePointer)
+                    parcelFileDescriptor == null)
+            frameLoaderContextHandle = frameLoaderContext
         }
     }
 

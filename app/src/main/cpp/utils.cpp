@@ -49,14 +49,6 @@ int utils_fields_init(JavaVM *vm) {
 
     // Actual work
 
-    GET_CLASS(fields.VideoStream.clazz,
-              "com/javernaut/whatthecodec/domain/VideoStream", true);
-
-    GET_ID(GetFieldID,
-           fields.VideoStream.nativePointer,
-           fields.VideoStream.clazz,
-           "nativePointer", "J");
-
     GET_CLASS(fields.MediaFileBuilder.clazz,
               "com/javernaut/whatthecodec/domain/MediaFileBuilder", true);
 
@@ -99,7 +91,6 @@ void utils_fields_free(JavaVM *vm) {
         return;
     }
 
-    env->DeleteGlobalRef(fields.VideoStream.clazz);
     env->DeleteGlobalRef(fields.MediaFileBuilder.clazz);
 
     javaVM = nullptr;
