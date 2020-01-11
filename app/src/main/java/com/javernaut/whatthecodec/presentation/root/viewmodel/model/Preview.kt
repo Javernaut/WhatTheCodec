@@ -4,7 +4,7 @@ sealed class Preview
 
 object NoPreviewAvailable : Preview()
 
-class ActualPreview(val frameMetrics: FrameMetrics,
+data class ActualPreview(val frameMetrics: FrameMetrics,
                     val frames: List<Frame>,
                     val backgroundColor: Int) : Preview()
 

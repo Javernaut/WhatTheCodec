@@ -1,18 +1,11 @@
 package com.javernaut.whatthecodec.presentation.root.viewmodel
 
-import android.graphics.Bitmap
-import android.graphics.Color
 import androidx.lifecycle.*
-import androidx.palette.graphics.Palette
 import com.hadilq.liveevent.LiveEvent
 import com.javernaut.whatthecodec.domain.AudioStream
-import com.javernaut.whatthecodec.domain.FrameLoader
 import com.javernaut.whatthecodec.domain.MediaFile
 import com.javernaut.whatthecodec.domain.SubtitleStream
 import com.javernaut.whatthecodec.presentation.root.viewmodel.model.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class MediaFileViewModel(private val desiredFrameWidth: Int,
                          private val mediaFileProvider: MediaFileProvider,
@@ -21,6 +14,7 @@ class MediaFileViewModel(private val desiredFrameWidth: Int,
     private var pendingMediaFileArgument: MediaFileArgument? = null
 
     private var mediaFile: MediaFile? = null
+    private var frameLoaderHelper: FrameLoaderHelper? = null
 
     private lateinit var frameMetrics: FrameMetrics
 
@@ -80,6 +74,7 @@ class MediaFileViewModel(private val desiredFrameWidth: Int,
 
     override fun onCleared() {
         mediaFile?.release()
+        frameLoaderHelper?.release()
     }
 
     fun applyPendingMediaFileIfNeeded() {
@@ -106,6 +101,12 @@ class MediaFileViewModel(private val desiredFrameWidth: Int,
         _basicVideoInfoLiveData.value = mediaFile.toBasicInfo()
         frameMetrics = computeFrameMetrics()
 
+        frameLoaderHelper?.release()
+        frameLoaderHelper = null
+        if (mediaFile.supportsFrameLoading()) {
+            frameLoaderHelper = FrameLoaderHelper(frameMetrics, viewModelScope)
+        }
+
         _isFullFeaturedLiveData.value = mediaFile.videoStream?.fullFeatured ?: true
         _audioStreamsLiveData.value = mediaFile.audioStreams
         _subtitleStreamsLiveData.value = mediaFile.subtitleStreams
@@ -128,60 +129,14 @@ class MediaFileViewModel(private val desiredFrameWidth: Int,
         _availableTabsLiveData.value = tabs
     }
 
-    // TODO Consider moving to another class
-    private var cachedFrameBitmaps = emptyList<Bitmap>()
-
     private fun tryLoadVideoFrames() {
-        if (mediaFile?.supportsFrameLoading() == true) {
-            viewModelScope.launch(Dispatchers.Main) {
-                _previewLiveData.value = ActualPreview(
-                        frameMetrics,
-                        listOf(LoadingFrame, LoadingFrame, LoadingFrame, LoadingFrame),
-                        Color.TRANSPARENT
-                )
-
-                val result = withContext(Dispatchers.IO) {
-                    loadFrames()
-                }
-
-                _previewLiveData.value = ActualPreview(
-                        frameMetrics,
-                        result.frames.map { ActualFrame(it) },
-                        result.backgroundColor)
-
-                cachedFrameBitmaps.forEach { it.recycle() }
-                cachedFrameBitmaps = result.frames.toList()
+        if (frameLoaderHelper != null) {
+            frameLoaderHelper?.loadFrames(mediaFile!!) {
+                _previewLiveData.postValue(it)
             }
         } else {
             _previewLiveData.value = NoPreviewAvailable
         }
-    }
-
-    private fun loadFrames(): VideoProcessingResult {
-        val bitmaps = Array<Bitmap>(FrameLoader.TOTAL_FRAMES_TO_LOAD) {
-            Bitmap.createBitmap(frameMetrics.width, frameMetrics.height, Bitmap.Config.ARGB_8888)
-        }
-
-        // TODO publish the progress of each frame
-        for (i in 0..3) {
-            val bitmap = bitmaps[i]
-            mediaFile?.frameLoader?.loadNextFrameInto(bitmap)
-        }
-        mediaFile?.release()
-
-        return VideoProcessingResult(bitmaps, computeBackground(bitmaps.first()))
-    }
-
-    private fun computeBackground(bitmap: Bitmap): Int {
-        val palette = Palette.from(bitmap).generate()
-        // Pick the first swatch in this order that isn't null and use its color
-        return listOf(
-                palette::getDarkMutedSwatch,
-                palette::getMutedSwatch,
-                palette::getDominantSwatch
-        ).firstOrNull {
-            it() != null
-        }?.invoke()?.rgb ?: Color.TRANSPARENT
     }
 
     private fun clearPendingUri() {
@@ -209,9 +164,4 @@ class MediaFileViewModel(private val desiredFrameWidth: Int,
     companion object {
         const val KEY_MEDIA_FILE_ARGUMENT = "key_video_file_uri"
     }
-
-    private class VideoProcessingResult(
-            val frames: Array<Bitmap>,
-            val backgroundColor: Int
-    )
 }
