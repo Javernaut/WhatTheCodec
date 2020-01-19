@@ -88,8 +88,7 @@ class MediaFileBuilder(private val mediaType: MediaType) {
                     basicStreamInfo,
                     bitRate,
                     frameWidth,
-                    frameHeight,
-                    parcelFileDescriptor == null)
+                    frameHeight)
             if (frameLoaderContext != -1L) {
                 frameLoaderContextHandle = frameLoaderContext
             }

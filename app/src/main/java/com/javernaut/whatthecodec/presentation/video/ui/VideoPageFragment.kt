@@ -51,7 +51,7 @@ class VideoPageFragment : BasePageFragment(R.layout.fragment_video_page) {
                         StreamFeature(R.string.info_file_format, basicVideoInfo.fileFormat),
 
                         StreamFeature(R.string.info_protocol_title, getString(
-                                if (basicVideoInfo.videoStream.fullFeatured) {
+                                if (basicVideoInfo.fullFeatured) {
                                     R.string.info_protocol_file
                                 } else {
                                     R.string.info_protocol_pipe

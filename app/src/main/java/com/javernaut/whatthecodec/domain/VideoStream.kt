@@ -7,7 +7,5 @@ class VideoStream(
         val basicInfo: BasicStreamInfo,
         val bitRate: Long,
         val frameWidth: Int,
-        val frameHeight: Int,
-        // TODO move to MediaFile itself
-        val fullFeatured: Boolean
+        val frameHeight: Int
 )

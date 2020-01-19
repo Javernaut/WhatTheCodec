@@ -4,5 +4,6 @@ import com.javernaut.whatthecodec.domain.VideoStream
 
 data class BasicVideoInfo(
         val fileFormat: String,
+        val fullFeatured: Boolean,
         val videoStream: VideoStream
 )

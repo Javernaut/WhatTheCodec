@@ -14,6 +14,8 @@ class MediaFile(
         frameLoaderContextHandle: Long?
 ) {
 
+    val fullFeatured = parcelFileDescriptor == null
+
     var frameLoader = frameLoaderContextHandle?.let { FrameLoader(frameLoaderContextHandle) }
         private set
 

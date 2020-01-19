@@ -19,7 +19,6 @@ class MediaFileViewModel(private val desiredFrameWidth: Int,
     private lateinit var frameMetrics: FrameMetrics
 
     private val _basicVideoInfoLiveData = MutableLiveData<BasicVideoInfo?>()
-    private val _isFullFeaturedLiveData = MutableLiveData<Boolean>()
     private val _previewLiveData = MutableLiveData<Preview>()
     private val _errorMessageLiveEvent = LiveEvent<Boolean>()
     private val _availableTabsLiveData = MutableLiveData<List<AvailableTab>>()
@@ -35,12 +34,6 @@ class MediaFileViewModel(private val desiredFrameWidth: Int,
      */
     val basicVideoInfoLiveData: LiveData<BasicVideoInfo?>
         get() = _basicVideoInfoLiveData
-
-    /**
-     * True if the file: protocol was used for a media file. False if pipe: protocol was used.
-     */
-    val isFullFeaturedLiveData: LiveData<Boolean>
-        get() = _isFullFeaturedLiveData
 
     /**
      * Notifies about error during opening a file.
@@ -107,7 +100,6 @@ class MediaFileViewModel(private val desiredFrameWidth: Int,
             frameLoaderHelper = FrameLoaderHelper(frameMetrics, viewModelScope)
         }
 
-        _isFullFeaturedLiveData.value = mediaFile.videoStream?.fullFeatured ?: true
         _audioStreamsLiveData.value = mediaFile.audioStreams
         _subtitleStreamsLiveData.value = mediaFile.subtitleStreams
 
@@ -157,6 +149,7 @@ class MediaFileViewModel(private val desiredFrameWidth: Int,
         }
         return BasicVideoInfo(
                 fileFormatName,
+                fullFeatured,
                 videoStream
         )
     }
