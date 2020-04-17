@@ -13,7 +13,7 @@ class SubtitlePageFragment : BasePageFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        mediaFileViewModel.subtitleStreamsLiveData.observe(this, Observer {
+        mediaFileViewModel.subtitleStreamsLiveData.observe(viewLifecycleOwner, Observer {
             displayStreams(it.map(::convertStream))
         })
     }

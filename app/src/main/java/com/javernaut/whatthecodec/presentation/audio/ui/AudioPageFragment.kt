@@ -13,7 +13,7 @@ class AudioPageFragment : BasePageFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        mediaFileViewModel.audioStreamsLiveData.observe(this, Observer {
+        mediaFileViewModel.audioStreamsLiveData.observe(viewLifecycleOwner, Observer {
             displayStreams(it.map(::convertStream))
         })
     }

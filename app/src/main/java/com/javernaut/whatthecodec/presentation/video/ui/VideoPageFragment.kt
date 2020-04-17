@@ -16,7 +16,7 @@ class VideoPageFragment : BasePageFragment(R.layout.fragment_video_page) {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        mediaFileViewModel.basicVideoInfoLiveData.observe(this, Observer {
+        mediaFileViewModel.basicVideoInfoLiveData.observe(viewLifecycleOwner, Observer {
             if (it != null) {
                 displayStreams(listOf(
                         convertToContainer(it),
@@ -25,7 +25,7 @@ class VideoPageFragment : BasePageFragment(R.layout.fragment_video_page) {
             }
         })
 
-        mediaFileViewModel.previewLiveData.observe(this, Observer {
+        mediaFileViewModel.previewLiveData.observe(viewLifecycleOwner, Observer {
             previewView.setPreview(it)
         })
     }

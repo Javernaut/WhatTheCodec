@@ -10,7 +10,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.MimeTypeFilter
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.tabs.TabLayoutMediator
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.domain.MediaType
@@ -27,7 +27,7 @@ import kotlinx.android.synthetic.main.inline_empty_root.*
 class RootActivity : AppCompatActivity(R.layout.activity_root) {
 
     private val mediaFileViewModel by lazy(LazyThreadSafetyMode.NONE) {
-        ViewModelProviders.of(
+        ViewModelProvider(
                 this, MediaFileViewModelFactory(this, PreviewView.getDesiredFrameWidth(this))
         ).get(MediaFileViewModel::class.java)
     }
