@@ -23,17 +23,20 @@ class FramesAdapter : RecyclerView.Adapter<FrameViewHolder>() {
         val itemView = LayoutInflater.from(parent.context)
                 .inflate(R.layout.item_frame, parent, false)
 
-        val layoutParams = itemView.layoutParams
-        layoutParams.width = frameMetrics.width
-        layoutParams.height = frameMetrics.height
-        itemView.layoutParams = layoutParams
-
         return FrameViewHolder(itemView)
     }
 
     override fun getItemCount() = frames.size
 
     override fun onBindViewHolder(holder: FrameViewHolder, position: Int) {
+        val itemView = holder.itemView
+
+        // Forcing the itemView width and height
+        val layoutParams = itemView.layoutParams
+        layoutParams.width = frameMetrics.width
+        layoutParams.height = frameMetrics.height
+        itemView.layoutParams = layoutParams
+
         holder.bind(frames[position])
     }
 }
