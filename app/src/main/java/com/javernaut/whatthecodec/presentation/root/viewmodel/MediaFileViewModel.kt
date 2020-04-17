@@ -16,7 +16,7 @@ class MediaFileViewModel(private val desiredFrameWidth: Int,
     private var mediaFile: MediaFile? = null
     private var frameLoaderHelper: FrameLoaderHelper? = null
 
-    private lateinit var frameMetrics: FrameMetrics
+    private var frameMetrics: FrameMetrics? = null
 
     private val _basicVideoInfoLiveData = MutableLiveData<BasicVideoInfo?>()
     private val _previewLiveData = MutableLiveData<Preview>()
@@ -66,8 +66,11 @@ class MediaFileViewModel(private val desiredFrameWidth: Int,
         get() = _subtitleStreamsLiveData
 
     override fun onCleared() {
-        mediaFile?.release()
-        frameLoaderHelper?.release()
+        if (frameLoaderHelper == null) {
+            mediaFile?.release()
+        } else {
+            frameLoaderHelper?.release()
+        }
     }
 
     fun applyPendingMediaFileIfNeeded() {
@@ -82,7 +85,9 @@ class MediaFileViewModel(private val desiredFrameWidth: Int,
         val newMediaFile = mediaFileProvider.obtainMediaFile(argument)
         if (newMediaFile != null) {
             savedStateHandle.set(KEY_MEDIA_FILE_ARGUMENT, argument)
-            mediaFile?.release()
+
+            releasePreviousMediaFileAndFrameLoader(newMediaFile)
+
             mediaFile = newMediaFile
             applyMediaFile(newMediaFile)
         } else {
@@ -94,10 +99,8 @@ class MediaFileViewModel(private val desiredFrameWidth: Int,
         _basicVideoInfoLiveData.value = mediaFile.toBasicInfo()
         frameMetrics = computeFrameMetrics()
 
-        frameLoaderHelper?.release()
-        frameLoaderHelper = null
         if (mediaFile.supportsFrameLoading()) {
-            frameLoaderHelper = FrameLoaderHelper(frameMetrics, viewModelScope)
+            frameLoaderHelper = FrameLoaderHelper(frameMetrics!!, viewModelScope, ::applyPreview)
         }
 
         _audioStreamsLiveData.value = mediaFile.audioStreams
@@ -105,6 +108,16 @@ class MediaFileViewModel(private val desiredFrameWidth: Int,
 
         setupTabsAvailable(mediaFile)
         tryLoadVideoFrames()
+    }
+
+    private fun releasePreviousMediaFileAndFrameLoader(newMediaFile: MediaFile) {
+        if (frameLoaderHelper != null) {
+            frameLoaderHelper?.release(newMediaFile.supportsFrameLoading())
+        } else {
+            // MediaFile is released only if there was no FrameLoaderHelper used.
+            mediaFile?.release()
+        }
+        frameLoaderHelper = null
     }
 
     private fun setupTabsAvailable(mediaFile: MediaFile) {
@@ -123,24 +136,28 @@ class MediaFileViewModel(private val desiredFrameWidth: Int,
 
     private fun tryLoadVideoFrames() {
         if (frameLoaderHelper != null) {
-            frameLoaderHelper?.loadFrames(mediaFile!!) {
-                _previewLiveData.postValue(it)
-            }
+            frameLoaderHelper?.loadFrames(mediaFile!!)
         } else {
             _previewLiveData.value = NoPreviewAvailable
         }
+    }
+
+    private fun applyPreview(preview: Preview) {
+        _previewLiveData.value = (preview)
     }
 
     private fun clearPendingUri() {
         pendingMediaFileArgument = null
     }
 
-    private fun computeFrameMetrics(): FrameMetrics {
-        val basicVideoInfo = _basicVideoInfoLiveData.value!!
+    private fun computeFrameMetrics(): FrameMetrics? {
+        val basicVideoInfo = _basicVideoInfoLiveData.value
 
-        val desiredFrameHeight = (desiredFrameWidth * basicVideoInfo.videoStream.frameHeight / basicVideoInfo.videoStream.frameWidth.toDouble()).toInt()
+        return basicVideoInfo?.let {
+            val desiredFrameHeight = (desiredFrameWidth * it.videoStream.frameHeight / it.videoStream.frameWidth.toDouble()).toInt()
 
-        return FrameMetrics(desiredFrameWidth, desiredFrameHeight)
+            FrameMetrics(desiredFrameWidth, desiredFrameHeight)
+        }
     }
 
     private fun MediaFile.toBasicInfo(): BasicVideoInfo? {

@@ -6,20 +6,24 @@ import androidx.palette.graphics.Palette
 import com.javernaut.whatthecodec.domain.FrameLoader
 import com.javernaut.whatthecodec.domain.MediaFile
 import com.javernaut.whatthecodec.presentation.root.viewmodel.model.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 
 class FrameLoaderHelper(
         private val metrics: FrameMetrics,
-        private val scope: CoroutineScope
+        private val scope: CoroutineScope,
+        private val previewApplier: (ActualPreview) -> Unit
 ) {
 
     private var cachedFrameBitmaps = HashMap<Int, Bitmap>()
 
-    fun loadFrames(mediaFile: MediaFile, previewApplier: (ActualPreview) -> Unit) {
-        scope.launch(Dispatchers.Default) {
+    private var isWorking = false
+
+    private lateinit var framesLoadingJob: Job
+
+    fun loadFrames(mediaFile: MediaFile) {
+        isWorking = true
+
+        framesLoadingJob = scope.launch(Dispatchers.Default) {
             val frames = mutableListOf<Frame>(PlaceholderFrame, PlaceholderFrame, PlaceholderFrame, PlaceholderFrame)
 
             // Initial state where all cells are empty
@@ -29,12 +33,16 @@ class FrameLoaderHelper(
                     Color.TRANSPARENT
             )
 
-            previewApplier(actualPreview)
+            tryApplyPreview(previewApplier, actualPreview)
 
             for (index in 0 until FrameLoader.TOTAL_FRAMES_TO_LOAD) {
+                if (!isWorking) {
+                    break
+                }
+
                 // First, marking a cell as 'loading'
                 frames[index] = LoadingFrame
-                previewApplier(actualPreview)
+                tryApplyPreview(previewApplier, actualPreview)
 
                 // Loading a frame in a separate dispatcher
                 val result = withContext(Dispatchers.IO) {
@@ -48,23 +56,47 @@ class FrameLoaderHelper(
                     DecodingErrorFrame
                 }
 
-                previewApplier(actualPreview)
+                tryApplyPreview(previewApplier, actualPreview)
             }
 
-            // In the end, we compute the background for frames
-            val frameBackground = withContext(Dispatchers.Default) {
-                computeBackground(getFrameBitmap(0))
+            if (isWorking) {
+                // In the end, we compute the background for frames
+                val frameBackground = withContext(Dispatchers.Default) {
+                    computeBackground(getFrameBitmap(0))
+                }
+                actualPreview = actualPreview.copy(backgroundColor = frameBackground)
+                tryApplyPreview(previewApplier, actualPreview)
             }
-            actualPreview = actualPreview.copy(backgroundColor = frameBackground)
-            previewApplier(actualPreview)
 
             mediaFile.release()
         }
     }
 
-    fun release() {
-        cachedFrameBitmaps.values.forEach { it.recycle() }
-        cachedFrameBitmaps.clear()
+    private suspend fun tryApplyPreview(previewApplier: (ActualPreview) -> Unit, preview: ActualPreview) {
+        if (isWorking) {
+            withContext(Dispatchers.Main) {
+                previewApplier(preview)
+            }
+        }
+    }
+
+    fun release(needPreviewReset: Boolean = false) {
+        isWorking = false
+
+        if (needPreviewReset) {
+            previewApplier(ActualPreview(
+                    metrics,
+                    listOf(PlaceholderFrame, PlaceholderFrame, PlaceholderFrame, PlaceholderFrame),
+                    Color.TRANSPARENT)
+            )
+        }
+
+        scope.launch(Dispatchers.Default) {
+            framesLoadingJob.join()
+
+            cachedFrameBitmaps.values.forEach { it.recycle() }
+            cachedFrameBitmaps.clear()
+        }
     }
 
     private fun loadSingleFrame(mediaFile: MediaFile, index: Int): FrameLoadingResult {
