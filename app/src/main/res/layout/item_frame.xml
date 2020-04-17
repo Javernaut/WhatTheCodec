@@ -18,13 +18,14 @@
         android:adjustViewBounds="true" />
 
     <TextView
-        android:background="@color/colorPreviewDecodingError"
         android:id="@+id/decodingErrorView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/colorPreviewDecodingError"
         android:gravity="center"
         android:padding="16dp"
         android:text="@string/page_video_preview_frame_decoding_error"
+        android:textAppearance="?attr/textAppearanceCaption"
         android:visibility="invisible" />
 
 </FrameLayout>
