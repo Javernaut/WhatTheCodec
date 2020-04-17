@@ -3,4 +3,5 @@
     <color name="colorPrimary">#3949AB</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorBackground">#F7F7F7</color>
+    <color name="colorPreviewDecodingError">@android:color/darker_gray</color>
 </resources>

@@ -26,7 +26,6 @@ class FrameViewHolder(override val containerView: View) : RecyclerView.ViewHolde
     private fun setVisibilities(progress: Boolean = false, actualFrame: Boolean = false, decodingError: Boolean = false) {
         containerView.progressView.setVisible(progress)
         containerView.actualFrameView.setVisible(actualFrame)
-        // TODO uncomment when ready
-//        containerView.decodingErrorView.setVisible(decodingError)
+        containerView.decodingErrorView.setVisible(decodingError)
     }
 }

@@ -8,7 +8,8 @@
         android:id="@+id/progressView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center" />
+        android:layout_gravity="center"
+        android:visibility="invisible" />
 
     <ImageView
         android:id="@+id/actualFrameView"
@@ -16,6 +17,14 @@
         android:layout_height="wrap_content"
         android:adjustViewBounds="true" />
 
-    <!--  TODO add 'decoding error' view  -->
+    <TextView
+        android:background="@color/colorPreviewDecodingError"
+        android:id="@+id/decodingErrorView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:padding="16dp"
+        android:text="@string/page_video_preview_frame_decoding_error"
+        android:visibility="invisible" />
 
 </FrameLayout>
