@@ -12,7 +12,7 @@ For **video** streams the app shows:
 * File format name
 * Video codec name
 * Frame size
-* 1, 4 or 9 equidistant frames from the video stream
+* 4 equidistant frames from the video stream
 
 For **audio** streams:
 * Audio codec name
@@ -35,7 +35,7 @@ Have a look at the app yourself:
 
 The codebase has a native part that glues FFmpeg libs to JVM part.  
 
-FFmpeg accepts 2 types of input: File paths and File Descriptors. **File paths** are better and allow the FFmpeg to use all the functionality it has. **File Descriptors** can be passed to FFmpeg via pipe protocol, but it has certain [problems](https://ffmpeg.org/ffmpeg-protocols.html#pipe) like inability to seek backward. That is why the number of frames shown when pipe protocol is used is limited to 4 only. File protocol doesn't have this problem.  
+FFmpeg accepts 2 types of input: File paths and File Descriptors. **File paths** are better and allow the FFmpeg to use all the functionality it has. **File Descriptors** can be passed to FFmpeg via pipe protocol, but it has certain [problems](https://ffmpeg.org/ffmpeg-protocols.html#pipe) like inability to seek backward. That is why the number of frames shown is limited to 4 only. Though the File protocol doesn't have this problem.  
 
 App uses ACTION_GET_CONTENT to pick video/* files. So it can accept files from many different apps. The app ignores Storage Access Framework as many of standard and 3rd party apps do. Also app can handle ACTION_VIEW, when a video file is opened from another app.  
 
