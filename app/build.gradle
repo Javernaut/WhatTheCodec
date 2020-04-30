@@ -12,10 +12,6 @@ android {
         versionName "3.3.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-
-        ndk {
-            abiFilters 'x86', 'x86_64', 'armeabi-v7a', 'arm64-v8a'
-        }
     }
     buildTypes {
         release {
@@ -52,6 +48,26 @@ android {
     }
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
+    flavorDimensions "market"
+    productFlavors {
+        google {
+            dimension "market"
+            ndk {
+                abiFilters 'x86', 'x86_64', 'armeabi-v7a', 'arm64-v8a'
+            }
+        }
+        amazon {
+            dimension "market"
+            applicationIdSuffix ".amzn"
+            ndk {
+                // Amazon Appstore doesn't support multiple APKs for non-Amazon devices.
+                // There is no point in x86 support here, as the majority of devices with the
+                // Amazon Appstore are ARM-based. And it seems to be a common practice for other
+                // apps in this market.
+                abiFilters 'armeabi-v7a'
+            }
+        }
     }
 }
 
