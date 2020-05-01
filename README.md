@@ -29,8 +29,8 @@ Extensive description can be found in [this article](https://proandroiddev.com/a
 
 Have a look at the app yourself:
 
-[<img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png" alt="Get it on Google Play" height="90">](https://play.google.com/store/apps/details?id=com.javernaut.whatthecodec)
-[<img src="https://images-na.ssl-images-amazon.com/images/G/01/mobile-apps/devportal2/res/images/amazon-appstore-badge-english-black.png" height="90">](http://www.amazon.com/gp/mas/dl/android?p=com.javernaut.whatthecodec.amzn)
+[<img src="images/badges/google.png" alt="Get it on Google Play" height="80">](https://play.google.com/store/apps/details?id=com.javernaut.whatthecodec)
+[<img src="images/badges/amazon.png" alt="Available at Amazon Appstore" height="80">](http://www.amazon.com/gp/mas/dl/android?p=com.javernaut.whatthecodec.amzn)
 
 # How does it work?
 
@@ -50,11 +50,11 @@ And here is what it looks like:
 
 | Video file with video, audio and subtitle streams | Audio file |
 | :---:  | :---: |
-| <img src="images/video.gif"> | <img src="images/audio.gif"> |
+| <img src="images/screens/video.gif"> | <img src="images/screens/audio.gif"> |
 
 | Handling ACTION_VIEW from Dropbox app | Picking file from Google Drive app |
 | :---:  | :---: |
-| <img src="images/dropbox.gif"> | <img src="images/drive.gif"> |
+| <img src="images/screens/dropbox.gif"> | <img src="images/screens/drive.gif"> |
 
 ## Prerequisites
 
