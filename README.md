@@ -30,6 +30,7 @@ Extensive description can be found in [this article](https://proandroiddev.com/a
 Have a look at the app yourself:
 
 [<img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png" alt="Get it on Google Play" height="90">](https://play.google.com/store/apps/details?id=com.javernaut.whatthecodec)
+[<img src="https://images-na.ssl-images-amazon.com/images/G/01/mobile-apps/devportal2/res/images/amazon-appstore-badge-english-black.png" height="90">](http://www.amazon.com/gp/mas/dl/android?p=com.javernaut.whatthecodec.amzn)
 
 # How does it work?
 
