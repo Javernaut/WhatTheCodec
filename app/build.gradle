@@ -54,6 +54,7 @@ android {
         google {
             dimension "market"
             ndk {
+                // Since the App Bundle is used, there is no problem in packaging all these ABIs
                 abiFilters 'x86', 'x86_64', 'armeabi-v7a', 'arm64-v8a'
             }
         }
