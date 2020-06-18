@@ -46,6 +46,8 @@
     <string name="stream_bitrate_kbps">kbps</string>
     <string name="stream_bitrate_mbps">Mbps</string>
     <string name="stream_bitrate_gbps">Gbps</string>
+    <string name="stream_copy">Copy</string>
+    <string name="stream_text_copied_pattern" formatted="false">\"%s\" copied to clipboard</string>
     <string name="empty_root_description">Open a video or audio file\nto see its details</string>
     <string name="empty_root_choose">Choose:</string>
     <string name="empty_root_or">or</string>
