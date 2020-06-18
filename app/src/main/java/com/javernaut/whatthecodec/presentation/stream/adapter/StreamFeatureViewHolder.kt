@@ -4,7 +4,7 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.javernaut.whatthecodec.presentation.stream.model.StreamFeature
 import kotlinx.android.extensions.LayoutContainer
-import kotlinx.android.synthetic.main.inline_simple_list_item_2.view.*
+import kotlinx.android.synthetic.main.item_stream_feature.view.*
 
 class StreamFeatureViewHolder(override val containerView: View) : RecyclerView.ViewHolder(containerView), LayoutContainer {
 

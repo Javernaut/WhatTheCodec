@@ -16,7 +16,7 @@ class StreamFeaturesAdapter : RecyclerView.Adapter<StreamFeatureViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StreamFeatureViewHolder {
         val itemView = LayoutInflater.from(parent.context)
-                .inflate(R.layout.inline_simple_list_item_2, parent, false)
+                .inflate(R.layout.item_stream_feature, parent, false)
         return StreamFeatureViewHolder(itemView)
     }
 
