@@ -13,7 +13,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="false"
         android:theme="@style/AppTheme">
-        <activity android:name="com.javernaut.whatthecodec.presentation.root.ui.RootActivity">
+        <activity
+            android:name=".presentation.root.ui.RootActivity"
+            android:launchMode="singleTop"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -26,6 +29,11 @@
                 <data android:mimeType="audio/*" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".presentation.settings.SettingsActivity"
+            android:exported="false"
+            android:label="@string/settings_title"
+            android:parentActivityName=".presentation.root.ui.RootActivity" />
     </application>
 
 </manifest>

@@ -55,7 +55,7 @@ android {
             dimension "market"
             ndk {
                 // Since the App Bundle is used, there is no problem in packaging all these ABIs
-                abiFilters 'x86', 'x86_64', 'armeabi-v7a', 'arm64-v8a'
+                abiFilters 'x86'
             }
         }
         amazon {
@@ -94,10 +94,11 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycle_version"
 
-    implementation "androidx.palette:palette:1.0.0"
-    implementation "androidx.savedstate:savedstate:1.0.0"
-    implementation "androidx.fragment:fragment-ktx:1.2.4"
+    implementation 'androidx.palette:palette:1.0.0'
+    implementation 'androidx.savedstate:savedstate:1.0.0'
+    implementation 'androidx.fragment:fragment-ktx:1.2.5'
     implementation 'androidx.viewpager2:viewpager2:1.0.0'
+    implementation 'androidx.preference:preference:1.1.1'
 
     implementation "com.github.hadilq.liveevent:liveevent:1.2.0"
 
