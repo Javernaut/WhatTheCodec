@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="settings_theme_default_pref_value" translatable="false">@string/settings_theme_light_pref_value</string>
+
     <string name="settings_theme_light_pref_value" translatable="false">light</string>
     <string name="settings_theme_dark_pref_value" translatable="false">dark</string>
     <string name="settings_theme_auto_pref_value" translatable="false">auto</string>
@@ -13,6 +15,6 @@
     <string-array name="settings_theme_entries">
         <item>@string/settings_theme_light</item>
         <item>@string/settings_theme_dark</item>
-        <item>@string/settings_theme_auto</item>
+        <item>@string/settings_theme_battery_saver</item>
     </string-array>
 </resources>

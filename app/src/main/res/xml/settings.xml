@@ -2,7 +2,7 @@
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ListPreference
-        app:defaultValue="@string/settings_theme_light_pref_value"
+        app:defaultValue="@string/settings_theme_default_pref_value"
         app:entries="@array/settings_theme_entries"
         app:entryValues="@array/settings_theme_entryValues"
         app:key="theme"

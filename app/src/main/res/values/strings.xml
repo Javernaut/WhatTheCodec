@@ -53,6 +53,7 @@
     <string name="settings_title">Settings</string>
     <string name="settings_theme_light">Light</string>
     <string name="settings_theme_dark">Dark</string>
-    <string name="settings_theme_auto">Auto</string>
+    <string name="settings_theme_battery_saver">Set by Battery Saver</string>
+    <string name="settings_theme_system_default">System default</string>
     <string name="settings_theme_title">App Theme</string>
 </resources>
