@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/emptyRootPanel"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -34,7 +35,7 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/menu_pick_video"
             android:src="@drawable/ic_menu_video"
-            android:tint="@color/colorPrimary" />
+            app:tint="?attr/colorSecondary" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -52,7 +53,7 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/menu_pick_audio"
             android:src="@drawable/ic_menu_audio"
-            android:tint="@color/colorPrimary" />
+            app:tint="?attr/colorSecondary" />
 
     </LinearLayout>
 

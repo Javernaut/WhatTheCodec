@@ -4,6 +4,7 @@
     <string name="message_couldnt_open_file">Couldn\'t open the file</string>
     <string name="menu_pick_video">Pick Video</string>
     <string name="menu_pick_audio">Pick Audio</string>
+    <string name="menu_settings">@string/settings_title</string>
     <string name="tab_video">Video</string>
     <string name="tab_audio">Audio</string>
     <string name="tab_subtitles">Subtitles</string>
@@ -51,4 +52,10 @@
     <string name="empty_root_description">Open a video or audio file\nto see its details</string>
     <string name="empty_root_choose">Choose:</string>
     <string name="empty_root_or">or</string>
+    <string name="settings_title">Settings</string>
+    <string name="settings_theme_light">Light</string>
+    <string name="settings_theme_dark">Dark</string>
+    <string name="settings_theme_battery_saver">Set by Battery Saver</string>
+    <string name="settings_theme_system_default">System default</string>
+    <string name="settings_theme_title">App Theme</string>
 </resources>

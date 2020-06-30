@@ -7,13 +7,13 @@
     android:orientation="vertical"
     tools:context=".presentation.root.ui.RootActivity">
 
-    <androidx.appcompat.widget.Toolbar
+    <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/colorPrimary"
-        android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.MaterialComponents.Light">
+        android:background="?attr/colorPrimary"
+        android:theme="?attr/actionBarTheme"
+        app:popupTheme="?attr/actionBarPopupTheme">
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabs"
@@ -22,7 +22,7 @@
             android:layout_height="match_parent"
             android:visibility="gone"
             app:tabMode="scrollable" />
-    </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.MaterialToolbar>
 
     <FrameLayout
         android:layout_width="match_parent"

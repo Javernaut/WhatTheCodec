@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">@color/brand_dark</color>
+    <color name="colorPrimaryVariant">@color/brand_dark_variant</color>
+
+    <color name="colorSecondary">#FFF</color>
+
+    <color name="colorSurface">@color/theme_dark_surface</color>
+    <color name="colorOnSurface">#FFF</color>
+
+    <color name="colorBackground">@color/theme_dark_background</color>
+</resources>

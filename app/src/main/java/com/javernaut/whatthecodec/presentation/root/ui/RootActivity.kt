@@ -17,6 +17,7 @@ import com.javernaut.whatthecodec.domain.MediaType
 import com.javernaut.whatthecodec.presentation.root.viewmodel.MediaFileArgument
 import com.javernaut.whatthecodec.presentation.root.viewmodel.MediaFileViewModel
 import com.javernaut.whatthecodec.presentation.root.viewmodel.MediaFileViewModelFactory
+import com.javernaut.whatthecodec.presentation.settings.SettingsActivity
 import com.javernaut.whatthecodec.presentation.video.ui.view.PreviewView
 import com.javernaut.whatthecodec.util.TinyActivityCompat
 import com.javernaut.whatthecodec.util.isVisible
@@ -118,22 +119,25 @@ class RootActivity : AppCompatActivity(R.layout.activity_root) {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         if (!emptyRootPanel.isVisible()) {
-            addMenuItem(menu, R.string.menu_pick_video, R.drawable.ic_menu_video) {
+            addMenuItem(menu, R.string.menu_pick_video, R.drawable.ic_menu_video, MenuItem.SHOW_AS_ACTION_ALWAYS) {
                 onPickVideoClicked()
             }
-            addMenuItem(menu, R.string.menu_pick_audio, R.drawable.ic_menu_audio) {
+            addMenuItem(menu, R.string.menu_pick_audio, R.drawable.ic_menu_audio, MenuItem.SHOW_AS_ACTION_ALWAYS) {
                 onPickAudioClicked()
             }
+        }
+        addMenuItem(menu, R.string.menu_settings, 0, MenuItem.SHOW_AS_ACTION_NEVER) {
+            SettingsActivity.start(this)
         }
         return true
     }
 
-    private inline fun addMenuItem(menu: Menu, title: Int, icon: Int, crossinline actualAction: () -> Unit) {
+    private inline fun addMenuItem(menu: Menu, title: Int, icon: Int, actionEnum: Int, crossinline actualAction: () -> Unit) {
         menu.add(title).setIcon(icon)
                 .setOnMenuItemClickListener {
                     actualAction()
                     true
-                }.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
+                }.setShowAsAction(actionEnum)
     }
 
     private fun onPickVideoClicked() {
