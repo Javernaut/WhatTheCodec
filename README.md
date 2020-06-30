@@ -64,7 +64,7 @@ First, initialise the submodule:
 
 Then you need to setup and execute the ffmpeg-android-maker's script. The command used to generate the Play Store build looks like this:
 
-`./ffmpeg-android-maker.sh --enable-libdav1d`
+`./ffmpeg-android-maker.sh -dav1d`
 
 More details can be found in [ffmpeg-android-maker](https://github.com/Javernaut/ffmpeg-android-maker) repository.  
 
