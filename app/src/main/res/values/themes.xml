@@ -1,16 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="Theme.WhatTheCodec" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorSecondary">@color/colorPrimary</item>
+        <item name="colorPrimaryVariant">@color/colorPrimaryVariant</item>
+        <item name="colorOnPrimary">@color/colorOnPrimary</item>
+
+        <item name="colorSecondary">@color/colorSecondary</item>
+
+        <item name="colorSurface">@color/colorSurface</item>
+        <item name="colorOnSurface">@color/colorOnSurface</item>
+
         <item name="android:colorBackground">@color/colorBackground</item>
+
+        <item name="buttonBarPositiveButtonStyle">@style/Widget.WhatTheCodec.Button.Bar</item>
+        <item name="buttonBarNeutralButtonStyle">@style/Widget.WhatTheCodec.Button.Bar</item>
+        <item name="buttonBarNegativeButtonStyle">@style/Widget.WhatTheCodec.Button.Bar</item>
     </style>
 
-    <style name="AppTheme.NoActionBar">
+    <style name="Theme.WhatTheCodec.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="ThemeOverlay.WhatTheCodec.Button" parent="">
+        <item name="colorPrimary">@color/colorSecondary</item>
     </style>
 
 </resources>

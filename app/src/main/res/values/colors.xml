@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3949AB</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorBackground">#F7F7F7</color>
+    <color name="colorPrimary">@color/brand_blue</color>
+    <color name="colorPrimaryVariant">@color/brand_blue_variant</color>
+    <color name="colorOnPrimary">#FFF</color>
+
+    <color name="colorSecondary">@color/brand_blue</color>
+
+    <color name="colorSurface">@color/theme_light_surface</color>
+    <color name="colorOnSurface">#000</color>
+
+    <color name="colorBackground">@color/theme_light_background</color>
+
     <color name="colorPreviewDecodingError">#8888</color>
 </resources>
