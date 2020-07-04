@@ -72,6 +72,14 @@ class RootActivity : AppCompatActivity(R.layout.activity_root) {
         }
     }
 
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+
+        intentActionViewConsumed = false
+        onCheckForActionView()
+    }
+
     override fun onResume() {
         super.onResume()
         mediaFileViewModel.applyPendingMediaFileIfNeeded()
