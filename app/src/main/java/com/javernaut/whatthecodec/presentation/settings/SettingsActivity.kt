@@ -7,11 +7,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.commit
 import com.javernaut.whatthecodec.R
 
-class SettingsActivity : AppCompatActivity() {
+class SettingsActivity : AppCompatActivity(R.layout.simple_fragment_container) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.simple_fragment_container)
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 

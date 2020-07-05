@@ -5,7 +5,7 @@
 
     <color name="colorSecondary">#FFF</color>
 
-    <color name="colorSurface">@color/theme_dark_surface</color>
+    <color name="colorSurface">@color/brand_dark</color>
     <color name="colorOnSurface">#FFF</color>
 
     <color name="colorBackground">@color/theme_dark_background</color>
