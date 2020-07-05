@@ -12,7 +12,7 @@
         android:label="WhatTheCodec"
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="false"
+        android:supportsRtl="true"
         android:theme="@style/Theme.WhatTheCodec">
         <activity
             android:name=".presentation.root.ui.RootActivity"
