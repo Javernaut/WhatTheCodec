@@ -16,7 +16,9 @@ class StreamCard(
  * Creates a [StreamCard] object with index and title of a given [BasicStreamInfo].
  * Also language and disposition elements are added to the end of the list.
  */
-fun makeStream(basicStreamInfo: BasicStreamInfo, resources: Resources, filler: MutableList<StreamFeature>.() -> Unit): StreamCard {
+fun makeStream(basicStreamInfo: BasicStreamInfo,
+               resources: Resources,
+               filler: MutableList<StreamFeature>.() -> Unit): StreamCard {
     return StreamCard(
             makeCardTitle(basicStreamInfo.index, basicStreamInfo.title, resources),
             mutableListOf<StreamFeature>().apply {

@@ -14,9 +14,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.presentation.stream.model.StreamFeature
 import kotlinx.android.extensions.LayoutContainer
-import kotlinx.android.synthetic.main.item_stream_feature.view.*
+import kotlinx.android.synthetic.main.item_stream_feature.view.text1
+import kotlinx.android.synthetic.main.item_stream_feature.view.text2
 
-class StreamFeatureViewHolder(override val containerView: View) : RecyclerView.ViewHolder(containerView), LayoutContainer {
+class StreamFeatureViewHolder(override val containerView: View) :
+        RecyclerView.ViewHolder(containerView),
+        LayoutContainer {
 
     private lateinit var streamFeature: StreamFeature
 
@@ -30,7 +33,9 @@ class StreamFeatureViewHolder(override val containerView: View) : RecyclerView.V
                 context.theme.resolveAttribute(R.attr.colorAccent, typedValue, true)
                 typedValue.data
             }
-            firstItemText.setSpan(ForegroundColorSpan(accentColor), 0, firstItemText.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+            firstItemText.setSpan(ForegroundColorSpan(accentColor),
+                    0, firstItemText.length,
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
 
             val firstItem = popupMenu.menu.add(firstItemText)
             firstItem.isEnabled = false
@@ -56,7 +61,9 @@ class StreamFeatureViewHolder(override val containerView: View) : RecyclerView.V
         clipboardManager.setPrimaryClip(
                 ClipData.newPlainText(label, streamFeature.description)
         )
-        val toastMessage = containerView.resources.getString(R.string.stream_text_copied_pattern, streamFeature.description)
+        val toastMessage = containerView.resources.getString(
+                R.string.stream_text_copied_pattern, streamFeature.description
+        )
         Toast.makeText(containerView.context, toastMessage, Toast.LENGTH_SHORT).show()
     }
 }

@@ -23,7 +23,9 @@ class AudioPageFragment : BasePageFragment() {
                 add(StreamFeature(R.string.page_audio_codec_name, audioStream.basicInfo.codecName))
 
                 if (audioStream.bitRate > 0) {
-                    add(StreamFeature(R.string.page_audio_bit_rate, BitRateHelper.toString(audioStream.bitRate, resources)))
+                    add(StreamFeature(R.string.page_audio_bit_rate,
+                            BitRateHelper.toString(audioStream.bitRate, resources))
+                    )
                 }
                 add(StreamFeature(R.string.page_audio_channels, audioStream.channels.toString()))
 
@@ -34,6 +36,8 @@ class AudioPageFragment : BasePageFragment() {
                     add(StreamFeature(R.string.page_audio_sample_format, audioStream.sampleFormat))
                 }
 
-                add(StreamFeature(R.string.page_audio_sample_rate, SampleRateHelper.toString(audioStream.sampleRate, resources)))
+                add(StreamFeature(R.string.page_audio_sample_rate,
+                        SampleRateHelper.toString(audioStream.sampleRate, resources))
+                )
             }
 }

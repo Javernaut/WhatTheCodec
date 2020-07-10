@@ -38,17 +38,21 @@ class MediaFileBuilder(private val mediaType: MediaType) {
     }
 
     /**
-     * Tries reading all metadata for a [MediaFile] object from a file from app's assets catalog. The file descriptor is saved and
-     * closed when [MediaFile.release] method is called.
+     * Tries reading all metadata for a [MediaFile] object from a file from app's assets catalog.
+     * The file descriptor is saved and closed when [MediaFile.release] method is called.
      *
-     * @param shortFormatName a short name of a file format, as there is a problem in probing certain formats (like mkv).
+     * @param shortFormatName a short name of a file format, as there is a problem in probing
+     * certain formats (like mkv).
      * If a file comes from assets catalog, then its format should be known to a developer.
      * All default formats are listed here: https://ffmpeg.org/ffmpeg-formats.html
      */
     fun from(assetFileDescriptor: AssetFileDescriptor, shortFormatName: String) = apply {
         val descriptor = assetFileDescriptor.parcelFileDescriptor
         this.parcelFileDescriptor = descriptor
-        nativeCreateFromAssetFD(descriptor.fd, assetFileDescriptor.startOffset, shortFormatName, mediaType.mediaStreamsMask)
+        nativeCreateFromAssetFD(descriptor.fd,
+                assetFileDescriptor.startOffset,
+                shortFormatName,
+                mediaType.mediaStreamsMask)
     }
 
     /**
@@ -57,7 +61,12 @@ class MediaFileBuilder(private val mediaType: MediaType) {
      */
     fun create(): MediaFile? {
         return if (!error) {
-            MediaFile(fileFormatName!!, videoStream, audioStreams, subtitleStream, parcelFileDescriptor, frameLoaderContextHandle)
+            MediaFile(fileFormatName!!,
+                    videoStream,
+                    audioStreams,
+                    subtitleStream,
+                    parcelFileDescriptor,
+                    frameLoaderContextHandle)
         } else {
             null
         }
@@ -123,11 +132,15 @@ class MediaFileBuilder(private val mediaType: MediaType) {
                                 title: String?,
                                 codecName: String,
                                 language: String?,
-                                disposition: Int) = BasicStreamInfo(index, title, codecName, language, disposition)
+                                disposition: Int) =
+            BasicStreamInfo(index, title, codecName, language, disposition)
 
     private external fun nativeCreateFromFD(fileDescriptor: Int, mediaStreamsMask: Int)
 
-    private external fun nativeCreateFromAssetFD(assetFileDescriptor: Int, startOffset: Long, shortFormatName: String, mediaStreamsMask: Int)
+    private external fun nativeCreateFromAssetFD(assetFileDescriptor: Int,
+                                                 startOffset: Long,
+                                                 shortFormatName: String,
+                                                 mediaStreamsMask: Int)
 
     private external fun nativeCreateFromPath(filePath: String, mediaStreamsMask: Int)
 

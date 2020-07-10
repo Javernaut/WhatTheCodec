@@ -22,8 +22,12 @@ import com.javernaut.whatthecodec.presentation.video.ui.view.PreviewView
 import com.javernaut.whatthecodec.util.TinyActivityCompat
 import com.javernaut.whatthecodec.util.isVisible
 import com.javernaut.whatthecodec.util.setVisible
-import kotlinx.android.synthetic.main.activity_root.*
-import kotlinx.android.synthetic.main.inline_empty_root.*
+import kotlinx.android.synthetic.main.activity_root.pager
+import kotlinx.android.synthetic.main.activity_root.tabs
+import kotlinx.android.synthetic.main.activity_root.toolbar
+import kotlinx.android.synthetic.main.inline_empty_root.emptyRootPanel
+import kotlinx.android.synthetic.main.inline_empty_root.pickAudio
+import kotlinx.android.synthetic.main.inline_empty_root.pickVideo
 
 class RootActivity : AppCompatActivity(R.layout.activity_root) {
 
@@ -140,7 +144,10 @@ class RootActivity : AppCompatActivity(R.layout.activity_root) {
         return true
     }
 
-    private inline fun addMenuItem(menu: Menu, title: Int, icon: Int, actionEnum: Int, crossinline actualAction: () -> Unit) {
+    private inline fun addMenuItem(menu: Menu,
+                                   title: Int,
+                                   icon: Int, actionEnum: Int,
+                                   crossinline actualAction: () -> Unit) {
         menu.add(title).setIcon(icon)
                 .setOnMenuItemClickListener {
                     actualAction()

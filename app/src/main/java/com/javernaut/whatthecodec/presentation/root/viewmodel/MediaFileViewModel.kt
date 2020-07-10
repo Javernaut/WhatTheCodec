@@ -162,7 +162,9 @@ class MediaFileViewModel(private val desiredFrameWidth: Int,
         val basicVideoInfo = _basicVideoInfoLiveData.value
 
         return basicVideoInfo?.let {
-            val desiredFrameHeight = (desiredFrameWidth * it.videoStream.frameHeight / it.videoStream.frameWidth.toDouble()).toInt()
+            val frameHeight = it.videoStream.frameHeight
+            val frameWidth = it.videoStream.frameWidth.toDouble()
+            val desiredFrameHeight = (desiredFrameWidth * frameHeight / frameWidth).toInt()
 
             FrameMetrics(desiredFrameWidth, desiredFrameHeight)
         }

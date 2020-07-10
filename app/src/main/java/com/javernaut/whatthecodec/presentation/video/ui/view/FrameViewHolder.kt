@@ -8,7 +8,9 @@ import com.javernaut.whatthecodec.presentation.root.viewmodel.model.Frame
 import com.javernaut.whatthecodec.presentation.root.viewmodel.model.LoadingFrame
 import com.javernaut.whatthecodec.util.setVisible
 import kotlinx.android.extensions.LayoutContainer
-import kotlinx.android.synthetic.main.item_frame.view.*
+import kotlinx.android.synthetic.main.item_frame.view.actualFrameView
+import kotlinx.android.synthetic.main.item_frame.view.decodingErrorView
+import kotlinx.android.synthetic.main.item_frame.view.progressView
 
 class FrameViewHolder(override val containerView: View) : RecyclerView.ViewHolder(containerView), LayoutContainer {
 
@@ -23,7 +25,9 @@ class FrameViewHolder(override val containerView: View) : RecyclerView.ViewHolde
         )
     }
 
-    private fun setVisibilities(progress: Boolean = false, actualFrame: Boolean = false, decodingError: Boolean = false) {
+    private fun setVisibilities(progress: Boolean = false,
+                                actualFrame: Boolean = false,
+                                decodingError: Boolean = false) {
         containerView.progressView.setVisible(progress)
         containerView.actualFrameView.setVisible(actualFrame)
         containerView.decodingErrorView.setVisible(decodingError)

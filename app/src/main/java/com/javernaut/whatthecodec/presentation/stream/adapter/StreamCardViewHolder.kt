@@ -6,9 +6,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.javernaut.whatthecodec.presentation.stream.adapter.animator.HeightAnimator
 import com.javernaut.whatthecodec.presentation.stream.model.StreamCard
 import kotlinx.android.extensions.LayoutContainer
-import kotlinx.android.synthetic.main.item_stream.view.*
+import kotlinx.android.synthetic.main.item_stream.view.expandToggle
+import kotlinx.android.synthetic.main.item_stream.view.streamFeatures
+import kotlinx.android.synthetic.main.item_stream.view.streamTitle
 
-class StreamCardViewHolder(override val containerView: View, listener: OnExpandStatusChangeListener) : RecyclerView.ViewHolder(containerView), LayoutContainer {
+class StreamCardViewHolder(override val containerView: View,
+                           listener: OnExpandStatusChangeListener) :
+        RecyclerView.ViewHolder(containerView), LayoutContainer {
 
     private lateinit var item: StreamCard
 
