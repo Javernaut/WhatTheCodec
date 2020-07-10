@@ -28,6 +28,7 @@ class MediaFileProviderImpl(context: Context) : MediaFileProvider {
                     config = MediaFileBuilder(argument.type).from(descriptor).create()
                 }
             } catch (e: FileNotFoundException) {
+                e.printStackTrace()
             }
         }
 

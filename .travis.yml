@@ -14,6 +14,8 @@ before_install:
   - yes | sdkmanager "patcher;v4"
   - export ANDROID_SDK_HOME=/usr/local/android-sdk
   - export ANDROID_NDK_HOME=$ANDROID_SDK_HOME/ndk-bundle
+  # Check of the kotlin source code before heavy native libraries assembling
+  - ./gradlew detekt
   # Keeping track of the NDK version that was used
   - cat $ANDROID_NDK_HOME/source.properties
   - ffmpeg-android-maker/ffmpeg-android-maker.sh

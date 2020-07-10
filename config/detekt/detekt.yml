@@ -1,0 +1,16 @@
+complexity:
+  LongParameterList:
+    active: true
+    functionThreshold: 6
+    constructorThreshold: 7
+  TooManyFunctions:
+    active: true
+    thresholdInFiles: 40
+    thresholdInClasses: 30
+    thresholdInInterfaces: 20
+    thresholdInObjects: 20
+    thresholdInEnums: 20
+
+style:
+  MagicNumber:
+    active: false
