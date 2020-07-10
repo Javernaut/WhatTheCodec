@@ -1,11 +1,19 @@
 package com.javernaut.whatthecodec.presentation.root.viewmodel
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.hadilq.liveevent.LiveEvent
 import com.javernaut.whatthecodec.domain.AudioStream
 import com.javernaut.whatthecodec.domain.MediaFile
 import com.javernaut.whatthecodec.domain.SubtitleStream
-import com.javernaut.whatthecodec.presentation.root.viewmodel.model.*
+import com.javernaut.whatthecodec.presentation.root.viewmodel.model.AvailableTab
+import com.javernaut.whatthecodec.presentation.root.viewmodel.model.BasicVideoInfo
+import com.javernaut.whatthecodec.presentation.root.viewmodel.model.FrameMetrics
+import com.javernaut.whatthecodec.presentation.root.viewmodel.model.NoPreviewAvailable
+import com.javernaut.whatthecodec.presentation.root.viewmodel.model.Preview
 
 class MediaFileViewModel(private val desiredFrameWidth: Int,
                          private val mediaFileProvider: MediaFileProvider,
