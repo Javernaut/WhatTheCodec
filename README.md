@@ -1,6 +1,7 @@
 # What the Codec
 
 [![Build Status](https://travis-ci.org/Javernaut/WhatTheCodec.svg?branch=master)](https://travis-ci.org/Javernaut/WhatTheCodec)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/db175d84403d4a76a77f09036f3ef913)](https://www.codacy.com/manual/Javernaut/WhatTheCodec)
 [![API](https://img.shields.io/badge/API-16%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=16)
 [![MIT license](http://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/Javernaut/WhatTheCodec/blob/master/LICENSE.txt)
 [![Android Weekly #378](https://androidweekly.net/issues/issue-378/badge)](https://androidweekly.net/issues/issue-378)
@@ -32,7 +33,7 @@ Have a look at the app yourself:
 [<img src="images/badges/google.png" alt="Get it on Google Play" height="80">](https://play.google.com/store/apps/details?id=com.javernaut.whatthecodec) &nbsp;&nbsp;&nbsp;
 [<img src="images/badges/amazon.png" alt="Available at Amazon Appstore" height="80">](http://www.amazon.com/gp/mas/dl/android?p=com.javernaut.whatthecodec.amzn)
 
-# How does it work?
+## How it works
 
 The codebase has a native part that glues FFmpeg libs to JVM part.  
 
@@ -49,11 +50,11 @@ The rest is pretty standard Android-related burden.
 And here is what it looks like:
 
 | Video file with video, audio and subtitle streams | Audio file |
-| :---:  | :---: |
+| :---: | :---: |
 | <img src="images/screens/video.gif"> | <img src="images/screens/audio.gif"> |
 
 | Handling ACTION_VIEW from Dropbox app | Picking file from Google Drive app |
-| :---:  | :---: |
+| :---: | :---: |
 | <img src="images/screens/dropbox.gif"> | <img src="images/screens/drive.gif"> |
 
 ## Prerequisites
