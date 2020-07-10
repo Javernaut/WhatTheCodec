@@ -4,7 +4,6 @@ import android.content.Context
 import android.net.Uri
 import com.javernaut.whatthecodec.domain.MediaFile
 import com.javernaut.whatthecodec.domain.MediaFileBuilder
-import com.javernaut.whatthecodec.domain.MediaType
 import com.javernaut.whatthecodec.util.PathUtil
 import java.io.FileNotFoundException
 
