@@ -15,4 +15,8 @@
         <item>@string/settings_theme_light</item>
         <item>@string/settings_theme_dark</item>
     </string-array>
+
+    <string name="settings_source_code_summary" translatable="false">https://github.com/Javernaut/WhatTheCodec</string>
+    <string name="settings_privacy_policy_summary" translatable="false">https://github.com/Javernaut/WhatTheCodec/wiki/Privacy-Policy</string>
+
 </resources>

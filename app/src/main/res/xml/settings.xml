@@ -1,12 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <ListPreference
-        app:defaultValue="@string/settings_theme_default_pref_value"
-        app:entries="@array/settings_theme_entries"
-        app:entryValues="@array/settings_theme_entryValues"
-        app:key="theme"
-        app:title="@string/settings_theme_title"
-        app:useSimpleSummaryProvider="true" />
+    <PreferenceCategory app:title="@string/settings_category_general">
+        <ListPreference
+            app:defaultValue="@string/settings_theme_default_pref_value"
+            app:entries="@array/settings_theme_entries"
+            app:entryValues="@array/settings_theme_entryValues"
+            app:key="theme"
+            app:title="@string/settings_theme_title"
+            app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/settings_category_about">
+        <Preference
+            app:key="source_code"
+            app:summary="@string/settings_source_code_summary"
+            app:title="@string/settings_source_code_title" />
+        <Preference
+            app:key="privacy_policy"
+            app:summary="@string/settings_privacy_policy_summary"
+            app:title="@string/settings_privacy_policy_title" />
+    </PreferenceCategory>
 
 </PreferenceScreen>
