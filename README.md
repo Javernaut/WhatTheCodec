@@ -30,8 +30,9 @@ Extensive description can be found in [this article](https://proandroiddev.com/a
 
 Have a look at the app yourself:
 
-[<img src="images/badges/google.png" alt="Get it on Google Play" height="80">](https://play.google.com/store/apps/details?id=com.javernaut.whatthecodec) &nbsp;&nbsp;&nbsp;
-[<img src="images/badges/amazon.png" alt="Available at Amazon Appstore" height="80">](http://www.amazon.com/gp/mas/dl/android?p=com.javernaut.whatthecodec.amzn)
+[<img src="images/badges/google.png" alt="Get it on Google Play" height="80">](https://play.google.com/store/apps/details?id=com.javernaut.whatthecodec)&nbsp;
+[<img src="images/badges/amazon.png" alt="Available at Amazon Appstore" height="80">](http://www.amazon.com/gp/mas/dl/android?p=com.javernaut.whatthecodec.amzn)&nbsp;
+[<img src="images/badges/huawei.png" alt="Explore it on AppGallery" height="80">](https://appgallery.cloud.huawei.com/marketshare/app/C102794269)
 
 ## How it works
 

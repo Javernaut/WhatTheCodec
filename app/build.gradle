@@ -9,7 +9,7 @@ android {
         applicationId "com.javernaut.whatthecodec"
         minSdkVersion 16
         targetSdkVersion 29
-        versionCode 3420
+        versionCode 3421
         versionName "3.4.2"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
