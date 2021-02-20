@@ -1,0 +1,29 @@
+name: Integrity check
+on: push
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+
+      - name: Running the Detekt
+        run: ./gradlew detekt
+
+      - name: Assembling the ffmpeg-android-maker
+        run: |
+          export ANDROID_SDK_HOME=$ANDROID_HOME
+          ffmpeg-android-maker/ffmpeg-android-maker.sh
+          cat ffmpeg-android-maker/stats/text-relocations.txt
+
+      - name: Building the APK
+        run: ./gradlew buildGoogleDebug
+
+      - name: Testing
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 29
+          arch: x86
+          script: ./gradlew connectedGoogleDebugAndroidTest
