@@ -1,6 +1,6 @@
 # What the Codec
 
-[![Build Status](https://travis-ci.org/Javernaut/WhatTheCodec.svg?branch=master)](https://travis-ci.org/Javernaut/WhatTheCodec)
+[![Integrity check](https://github.com/Javernaut/WhatTheCodec/actions/workflows/integrity_check.yml/badge.svg?branch=master)](https://github.com/Javernaut/WhatTheCodec/actions/workflows/integrity_check.yml)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/db175d84403d4a76a77f09036f3ef913)](https://www.codacy.com/manual/Javernaut/WhatTheCodec)
 [![API](https://img.shields.io/badge/API-16%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=16)
 [![MIT license](http://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/Javernaut/WhatTheCodec/blob/master/LICENSE.txt)
