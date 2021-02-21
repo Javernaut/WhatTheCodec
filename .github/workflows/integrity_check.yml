@@ -15,7 +15,7 @@ jobs:
       - name: Assembling the ffmpeg-android-maker
         run: |
           export ANDROID_SDK_HOME=$ANDROID_HOME
-          ffmpeg-android-maker/ffmpeg-android-maker.sh
+          ffmpeg-android-maker/ffmpeg-android-maker.sh -abis=x86
           cat ffmpeg-android-maker/stats/text-relocations.txt
 
       - name: Building the APK
