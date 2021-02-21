@@ -19,10 +19,10 @@ jobs:
           cat ffmpeg-android-maker/stats/text-relocations.txt
 
       - name: Building the APK
-        run: ./gradlew buildGoogleDebug
+        run: ./gradlew buildCiTestDebug
 
       - name: Testing
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 29
-          script: ./gradlew connectedGoogleDebugAndroidTest
+          script: ./gradlew connectedCiTestDebugAndroidTest
