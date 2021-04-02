@@ -2,6 +2,7 @@ package com.javernaut.whatthecodec.presentation.stream.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.compose.ui.platform.ComposeView
 import androidx.recyclerview.widget.RecyclerView
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.presentation.stream.model.StreamFeature
@@ -15,9 +16,9 @@ class StreamFeaturesAdapter : RecyclerView.Adapter<StreamFeatureViewHolder>() {
         }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StreamFeatureViewHolder {
-        val itemView = LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_stream_feature, parent, false)
-        return StreamFeatureViewHolder(itemView)
+//        val itemView = LayoutInflater.from(parent.context)
+//                .inflate(R.layout.item_stream_feature, parent, false)
+        return StreamFeatureViewHolder(ComposeView(parent.context))
     }
 
     override fun getItemCount() = items.size
