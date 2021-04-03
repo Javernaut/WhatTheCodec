@@ -8,7 +8,8 @@ import android.text.style.ForegroundColorSpan
 import android.util.TypedValue
 import android.widget.Toast
 import androidx.appcompat.widget.PopupMenu
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
@@ -25,6 +26,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.presentation.stream.model.StreamFeature
 
+@OptIn(ExperimentalFoundationApi::class)
 class StreamFeatureViewHolder(private val itemComposeView: ComposeView) :
     RecyclerView.ViewHolder(itemComposeView) {
 
@@ -87,6 +89,7 @@ class StreamFeatureViewHolder(private val itemComposeView: ComposeView) :
     }
 }
 
+@ExperimentalFoundationApi
 @Preview
 @Composable
 fun PreviewStreamFeature() {
@@ -102,6 +105,7 @@ fun PreviewStreamFeature() {
     }
 }
 
+@ExperimentalFoundationApi
 @Composable
 fun StreamFeature(
     modifier: Modifier = Modifier,
@@ -111,7 +115,7 @@ fun StreamFeature(
     WhatTheCodecTheme {
         Column(
             modifier
-                .clickable(onClick = clickListener)
+                .combinedClickable(onLongClick = clickListener, onClick = {})
                 .fillMaxWidth()
                 .defaultMinSize(minHeight = 58.dp)
                 .padding(horizontal = 16.dp, vertical = 8.dp)
