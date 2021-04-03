@@ -9,15 +9,16 @@ import android.util.TypedValue
 import android.widget.Toast
 import androidx.appcompat.widget.PopupMenu
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.combinedClickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.defaultMinSize
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.material.ripple.LocalRippleTheme
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.getSystemService
 import androidx.recyclerview.widget.RecyclerView
@@ -40,16 +41,8 @@ class StreamFeatureViewHolder(private val itemComposeView: ComposeView) :
         this.streamFeature = streamFeature
 
         itemComposeView.setContent {
-            Column(
-                Modifier
-                    .clickable {
-                        showPopupMenu()
-                    }
-                    .fillMaxWidth()
-                    .defaultMinSize(minHeight = 58.dp)
-            ) {
-                Text(stringResource(id = streamFeature.title))
-                Text(streamFeature.description)
+            StreamFeature(streamFeature = streamFeature) {
+                showPopupMenu()
             }
         }
     }
@@ -89,5 +82,46 @@ class StreamFeatureViewHolder(private val itemComposeView: ComposeView) :
             R.string.stream_text_copied_pattern, streamFeature.description
         )
         Toast.makeText(itemComposeView.context, toastMessage, Toast.LENGTH_SHORT).show()
+    }
+}
+
+@Preview
+@Composable
+fun PreviewStreamFeature() {
+    Surface {
+        StreamFeature(
+            streamFeature = StreamFeature(
+                R.string.page_audio_codec_name,
+                "Some value"
+            )
+        ) {}
+    }
+}
+
+@Composable
+fun StreamFeature(
+    modifier: Modifier = Modifier,
+    streamFeature: StreamFeature,
+    clickListener: () -> Unit
+) {
+    Column(
+        modifier
+            .clickable(onClick = clickListener)
+            .fillMaxWidth()
+            .defaultMinSize(minHeight = 58.dp)
+            .padding(horizontal = 16.dp, vertical = 8.dp)
+    ) {
+        Text(
+            stringResource(id = streamFeature.title).toUpperCase(),
+            style = MaterialTheme.typography.caption.copy(
+                color = colorResource(id = R.color.secondary_text_default_material_light)
+            )
+        )
+        Spacer(Modifier.height(8.dp))
+        Text(
+            streamFeature.description, style = MaterialTheme.typography.body1.copy(
+                color = colorResource(id = R.color.primary_text_default_material_light)
+            )
+        )
     }
 }
