@@ -41,8 +41,10 @@ class StreamFeatureViewHolder(private val itemComposeView: ComposeView) :
         this.streamFeature = streamFeature
 
         itemComposeView.setContent {
-            StreamFeature(streamFeature = streamFeature) {
-                showPopupMenu()
+            WhatTheCodecTheme {
+                StreamFeature(streamFeature = streamFeature) {
+                    showPopupMenu()
+                }
             }
         }
     }
@@ -88,13 +90,15 @@ class StreamFeatureViewHolder(private val itemComposeView: ComposeView) :
 @Preview
 @Composable
 fun PreviewStreamFeature() {
-    Surface {
-        StreamFeature(
-            streamFeature = StreamFeature(
-                R.string.page_audio_codec_name,
-                "Some value"
-            )
-        ) {}
+    WhatTheCodecTheme {
+        Surface {
+            StreamFeature(
+                streamFeature = StreamFeature(
+                    R.string.page_audio_codec_name,
+                    "Some value"
+                )
+            ) {}
+        }
     }
 }
 
@@ -104,24 +108,36 @@ fun StreamFeature(
     streamFeature: StreamFeature,
     clickListener: () -> Unit
 ) {
-    Column(
-        modifier
-            .clickable(onClick = clickListener)
-            .fillMaxWidth()
-            .defaultMinSize(minHeight = 58.dp)
-            .padding(horizontal = 16.dp, vertical = 8.dp)
-    ) {
-        Text(
-            stringResource(id = streamFeature.title).toUpperCase(),
-            style = MaterialTheme.typography.caption.copy(
+    WhatTheCodecTheme {
+        Column(
+            modifier
+                .clickable(onClick = clickListener)
+                .fillMaxWidth()
+                .defaultMinSize(minHeight = 58.dp)
+                .padding(horizontal = 16.dp, vertical = 8.dp)
+        ) {
+            Text(
+                stringResource(id = streamFeature.title).toUpperCase(),
+                style = MaterialTheme.typography.caption
+            )
+            Spacer(Modifier.height(8.dp))
+            Text(
+                streamFeature.description,
+                style = MaterialTheme.typography.body1
+            )
+        }
+    }
+}
+
+@Composable
+fun WhatTheCodecTheme(content: @Composable () -> Unit) {
+    MaterialTheme(
+        typography = MaterialTheme.typography.copy(
+            caption =
+            MaterialTheme.typography.caption.copy(
                 color = colorResource(id = R.color.secondary_text_default_material_light)
             )
-        )
-        Spacer(Modifier.height(8.dp))
-        Text(
-            streamFeature.description, style = MaterialTheme.typography.body1.copy(
-                color = colorResource(id = R.color.primary_text_default_material_light)
-            )
-        )
-    }
+        ),
+        content = content
+    )
 }
