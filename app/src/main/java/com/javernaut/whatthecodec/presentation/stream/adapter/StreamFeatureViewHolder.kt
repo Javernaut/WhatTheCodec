@@ -24,10 +24,7 @@ import com.javernaut.whatthecodec.presentation.stream.model.StreamFeature
 class StreamFeatureViewHolder(private val itemComposeView: ComposeView) :
     RecyclerView.ViewHolder(itemComposeView) {
 
-    private lateinit var streamFeature: StreamFeature
-
     fun bindTo(streamFeature: StreamFeature) {
-        this.streamFeature = streamFeature
 
         itemComposeView.setContent {
             WhatTheCodecTheme {
@@ -35,23 +32,27 @@ class StreamFeatureViewHolder(private val itemComposeView: ComposeView) :
                 StreamFeature(streamFeature = streamFeature) {
                     expanded = true
                 }
-                CopyToClipboardDropdown(expanded, streamFeature.description) {
-                    expanded = false
+                CopyToClipboardDropdown(
+                    expanded,
+                    streamFeature.description,
+                    { expanded = false }
+                ) {
+                    copyTextToClipboard(itemComposeView.context, streamFeature.description)
                 }
             }
         }
     }
-}
 
-private fun copyTextToClipboard(context: Context, valueToCopy: String) {
-    val clipboardManager = context.getSystemService<ClipboardManager>()!!
-    clipboardManager.setPrimaryClip(
-        ClipData.newPlainText(valueToCopy, valueToCopy)
-    )
-    val toastMessage = context.getString(
-        R.string.stream_text_copied_pattern, valueToCopy
-    )
-    Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show()
+    private fun copyTextToClipboard(context: Context, valueToCopy: String) {
+        val clipboardManager = context.getSystemService<ClipboardManager>()!!
+        clipboardManager.setPrimaryClip(
+            ClipData.newPlainText(valueToCopy, valueToCopy)
+        )
+        val toastMessage = context.getString(
+            R.string.stream_text_copied_pattern, valueToCopy
+        )
+        Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show()
+    }
 }
 
 @ExperimentalFoundationApi
@@ -64,13 +65,7 @@ fun PreviewStreamFeature() {
                 R.string.page_audio_codec_name,
                 "Some value"
             )
-            var expanded by remember { mutableStateOf(false) }
-            StreamFeature(streamFeature = streamFeature) {
-                expanded = true
-            }
-            CopyToClipboardDropdown(expanded, streamFeature.description) {
-                expanded = false
-            }
+            StreamFeature(streamFeature = streamFeature) { }
         }
     }
 }
@@ -102,17 +97,21 @@ fun StreamFeature(
 }
 
 @Composable
-fun CopyToClipboardDropdown(expanded: Boolean, valueToCopy: String, dismissCallback: () -> Unit) {
+fun CopyToClipboardDropdown(
+    expanded: Boolean,
+    title: String,
+    dismissCallback: () -> Unit,
+    copyCallback: () -> Unit
+) {
     DropdownMenu(
         expanded = expanded,
         onDismissRequest = dismissCallback
     ) {
         DropdownMenuItem(enabled = false, onClick = { }) {
-            Text(valueToCopy, color = MaterialTheme.colors.primary)
+            Text(title, color = MaterialTheme.colors.primary)
         }
         DropdownMenuItem(onClick = {
-//                val context = LocalContext.current
-//                copyTextToClipboard(context, "ValueToCopy")
+            copyCallback()
             dismissCallback()
         }) {
             Text(stringResource(id = R.string.stream_copy))
@@ -131,6 +130,7 @@ fun WhatTheCodecTheme(content: @Composable () -> Unit) {
             )
         ),
         colors = MaterialTheme.colors.copy(
+            // TODO Consider the theme attribute, rather than the specific color
             primary = colorResource(id = R.color.brand_blue)
         ),
         content = content
