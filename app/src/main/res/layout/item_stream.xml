@@ -31,19 +31,17 @@
                 android:layout_width="@dimen/common_clickable_item_height"
                 android:layout_height="@dimen/common_clickable_item_height"
                 android:layout_gravity="center_vertical"
-                android:layout_marginRight="5dp"
                 android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:scaleType="center"
                 android:src="@drawable/ic_item_fold" />
         </LinearLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
+        <androidx.compose.ui.platform.ComposeView
             android:id="@+id/streamFeatures"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clipToPadding="false"
-            android:paddingBottom="8dp" />
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

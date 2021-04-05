@@ -10,49 +10,46 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.getSystemService
-import androidx.recyclerview.widget.RecyclerView
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.presentation.stream.model.StreamFeature
 
-@OptIn(ExperimentalFoundationApi::class)
-class StreamFeatureViewHolder(private val itemComposeView: ComposeView) :
-    RecyclerView.ViewHolder(itemComposeView) {
-
-    fun bindTo(streamFeature: StreamFeature) {
-
-        itemComposeView.setContent {
-            WhatTheCodecTheme {
-                var expanded by remember { mutableStateOf(false) }
-                StreamFeature(streamFeature = streamFeature) {
-                    expanded = true
-                }
-                CopyToClipboardDropdown(
-                    expanded,
-                    streamFeature.description,
-                    { expanded = false }
-                ) {
-                    copyTextToClipboard(itemComposeView.context, streamFeature.description)
-                }
-            }
+@Composable
+@ExperimentalFoundationApi
+fun StreamFeatureItem(
+    modifier: Modifier = Modifier,
+    streamFeature: StreamFeature
+) {
+    Box(modifier = modifier) {
+        var expanded by remember { mutableStateOf(false) }
+        StreamFeature(streamFeature = streamFeature) {
+            expanded = true
+        }
+        val context = LocalContext.current
+        CopyToClipboardDropdown(
+            expanded,
+            streamFeature.description,
+            { expanded = false }
+        ) {
+            copyTextToClipboard(context, streamFeature.description)
         }
     }
+}
 
-    private fun copyTextToClipboard(context: Context, valueToCopy: String) {
-        val clipboardManager = context.getSystemService<ClipboardManager>()!!
-        clipboardManager.setPrimaryClip(
-            ClipData.newPlainText(valueToCopy, valueToCopy)
-        )
-        val toastMessage = context.getString(
-            R.string.stream_text_copied_pattern, valueToCopy
-        )
-        Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show()
-    }
+private fun copyTextToClipboard(context: Context, valueToCopy: String) {
+    val clipboardManager = context.getSystemService<ClipboardManager>()!!
+    clipboardManager.setPrimaryClip(
+        ClipData.newPlainText(valueToCopy, valueToCopy)
+    )
+    val toastMessage = context.getString(
+        R.string.stream_text_copied_pattern, valueToCopy
+    )
+    Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show()
 }
 
 @ExperimentalFoundationApi
