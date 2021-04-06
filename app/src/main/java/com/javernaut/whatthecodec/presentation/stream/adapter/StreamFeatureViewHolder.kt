@@ -11,12 +11,12 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.getSystemService
 import com.javernaut.whatthecodec.R
+import com.javernaut.whatthecodec.presentation.compose.theme.WhatTheCodecTheme
 import com.javernaut.whatthecodec.presentation.stream.model.StreamFeature
 
 @Composable
@@ -55,8 +55,23 @@ private fun copyTextToClipboard(context: Context, valueToCopy: String) {
 @ExperimentalFoundationApi
 @Preview
 @Composable
-fun PreviewStreamFeature() {
-    WhatTheCodecTheme {
+fun PreviewStreamFeatureInLight() {
+    WhatTheCodecTheme(darkTheme = false) {
+        Surface {
+            val streamFeature = StreamFeature(
+                R.string.page_audio_codec_name,
+                "Some value"
+            )
+            StreamFeature(streamFeature = streamFeature) { }
+        }
+    }
+}
+
+@ExperimentalFoundationApi
+@Preview
+@Composable
+fun PreviewStreamFeatureInDark() {
+    WhatTheCodecTheme(darkTheme = true) {
         Surface {
             val streamFeature = StreamFeature(
                 R.string.page_audio_codec_name,
@@ -114,22 +129,4 @@ fun CopyToClipboardDropdown(
             Text(stringResource(id = R.string.stream_copy))
         }
     }
-}
-
-
-@Composable
-fun WhatTheCodecTheme(content: @Composable () -> Unit) {
-    MaterialTheme(
-        typography = MaterialTheme.typography.copy(
-            caption =
-            MaterialTheme.typography.caption.copy(
-                color = colorResource(id = R.color.secondary_text_default_material_light)
-            )
-        ),
-        colors = MaterialTheme.colors.copy(
-            // TODO Consider the theme attribute, rather than the specific color
-            primary = colorResource(id = R.color.brand_blue)
-        ),
-        content = content
-    )
 }

@@ -4,12 +4,14 @@ import android.view.View
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
 import androidx.recyclerview.widget.RecyclerView
+import com.javernaut.whatthecodec.presentation.compose.theme.WhatTheCodecTheme
 import com.javernaut.whatthecodec.presentation.stream.adapter.animator.HeightAnimator
 import com.javernaut.whatthecodec.presentation.stream.model.StreamCard
 import com.javernaut.whatthecodec.presentation.stream.model.StreamFeature
@@ -41,12 +43,14 @@ class StreamCardViewHolder(
 
         containerView.streamFeatures.setContent {
             WhatTheCodecTheme {
-                StreamFeaturesGrid(
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 8.dp),
-                    features = streamCard.features
-                )
+                Surface(elevation = 1.dp) {
+                    StreamFeaturesGrid(
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 8.dp),
+                        features = streamCard.features
+                    )
+                }
             }
         }
 
