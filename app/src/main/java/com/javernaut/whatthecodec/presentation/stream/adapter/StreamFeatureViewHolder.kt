@@ -120,7 +120,8 @@ fun CopyToClipboardDropdown(
         onDismissRequest = dismissCallback
     ) {
         DropdownMenuItem(enabled = false, onClick = { }) {
-            Text(title, color = MaterialTheme.colors.primary)
+            val colors = MaterialTheme.colors
+            Text(title, color = if (colors.isLight) colors.primary else colors.secondary)
         }
         DropdownMenuItem(onClick = {
             copyCallback()
