@@ -2,6 +2,7 @@ package com.javernaut.whatthecodec.presentation.video.ui.view
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.compose.ui.platform.ComposeView
 import androidx.recyclerview.widget.RecyclerView
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.presentation.root.viewmodel.model.Frame
@@ -21,9 +22,9 @@ class FramesAdapter : RecyclerView.Adapter<FrameViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FrameViewHolder {
         val itemView = LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_frame, parent, false)
+                .inflate(R.layout.item_frame_compose, parent, false)
 
-        return FrameViewHolder(itemView)
+        return FrameViewHolder(itemView as ComposeView)
     }
 
     override fun getItemCount() = frames.size

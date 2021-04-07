@@ -1,35 +1,82 @@
 package com.javernaut.whatthecodec.presentation.video.ui.view
 
-import android.view.View
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import androidx.recyclerview.widget.RecyclerView
-import com.javernaut.whatthecodec.presentation.root.viewmodel.model.ActualFrame
-import com.javernaut.whatthecodec.presentation.root.viewmodel.model.DecodingErrorFrame
-import com.javernaut.whatthecodec.presentation.root.viewmodel.model.Frame
-import com.javernaut.whatthecodec.presentation.root.viewmodel.model.LoadingFrame
-import com.javernaut.whatthecodec.util.setVisible
-import kotlinx.android.extensions.LayoutContainer
-import kotlinx.android.synthetic.main.item_frame.view.actualFrameView
-import kotlinx.android.synthetic.main.item_frame.view.decodingErrorView
-import kotlinx.android.synthetic.main.item_frame.view.progressView
+import com.javernaut.whatthecodec.R
+import com.javernaut.whatthecodec.presentation.compose.theme.WhatTheCodecTheme
+import com.javernaut.whatthecodec.presentation.root.viewmodel.model.*
 
-class FrameViewHolder(override val containerView: View) : RecyclerView.ViewHolder(containerView), LayoutContainer {
+class FrameViewHolder(private val containerView: ComposeView) :
+    RecyclerView.ViewHolder(containerView) {
 
     fun bind(frame: Frame) {
-        containerView.actualFrameView.setImageBitmap(
-                (frame as? ActualFrame)?.frameData
-        )
-        setVisibilities(
-                frame == LoadingFrame,
-                frame is ActualFrame,
-                frame == DecodingErrorFrame
-        )
+        containerView.setContent {
+            WhatTheCodecTheme {
+                when (frame) {
+                    LoadingFrame -> {
+                        LoadingFrame()
+                    }
+                    is ActualFrame -> {
+                        ActualFrame(frame)
+                    }
+                    DecodingErrorFrame -> {
+                        DecodingErrorFrame()
+                    }
+                    PlaceholderFrame -> {
+                        // Nothing to draw here
+                    }
+                }
+            }
+        }
     }
+}
 
-    private fun setVisibilities(progress: Boolean = false,
-                                actualFrame: Boolean = false,
-                                decodingError: Boolean = false) {
-        containerView.progressView.setVisible(progress)
-        containerView.actualFrameView.setVisible(actualFrame)
-        containerView.decodingErrorView.setVisible(decodingError)
+@Composable
+private fun DecodingErrorFrame() {
+    Text(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(colorResource(id = R.color.colorPreviewDecodingError))
+            .padding(16.dp),
+        text = stringResource(id = R.string.page_video_preview_frame_decoding_error),
+        style = MaterialTheme.typography.caption,
+        textAlign = TextAlign.Center
+    )
+}
+
+@Composable
+private fun ActualFrame(frame: ActualFrame) {
+    Image(
+        modifier = Modifier
+            .fillMaxSize(),
+        bitmap = frame.frameData.asImageBitmap(),
+        contentDescription = null
+    )
+}
+
+@Composable
+private fun LoadingFrame() {
+    Box(contentAlignment = Alignment.Center) {
+        CircularProgressIndicator(
+            modifier = Modifier.size(40.dp),
+            color = MaterialTheme.colors.secondary
+        )
     }
 }

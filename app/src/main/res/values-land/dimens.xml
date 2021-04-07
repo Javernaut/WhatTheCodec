@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <dimen name="preview_frames_view_width">@dimen/wrap_content</dimen>
-</resources>

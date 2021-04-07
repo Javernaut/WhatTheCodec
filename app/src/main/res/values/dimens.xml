@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <item name="match_parent" format="integer" type="dimen">-1</item>
-    <item name="wrap_content" format="integer" type="dimen">-2</item>
-
     <dimen name="common_horizontal_spacing">16dp</dimen>
     <dimen name="common_list_item_height">58dp</dimen>
     <dimen name="common_clickable_item_height">48dp</dimen>
-    <dimen name="preview_frames_view_width">@dimen/match_parent</dimen>
     <dimen name="preview_frames_spacing">2dp</dimen>
 </resources>
