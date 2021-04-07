@@ -2,10 +2,13 @@ package com.javernaut.whatthecodec.presentation.stream.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.ui.platform.ComposeView
 import androidx.recyclerview.widget.RecyclerView
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.presentation.stream.model.StreamCard
 
+@OptIn(ExperimentalFoundationApi::class)
 class StreamsAdapter : RecyclerView.Adapter<StreamCardViewHolder>() {
 
     var streamCards = emptyList<StreamCard>()
@@ -14,25 +17,10 @@ class StreamsAdapter : RecyclerView.Adapter<StreamCardViewHolder>() {
             notifyDataSetChanged()
         }
 
-    private val expandStatusChangeListener = object : StreamCardViewHolder.OnExpandStatusChangeListener {
-        override fun onExpandStatusChange(viewHolder: StreamCardViewHolder, isExpanded: Boolean) {
-            notifyItemChanged(viewHolder.adapterPosition, isExpanded)
-        }
-    }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StreamCardViewHolder {
         val itemView = LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_stream, parent, false)
-        return StreamCardViewHolder(itemView, expandStatusChangeListener)
-    }
-
-    override fun onBindViewHolder(holder: StreamCardViewHolder, position: Int, payloads: MutableList<Any>) {
-        if (payloads.isEmpty()) {
-            onBindViewHolder(holder, position)
-        } else {
-            val isExpanded = payloads.first() as? Boolean == true
-            holder.animateList(isExpanded)
-        }
+            .inflate(R.layout.item_stream, parent, false)
+        return StreamCardViewHolder(itemView as ComposeView)
     }
 
     override fun onBindViewHolder(holder: StreamCardViewHolder, position: Int) {
@@ -40,5 +28,4 @@ class StreamsAdapter : RecyclerView.Adapter<StreamCardViewHolder>() {
     }
 
     override fun getItemCount() = streamCards.size
-
 }

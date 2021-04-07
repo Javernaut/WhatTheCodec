@@ -41,7 +41,7 @@ fun WhatTheCodecTheme(
     MaterialTheme(
         colors = colors,
 //        typography = Typography,
-//        shapes = Shapes,
+        shapes = Shapes,
         typography = MaterialTheme.typography.copy(
             caption =
             MaterialTheme.typography.caption.copy(
