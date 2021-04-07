@@ -11,6 +11,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -94,7 +95,10 @@ fun StreamFeature(
             .combinedClickable(onLongClick = longClickListener, onClick = {})
             .fillMaxWidth()
             .defaultMinSize(minHeight = 58.dp)
-            .padding(horizontal = 16.dp, vertical = 8.dp)
+            .padding(
+                horizontal = dimensionResource(id = R.dimen.common_horizontal_spacing),
+                vertical = 8.dp
+            )
     ) {
         Text(
             stringResource(id = streamFeature.title).toUpperCase(),
