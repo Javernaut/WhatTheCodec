@@ -1,32 +1,51 @@
 package com.javernaut.whatthecodec.presentation.stream
 
 import android.os.Bundle
-import androidx.annotation.CallSuper
+import android.view.View
 import androidx.annotation.LayoutRes
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.presentation.root.viewmodel.MediaFileViewModel
-import com.javernaut.whatthecodec.presentation.stream.adapter.StreamsAdapter
+import com.javernaut.whatthecodec.presentation.stream.adapter.StreamCard
 import com.javernaut.whatthecodec.presentation.stream.model.StreamCard
-import kotlinx.android.synthetic.main.fragment_base_page.*
 
-abstract class BasePageFragment(@LayoutRes layoutId: Int = R.layout.fragment_base_page) : Fragment(layoutId) {
+abstract class BasePageFragment(@LayoutRes layoutId: Int = R.layout.fragment_base_page) :
+    Fragment(layoutId) {
 
     protected val mediaFileViewModel by activityViewModels<MediaFileViewModel>()
 
-    private val adapter = StreamsAdapter()
+    private lateinit var composeView: ComposeView
 
-    @CallSuper
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
-        recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(context)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        composeView = view.findViewById(R.id.composeView)
     }
 
     protected fun displayStreams(streamCards: List<StreamCard>) {
-        adapter.streamCards = streamCards
+        composeView.setContent {
+            StreamCardsColumn(streamCards)
+        }
+    }
+}
+
+@Composable
+fun StreamCardsColumn(streamCards: List<StreamCard>) {
+    // TODO migrate to LazyColumn
+    Column(
+        Modifier
+            .fillMaxWidth()
+            .padding(8.dp)
+    ) {
+        streamCards.forEach {
+            StreamCard(it)
+        }
     }
 }

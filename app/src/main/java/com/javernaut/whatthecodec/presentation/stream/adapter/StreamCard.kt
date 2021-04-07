@@ -3,7 +3,6 @@ package com.javernaut.whatthecodec.presentation.stream.adapter
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
@@ -16,34 +15,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.Layout
-import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
-import androidx.recyclerview.widget.RecyclerView
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.presentation.compose.theme.WhatTheCodecTheme
 import com.javernaut.whatthecodec.presentation.stream.model.StreamCard
 import com.javernaut.whatthecodec.presentation.stream.model.StreamFeature
-import kotlinx.android.extensions.LayoutContainer
-
-@OptIn(ExperimentalFoundationApi::class)
-class StreamCardViewHolder(
-    override val containerView: ComposeView,
-) : RecyclerView.ViewHolder(containerView), LayoutContainer {
-
-    private lateinit var item: StreamCard
-
-    fun bindTo(streamCard: StreamCard) {
-        this.item = streamCard
-
-        containerView.setContent {
-            StreamCard(streamCard)
-        }
-    }
-}
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable

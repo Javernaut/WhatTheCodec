@@ -1,6 +1,7 @@
 package com.javernaut.whatthecodec.presentation.video.ui
 
 import android.os.Bundle
+import android.view.View
 import androidx.lifecycle.Observer
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.presentation.audio.ui.BitRateHelper
@@ -13,8 +14,8 @@ import kotlinx.android.synthetic.main.fragment_video_page.*
 
 class VideoPageFragment : BasePageFragment(R.layout.fragment_video_page) {
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         mediaFileViewModel.basicVideoInfoLiveData.observe(viewLifecycleOwner, Observer {
             if (it != null) {
