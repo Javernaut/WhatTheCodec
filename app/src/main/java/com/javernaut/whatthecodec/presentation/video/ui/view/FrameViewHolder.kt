@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -29,20 +30,29 @@ class FrameViewHolder(private val containerView: ComposeView) :
     fun bind(frame: Frame) {
         containerView.setContent {
             WhatTheCodecTheme {
-                when (frame) {
-                    LoadingFrame -> {
-                        LoadingFrame()
-                    }
-                    is ActualFrame -> {
-                        ActualFrame(frame)
-                    }
-                    DecodingErrorFrame -> {
-                        DecodingErrorFrame()
-                    }
-                    PlaceholderFrame -> {
-                        // Nothing to draw here
-                    }
-                }
+
+            }
+        }
+    }
+}
+
+@Composable
+fun Frame(modifier: Modifier, frame: Frame, frameMetrics: FrameMetrics) {
+    Box(modifier = with(LocalDensity.current) {
+        modifier.size(frameMetrics.width.toDp(), frameMetrics.height.toDp())
+    }, contentAlignment = Alignment.Center) {
+        when (frame) {
+            LoadingFrame -> {
+                LoadingFrame()
+            }
+            is ActualFrame -> {
+                ActualFrame(frame)
+            }
+            DecodingErrorFrame -> {
+                DecodingErrorFrame()
+            }
+            PlaceholderFrame -> {
+                // Nothing to draw here
             }
         }
     }
