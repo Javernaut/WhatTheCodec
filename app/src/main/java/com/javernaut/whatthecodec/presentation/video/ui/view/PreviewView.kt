@@ -9,38 +9,35 @@ import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
 import android.util.AttributeSet
 import android.widget.FrameLayout
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.presentation.compose.theme.WhatTheCodecTheme
+import com.javernaut.whatthecodec.presentation.compose.theme.secondaryText
 import com.javernaut.whatthecodec.presentation.root.viewmodel.model.*
 import com.javernaut.whatthecodec.presentation.stream.adapter.GridLayout
-import com.javernaut.whatthecodec.util.setVisible
-import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.view_preview.view.*
 import kotlin.math.min
 
-class PreviewView(context: Context, attrs: AttributeSet) : FrameLayout(context, attrs),
-    LayoutContainer {
-
-    override val containerView = this
+class PreviewView(context: Context, attrs: AttributeSet) : FrameLayout(context, attrs) {
 
     init {
         inflate(context, R.layout.view_preview, this)
     }
 
     fun setPreview(preview: Preview) {
-        setVisibilities(preview != NoPreviewAvailable)
-        when (preview) {
-            NoPreviewAvailable -> {
-                applyBackground(Color.TRANSPARENT)
-            }
-            is ActualPreview -> {
-                framesComposeView.setContent {
+        framesComposeView.setContent {
+            when (preview) {
+                is ActualPreview -> {
                     WhatTheCodecTheme {
                         FramesGrid(
                             with(LocalDensity.current) {
@@ -49,10 +46,23 @@ class PreviewView(context: Context, attrs: AttributeSet) : FrameLayout(context, 
                             preview.frames, preview.frameMetrics
                         )
                     }
+                    applyBackground(preview.backgroundColor)
                 }
-                applyBackground(preview.backgroundColor)
+                NoPreviewAvailable -> {
+                    applyBackground(Color.TRANSPARENT)
+                    Text(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 16.dp),
+                        text = stringResource(id = R.string.page_video_preview_missing_decoder),
+                        style = MaterialTheme.typography.subtitle1,
+                        textAlign = TextAlign.Center,
+                        color = MaterialTheme.colors.secondaryText
+                    )
+                }
             }
         }
+
     }
 
     private fun applyBackground(color: Int) {
@@ -67,11 +77,6 @@ class PreviewView(context: Context, attrs: AttributeSet) : FrameLayout(context, 
         )
             .setDuration(300)
             .start()
-    }
-
-    private fun setVisibilities(decodingAvailable: Boolean) {
-        framesComposeView.setVisible(decodingAvailable)
-        decodingUnavailableView.setVisible(!decodingAvailable)
     }
 
     companion object {

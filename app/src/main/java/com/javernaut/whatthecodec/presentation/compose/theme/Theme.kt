@@ -1,6 +1,7 @@
 package com.javernaut.whatthecodec.presentation.compose.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material.Colors
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
@@ -27,6 +28,13 @@ private val LightColorPalette = lightColors(
     background = ThemeLightBackground
 )
 
+val Colors.secondaryText
+    get() = if (isLight) {
+        ColorTextSecondaryLight
+    } else {
+        ColorTextSecondaryDark
+    }
+
 @Composable
 fun WhatTheCodecTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
@@ -45,8 +53,7 @@ fun WhatTheCodecTheme(
         typography = MaterialTheme.typography.copy(
             caption =
             MaterialTheme.typography.caption.copy(
-                color = if (isSystemInDarkTheme()) ColorCaptionDark
-                else ColorCaptionLight
+                color = colors.secondaryText
             )
         ),
         content = content
