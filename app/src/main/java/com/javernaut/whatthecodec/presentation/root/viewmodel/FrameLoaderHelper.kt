@@ -85,7 +85,10 @@ class FrameLoaderHelper(
     private suspend fun tryApplyPreview(previewApplier: (ActualPreview) -> Unit, preview: ActualPreview) {
         if (isWorking) {
             withContext(Dispatchers.Main) {
-                previewApplier(preview)
+                // Enforcing the difference in 'frames' field to be properly recognized as a change
+                previewApplier(preview.copy(
+                    frames = ArrayList(preview.frames)
+                ))
             }
         }
     }

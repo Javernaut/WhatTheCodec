@@ -18,22 +18,18 @@ import com.javernaut.whatthecodec.presentation.root.viewmodel.MediaFileArgument
 import com.javernaut.whatthecodec.presentation.root.viewmodel.MediaFileViewModel
 import com.javernaut.whatthecodec.presentation.root.viewmodel.MediaFileViewModelFactory
 import com.javernaut.whatthecodec.presentation.settings.SettingsActivity
-import com.javernaut.whatthecodec.presentation.video.ui.view.PreviewView
+import com.javernaut.whatthecodec.presentation.video.ui.view.getDesiredFrameWidth
 import com.javernaut.whatthecodec.util.TinyActivityCompat
 import com.javernaut.whatthecodec.util.isVisible
 import com.javernaut.whatthecodec.util.setVisible
-import kotlinx.android.synthetic.main.activity_root.pager
-import kotlinx.android.synthetic.main.activity_root.tabs
-import kotlinx.android.synthetic.main.activity_root.toolbar
-import kotlinx.android.synthetic.main.inline_empty_root.emptyRootPanel
-import kotlinx.android.synthetic.main.inline_empty_root.pickAudio
-import kotlinx.android.synthetic.main.inline_empty_root.pickVideo
+import kotlinx.android.synthetic.main.activity_root.*
+import kotlinx.android.synthetic.main.inline_empty_root.*
 
 class RootActivity : AppCompatActivity(R.layout.activity_root) {
 
     private val mediaFileViewModel by lazy(LazyThreadSafetyMode.NONE) {
         ViewModelProvider(
-                this, MediaFileViewModelFactory(this, PreviewView.getDesiredFrameWidth(this))
+            this, MediaFileViewModelFactory(this, getDesiredFrameWidth(this))
         ).get(MediaFileViewModel::class.java)
     }
 
@@ -70,7 +66,8 @@ class RootActivity : AppCompatActivity(R.layout.activity_root) {
             }
         })
 
-        intentActionViewConsumed = savedInstanceState?.getBoolean(EXTRA_INTENT_ACTION_VIEW_CONSUMED) == true
+        intentActionViewConsumed =
+            savedInstanceState?.getBoolean(EXTRA_INTENT_ACTION_VIEW_CONSUMED) == true
         if (!intentActionViewConsumed) {
             onCheckForActionView()
         }
@@ -97,18 +94,24 @@ class RootActivity : AppCompatActivity(R.layout.activity_root) {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == REQUEST_CODE_PICK_VIDEO || requestCode == REQUEST_CODE_PICK_AUDIO) {
             if (resultCode == RESULT_OK && data?.data != null) {
-                openMediaFile(data.data!!, if (requestCode == REQUEST_CODE_PICK_VIDEO) {
-                    MediaType.VIDEO
-                } else {
-                    MediaType.AUDIO
-                })
+                openMediaFile(
+                    data.data!!, if (requestCode == REQUEST_CODE_PICK_VIDEO) {
+                        MediaType.VIDEO
+                    } else {
+                        MediaType.AUDIO
+                    }
+                )
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data)
         }
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
         when (requestCode) {
             REQUEST_CODE_PERMISSION_ACTION_VIEW,
             REQUEST_CODE_PERMISSION_PICK_VIDEO,
@@ -131,10 +134,20 @@ class RootActivity : AppCompatActivity(R.layout.activity_root) {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         if (!emptyRootPanel.isVisible()) {
-            addMenuItem(menu, R.string.menu_pick_video, R.drawable.ic_menu_video, MenuItem.SHOW_AS_ACTION_ALWAYS) {
+            addMenuItem(
+                menu,
+                R.string.menu_pick_video,
+                R.drawable.ic_menu_video,
+                MenuItem.SHOW_AS_ACTION_ALWAYS
+            ) {
                 onPickVideoClicked()
             }
-            addMenuItem(menu, R.string.menu_pick_audio, R.drawable.ic_menu_audio, MenuItem.SHOW_AS_ACTION_ALWAYS) {
+            addMenuItem(
+                menu,
+                R.string.menu_pick_audio,
+                R.drawable.ic_menu_audio,
+                MenuItem.SHOW_AS_ACTION_ALWAYS
+            ) {
                 onPickAudioClicked()
             }
         }
@@ -144,15 +157,17 @@ class RootActivity : AppCompatActivity(R.layout.activity_root) {
         return true
     }
 
-    private inline fun addMenuItem(menu: Menu,
-                                   title: Int,
-                                   icon: Int, actionEnum: Int,
-                                   crossinline actualAction: () -> Unit) {
+    private inline fun addMenuItem(
+        menu: Menu,
+        title: Int,
+        icon: Int, actionEnum: Int,
+        crossinline actualAction: () -> Unit
+    ) {
         menu.add(title).setIcon(icon)
-                .setOnMenuItemClickListener {
-                    actualAction()
-                    true
-                }.setShowAsAction(actionEnum)
+            .setOnMenuItemClickListener {
+                actualAction()
+                true
+            }.setShowAsAction(actionEnum)
     }
 
     private fun onPickVideoClicked() {
@@ -193,19 +208,23 @@ class RootActivity : AppCompatActivity(R.layout.activity_root) {
 
     private fun actualDisplayFileFromActionView() {
         intentActionViewConsumed = true
-        openMediaFile(intent.data!!, if (MimeTypeFilter.matches(intent.type, MIME_TYPE_AUDIO)) {
-            MediaType.AUDIO
-        } else {
-            MediaType.VIDEO
-        })
+        openMediaFile(
+            intent.data!!, if (MimeTypeFilter.matches(intent.type, MIME_TYPE_AUDIO)) {
+                MediaType.AUDIO
+            } else {
+                MediaType.VIDEO
+            }
+        )
     }
 
     private fun startActivityForMediaFile(type: String, requestCode: Int) {
-        startActivityForResult(Intent(Intent.ACTION_GET_CONTENT)
+        startActivityForResult(
+            Intent(Intent.ACTION_GET_CONTENT)
                 .setType(type)
                 .putExtra(Intent.EXTRA_LOCAL_ONLY, true)
                 .addCategory(Intent.CATEGORY_OPENABLE),
-                requestCode)
+            requestCode
+        )
     }
 
     private fun openMediaFile(uri: Uri, mediaType: MediaType) {

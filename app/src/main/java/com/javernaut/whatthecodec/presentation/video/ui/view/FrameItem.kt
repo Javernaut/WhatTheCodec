@@ -13,28 +13,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.recyclerview.widget.RecyclerView
 import com.javernaut.whatthecodec.R
-import com.javernaut.whatthecodec.presentation.compose.theme.WhatTheCodecTheme
 import com.javernaut.whatthecodec.presentation.root.viewmodel.model.*
-
-class FrameViewHolder(private val containerView: ComposeView) :
-    RecyclerView.ViewHolder(containerView) {
-
-    fun bind(frame: Frame) {
-        containerView.setContent {
-            WhatTheCodecTheme {
-
-            }
-        }
-    }
-}
 
 @Composable
 fun Frame(modifier: Modifier, frame: Frame, frameMetrics: FrameMetrics) {

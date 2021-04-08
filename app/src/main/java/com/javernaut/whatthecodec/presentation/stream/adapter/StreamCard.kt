@@ -21,26 +21,21 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
 import com.javernaut.whatthecodec.R
-import com.javernaut.whatthecodec.presentation.compose.theme.WhatTheCodecTheme
 import com.javernaut.whatthecodec.presentation.stream.model.StreamCard
 import com.javernaut.whatthecodec.presentation.stream.model.StreamFeature
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun StreamCard(streamCard: StreamCard) {
-    WhatTheCodecTheme {
-        Box(Modifier.padding(8.dp)) {
-            Surface(elevation = 1.dp, shape = MaterialTheme.shapes.medium) {
-                Column {
-                    StreamCardTopRow(streamCard)
-                    StreamFeaturesGrid(
-                        Modifier
-                            .fillMaxWidth()
-                            .padding(bottom = 8.dp),
-                        features = streamCard.features
-                    )
-                }
-            }
+fun StreamCard(modifier: Modifier = Modifier, streamCard: StreamCard) {
+    Surface(modifier, elevation = 1.dp, shape = MaterialTheme.shapes.medium) {
+        Column {
+            StreamCardTopRow(streamCard)
+            StreamFeaturesGrid(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 8.dp),
+                features = streamCard.features
+            )
         }
     }
 }
