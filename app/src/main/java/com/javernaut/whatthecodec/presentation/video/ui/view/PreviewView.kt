@@ -1,21 +1,18 @@
 package com.javernaut.whatthecodec.presentation.video.ui.view
 
-import android.animation.ArgbEvaluator
-import android.animation.ObjectAnimator
 import android.app.Activity
 import android.content.Context
-import android.graphics.Color
 import android.graphics.Point
-import android.graphics.drawable.ColorDrawable
 import android.util.AttributeSet
 import android.widget.FrameLayout
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -36,47 +33,41 @@ class PreviewView(context: Context, attrs: AttributeSet) : FrameLayout(context, 
 
     fun setPreview(preview: Preview) {
         framesComposeView.setContent {
-            when (preview) {
-                is ActualPreview -> {
-                    WhatTheCodecTheme {
-                        FramesGrid(
-                            with(LocalDensity.current) {
-                                Modifier.width(getPreviewViewWidth(context as Activity).toDp())
-                            },
-                            preview.frames, preview.frameMetrics
+            WhatTheCodecTheme {
+                when (preview) {
+                    is ActualPreview -> {
+
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .wrapContentHeight()
+                                // TODO add the animation for the colour change
+                                .background(color = Color(preview.backgroundColor)),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            FramesGrid(
+                                with(LocalDensity.current) {
+                                    Modifier.width(getPreviewViewWidth(context as Activity).toDp())
+                                },
+                                preview.frames, preview.frameMetrics
+                            )
+                        }
+                    }
+                    NoPreviewAvailable -> {
+                        Text(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(top = 16.dp),
+                            text = stringResource(id = R.string.page_video_preview_missing_decoder),
+                            style = MaterialTheme.typography.subtitle1,
+                            textAlign = TextAlign.Center,
+                            color = MaterialTheme.colors.secondaryText
                         )
                     }
-                    applyBackground(preview.backgroundColor)
-                }
-                NoPreviewAvailable -> {
-                    applyBackground(Color.TRANSPARENT)
-                    Text(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 16.dp),
-                        text = stringResource(id = R.string.page_video_preview_missing_decoder),
-                        style = MaterialTheme.typography.subtitle1,
-                        textAlign = TextAlign.Center,
-                        color = MaterialTheme.colors.secondaryText
-                    )
                 }
             }
         }
 
-    }
-
-    private fun applyBackground(color: Int) {
-        val currentColor = (background as? ColorDrawable)?.color
-            ?: Color.TRANSPARENT
-        ObjectAnimator.ofObject(
-            this,
-            "backgroundColor",
-            ArgbEvaluator(),
-            currentColor,
-            color
-        )
-            .setDuration(300)
-            .start()
     }
 
     companion object {
