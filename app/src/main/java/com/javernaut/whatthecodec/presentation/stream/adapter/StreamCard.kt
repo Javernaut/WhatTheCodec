@@ -1,5 +1,7 @@
 package com.javernaut.whatthecodec.presentation.stream.adapter
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -9,8 +11,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.ripple.rememberRipple
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -24,24 +25,33 @@ import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.presentation.stream.model.StreamCard
 import com.javernaut.whatthecodec.presentation.stream.model.StreamFeature
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalAnimationApi::class)
 @Composable
 fun StreamCard(modifier: Modifier = Modifier, streamCard: StreamCard) {
     Surface(modifier, elevation = 1.dp, shape = MaterialTheme.shapes.medium) {
         Column {
-            StreamCardTopRow(streamCard)
-            StreamFeaturesGrid(
-                Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 8.dp),
-                features = streamCard.features
-            )
+            var gridVisible by remember { mutableStateOf(true) }
+            StreamCardTopRow(streamCard, gridVisible) {
+                gridVisible = !gridVisible
+            }
+            AnimatedVisibility(visible = gridVisible) {
+                StreamFeaturesGrid(
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 8.dp),
+                    features = streamCard.features
+                )
+            }
         }
     }
 }
 
 @Composable
-private fun StreamCardTopRow(streamCard: StreamCard) {
+private fun StreamCardTopRow(
+    streamCard: StreamCard,
+    gridVisible: Boolean,
+    arrowClicked: () -> Unit
+) {
     Row(
         Modifier
             .height(56.dp)
@@ -68,9 +78,8 @@ private fun StreamCardTopRow(streamCard: StreamCard) {
                 .clickable(
                     interactionSource = remember { MutableInteractionSource() },
                     indication = rememberRipple(bounded = false),
-                ) {
-                    // TODO add click handling that animates the direction of the image and the size of the grid
-                }
+                    onClick = arrowClicked
+                )
                 .size(dimensionResource(id = R.dimen.common_clickable_item_height)),
             contentScale = ContentScale.Inside
         )
