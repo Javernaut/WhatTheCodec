@@ -2,6 +2,7 @@ package com.javernaut.whatthecodec.presentation.stream.adapter
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -14,6 +15,7 @@ import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.res.dimensionResource
@@ -71,10 +73,12 @@ private fun StreamCardTopRow(
             overflow = TextOverflow.Ellipsis,
             maxLines = 1
         )
+        val angle by animateFloatAsState(targetValue = if (gridVisible) 360f else 180f)
         Image(
             painter = painterResource(id = R.drawable.ic_item_fold),
             contentDescription = null,
             Modifier
+                .rotate(angle)
                 .clickable(
                     interactionSource = remember { MutableInteractionSource() },
                     indication = rememberRipple(bounded = false),
