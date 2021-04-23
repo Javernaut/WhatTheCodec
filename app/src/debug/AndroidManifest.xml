@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.javernaut.whatthecodec">
+
+    <application>
+        <activity
+            android:name=".presentation.compose.playground.ComposePlaygroundActivity"
+            android:exported="true"
+            android:theme="@style/Theme.WhatTheCodec.NoActionBar" />
+    </application>
+
+</manifest>

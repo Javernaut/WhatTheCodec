@@ -119,6 +119,7 @@ dependencies {
     implementation 'androidx.preference:preference-ktx:1.1.1'
     implementation 'androidx.browser:browser:1.3.0'
 
+    // TODO replace with own implementation
     implementation "com.github.hadilq.liveevent:liveevent:1.2.0"
 
     // Compose
@@ -129,6 +130,7 @@ dependencies {
     implementation "androidx.compose.material:material:$rootProject.composeVersion"
     implementation "androidx.compose.runtime:runtime-livedata:$rootProject.composeVersion"
     implementation "androidx.compose.ui:ui-tooling:$rootProject.composeVersion"
+    implementation "androidx.activity:activity-compose:1.3.0-alpha07"
 //    implementation "com.google.android.material:compose-theme-adapter:$rootProject.composeVersion"
 
     def testLibsVersion = "1.3.0"
