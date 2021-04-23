@@ -9,7 +9,6 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.MimeTypeFilter
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.tabs.TabLayoutMediator
 import com.javernaut.whatthecodec.R
@@ -23,7 +22,6 @@ import com.javernaut.whatthecodec.util.TinyActivityCompat
 import com.javernaut.whatthecodec.util.isVisible
 import com.javernaut.whatthecodec.util.setVisible
 import kotlinx.android.synthetic.main.activity_root.*
-import kotlinx.android.synthetic.main.inline_empty_root.*
 
 class RootActivity : AppCompatActivity(R.layout.activity_root) {
 
@@ -45,26 +43,30 @@ class RootActivity : AppCompatActivity(R.layout.activity_root) {
         pager.adapter = pagerAdapter
         TabLayoutMediator(tabs, pager, pagerAdapter.tabConfigurationStrategy).attach()
 
-        pickVideo.setOnClickListener { onPickVideoClicked() }
-        pickAudio.setOnClickListener { onPickAudioClicked() }
+        emptyComposeView.setContent {
+            EmptyScreen(
+                onVideoIconClick = ::onPickVideoClicked,
+                onAudioIconClick = ::onPickAudioClicked
+            )
+        }
 
-        mediaFileViewModel.availableTabsLiveData.observe(this, Observer {
+        mediaFileViewModel.availableTabsLiveData.observe(this) {
             tabs.visibility = View.VISIBLE
             supportActionBar?.title = null
 
             pagerAdapter.availableTabs = it
 
-            emptyRootPanel.setVisible(false)
+            emptyComposeView.setVisible(false)
             pager.setVisible(true)
 
             invalidateOptionsMenu()
-        })
+        }
 
-        mediaFileViewModel.errorMessageLiveEvent.observe(this, Observer {
+        mediaFileViewModel.errorMessageLiveEvent.observe(this) {
             if (it) {
                 toast(R.string.message_couldnt_open_file)
             }
-        })
+        }
 
         intentActionViewConsumed =
             savedInstanceState?.getBoolean(EXTRA_INTENT_ACTION_VIEW_CONSUMED) == true
@@ -133,7 +135,7 @@ class RootActivity : AppCompatActivity(R.layout.activity_root) {
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        if (!emptyRootPanel.isVisible()) {
+        if (!emptyComposeView.isVisible()) {
             addMenuItem(
                 menu,
                 R.string.menu_pick_video,
