@@ -3,9 +3,10 @@
 buildscript {
     ext.kotlinVersion = '1.4.32'
     ext.composeVersion = '1.0.0-beta05'
+    ext.accompanistVersion = '0.8.1'
     repositories {
         google()
-        jcenter()
+        mavenCentral()
         maven { url "https://plugins.gradle.org/m2/" }
     }
     dependencies {
@@ -18,7 +19,7 @@ buildscript {
 allprojects {
     repositories {
         google()
-        jcenter()
+        mavenCentral()
     }
 }
 
