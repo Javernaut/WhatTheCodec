@@ -3,27 +3,23 @@ package com.javernaut.whatthecodec.presentation.root.ui
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
 import android.widget.Toast
+import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.core.content.MimeTypeFilter
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.material.tabs.TabLayoutMediator
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.domain.MediaType
+import com.javernaut.whatthecodec.presentation.compose.theme.WhatTheCodecTheme
 import com.javernaut.whatthecodec.presentation.root.viewmodel.MediaFileArgument
 import com.javernaut.whatthecodec.presentation.root.viewmodel.MediaFileViewModel
 import com.javernaut.whatthecodec.presentation.root.viewmodel.MediaFileViewModelFactory
-import com.javernaut.whatthecodec.presentation.settings.SettingsActivity
 import com.javernaut.whatthecodec.presentation.video.ui.view.getDesiredFrameWidth
 import com.javernaut.whatthecodec.util.TinyActivityCompat
-import com.javernaut.whatthecodec.util.isVisible
-import com.javernaut.whatthecodec.util.setVisible
-import kotlinx.android.synthetic.main.activity_root.*
 
-class RootActivity : AppCompatActivity(R.layout.activity_root) {
+class RootActivity : AppCompatActivity() {
 
     private val mediaFileViewModel by lazy(LazyThreadSafetyMode.NONE) {
         ViewModelProvider(
@@ -33,34 +29,42 @@ class RootActivity : AppCompatActivity(R.layout.activity_root) {
 
     private var intentActionViewConsumed = false
 
-    private lateinit var pagerAdapter: RootPagerAdapter
+//    private lateinit var pagerAdapter: RootPagerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setSupportActionBar(toolbar)
 
-        pagerAdapter = RootPagerAdapter(this)
-        pager.adapter = pagerAdapter
-        TabLayoutMediator(tabs, pager, pagerAdapter.tabConfigurationStrategy).attach()
-
-        emptyComposeView.setContent {
-            EmptyScreen(
-                onVideoIconClick = ::onPickVideoClicked,
-                onAudioIconClick = ::onPickAudioClicked
-            )
+        setContent {
+            WhatTheCodecTheme {
+                val tabsToShow by mediaFileViewModel.availableTabsLiveData.observeAsState()
+                if (tabsToShow == null) {
+                    EmptyScreen(
+                        onVideoIconClick = ::onPickVideoClicked,
+                        onAudioIconClick = ::onPickAudioClicked
+                    ) {
+                        // TODO Add Settings menu item here
+                    }
+                } else {
+                    // TODO
+                }
+            }
         }
 
-        mediaFileViewModel.availableTabsLiveData.observe(this) {
-            tabs.visibility = View.VISIBLE
-            supportActionBar?.title = null
+//        pagerAdapter = RootPagerAdapter(this)
+//        pager.adapter = pagerAdapter
+//        TabLayoutMediator(tabs, pager, pagerAdapter.tabConfigurationStrategy).attach()
 
-            pagerAdapter.availableTabs = it
-
-            emptyComposeView.setVisible(false)
-            pager.setVisible(true)
-
-            invalidateOptionsMenu()
-        }
+//        mediaFileViewModel.availableTabsLiveData.observe(this) {
+//            tabs.visibility = View.VISIBLE
+//            supportActionBar?.title = null
+//
+//            pagerAdapter.availableTabs = it
+//
+//            emptyComposeView.setVisible(false)
+//            pager.setVisible(true)
+//
+//            invalidateOptionsMenu()
+//        }
 
         mediaFileViewModel.errorMessageLiveEvent.observe(this) {
             if (it) {
@@ -134,43 +138,31 @@ class RootActivity : AppCompatActivity(R.layout.activity_root) {
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        if (!emptyComposeView.isVisible()) {
-            addMenuItem(
-                menu,
-                R.string.menu_pick_video,
-                R.drawable.ic_menu_video,
-                MenuItem.SHOW_AS_ACTION_ALWAYS
-            ) {
-                onPickVideoClicked()
-            }
-            addMenuItem(
-                menu,
-                R.string.menu_pick_audio,
-                R.drawable.ic_menu_audio,
-                MenuItem.SHOW_AS_ACTION_ALWAYS
-            ) {
-                onPickAudioClicked()
-            }
-        }
-        addMenuItem(menu, R.string.menu_settings, 0, MenuItem.SHOW_AS_ACTION_NEVER) {
-            SettingsActivity.start(this)
-        }
-        return true
-    }
-
-    private inline fun addMenuItem(
-        menu: Menu,
-        title: Int,
-        icon: Int, actionEnum: Int,
-        crossinline actualAction: () -> Unit
-    ) {
-        menu.add(title).setIcon(icon)
-            .setOnMenuItemClickListener {
-                actualAction()
-                true
-            }.setShowAsAction(actionEnum)
-    }
+    // TODO Pick values from here in actual menu
+//    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+//        if (!emptyComposeView.isVisible()) {
+//            addMenuItem(
+//                menu,
+//                R.string.menu_pick_video,
+//                R.drawable.ic_menu_video,
+//                MenuItem.SHOW_AS_ACTION_ALWAYS
+//            ) {
+//                onPickVideoClicked()
+//            }
+//            addMenuItem(
+//                menu,
+//                R.string.menu_pick_audio,
+//                R.drawable.ic_menu_audio,
+//                MenuItem.SHOW_AS_ACTION_ALWAYS
+//            ) {
+//                onPickAudioClicked()
+//            }
+//        }
+//        addMenuItem(menu, R.string.menu_settings, 0, MenuItem.SHOW_AS_ACTION_NEVER) {
+//            SettingsActivity.start(this)
+//        }
+//        return true
+//    }
 
     private fun onPickVideoClicked() {
         checkPermissionAndTryOpenMedia(REQUEST_CODE_PERMISSION_PICK_VIDEO) {

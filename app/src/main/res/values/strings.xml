@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name" translatable="false">WhatTheCodec</string>
     <string name="message_permission_denied">Permission denied</string>
     <string name="message_couldnt_open_file">Couldn\'t open the file</string>
     <string name="menu_pick_video">Pick Video</string>
