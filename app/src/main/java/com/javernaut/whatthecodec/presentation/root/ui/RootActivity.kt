@@ -45,26 +45,10 @@ class RootActivity : AppCompatActivity() {
                         // TODO Add Settings menu item here
                     }
                 } else {
-                    // TODO
+                    MainScreen(tabsToShow!!, mediaFileViewModel)
                 }
             }
         }
-
-//        pagerAdapter = RootPagerAdapter(this)
-//        pager.adapter = pagerAdapter
-//        TabLayoutMediator(tabs, pager, pagerAdapter.tabConfigurationStrategy).attach()
-
-//        mediaFileViewModel.availableTabsLiveData.observe(this) {
-//            tabs.visibility = View.VISIBLE
-//            supportActionBar?.title = null
-//
-//            pagerAdapter.availableTabs = it
-//
-//            emptyComposeView.setVisible(false)
-//            pager.setVisible(true)
-//
-//            invalidateOptionsMenu()
-//        }
 
         mediaFileViewModel.errorMessageLiveEvent.observe(this) {
             if (it) {

@@ -1,6 +1,8 @@
 package com.javernaut.whatthecodec.presentation.stream.model
 
 import android.content.res.Resources
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.domain.BasicStreamInfo
 import com.javernaut.whatthecodec.presentation.stream.helper.DispositionHelper
@@ -16,11 +18,11 @@ class StreamCard(
  * Creates a [StreamCard] object with index and title of a given [BasicStreamInfo].
  * Also language and disposition elements are added to the end of the list.
  */
+@Composable
 fun makeStream(basicStreamInfo: BasicStreamInfo,
-               resources: Resources,
-               filler: MutableList<StreamFeature>.() -> Unit): StreamCard {
+               filler: @Composable MutableList<StreamFeature>.() -> Unit): StreamCard {
     return StreamCard(
-            makeCardTitle(basicStreamInfo.index, basicStreamInfo.title, resources),
+            makeCardTitle(basicStreamInfo.index, basicStreamInfo.title),
             mutableListOf<StreamFeature>().apply {
 
                 filler(this)
@@ -33,15 +35,16 @@ fun makeStream(basicStreamInfo: BasicStreamInfo,
                 if (DispositionHelper.isDisplayable(basicStreamInfo.disposition)) {
                     add(StreamFeature(
                             R.string.page_stream_disposition,
-                            DispositionHelper.toString(basicStreamInfo.disposition, resources))
+                            DispositionHelper.toString(basicStreamInfo.disposition))
                     )
                 }
             }
     )
 }
 
-private fun makeCardTitle(index: Int, title: String?, resources: Resources): String {
-    val prefix = resources.getString(R.string.page_stream_title_prefix)
+@Composable
+private fun makeCardTitle(index: Int, title: String?): String {
+    val prefix = stringResource(id = R.string.page_stream_title_prefix)
     return if (title == null) {
         prefix + index
     } else {

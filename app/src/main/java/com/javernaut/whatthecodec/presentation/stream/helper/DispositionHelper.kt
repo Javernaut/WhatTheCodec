@@ -1,18 +1,20 @@
 package com.javernaut.whatthecodec.presentation.stream.helper
 
-import android.content.res.Resources
 import androidx.annotation.StringRes
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
 import com.javernaut.whatthecodec.R
 
 object DispositionHelper {
     fun isDisplayable(disposition: Int) = disposition != 0
 
-    fun toString(disposition: Int, resources: Resources) =
-            DispositionFeature.values().filter {
-                disposition and it.mask != 0
-            }.joinToString(separator = ", ") {
-                resources.getString(it.stringIdRes)
-            }
+    @Composable
+    fun toString(disposition: Int) =
+        DispositionFeature.values().filter {
+            disposition and it.mask != 0
+        }.map {
+            stringResource(id = it.stringIdRes)
+        }.joinToString(separator = ", ")
 
     /**
      * Class that maps a certain bit in a 'disposition' integer to a string res id.
