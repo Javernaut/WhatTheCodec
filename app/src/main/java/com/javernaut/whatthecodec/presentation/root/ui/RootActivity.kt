@@ -9,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.MusicNote
+import androidx.compose.material.icons.filled.Videocam
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.res.stringResource
@@ -49,6 +51,7 @@ class RootActivity : AppCompatActivity() {
                     }
                 } else {
                     MainScreen(tabsToShow!!, mediaFileViewModel) {
+                        SelectFileMenuItems()
                         CommonMenuItems()
                     }
                 }
@@ -128,6 +131,22 @@ class RootActivity : AppCompatActivity() {
     }
 
     @Composable
+    private fun SelectFileMenuItems() {
+        IconButton(onClick = ::onPickVideoClicked) {
+            Icon(
+                Icons.Filled.Videocam,
+                contentDescription = stringResource(id = R.string.menu_pick_video)
+            )
+        }
+        IconButton(onClick = ::onPickAudioClicked) {
+            Icon(
+                Icons.Filled.MusicNote,
+                contentDescription = stringResource(id = R.string.menu_pick_audio)
+            )
+        }
+    }
+
+    @Composable
     private fun CommonMenuItems() {
         val expanded = remember { mutableStateOf(false) }
         IconButton(onClick = { expanded.value = true }) {
@@ -153,29 +172,6 @@ class RootActivity : AppCompatActivity() {
             }
         }
     }
-
-    // TODO Pick values from here in actual menu
-//    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-//        if (!emptyComposeView.isVisible()) {
-//            addMenuItem(
-//                menu,
-//                R.string.menu_pick_video,
-//                R.drawable.ic_menu_video,
-//                MenuItem.SHOW_AS_ACTION_ALWAYS
-//            ) {
-//                onPickVideoClicked()
-//            }
-//            addMenuItem(
-//                menu,
-//                R.string.menu_pick_audio,
-//                R.drawable.ic_menu_audio,
-//                MenuItem.SHOW_AS_ACTION_ALWAYS
-//            ) {
-//                onPickAudioClicked()
-//            }
-//        }
-//        return true
-//    }
 
     private fun onPickVideoClicked() {
         checkPermissionAndTryOpenMedia(REQUEST_CODE_PERMISSION_PICK_VIDEO) {
