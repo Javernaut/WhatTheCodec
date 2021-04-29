@@ -13,7 +13,6 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ExpandLess
-import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -21,9 +20,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.Layout
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Constraints
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.presentation.stream.model.StreamCard
@@ -75,7 +76,12 @@ private fun StreamCardTopRow(
             overflow = TextOverflow.Ellipsis,
             maxLines = 1
         )
-        val angle by animateFloatAsState(targetValue = if (gridVisible) 360f else 180f)
+
+        val angle by animateFloatAsState(
+            targetValue = if (gridVisible)
+                if (LocalLayoutDirection.current == LayoutDirection.Ltr) 360f else 0f
+            else 180f
+        )
         Icon(
             Icons.Filled.ExpandLess,
             contentDescription = null,
