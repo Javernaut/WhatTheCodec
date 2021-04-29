@@ -4,22 +4,24 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ExpandLess
+import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
@@ -74,18 +76,18 @@ private fun StreamCardTopRow(
             maxLines = 1
         )
         val angle by animateFloatAsState(targetValue = if (gridVisible) 360f else 180f)
-        Image(
-            painter = painterResource(id = R.drawable.ic_item_fold),
+        Icon(
+            Icons.Filled.ExpandLess,
             contentDescription = null,
-            Modifier
+            tint = Color(0xFF757575),
+            modifier = Modifier
                 .rotate(angle)
                 .clickable(
                     interactionSource = remember { MutableInteractionSource() },
                     indication = rememberRipple(bounded = false),
                     onClick = arrowClicked
                 )
-                .size(dimensionResource(id = R.dimen.common_clickable_item_height)),
-            contentScale = ContentScale.Inside
+                .padding(12.dp),
         )
     }
 }
