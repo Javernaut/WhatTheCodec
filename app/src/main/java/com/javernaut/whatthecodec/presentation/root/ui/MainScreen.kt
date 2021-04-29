@@ -2,7 +2,6 @@ package com.javernaut.whatthecodec.presentation.root.ui
 
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -28,8 +27,8 @@ fun MainScreen(
     val pagerState = rememberPagerState(pageCount = tabsToShow.size)
     Scaffold(
         topBar = {
-            MainScreenTopAppBar(tabsToShow = tabsToShow, pagerState)
-        },
+            MainScreenTopAppBar(tabsToShow = tabsToShow, pagerState, menuActions)
+        }
     ) {
         MainScreenContent(Modifier.padding(it), tabsToShow, pagerState, mediaFileViewModel)
     }
@@ -38,7 +37,11 @@ fun MainScreen(
 
 @Composable
 @ExperimentalPagerApi
-private fun MainScreenTopAppBar(tabsToShow: List<AvailableTab>, pagerState: PagerState) {
+private fun MainScreenTopAppBar(
+    tabsToShow: List<AvailableTab>,
+    pagerState: PagerState,
+    menuActions: @Composable RowScope.() -> Unit = {}
+) {
     TopAppBar(
         title = {
             val scope = rememberCoroutineScope()
@@ -67,9 +70,7 @@ private fun MainScreenTopAppBar(tabsToShow: List<AvailableTab>, pagerState: Page
                 }
             }
         },
-        actions = {
-
-        }
+        actions = menuActions
     )
 }
 

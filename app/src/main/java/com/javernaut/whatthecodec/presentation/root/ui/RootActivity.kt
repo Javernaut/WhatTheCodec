@@ -6,8 +6,12 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.runtime.getValue
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.res.stringResource
 import androidx.core.content.MimeTypeFilter
 import androidx.lifecycle.ViewModelProvider
 import com.javernaut.whatthecodec.R
@@ -16,6 +20,7 @@ import com.javernaut.whatthecodec.presentation.compose.theme.WhatTheCodecTheme
 import com.javernaut.whatthecodec.presentation.root.viewmodel.MediaFileArgument
 import com.javernaut.whatthecodec.presentation.root.viewmodel.MediaFileViewModel
 import com.javernaut.whatthecodec.presentation.root.viewmodel.MediaFileViewModelFactory
+import com.javernaut.whatthecodec.presentation.settings.SettingsActivity
 import com.javernaut.whatthecodec.presentation.video.ui.view.getDesiredFrameWidth
 import com.javernaut.whatthecodec.util.TinyActivityCompat
 
@@ -29,8 +34,6 @@ class RootActivity : AppCompatActivity() {
 
     private var intentActionViewConsumed = false
 
-//    private lateinit var pagerAdapter: RootPagerAdapter
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -42,10 +45,12 @@ class RootActivity : AppCompatActivity() {
                         onVideoIconClick = ::onPickVideoClicked,
                         onAudioIconClick = ::onPickAudioClicked
                     ) {
-                        // TODO Add Settings menu item here
+                        CommonMenuItems()
                     }
                 } else {
-                    MainScreen(tabsToShow!!, mediaFileViewModel)
+                    MainScreen(tabsToShow!!, mediaFileViewModel) {
+                        CommonMenuItems()
+                    }
                 }
             }
         }
@@ -122,6 +127,33 @@ class RootActivity : AppCompatActivity() {
         }
     }
 
+    @Composable
+    private fun CommonMenuItems() {
+        val expanded = remember { mutableStateOf(false) }
+        IconButton(onClick = { expanded.value = true }) {
+            Icon(
+                Icons.Filled.MoreVert,
+                contentDescription = stringResource(id = R.string.menu_more)
+            )
+        }
+        MoreSettingsDropdown(expanded)
+    }
+
+    @Composable
+    private fun MoreSettingsDropdown(expanded: MutableState<Boolean>) {
+        DropdownMenu(
+            expanded = expanded.value,
+            onDismissRequest = { expanded.value = false }
+        ) {
+            DropdownMenuItem(onClick = {
+                SettingsActivity.start(this@RootActivity)
+                expanded.value = false
+            }) {
+                Text(stringResource(id = R.string.menu_settings))
+            }
+        }
+    }
+
     // TODO Pick values from here in actual menu
 //    override fun onCreateOptionsMenu(menu: Menu): Boolean {
 //        if (!emptyComposeView.isVisible()) {
@@ -141,9 +173,6 @@ class RootActivity : AppCompatActivity() {
 //            ) {
 //                onPickAudioClicked()
 //            }
-//        }
-//        addMenuItem(menu, R.string.menu_settings, 0, MenuItem.SHOW_AS_ACTION_NEVER) {
-//            SettingsActivity.start(this)
 //        }
 //        return true
 //    }
