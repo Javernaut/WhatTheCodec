@@ -1,5 +1,6 @@
 package com.javernaut.whatthecodec.presentation.video.ui
 
+import android.app.Activity
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -8,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.javernaut.whatthecodec.R
@@ -20,6 +22,7 @@ import com.javernaut.whatthecodec.presentation.stream.model.StreamCard
 import com.javernaut.whatthecodec.presentation.stream.model.StreamFeature
 import com.javernaut.whatthecodec.presentation.stream.model.makeStream
 import com.javernaut.whatthecodec.presentation.video.ui.view.FramesHeader
+import com.javernaut.whatthecodec.presentation.video.ui.view.getPreviewViewWidth
 
 @Composable
 fun VideoPage(viewModel: MediaFileViewModel) {
@@ -41,9 +44,7 @@ private fun VideoPage(preview: Preview, videoInfo: BasicVideoInfo?) {
     }
     LazyColumn(Modifier.fillMaxSize()) {
         item {
-            // TODO fix it
-//                FramesHeader(preview, getPreviewViewWidth(requireActivity()))
-            FramesHeader(preview, 100)
+            FramesHeader(preview, getPreviewViewWidth(LocalContext.current as Activity))
         }
         item {
             Spacer(modifier = Modifier.height(16.dp))
