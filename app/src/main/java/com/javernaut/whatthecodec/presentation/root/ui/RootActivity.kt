@@ -135,13 +135,15 @@ class RootActivity : AppCompatActivity() {
         IconButton(onClick = ::onPickVideoClicked) {
             Icon(
                 Icons.Filled.Videocam,
-                contentDescription = stringResource(id = R.string.menu_pick_video)
+                contentDescription = stringResource(id = R.string.menu_pick_video),
+                tint = LocalContentColor.current
             )
         }
         IconButton(onClick = ::onPickAudioClicked) {
             Icon(
                 Icons.Filled.MusicNote,
-                contentDescription = stringResource(id = R.string.menu_pick_audio)
+                contentDescription = stringResource(id = R.string.menu_pick_audio),
+                tint = LocalContentColor.current
             )
         }
     }
@@ -152,7 +154,8 @@ class RootActivity : AppCompatActivity() {
         IconButton(onClick = { expanded.value = true }) {
             Icon(
                 Icons.Filled.MoreVert,
-                contentDescription = stringResource(id = R.string.menu_more)
+                contentDescription = stringResource(id = R.string.menu_more),
+                tint = LocalContentColor.current
             )
         }
         MoreSettingsDropdown(expanded)
