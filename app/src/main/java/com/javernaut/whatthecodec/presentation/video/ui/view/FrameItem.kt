@@ -17,6 +17,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.presentation.root.viewmodel.model.*
@@ -43,17 +44,22 @@ fun Frame(modifier: Modifier, frame: Frame, frameMetrics: FrameMetrics) {
     }
 }
 
+@Preview
 @Composable
 private fun DecodingErrorFrame() {
-    Text(
+    Box(
         modifier = Modifier
-            .fillMaxSize()
             .background(colorResource(id = R.color.colorPreviewDecodingError))
+            .fillMaxSize()
             .padding(16.dp),
-        text = stringResource(id = R.string.page_video_preview_frame_decoding_error),
-        style = MaterialTheme.typography.caption,
-        textAlign = TextAlign.Center
-    )
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = stringResource(id = R.string.page_video_preview_frame_decoding_error),
+            style = MaterialTheme.typography.caption,
+            textAlign = TextAlign.Center
+        )
+    }
 }
 
 @Composable
