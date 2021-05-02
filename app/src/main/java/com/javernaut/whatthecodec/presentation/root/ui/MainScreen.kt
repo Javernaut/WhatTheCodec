@@ -3,15 +3,18 @@ package com.javernaut.whatthecodec.presentation.root.ui
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.*
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.presentation.audio.ui.AudioPage
+import com.javernaut.whatthecodec.presentation.compose.theme.WhatTheCodecTheme
 import com.javernaut.whatthecodec.presentation.root.viewmodel.MediaFileViewModel
 import com.javernaut.whatthecodec.presentation.root.viewmodel.model.AvailableTab
 import com.javernaut.whatthecodec.presentation.subtitle.ui.SubtitlePage
@@ -47,6 +50,7 @@ private fun MainScreenTopAppBar(
         title = {
             val scope = rememberCoroutineScope()
             ScrollableTabRow(
+                edgePadding = 0.dp,
                 // Our selected tab is our current page
                 selectedTabIndex = pagerState.currentPage,
                 // Override the indicator, using the provided pagerTabIndicatorOffset modifier
@@ -60,7 +64,7 @@ private fun MainScreenTopAppBar(
                 tabsToShow.forEachIndexed { index, tabToShow ->
                     Tab(
                         modifier = Modifier.fillMaxHeight(),
-                        text = { Text(stringResource(id = tabToShow.title)) },
+                        text = { Text(stringResource(id = tabToShow.title).toUpperCase()) },
                         selected = pagerState.currentPage == index,
                         onClick = {
                             scope.launch {

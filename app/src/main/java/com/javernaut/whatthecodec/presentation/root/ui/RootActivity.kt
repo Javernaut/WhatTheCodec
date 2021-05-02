@@ -43,10 +43,7 @@ class RootActivity : AppCompatActivity() {
             WhatTheCodecTheme {
                 val tabsToShow by mediaFileViewModel.availableTabsLiveData.observeAsState()
                 if (tabsToShow == null) {
-                    EmptyScreen(
-                        onVideoIconClick = ::onPickVideoClicked,
-                        onAudioIconClick = ::onPickAudioClicked
-                    ) {
+                    EmptyScreen(::onPickVideoClicked, ::onPickAudioClicked) {
                         CommonMenuItems()
                     }
                 } else {
