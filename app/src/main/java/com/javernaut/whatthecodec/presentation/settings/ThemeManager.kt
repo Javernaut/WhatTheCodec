@@ -10,7 +10,7 @@ object ThemeManager {
 
     fun initNightModePreference(appContext: Context) {
         val stringNightMode = PreferenceManager.getDefaultSharedPreferences(appContext)
-                .getString("theme", appContext.getString(R.string.settings_theme_default_pref_value))
+            .getString("theme", appContext.getString(R.string.settings_theme_default_pref_value))
 
         setNightModePreference(stringNightMode!!)
     }
@@ -26,10 +26,9 @@ object ThemeManager {
     }
 
     private fun getAutoNightMode() =
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
-            } else {
-                AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY
-            }
-
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+        } else {
+            AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY
+        }
 }

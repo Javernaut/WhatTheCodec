@@ -17,8 +17,11 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.preference.PreferenceManager
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.presentation.compose.theme.WhatTheCodecTheme
 import com.javernaut.whatthecodec.presentation.compose.theme.secondaryText
@@ -59,7 +62,7 @@ class SettingsActivity : AppCompatActivity() {
     @Composable
     private fun SettingsContent() {
         PreferenceTitle(title = R.string.settings_category_general)
-        // TODO App theme
+        ThemeSelectionPreference()
         PreferenceDivider()
         PreferenceTitle(title = R.string.settings_category_about)
         OpenUrlPreference(
@@ -99,9 +102,39 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     @Composable
+    private fun ThemeSelectionPreference() {
+        val applicationContext = LocalContext.current.applicationContext
+        val currentNightMode = PreferenceManager.getDefaultSharedPreferences(applicationContext)
+            .getString("theme", stringResource(id = R.string.settings_theme_default_pref_value))
+
+        val humanReadableNightModes = stringArrayResource(id = R.array.settings_theme_entries)
+        val currentlySelectedModeIndex =
+            stringArrayResource(id = R.array.settings_theme_entryValues).indexOf(currentNightMode)
+
+        Preference(
+            title = stringResource(id = R.string.settings_theme_title),
+            summary = humanReadableNightModes[currentlySelectedModeIndex]
+        ) {
+            // TODO
+        }
+    }
+
+    @Composable
     private fun Preference(
         @StringRes title: Int,
         @StringRes summary: Int,
+        clickHandler: () -> Unit
+    ) =
+        Preference(
+            title = stringResource(id = title),
+            summary = stringResource(id = summary),
+            clickHandler = clickHandler
+        )
+
+    @Composable
+    private fun Preference(
+        title: String,
+        summary: String,
         clickHandler: () -> Unit
     ) {
         Column(
@@ -113,11 +146,11 @@ class SettingsActivity : AppCompatActivity() {
                 )
         ) {
             Text(
-                stringResource(id = title),
+                title,
                 style = MaterialTheme.typography.subtitle1
             )
             Text(
-                stringResource(id = summary),
+                summary,
                 style = MaterialTheme.typography.body2,
                 color = MaterialTheme.colors.secondaryText
             )
