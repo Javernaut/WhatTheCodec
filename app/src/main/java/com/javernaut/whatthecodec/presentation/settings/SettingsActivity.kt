@@ -11,8 +11,9 @@ import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -44,20 +45,45 @@ class SettingsActivity : AppCompatActivity() {
 
     @Composable
     fun SettingsScreen() {
-        Column {
-            PreferenceTitle(title = R.string.settings_category_general)
-            // TODO App theme
-            PreferenceDivider()
-            PreferenceTitle(title = R.string.settings_category_about)
-            OpenUrlPreference(
-                title = R.string.settings_source_code_title,
-                summary = R.string.settings_source_code_summary
-            )
-            OpenUrlPreference(
-                title = R.string.settings_privacy_policy_title,
-                summary = R.string.settings_privacy_policy_summary
-            )
+        Scaffold(
+            topBar = {
+                SettingsTopAppBar()
+            }
+        ) {
+            Column(Modifier.padding(it)) {
+                SettingsContent()
+            }
         }
+    }
+
+    @Composable
+    private fun SettingsContent() {
+        PreferenceTitle(title = R.string.settings_category_general)
+        // TODO App theme
+        PreferenceDivider()
+        PreferenceTitle(title = R.string.settings_category_about)
+        OpenUrlPreference(
+            title = R.string.settings_source_code_title,
+            summary = R.string.settings_source_code_summary
+        )
+        OpenUrlPreference(
+            title = R.string.settings_privacy_policy_title,
+            summary = R.string.settings_privacy_policy_summary
+        )
+    }
+
+    @Composable
+    private fun SettingsTopAppBar() {
+        TopAppBar(
+            title = { Text(text = stringResource(id = R.string.settings_title)) },
+            navigationIcon = {
+                IconButton(onClick = { onSupportNavigateUp() }) {
+                    Icon(
+                        Icons.Default.ArrowBack,
+                        contentDescription = stringResource(id = R.string.content_description_back)
+                    )
+                }
+            })
     }
 
     @Composable

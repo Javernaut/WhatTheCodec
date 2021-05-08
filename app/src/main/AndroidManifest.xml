@@ -13,11 +13,10 @@
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.WhatTheCodec">
+        android:theme="@style/Theme.WhatTheCodec.NoActionBar">
         <activity
             android:name=".presentation.root.ui.RootActivity"
-            android:launchMode="singleTop"
-            android:theme="@style/Theme.WhatTheCodec.NoActionBar">
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
