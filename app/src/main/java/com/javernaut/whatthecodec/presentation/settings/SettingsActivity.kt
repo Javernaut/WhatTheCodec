@@ -8,15 +8,16 @@ import androidx.activity.compose.setContent
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.browser.customtabs.CustomTabsIntent
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
@@ -78,6 +79,7 @@ class SettingsActivity : AppCompatActivity() {
     @Composable
     private fun SettingsTopAppBar() {
         TopAppBar(
+            elevation = if (isSystemInDarkTheme()) 0.dp else AppBarDefaults.TopAppBarElevation,
             title = { Text(text = stringResource(id = R.string.settings_title)) },
             navigationIcon = {
                 IconButton(onClick = { onSupportNavigateUp() }) {
@@ -104,18 +106,38 @@ class SettingsActivity : AppCompatActivity() {
     @Composable
     private fun ThemeSelectionPreference() {
         val applicationContext = LocalContext.current.applicationContext
-        val currentNightMode = PreferenceManager.getDefaultSharedPreferences(applicationContext)
+        val defaultSharedPreferences =
+            PreferenceManager.getDefaultSharedPreferences(applicationContext)
+        val currentNightMode = defaultSharedPreferences
             .getString("theme", stringResource(id = R.string.settings_theme_default_pref_value))
 
         val humanReadableNightModes = stringArrayResource(id = R.array.settings_theme_entries)
-        val currentlySelectedModeIndex =
-            stringArrayResource(id = R.array.settings_theme_entryValues).indexOf(currentNightMode)
+        val modeCodes = stringArrayResource(id = R.array.settings_theme_entryValues)
+        val currentlySelectedModeIndex = modeCodes.indexOf(currentNightMode)
 
+        var dialogOpened by remember { mutableStateOf(false) }
+        val closeDialog = { dialogOpened = false }
         Preference(
             title = stringResource(id = R.string.settings_theme_title),
             summary = humanReadableNightModes[currentlySelectedModeIndex]
         ) {
-            // TODO
+            dialogOpened = true
+        }
+
+        if (dialogOpened) {
+            SingleChoicePreferenceDialog(
+                title = stringResource(id = R.string.settings_theme_title),
+                onDismissRequest = closeDialog,
+                items = humanReadableNightModes.toList(),
+                currentlySelectedModeIndex = currentlySelectedModeIndex
+            ) {
+                val newValueToSet = modeCodes[it]
+                defaultSharedPreferences
+                    .edit()
+                    .putString("theme", newValueToSet)
+                    .apply()
+                ThemeManager.setNightModePreference(newValueToSet)
+            }
         }
     }
 
@@ -163,16 +185,6 @@ class SettingsActivity : AppCompatActivity() {
         Preference(title = title, summary = summary) {
             openUrl(url)
         }
-    }
-
-    @Composable
-    private fun PreferenceDivider() {
-        Spacer(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(1.dp)
-                .background(Color(0x1f000000))
-        )
     }
 
     companion object {
