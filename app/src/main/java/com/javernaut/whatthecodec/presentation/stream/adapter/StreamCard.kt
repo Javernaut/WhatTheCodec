@@ -7,9 +7,9 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ExpandLess
@@ -33,7 +33,7 @@ import com.javernaut.whatthecodec.presentation.stream.model.StreamFeature
 @OptIn(ExperimentalFoundationApi::class, ExperimentalAnimationApi::class)
 @Composable
 fun StreamCard(modifier: Modifier = Modifier, streamCard: StreamCard) {
-    Surface(modifier, elevation = 1.dp, shape = MaterialTheme.shapes.medium) {
+    Card(modifier) {
         Column {
             var gridVisible by remember { mutableStateOf(true) }
             StreamCardTopRow(streamCard, gridVisible) {
