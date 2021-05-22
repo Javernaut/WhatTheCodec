@@ -2,7 +2,6 @@ package com.javernaut.whatthecodec.presentation.root.ui
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -18,6 +17,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.javernaut.whatthecodec.R
+import com.javernaut.whatthecodec.presentation.compose.common.getAppBarElevation
 
 @Composable
 fun EmptyScreen(
@@ -37,7 +37,7 @@ private fun EmptyScreenTopAppBar(
     menuActions: @Composable RowScope.() -> Unit
 ) {
     TopAppBar(
-        elevation = if (isSystemInDarkTheme()) 0.dp else AppBarDefaults.TopAppBarElevation,
+        elevation = getAppBarElevation(),
         title = {
             Text(text = stringResource(id = R.string.app_name))
         }, actions = menuActions

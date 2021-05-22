@@ -8,7 +8,6 @@ import androidx.activity.compose.setContent
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.browser.customtabs.CustomTabsIntent
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
@@ -18,8 +17,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import com.javernaut.whatthecodec.R
+import com.javernaut.whatthecodec.presentation.compose.common.getAppBarElevation
 import com.javernaut.whatthecodec.presentation.compose.theme.WhatTheCodecTheme
 
 class SettingsActivity : AppCompatActivity() {
@@ -74,7 +73,7 @@ class SettingsActivity : AppCompatActivity() {
     @Composable
     private fun SettingsTopAppBar() {
         TopAppBar(
-            elevation = if (isSystemInDarkTheme()) 0.dp else AppBarDefaults.TopAppBarElevation,
+            elevation = getAppBarElevation(),
             title = { Text(text = stringResource(id = R.string.settings_title)) },
             navigationIcon = {
                 IconButton(onClick = { onSupportNavigateUp() }) {

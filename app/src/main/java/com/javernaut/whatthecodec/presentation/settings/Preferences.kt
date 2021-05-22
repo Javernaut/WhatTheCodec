@@ -96,7 +96,6 @@ private fun PreferenceDialog(
             TextButton(onClick = onDismissRequest) {
                 Text(
                     stringResource(id = android.R.string.cancel).toUpperCase(),
-                    color = MaterialTheme.colors.onPrimary
                 )
             }
         }, content = content

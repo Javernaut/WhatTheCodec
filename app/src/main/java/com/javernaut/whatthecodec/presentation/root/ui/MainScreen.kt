@@ -13,6 +13,7 @@ import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.*
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.presentation.audio.ui.AudioPage
+import com.javernaut.whatthecodec.presentation.compose.common.getAppBarElevation
 import com.javernaut.whatthecodec.presentation.root.viewmodel.MediaFileViewModel
 import com.javernaut.whatthecodec.presentation.root.viewmodel.model.AvailableTab
 import com.javernaut.whatthecodec.presentation.subtitle.ui.SubtitlePage
@@ -45,7 +46,7 @@ private fun MainScreenTopAppBar(
     menuActions: @Composable RowScope.() -> Unit = {}
 ) {
     TopAppBar(
-        elevation = if (isSystemInDarkTheme()) 0.dp else AppBarDefaults.TopAppBarElevation,
+        elevation = getAppBarElevation(),
         title = {
             val scope = rememberCoroutineScope()
             ScrollableTabRow(
