@@ -3,7 +3,6 @@ package com.javernaut.whatthecodec.presentation.stream.adapter
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
@@ -30,7 +29,7 @@ import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.presentation.stream.model.StreamCard
 import com.javernaut.whatthecodec.presentation.stream.model.StreamFeature
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalAnimationApi::class)
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun StreamCard(modifier: Modifier = Modifier, streamCard: StreamCard) {
     Card(modifier) {
@@ -98,7 +97,6 @@ private fun StreamCardTopRow(
     }
 }
 
-@ExperimentalFoundationApi
 @Composable
 fun StreamFeaturesGrid(
     modifier: Modifier = Modifier,

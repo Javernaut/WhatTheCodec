@@ -5,23 +5,13 @@ import android.graphics.Color
 import androidx.palette.graphics.Palette
 import com.javernaut.whatthecodec.domain.FrameLoader
 import com.javernaut.whatthecodec.domain.MediaFile
-import com.javernaut.whatthecodec.presentation.root.viewmodel.model.ActualFrame
-import com.javernaut.whatthecodec.presentation.root.viewmodel.model.ActualPreview
-import com.javernaut.whatthecodec.presentation.root.viewmodel.model.DecodingErrorFrame
-import com.javernaut.whatthecodec.presentation.root.viewmodel.model.Frame
-import com.javernaut.whatthecodec.presentation.root.viewmodel.model.FrameMetrics
-import com.javernaut.whatthecodec.presentation.root.viewmodel.model.LoadingFrame
-import com.javernaut.whatthecodec.presentation.root.viewmodel.model.PlaceholderFrame
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import com.javernaut.whatthecodec.presentation.root.viewmodel.model.*
+import kotlinx.coroutines.*
 
 class FrameLoaderHelper(
-        private val metrics: FrameMetrics,
-        private val scope: CoroutineScope,
-        private val previewApplier: (ActualPreview) -> Unit
+    private val metrics: FrameMetrics,
+    private val scope: CoroutineScope,
+    private val previewApplier: (ActualPreview) -> Unit
 ) {
 
     private var cachedFrameBitmaps = HashMap<Int, Bitmap>()
@@ -34,13 +24,18 @@ class FrameLoaderHelper(
         isWorking = true
 
         framesLoadingJob = scope.launch(Dispatchers.Default) {
-            val frames = mutableListOf<Frame>(PlaceholderFrame, PlaceholderFrame, PlaceholderFrame, PlaceholderFrame)
+            val frames = mutableListOf<Frame>(
+                PlaceholderFrame,
+                PlaceholderFrame,
+                PlaceholderFrame,
+                PlaceholderFrame
+            )
 
             // Initial state where all cells are empty
             var actualPreview = ActualPreview(
-                    metrics,
-                    frames,
-                    Color.TRANSPARENT
+                metrics,
+                frames,
+                Color.TRANSPARENT
             )
 
             tryApplyPreview(previewApplier, actualPreview)
@@ -82,13 +77,18 @@ class FrameLoaderHelper(
         }
     }
 
-    private suspend fun tryApplyPreview(previewApplier: (ActualPreview) -> Unit, preview: ActualPreview) {
+    private suspend fun tryApplyPreview(
+        previewApplier: (ActualPreview) -> Unit,
+        preview: ActualPreview
+    ) {
         if (isWorking) {
             withContext(Dispatchers.Main) {
                 // Enforcing the difference in 'frames' field to be properly recognized as a change
-                previewApplier(preview.copy(
-                    frames = ArrayList(preview.frames)
-                ))
+                previewApplier(
+                    preview.copy(
+                        frames = ArrayList(preview.frames)
+                    )
+                )
             }
         }
     }
@@ -97,10 +97,12 @@ class FrameLoaderHelper(
         isWorking = false
 
         if (needPreviewReset) {
-            previewApplier(ActualPreview(
+            previewApplier(
+                ActualPreview(
                     metrics,
                     listOf(PlaceholderFrame, PlaceholderFrame, PlaceholderFrame, PlaceholderFrame),
-                    Color.TRANSPARENT)
+                    Color.TRANSPARENT
+                )
             )
         }
 
@@ -122,7 +124,8 @@ class FrameLoaderHelper(
 
     private fun getFrameBitmap(index: Int): Bitmap {
         if (!cachedFrameBitmaps.containsKey(index)) {
-            cachedFrameBitmaps[index] = Bitmap.createBitmap(metrics.width, metrics.height, Bitmap.Config.ARGB_8888)
+            cachedFrameBitmaps[index] =
+                Bitmap.createBitmap(metrics.width, metrics.height, Bitmap.Config.ARGB_8888)
         }
         return cachedFrameBitmaps[index]!!
     }
@@ -131,16 +134,16 @@ class FrameLoaderHelper(
         val palette = Palette.from(bitmap).generate()
         // Pick the first swatch in this order that isn't null and use its color
         return listOf(
-                palette::getDarkMutedSwatch,
-                palette::getMutedSwatch,
-                palette::getDominantSwatch
+            palette::getDarkMutedSwatch,
+            palette::getMutedSwatch,
+            palette::getDominantSwatch
         ).firstOrNull {
             it() != null
         }?.invoke()?.rgb ?: Color.TRANSPARENT
     }
 
     private class FrameLoadingResult(
-            val frame: Bitmap,
-            val success: Boolean
+        val frame: Bitmap,
+        val success: Boolean
     )
 }

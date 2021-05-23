@@ -1,23 +1,17 @@
 package com.javernaut.whatthecodec.presentation.root.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.hadilq.liveevent.LiveEvent
 import com.javernaut.whatthecodec.domain.AudioStream
 import com.javernaut.whatthecodec.domain.MediaFile
 import com.javernaut.whatthecodec.domain.SubtitleStream
-import com.javernaut.whatthecodec.presentation.root.viewmodel.model.AvailableTab
-import com.javernaut.whatthecodec.presentation.root.viewmodel.model.BasicVideoInfo
-import com.javernaut.whatthecodec.presentation.root.viewmodel.model.FrameMetrics
-import com.javernaut.whatthecodec.presentation.root.viewmodel.model.NoPreviewAvailable
-import com.javernaut.whatthecodec.presentation.root.viewmodel.model.Preview
+import com.javernaut.whatthecodec.presentation.root.viewmodel.model.*
 
-class MediaFileViewModel(private val desiredFrameWidth: Int,
-                         private val mediaFileProvider: MediaFileProvider,
-                         private val savedStateHandle: SavedStateHandle) : ViewModel() {
+class MediaFileViewModel(
+    private val desiredFrameWidth: Int,
+    private val mediaFileProvider: MediaFileProvider,
+    private val savedStateHandle: SavedStateHandle
+) : ViewModel() {
 
     private var pendingMediaFileArgument: MediaFileArgument? = null
 
@@ -175,9 +169,9 @@ class MediaFileViewModel(private val desiredFrameWidth: Int,
             return null
         }
         return BasicVideoInfo(
-                fileFormatName,
-                fullFeatured,
-                videoStream
+            fileFormatName,
+            fullFeatured,
+            videoStream
         )
     }
 

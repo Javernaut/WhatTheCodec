@@ -21,7 +21,6 @@ import com.javernaut.whatthecodec.presentation.compose.theme.WhatTheCodecTheme
 import com.javernaut.whatthecodec.presentation.stream.model.StreamFeature
 
 @Composable
-@ExperimentalFoundationApi
 fun StreamFeatureItem(
     modifier: Modifier = Modifier,
     streamFeature: StreamFeature
@@ -53,7 +52,6 @@ private fun copyTextToClipboard(context: Context, valueToCopy: String) {
     Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show()
 }
 
-@ExperimentalFoundationApi
 @Preview
 @Composable
 fun PreviewStreamFeatureInLight() {
@@ -68,7 +66,6 @@ fun PreviewStreamFeatureInLight() {
     }
 }
 
-@ExperimentalFoundationApi
 @Preview
 @Composable
 fun PreviewStreamFeatureInDark() {
@@ -83,7 +80,7 @@ fun PreviewStreamFeatureInDark() {
     }
 }
 
-@ExperimentalFoundationApi
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun StreamFeature(
     modifier: Modifier = Modifier,

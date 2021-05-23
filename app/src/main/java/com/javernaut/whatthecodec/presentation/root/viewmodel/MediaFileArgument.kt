@@ -7,8 +7,9 @@ import com.javernaut.whatthecodec.domain.MediaType
 class MediaFileArgument(val uri: String, val type: MediaType) : Parcelable {
 
     constructor(parcel: Parcel) : this(
-            parcel.readString()!!,
-            MediaType.valueOf(parcel.readString()!!))
+        parcel.readString()!!,
+        MediaType.valueOf(parcel.readString()!!)
+    )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(uri)
