@@ -5,10 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.RadioButton
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,7 +17,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.preference.PreferenceManager
 import com.javernaut.whatthecodec.R
-import com.javernaut.whatthecodec.presentation.compose.theme.secondaryText
 
 @Composable
 fun ListPreference(
@@ -171,11 +167,12 @@ fun Preference(
             title,
             style = MaterialTheme.typography.subtitle1
         )
-        Text(
-            summary,
-            style = MaterialTheme.typography.body2,
-            color = MaterialTheme.colors.secondaryText
-        )
+        CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
+            Text(
+                summary,
+                style = MaterialTheme.typography.body2,
+            )
+        }
     }
 }
 

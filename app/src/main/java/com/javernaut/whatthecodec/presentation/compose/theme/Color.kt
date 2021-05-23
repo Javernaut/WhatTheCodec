@@ -9,6 +9,3 @@ val ThemeLightBackground = Color(0xFFF7F7F7)
 val BrandDark = Color(0xFF1F1F1F)
 val BrandDarkVariant = Color(0xFF191919)
 val ThemeDarkBackground = Color(0xFF0A0A0A)
-
-val ColorTextSecondaryDark = Color(0xB3FFFFFF)
-val ColorTextSecondaryLight = Color(0x8A000000)

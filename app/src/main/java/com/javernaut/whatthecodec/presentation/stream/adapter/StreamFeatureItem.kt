@@ -100,10 +100,12 @@ fun StreamFeature(
                 vertical = 8.dp
             )
     ) {
-        Text(
-            stringResource(id = streamFeature.title).toUpperCase(),
-            style = MaterialTheme.typography.caption
-        )
+        CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
+            Text(
+                stringResource(id = streamFeature.title).toUpperCase(),
+                style = MaterialTheme.typography.caption
+            )
+        }
         Spacer(Modifier.height(8.dp))
         Text(
             streamFeature.description,

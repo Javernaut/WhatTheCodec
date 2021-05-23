@@ -4,9 +4,12 @@ import android.app.Activity
 import android.graphics.Point
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.ContentAlpha
+import androidx.compose.material.LocalContentAlpha
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -15,7 +18,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.javernaut.whatthecodec.R
-import com.javernaut.whatthecodec.presentation.compose.theme.secondaryText
 import com.javernaut.whatthecodec.presentation.root.viewmodel.model.*
 import com.javernaut.whatthecodec.presentation.stream.adapter.GridLayout
 import kotlin.math.min
@@ -57,15 +59,16 @@ fun FramesHeader(preview: Preview, dstFrameWidth: Int) {
             }
         }
         NoPreviewAvailable -> {
-            Text(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 16.dp),
-                text = stringResource(id = R.string.page_video_preview_missing_decoder),
-                style = MaterialTheme.typography.subtitle1,
-                textAlign = TextAlign.Center,
-                color = MaterialTheme.colors.secondaryText
-            )
+            CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
+                Text(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 16.dp),
+                    text = stringResource(id = R.string.page_video_preview_missing_decoder),
+                    style = MaterialTheme.typography.subtitle1,
+                    textAlign = TextAlign.Center,
+                )
+            }
         }
     }
 
