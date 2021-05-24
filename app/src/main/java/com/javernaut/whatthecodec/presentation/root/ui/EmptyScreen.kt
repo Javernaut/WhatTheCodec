@@ -17,6 +17,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.javernaut.whatthecodec.R
+import com.javernaut.whatthecodec.presentation.compose.common.WtcTopAppBar
 import com.javernaut.whatthecodec.presentation.compose.common.getAppBarElevation
 
 @Composable
@@ -36,8 +37,7 @@ fun EmptyScreen(
 private fun EmptyScreenTopAppBar(
     menuActions: @Composable RowScope.() -> Unit
 ) {
-    TopAppBar(
-        elevation = getAppBarElevation(),
+    WtcTopAppBar(
         title = {
             Text(text = stringResource(id = R.string.app_name))
         }, actions = menuActions

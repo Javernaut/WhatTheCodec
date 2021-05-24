@@ -10,7 +10,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.*
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
@@ -18,7 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import com.javernaut.whatthecodec.R
-import com.javernaut.whatthecodec.presentation.compose.common.getAppBarElevation
+import com.javernaut.whatthecodec.presentation.compose.common.WtcTopAppBar
 import com.javernaut.whatthecodec.presentation.compose.theme.WhatTheCodecTheme
 
 class SettingsActivity : AppCompatActivity() {
@@ -72,8 +75,7 @@ class SettingsActivity : AppCompatActivity() {
 
     @Composable
     private fun SettingsTopAppBar() {
-        TopAppBar(
-            elevation = getAppBarElevation(),
+        WtcTopAppBar(
             title = { Text(text = stringResource(id = R.string.settings_title)) },
             navigationIcon = {
                 IconButton(onClick = { onSupportNavigateUp() }) {

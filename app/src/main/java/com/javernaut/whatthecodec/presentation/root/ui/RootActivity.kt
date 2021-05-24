@@ -14,6 +14,7 @@ import androidx.compose.material.icons.filled.Videocam
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.content.MimeTypeFilter
 import androidx.lifecycle.ViewModelProvider
 import com.javernaut.whatthecodec.R
@@ -133,14 +134,12 @@ class RootActivity : AppCompatActivity() {
             Icon(
                 Icons.Filled.Videocam,
                 contentDescription = stringResource(id = R.string.menu_pick_video),
-                tint = LocalContentColor.current
             )
         }
         IconButton(onClick = ::onPickAudioClicked) {
             Icon(
                 Icons.Filled.MusicNote,
                 contentDescription = stringResource(id = R.string.menu_pick_audio),
-                tint = LocalContentColor.current
             )
         }
     }
@@ -152,7 +151,6 @@ class RootActivity : AppCompatActivity() {
             Icon(
                 Icons.Filled.MoreVert,
                 contentDescription = stringResource(id = R.string.menu_more),
-                tint = LocalContentColor.current
             )
         }
         MoreSettingsDropdown(expanded)
