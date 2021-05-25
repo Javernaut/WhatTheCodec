@@ -3,7 +3,10 @@ package com.javernaut.whatthecodec.presentation.root.ui
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MusicNote
 import androidx.compose.material.icons.filled.Videocam
@@ -18,7 +21,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.presentation.compose.common.WtcTopAppBar
-import com.javernaut.whatthecodec.presentation.compose.common.getAppBarElevation
 
 @Composable
 fun EmptyScreen(

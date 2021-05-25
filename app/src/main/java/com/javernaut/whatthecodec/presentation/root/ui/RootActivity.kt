@@ -14,7 +14,6 @@ import androidx.compose.material.icons.filled.Videocam
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.content.MimeTypeFilter
 import androidx.lifecycle.ViewModelProvider
 import com.javernaut.whatthecodec.R

@@ -49,10 +49,12 @@ class MediaFileBuilder(private val mediaType: MediaType) {
     fun from(assetFileDescriptor: AssetFileDescriptor, shortFormatName: String) = apply {
         val descriptor = assetFileDescriptor.parcelFileDescriptor
         this.parcelFileDescriptor = descriptor
-        nativeCreateFromAssetFD(descriptor.fd,
-                assetFileDescriptor.startOffset,
-                shortFormatName,
-                mediaType.mediaStreamsMask)
+        nativeCreateFromAssetFD(
+            descriptor.fd,
+            assetFileDescriptor.startOffset,
+            shortFormatName,
+            mediaType.mediaStreamsMask
+        )
     }
 
     /**
@@ -61,12 +63,14 @@ class MediaFileBuilder(private val mediaType: MediaType) {
      */
     fun create(): MediaFile? {
         return if (!error) {
-            MediaFile(fileFormatName!!,
-                    videoStream,
-                    audioStreams,
-                    subtitleStream,
-                    parcelFileDescriptor,
-                    frameLoaderContextHandle)
+            MediaFile(
+                fileFormatName!!,
+                videoStream,
+                audioStreams,
+                subtitleStream,
+                parcelFileDescriptor,
+                frameLoaderContextHandle
+            )
         } else {
             null
         }
@@ -87,17 +91,19 @@ class MediaFileBuilder(private val mediaType: MediaType) {
     @Keep
     /* Used from JNI */
     private fun onVideoStreamFound(
-            basicStreamInfo: BasicStreamInfo,
-            bitRate: Long,
-            frameWidth: Int,
-            frameHeight: Int,
-            frameLoaderContext: Long) {
+        basicStreamInfo: BasicStreamInfo,
+        bitRate: Long,
+        frameWidth: Int,
+        frameHeight: Int,
+        frameLoaderContext: Long
+    ) {
         if (videoStream == null) {
             videoStream = VideoStream(
-                    basicStreamInfo,
-                    bitRate,
-                    frameWidth,
-                    frameHeight)
+                basicStreamInfo,
+                bitRate,
+                frameWidth,
+                frameHeight
+            )
             if (frameLoaderContext != -1L) {
                 frameLoaderContextHandle = frameLoaderContext
             }
@@ -107,14 +113,15 @@ class MediaFileBuilder(private val mediaType: MediaType) {
     @Keep
     /* Used from JNI */
     private fun onAudioStreamFound(
-            basicStreamInfo: BasicStreamInfo,
-            bitRate: Long,
-            sampleFormat: String?,
-            sampleRate: Int,
-            channels: Int,
-            channelLayout: String?) {
+        basicStreamInfo: BasicStreamInfo,
+        bitRate: Long,
+        sampleFormat: String?,
+        sampleRate: Int,
+        channels: Int,
+        channelLayout: String?
+    ) {
         audioStreams.add(
-                AudioStream(basicStreamInfo, bitRate, sampleFormat, sampleRate, channels, channelLayout)
+            AudioStream(basicStreamInfo, bitRate, sampleFormat, sampleRate, channels, channelLayout)
         )
     }
 
@@ -122,25 +129,29 @@ class MediaFileBuilder(private val mediaType: MediaType) {
     /* Used from JNI */
     private fun onSubtitleStreamFound(basicStreamInfo: BasicStreamInfo) {
         subtitleStream.add(
-                SubtitleStream(basicStreamInfo)
+            SubtitleStream(basicStreamInfo)
         )
     }
 
     @Keep
     /* Used from JNI */
-    private fun createBasicInfo(index: Int,
-                                title: String?,
-                                codecName: String,
-                                language: String?,
-                                disposition: Int) =
-            BasicStreamInfo(index, title, codecName, language, disposition)
+    private fun createBasicInfo(
+        index: Int,
+        title: String?,
+        codecName: String,
+        language: String?,
+        disposition: Int
+    ) =
+        BasicStreamInfo(index, title, codecName, language, disposition)
 
     private external fun nativeCreateFromFD(fileDescriptor: Int, mediaStreamsMask: Int)
 
-    private external fun nativeCreateFromAssetFD(assetFileDescriptor: Int,
-                                                 startOffset: Long,
-                                                 shortFormatName: String,
-                                                 mediaStreamsMask: Int)
+    private external fun nativeCreateFromAssetFD(
+        assetFileDescriptor: Int,
+        startOffset: Long,
+        shortFormatName: String,
+        mediaStreamsMask: Int
+    )
 
     private external fun nativeCreateFromPath(filePath: String, mediaStreamsMask: Int)
 
