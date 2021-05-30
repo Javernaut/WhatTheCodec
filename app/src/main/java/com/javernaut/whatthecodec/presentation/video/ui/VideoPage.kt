@@ -1,6 +1,7 @@
 package com.javernaut.whatthecodec.presentation.video.ui
 
 import android.app.Activity
+import android.content.res.Resources
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -10,7 +11,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.presentation.audio.ui.BitRateHelper
@@ -27,8 +27,8 @@ import com.javernaut.whatthecodec.presentation.video.ui.view.getPreviewViewWidth
 @Composable
 fun VideoPage(viewModel: MediaFileViewModel) {
     val videoInfo by viewModel.basicVideoInfoLiveData.observeAsState()
-
     val preview by viewModel.previewLiveData.observeAsState()
+
     preview?.let {
         VideoPage(it, videoInfo)
     }
@@ -36,10 +36,11 @@ fun VideoPage(viewModel: MediaFileViewModel) {
 
 @Composable
 private fun VideoPage(preview: Preview, videoInfo: BasicVideoInfo?) {
+    val resources = LocalContext.current.resources
     val videoInfoCards = videoInfo?.let {
         listOf(
-            convertToContainer(it),
-            convertToStream(it)
+            convertToContainer(it, resources),
+            convertToStream(it, resources)
         )
     }
     LazyColumn(Modifier.fillMaxSize()) {
@@ -55,17 +56,16 @@ private fun VideoPage(preview: Preview, videoInfo: BasicVideoInfo?) {
     }
 }
 
-@Composable
-private fun convertToStream(basicVideoInfo: BasicVideoInfo): StreamCard {
+private fun convertToStream(basicVideoInfo: BasicVideoInfo, resources: Resources): StreamCard {
     val videoStream = basicVideoInfo.videoStream
 
-    return makeStream(videoStream.basicInfo) {
+    return makeStream(videoStream.basicInfo, resources) {
         add(StreamFeature(R.string.page_video_codec_name, videoStream.basicInfo.codecName))
         if (videoStream.bitRate > 0) {
             add(
                 StreamFeature(
                     R.string.page_video_bit_rate,
-                    BitRateHelper.toString(videoStream.bitRate)
+                    BitRateHelper.toString(videoStream.bitRate, resources)
                 )
             )
         }
@@ -75,15 +75,14 @@ private fun convertToStream(basicVideoInfo: BasicVideoInfo): StreamCard {
     }
 }
 
-@Composable
-private fun convertToContainer(basicVideoInfo: BasicVideoInfo): StreamCard {
+private fun convertToContainer(basicVideoInfo: BasicVideoInfo, resources: Resources): StreamCard {
     return StreamCard(
-        stringResource(R.string.info_container),
+        resources.getString(R.string.info_container),
         listOf(
             StreamFeature(R.string.info_file_format, basicVideoInfo.fileFormat),
 
             StreamFeature(
-                R.string.info_protocol_title, stringResource(
+                R.string.info_protocol_title, resources.getString(
                     if (basicVideoInfo.fullFeatured) {
                         R.string.info_protocol_file
                     } else {

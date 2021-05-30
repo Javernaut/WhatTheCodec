@@ -1,5 +1,6 @@
 package com.javernaut.whatthecodec.presentation.audio.ui
 
+import android.content.res.Resources
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -9,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.domain.AudioStream
@@ -18,16 +20,15 @@ import com.javernaut.whatthecodec.presentation.stream.model.StreamCard
 import com.javernaut.whatthecodec.presentation.stream.model.StreamFeature
 import com.javernaut.whatthecodec.presentation.stream.model.makeStream
 
-@Composable
-private fun convertStream(audioStream: AudioStream) =
-    makeStream(audioStream.basicInfo) {
+private fun convertStream(audioStream: AudioStream, resources: Resources) =
+    makeStream(audioStream.basicInfo, resources) {
         add(StreamFeature(R.string.page_audio_codec_name, audioStream.basicInfo.codecName))
 
         if (audioStream.bitRate > 0) {
             add(
                 StreamFeature(
                     R.string.page_audio_bit_rate,
-                    BitRateHelper.toString(audioStream.bitRate)
+                    BitRateHelper.toString(audioStream.bitRate, resources)
                 )
             )
         }
@@ -43,7 +44,7 @@ private fun convertStream(audioStream: AudioStream) =
         add(
             StreamFeature(
                 R.string.page_audio_sample_rate,
-                SampleRateHelper.toString(audioStream.sampleRate)
+                SampleRateHelper.toString(audioStream.sampleRate, resources)
             )
         )
     }
@@ -53,7 +54,7 @@ private fun convertStream(audioStream: AudioStream) =
 fun AudioPage(viewModel: MediaFileViewModel) {
     val audioPageState by viewModel.audioStreamsLiveData.observeAsState()
     audioPageState?.let {
-        StreamsPage(streamCards = it.map { convertStream(it) })
+        StreamsPage(streamCards = it.map { convertStream(it, LocalContext.current.resources) })
     }
 }
 

@@ -7,6 +7,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.Layout
+import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
@@ -36,4 +38,38 @@ fun WtcTopAppBar(
         contentColor = contentColor,
         elevation = elevation
     )
+}
+
+@Composable
+fun GridLayout(
+    modifier: Modifier = Modifier,
+    columns: Int = 1,
+    content: @Composable () -> Unit
+) {
+    Layout(
+        modifier = modifier,
+        content = content
+    ) { measurables, constraints ->
+        val columnWidth = constraints.maxWidth / columns
+
+        val placables = measurables.map {
+            it.measure(Constraints.fixedWidth(columnWidth))
+        }
+
+        val chunkedPlacables = placables.chunked(columns)
+        val maxHeights = chunkedPlacables.map { it.maxByOrNull { it.height }!!.height }
+        val dstHeight = maxHeights.sum()
+
+        var runningY = 0
+        layout(constraints.maxWidth, dstHeight) {
+            chunkedPlacables.forEachIndexed { index, list ->
+                var runningX = 0
+                list.forEach {
+                    it.placeRelative(runningX, runningY)
+                    runningX += columnWidth
+                }
+                runningY += maxHeights[index]
+            }
+        }
+    }
 }

@@ -18,8 +18,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.javernaut.whatthecodec.R
+import com.javernaut.whatthecodec.presentation.compose.common.GridLayout
 import com.javernaut.whatthecodec.presentation.root.viewmodel.model.*
-import com.javernaut.whatthecodec.presentation.stream.adapter.GridLayout
 import kotlin.math.min
 
 fun getDesiredFrameWidth(activity: Activity): Int {
