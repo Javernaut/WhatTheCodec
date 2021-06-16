@@ -1,5 +1,6 @@
 package com.javernaut.whatthecodec.presentation.settings
 
+import android.preference.PreferenceManager
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -15,7 +16,6 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.preference.PreferenceManager
 import com.javernaut.whatthecodec.R
 
 @Composable

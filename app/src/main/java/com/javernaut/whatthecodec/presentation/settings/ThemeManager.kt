@@ -2,8 +2,8 @@ package com.javernaut.whatthecodec.presentation.settings
 
 import android.content.Context
 import android.os.Build
+import android.preference.PreferenceManager
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.preference.PreferenceManager
 import com.javernaut.whatthecodec.R
 
 object ThemeManager {
