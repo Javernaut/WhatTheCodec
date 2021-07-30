@@ -76,20 +76,23 @@ class MediaFileBuilder(private val mediaType: MediaType) {
         }
     }
 
-    @Keep
     /* Used from JNI */
+    @Keep
+    @SuppressWarnings("UnusedPrivateMember")
     private fun onError() {
         this.error = true
     }
 
-    @Keep
     /* Used from JNI */
+    @Keep
+    @SuppressWarnings("UnusedPrivateMember")
     private fun onMediaFileFound(fileFormatName: String) {
         this.fileFormatName = fileFormatName
     }
 
-    @Keep
     /* Used from JNI */
+    @Keep
+    @SuppressWarnings("UnusedPrivateMember")
     private fun onVideoStreamFound(
         basicStreamInfo: BasicStreamInfo,
         bitRate: Long,
@@ -110,8 +113,9 @@ class MediaFileBuilder(private val mediaType: MediaType) {
         }
     }
 
-    @Keep
     /* Used from JNI */
+    @Keep
+    @SuppressWarnings("UnusedPrivateMember")
     private fun onAudioStreamFound(
         basicStreamInfo: BasicStreamInfo,
         bitRate: Long,
@@ -125,16 +129,18 @@ class MediaFileBuilder(private val mediaType: MediaType) {
         )
     }
 
-    @Keep
     /* Used from JNI */
+    @Keep
+    @SuppressWarnings("UnusedPrivateMember")
     private fun onSubtitleStreamFound(basicStreamInfo: BasicStreamInfo) {
         subtitleStream.add(
             SubtitleStream(basicStreamInfo)
         )
     }
 
-    @Keep
     /* Used from JNI */
+    @Keep
+    @SuppressWarnings("UnusedPrivateMember")
     private fun createBasicInfo(
         index: Int,
         title: String?,

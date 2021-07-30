@@ -14,7 +14,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.presentation.audio.ui.BitRateHelper
-import com.javernaut.whatthecodec.presentation.audio.ui.StreamCardsInColumn
+import com.javernaut.whatthecodec.presentation.audio.ui.streamCardsInColumn
 import com.javernaut.whatthecodec.presentation.root.viewmodel.MediaFileViewModel
 import com.javernaut.whatthecodec.presentation.root.viewmodel.model.BasicVideoInfo
 import com.javernaut.whatthecodec.presentation.root.viewmodel.model.Preview
@@ -51,7 +51,7 @@ private fun VideoPage(preview: Preview, videoInfo: BasicVideoInfo?) {
             Spacer(modifier = Modifier.height(16.dp))
         }
         videoInfoCards?.let {
-            StreamCardsInColumn(videoInfoCards)
+            streamCardsInColumn(videoInfoCards)
         }
     }
 }

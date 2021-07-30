@@ -20,7 +20,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.javernaut.whatthecodec.R
-import com.javernaut.whatthecodec.presentation.root.viewmodel.model.*
+import com.javernaut.whatthecodec.presentation.root.viewmodel.model.ActualFrame
+import com.javernaut.whatthecodec.presentation.root.viewmodel.model.DecodingErrorFrame
+import com.javernaut.whatthecodec.presentation.root.viewmodel.model.Frame
+import com.javernaut.whatthecodec.presentation.root.viewmodel.model.FrameMetrics
+import com.javernaut.whatthecodec.presentation.root.viewmodel.model.LoadingFrame
+import com.javernaut.whatthecodec.presentation.root.viewmodel.model.PlaceholderFrame
 
 @Composable
 fun Frame(modifier: Modifier, frame: Frame, frameMetrics: FrameMetrics) {

@@ -65,11 +65,11 @@ fun StreamsPage(streamCards: List<StreamCard>) {
             .fillMaxSize()
             .padding(top = 16.dp)
     ) {
-        StreamCardsInColumn(streamCards)
+        streamCardsInColumn(streamCards)
     }
 }
 
-fun LazyListScope.StreamCardsInColumn(streamCards: List<StreamCard>) {
+fun LazyListScope.streamCardsInColumn(streamCards: List<StreamCard>) {
     val commonModifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp)
     items(streamCards) {
         StreamCard(commonModifier, it)

@@ -2,6 +2,8 @@ package com.javernaut.whatthecodec.presentation.root.viewmodel
 
 import android.content.Context
 import android.net.Uri
+import android.util.Log
+import com.javernaut.whatthecodec.BuildConfig
 import com.javernaut.whatthecodec.domain.MediaFile
 import com.javernaut.whatthecodec.domain.MediaFileBuilder
 import com.javernaut.whatthecodec.util.PathUtil
@@ -28,7 +30,7 @@ class MediaFileProviderImpl(context: Context) : MediaFileProvider {
                     config = MediaFileBuilder(argument.type).from(descriptor).create()
                 }
             } catch (e: FileNotFoundException) {
-                e.printStackTrace()
+                Log.w("obtainMediaFile() error", e)
             }
         }
 

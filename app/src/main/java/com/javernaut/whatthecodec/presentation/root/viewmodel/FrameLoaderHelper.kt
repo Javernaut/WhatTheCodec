@@ -5,8 +5,18 @@ import android.graphics.Color
 import androidx.palette.graphics.Palette
 import com.javernaut.whatthecodec.domain.FrameLoader
 import com.javernaut.whatthecodec.domain.MediaFile
-import com.javernaut.whatthecodec.presentation.root.viewmodel.model.*
-import kotlinx.coroutines.*
+import com.javernaut.whatthecodec.presentation.root.viewmodel.model.ActualFrame
+import com.javernaut.whatthecodec.presentation.root.viewmodel.model.ActualPreview
+import com.javernaut.whatthecodec.presentation.root.viewmodel.model.DecodingErrorFrame
+import com.javernaut.whatthecodec.presentation.root.viewmodel.model.Frame
+import com.javernaut.whatthecodec.presentation.root.viewmodel.model.FrameMetrics
+import com.javernaut.whatthecodec.presentation.root.viewmodel.model.LoadingFrame
+import com.javernaut.whatthecodec.presentation.root.viewmodel.model.PlaceholderFrame
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class FrameLoaderHelper(
     private val metrics: FrameMetrics,

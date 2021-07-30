@@ -3,7 +3,11 @@ package com.javernaut.whatthecodec.presentation.video.ui.view
 import android.app.Activity
 import android.graphics.Point
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.ContentAlpha
 import androidx.compose.material.LocalContentAlpha
 import androidx.compose.material.MaterialTheme
@@ -19,7 +23,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.presentation.compose.common.GridLayout
-import com.javernaut.whatthecodec.presentation.root.viewmodel.model.*
+import com.javernaut.whatthecodec.presentation.root.viewmodel.model.ActualPreview
+import com.javernaut.whatthecodec.presentation.root.viewmodel.model.Frame
+import com.javernaut.whatthecodec.presentation.root.viewmodel.model.FrameMetrics
+import com.javernaut.whatthecodec.presentation.root.viewmodel.model.NoPreviewAvailable
+import com.javernaut.whatthecodec.presentation.root.viewmodel.model.Preview
 import kotlin.math.min
 
 fun getDesiredFrameWidth(activity: Activity): Int {
