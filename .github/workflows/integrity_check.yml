@@ -10,7 +10,7 @@ jobs:
           submodules: true
 
       - name: Running the Detekt
-        run: gradle detekt
+        run: gradle detekt -Dorg.gradle.java.home=$JAVA_HOME_11_X64
 
       - name: Assembling the ffmpeg-android-maker
         run: |
@@ -19,10 +19,10 @@ jobs:
           cat ffmpeg-android-maker/stats/text-relocations.txt
 
       - name: Building the APK
-        run: gradle buildCiTestDebug
+        run: gradle buildCiTestDebug -Dorg.gradle.java.home=$JAVA_HOME_11_X64
 
       - name: Testing
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 29
-          script: gradle connectedCiTestDebugAndroidTest
+          script: gradle connectedCiTestDebugAndroidTest -Dorg.gradle.java.home=$JAVA_HOME_11_X64
