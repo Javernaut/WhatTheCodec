@@ -2,17 +2,17 @@
 
 buildscript {
     ext.kotlinVersion = '1.5.10'
-    ext.composeVersion = '1.0.0-beta09'
-    ext.accompanistVersion = '0.12.0'
+    ext.composeVersion = '1.0.0'
+    ext.accompanistVersion = '0.15.0'
     repositories {
         google()
         mavenCentral()
         maven { url "https://plugins.gradle.org/m2/" }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.0.0-beta04'
+        classpath 'com.android.tools.build:gradle:7.0.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
-        classpath "io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.13.1"
+        classpath "io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.17.1"
     }
 }
 
