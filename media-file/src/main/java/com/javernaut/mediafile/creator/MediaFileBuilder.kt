@@ -1,8 +1,13 @@
-package com.javernaut.mediafile
+package com.javernaut.mediafile.creator
 
 import android.content.res.AssetFileDescriptor
 import android.os.ParcelFileDescriptor
 import androidx.annotation.Keep
+import com.javernaut.mediafile.AudioStream
+import com.javernaut.mediafile.BasicStreamInfo
+import com.javernaut.mediafile.MediaFile
+import com.javernaut.mediafile.SubtitleStream
+import com.javernaut.mediafile.VideoStream
 
 /**
  * Class that aggregates a creation process of a [MediaFile] object. Certain private methods are

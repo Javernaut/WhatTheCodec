@@ -1,4 +1,4 @@
-package com.javernaut.whatthecodec.util;
+package com.javernaut.mediafile.creator;
 
 import android.annotation.SuppressLint;
 import android.content.ContentUris;
@@ -15,7 +15,7 @@ import android.provider.MediaStore;
  * Thanks to Aki.
  * One minor thing was added though: handling 'raw:/' ids of Uri of 'com.android.providers.downloads.documents' authority
  */
-public class PathUtil {
+class PathUtil {
     /*
      * Gets the file path of the given Uri.
      */

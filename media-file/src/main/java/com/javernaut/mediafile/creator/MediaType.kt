@@ -1,4 +1,4 @@
-package com.javernaut.mediafile
+package com.javernaut.mediafile.creator
 
 enum class MediaType(val mediaStreamsMask: Int) {
     VIDEO(STREAM_VIDEO or STREAM_AUDIO or STREAM_SUBTITLE),

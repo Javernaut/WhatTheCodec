@@ -10,13 +10,13 @@ class MediaFileViewModelFactory(
     private val desiredFrameWidth: Int
 ) : AbstractSavedStateViewModelFactory(activity, null) {
 
-    private val configProvider = MediaFileProviderImpl(activity)
+    private val mediaFileProvider = MediaFileProvider(activity)
 
     override fun <T : ViewModel?> create(
         key: String,
         modelClass: Class<T>,
         handle: SavedStateHandle
     ): T {
-        return MediaFileViewModel(desiredFrameWidth, configProvider, handle) as T
+        return MediaFileViewModel(desiredFrameWidth, mediaFileProvider, handle) as T
     }
 }

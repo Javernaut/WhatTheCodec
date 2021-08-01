@@ -1,24 +1,22 @@
-package com.javernaut.whatthecodec.presentation.root.viewmodel
+package com.javernaut.mediafile.creator
 
 import android.content.Context
 import android.net.Uri
 import android.util.Log
 import com.javernaut.mediafile.MediaFile
-import com.javernaut.mediafile.MediaFileBuilder
-import com.javernaut.whatthecodec.util.PathUtil
 import java.io.FileNotFoundException
 
-class MediaFileProviderImpl(context: Context) : MediaFileProvider {
+class MediaFileCreator(context: Context) {
     private val appContext = context.applicationContext
 
-    override fun obtainMediaFile(argument: MediaFileArgument): MediaFile? {
-        val androidUri = Uri.parse(argument.uri)
+    fun createMediaFile(uri: String, type: MediaType): MediaFile? {
+        val androidUri = Uri.parse(uri)
         var config: MediaFile? = null
 
         // First, try get a file:// path
         val path = PathUtil.getPath(appContext, androidUri)
         if (path != null) {
-            config = MediaFileBuilder(argument.type).from(path).create()
+            config = MediaFileBuilder(type).from(path).create()
         }
 
         // Second, try get a FileDescriptor.
@@ -26,14 +24,13 @@ class MediaFileProviderImpl(context: Context) : MediaFileProvider {
             try {
                 val descriptor = appContext.contentResolver.openFileDescriptor(androidUri, "r")
                 if (descriptor != null) {
-                    config = MediaFileBuilder(argument.type).from(descriptor).create()
+                    config = MediaFileBuilder(type).from(descriptor).create()
                 }
             } catch (e: FileNotFoundException) {
-                Log.w("obtainMediaFile() error", e)
+                Log.w("createMediaFile() error", e)
             }
         }
 
         return config
     }
-
 }

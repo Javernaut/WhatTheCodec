@@ -7,7 +7,7 @@
 
 extern "C" {
 JNIEXPORT void JNICALL
-Java_com_javernaut_mediafile_MediaFileBuilder_nativeCreateFromFD(JNIEnv *,
+Java_com_javernaut_mediafile_creator_MediaFileBuilder_nativeCreateFromFD(JNIEnv *,
                                                                            jobject instance,
                                                                            jint fileDescriptor,
                                                                            jint mediaStreamsMask) {
@@ -15,7 +15,7 @@ Java_com_javernaut_mediafile_MediaFileBuilder_nativeCreateFromFD(JNIEnv *,
 }
 
 JNIEXPORT void JNICALL
-Java_com_javernaut_mediafile_MediaFileBuilder_nativeCreateFromAssetFD(JNIEnv *env,
+Java_com_javernaut_mediafile_creator_MediaFileBuilder_nativeCreateFromAssetFD(JNIEnv *env,
                                                                                 jobject instance,
                                                                                 jint assetFileDescriptor,
                                                                                 jlong startOffset,
@@ -29,7 +29,7 @@ Java_com_javernaut_mediafile_MediaFileBuilder_nativeCreateFromAssetFD(JNIEnv *en
 }
 
 JNIEXPORT void JNICALL
-Java_com_javernaut_mediafile_MediaFileBuilder_nativeCreateFromPath(JNIEnv *env,
+Java_com_javernaut_mediafile_creator_MediaFileBuilder_nativeCreateFromPath(JNIEnv *env,
                                                                              jobject instance,
                                                                              jstring jFilePath,
                                                                              jint mediaStreamsMask) {

@@ -50,7 +50,7 @@ int utils_fields_init(JavaVM *vm) {
     // Actual work
 
     GET_CLASS(fields.MediaFileBuilder.clazz,
-              "com/javernaut/mediafile/MediaFileBuilder", true);
+              "com/javernaut/mediafile/creator/MediaFileBuilder", true);
 
     GET_ID(GetMethodID,
            fields.MediaFileBuilder.onErrorID,
