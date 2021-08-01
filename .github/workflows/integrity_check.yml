@@ -2,27 +2,13 @@ name: Integrity check
 on: push
 jobs:
   build:
-    runs-on: macos-latest
+    runs-on: ubuntu-20.04
 
     steps:
       - uses: actions/checkout@v2
-        with:
-          submodules: true
-
-      - name: Running the Detekt
-        run: ./gradlew detekt -Dorg.gradle.java.home=$JAVA_HOME_11_X64
-
-      - name: Assembling the ffmpeg-android-maker
-        run: |
-          export ANDROID_SDK_HOME=$ANDROID_HOME
-          ffmpeg-android-maker/ffmpeg-android-maker.sh -abis=x86
-          cat ffmpeg-android-maker/stats/text-relocations.txt
 
       - name: Building the APK
-        run: ./gradlew buildCiDebug -Dorg.gradle.java.home=$JAVA_HOME_11_X64
-
-      - name: Testing
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: 29
-          script: ./gradlew connectedCiDebugAndroidTest -Dorg.gradle.java.home=$JAVA_HOME_11_X64
+        run: |
+          export USERNAME=${{ github.actor }}
+          export TOKEN=${{ secrets.GITHUB_TOKEN }}
+          ./gradlew detekt buildCiDebug -Dorg.gradle.java.home=$JAVA_HOME_11_X64
