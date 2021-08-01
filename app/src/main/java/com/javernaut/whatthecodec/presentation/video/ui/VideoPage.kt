@@ -12,7 +12,8 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import com.javernaut.mediafile.BitRateHelper
+import com.javernaut.mediafile.displayable.BitRateHelper
+import com.javernaut.mediafile.displayable.toDisplayable
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.presentation.audio.ui.streamCardsInColumn
 import com.javernaut.whatthecodec.presentation.root.viewmodel.MediaFileViewModel
@@ -61,13 +62,9 @@ private fun convertToStream(basicVideoInfo: BasicVideoInfo, resources: Resources
 
     return makeStream(videoStream.basicInfo, resources) {
         add(StreamFeature(R.string.page_video_codec_name, videoStream.basicInfo.codecName))
-        if (videoStream.bitRate > 0) {
-            add(
-                StreamFeature(
-                    R.string.page_video_bit_rate,
-                    BitRateHelper.toString(videoStream.bitRate, resources)
-                )
-            )
+
+        videoStream.bitRate.toDisplayable(resources)?.let {
+            add(StreamFeature(R.string.page_video_bit_rate, it))
         }
 
         add(StreamFeature(R.string.page_video_frame_width, videoStream.frameWidth.toString()))

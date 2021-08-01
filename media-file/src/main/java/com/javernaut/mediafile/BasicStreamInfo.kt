@@ -10,3 +10,5 @@ class BasicStreamInfo(
     val language: String?,
     val disposition: Int
 )
+
+typealias BitRate = Long

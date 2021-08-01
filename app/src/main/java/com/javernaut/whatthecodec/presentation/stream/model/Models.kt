@@ -2,8 +2,8 @@ package com.javernaut.whatthecodec.presentation.stream.model
 
 import android.content.res.Resources
 import com.javernaut.mediafile.BasicStreamInfo
-import com.javernaut.mediafile.DispositionHelper
-import com.javernaut.mediafile.LanguageHelper
+import com.javernaut.mediafile.displayable.displayableLanguage
+import com.javernaut.mediafile.displayable.getDisplayableDisposition
 import com.javernaut.whatthecodec.R
 
 class StreamCard(
@@ -31,18 +31,12 @@ fun makeStream(
 
             filler(this)
 
-            val language = LanguageHelper.getDisplayName(basicStreamInfo.language)
-            if (language != null) {
-                add(StreamFeature(R.string.page_stream_language, language))
+            basicStreamInfo.displayableLanguage?.let {
+                add(StreamFeature(R.string.page_stream_language, it))
             }
 
-            if (DispositionHelper.isDisplayable(basicStreamInfo.disposition)) {
-                add(
-                    StreamFeature(
-                        R.string.page_stream_disposition,
-                        DispositionHelper.toString(basicStreamInfo.disposition, resources)
-                    )
-                )
+            basicStreamInfo.getDisplayableDisposition(resources)?.let {
+                add(StreamFeature(R.string.page_stream_disposition, it))
             }
         }
     )

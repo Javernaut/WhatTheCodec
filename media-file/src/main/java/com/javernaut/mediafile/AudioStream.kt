@@ -2,9 +2,11 @@ package com.javernaut.mediafile
 
 class AudioStream(
     val basicInfo: BasicStreamInfo,
-    val bitRate: Long,
+    val bitRate: BitRate,
     val sampleFormat: String?,
-    val sampleRate: Int,
+    val sampleRate: SampleRate,
     val channels: Int,
     val channelLayout: String?
 )
+
+typealias SampleRate = Int

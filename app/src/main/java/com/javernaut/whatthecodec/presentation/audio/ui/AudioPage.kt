@@ -13,8 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.javernaut.mediafile.AudioStream
-import com.javernaut.mediafile.BitRateHelper
-import com.javernaut.mediafile.SampleRateHelper
+import com.javernaut.mediafile.displayable.toDisplayable
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.presentation.root.viewmodel.MediaFileViewModel
 import com.javernaut.whatthecodec.presentation.stream.adapter.StreamCard
@@ -26,14 +25,10 @@ private fun convertStream(audioStream: AudioStream, resources: Resources) =
     makeStream(audioStream.basicInfo, resources) {
         add(StreamFeature(R.string.page_audio_codec_name, audioStream.basicInfo.codecName))
 
-        if (audioStream.bitRate > 0) {
-            add(
-                StreamFeature(
-                    R.string.page_audio_bit_rate,
-                    BitRateHelper.toString(audioStream.bitRate, resources)
-                )
-            )
+        audioStream.bitRate.toDisplayable(resources)?.let {
+            add(StreamFeature(R.string.page_audio_bit_rate, it))
         }
+
         add(StreamFeature(R.string.page_audio_channels, audioStream.channels.toString()))
 
         audioStream.channelLayout?.let {
@@ -43,12 +38,9 @@ private fun convertStream(audioStream: AudioStream, resources: Resources) =
             add(StreamFeature(R.string.page_audio_sample_format, it))
         }
 
-        add(
-            StreamFeature(
-                R.string.page_audio_sample_rate,
-                SampleRateHelper.toString(audioStream.sampleRate, resources)
-            )
-        )
+        audioStream.sampleRate.toDisplayable(resources)?.let {
+            add(StreamFeature(R.string.page_audio_sample_rate, it))
+        }
     }
 
 

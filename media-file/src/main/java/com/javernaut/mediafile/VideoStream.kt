@@ -5,7 +5,7 @@ package com.javernaut.mediafile
  */
 class VideoStream(
     val basicInfo: BasicStreamInfo,
-    val bitRate: Long,
+    val bitRate: BitRate,
     val frameWidth: Int,
     val frameHeight: Int
 )

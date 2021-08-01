@@ -33,7 +33,7 @@ class MediaFileTest {
         assertThat(videoStream.basicInfo.codecName).isEqualTo("H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10")
         assertThat(videoStream.basicInfo.title).isNull()
         assertThat(videoStream.basicInfo.language).isNull()
-        assertThat(videoStream.basicInfo.disposition).isEqualTo(DispositionHelper.DispositionFeature.DEFAULT.mask)
+        assertThat(videoStream.basicInfo.disposition).isEqualTo(1) // Aka 'Default'
 
         assertThat(videoStream.frameHeight).isEqualTo(2160)
         assertThat(videoStream.frameWidth).isEqualTo(3840)
@@ -52,7 +52,7 @@ class MediaFileTest {
         assertThat(audioStream.sampleRate).isEqualTo(48000)
         assertThat(audioStream.channels).isEqualTo(6)
         assertThat(audioStream.channelLayout).isEqualTo("5.1(side)")
-        assertThat(audioStream.basicInfo.disposition).isEqualTo(DispositionHelper.DispositionFeature.DEFAULT.mask)
+        assertThat(audioStream.basicInfo.disposition).isEqualTo(1) // Aka 'Default'
 
         // Subtitle stream
         assertThat(mediaFile.subtitleStreams).isNotNull()
