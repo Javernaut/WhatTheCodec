@@ -12,8 +12,10 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import com.javernaut.mediafile.AudioStream
+import com.javernaut.mediafile.BitRateHelper
+import com.javernaut.mediafile.SampleRateHelper
 import com.javernaut.whatthecodec.R
-import com.javernaut.whatthecodec.domain.AudioStream
 import com.javernaut.whatthecodec.presentation.root.viewmodel.MediaFileViewModel
 import com.javernaut.whatthecodec.presentation.stream.adapter.StreamCard
 import com.javernaut.whatthecodec.presentation.stream.model.StreamCard
@@ -34,11 +36,11 @@ private fun convertStream(audioStream: AudioStream, resources: Resources) =
         }
         add(StreamFeature(R.string.page_audio_channels, audioStream.channels.toString()))
 
-        if (audioStream.channelLayout != null) {
-            add(StreamFeature(R.string.page_audio_channel_layout, audioStream.channelLayout))
+        audioStream.channelLayout?.let {
+            add(StreamFeature(R.string.page_audio_channel_layout, it))
         }
-        if (audioStream.sampleFormat != null) {
-            add(StreamFeature(R.string.page_audio_sample_format, audioStream.sampleFormat))
+        audioStream.sampleFormat?.let {
+            add(StreamFeature(R.string.page_audio_sample_format, it))
         }
 
         add(

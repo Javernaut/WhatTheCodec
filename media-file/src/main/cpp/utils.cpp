@@ -50,7 +50,7 @@ int utils_fields_init(JavaVM *vm) {
     // Actual work
 
     GET_CLASS(fields.MediaFileBuilder.clazz,
-              "com/javernaut/whatthecodec/domain/MediaFileBuilder", true);
+              "com/javernaut/mediafile/MediaFileBuilder", true);
 
     GET_ID(GetMethodID,
            fields.MediaFileBuilder.onErrorID,
@@ -60,7 +60,7 @@ int utils_fields_init(JavaVM *vm) {
     GET_ID(GetMethodID,
            fields.MediaFileBuilder.createBasicInfoID,
            fields.MediaFileBuilder.clazz,
-           "createBasicInfo", "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;I)Lcom/javernaut/whatthecodec/domain/BasicStreamInfo;");
+           "createBasicInfo", "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;I)Lcom/javernaut/mediafile/BasicStreamInfo;");
 
     GET_ID(GetMethodID,
            fields.MediaFileBuilder.onMediaFileFoundID,
@@ -70,17 +70,17 @@ int utils_fields_init(JavaVM *vm) {
     GET_ID(GetMethodID,
            fields.MediaFileBuilder.onVideoStreamFoundID,
            fields.MediaFileBuilder.clazz,
-           "onVideoStreamFound", "(Lcom/javernaut/whatthecodec/domain/BasicStreamInfo;JIIJ)V");
+           "onVideoStreamFound", "(Lcom/javernaut/mediafile/BasicStreamInfo;JIIJ)V");
 
     GET_ID(GetMethodID,
            fields.MediaFileBuilder.onAudioStreamFoundID,
            fields.MediaFileBuilder.clazz,
-           "onAudioStreamFound", "(Lcom/javernaut/whatthecodec/domain/BasicStreamInfo;JLjava/lang/String;IILjava/lang/String;)V");
+           "onAudioStreamFound", "(Lcom/javernaut/mediafile/BasicStreamInfo;JLjava/lang/String;IILjava/lang/String;)V");
 
     GET_ID(GetMethodID,
            fields.MediaFileBuilder.onSubtitleStreamFoundID,
            fields.MediaFileBuilder.clazz,
-           "onSubtitleStreamFound", "(Lcom/javernaut/whatthecodec/domain/BasicStreamInfo;)V");
+           "onSubtitleStreamFound", "(Lcom/javernaut/mediafile/BasicStreamInfo;)V");
 
     return 0;
 }

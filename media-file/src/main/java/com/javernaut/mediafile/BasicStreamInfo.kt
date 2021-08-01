@@ -1,4 +1,4 @@
-package com.javernaut.whatthecodec.domain
+package com.javernaut.mediafile
 
 import androidx.annotation.Keep
 

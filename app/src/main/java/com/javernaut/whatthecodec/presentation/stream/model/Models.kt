@@ -1,10 +1,10 @@
 package com.javernaut.whatthecodec.presentation.stream.model
 
 import android.content.res.Resources
+import com.javernaut.mediafile.BasicStreamInfo
+import com.javernaut.mediafile.DispositionHelper
+import com.javernaut.mediafile.LanguageHelper
 import com.javernaut.whatthecodec.R
-import com.javernaut.whatthecodec.domain.BasicStreamInfo
-import com.javernaut.whatthecodec.presentation.stream.helper.DispositionHelper
-import com.javernaut.whatthecodec.presentation.stream.helper.LanguageHelper
 
 class StreamCard(
     val title: String,

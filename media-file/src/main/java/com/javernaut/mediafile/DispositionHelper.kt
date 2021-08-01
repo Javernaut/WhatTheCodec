@@ -1,8 +1,7 @@
-package com.javernaut.whatthecodec.presentation.stream.helper
+package com.javernaut.mediafile
 
 import android.content.res.Resources
 import androidx.annotation.StringRes
-import com.javernaut.whatthecodec.R
 
 object DispositionHelper {
     fun isDisplayable(disposition: Int) = disposition != 0

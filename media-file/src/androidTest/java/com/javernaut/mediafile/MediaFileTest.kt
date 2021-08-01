@@ -1,11 +1,8 @@
-package com.javernaut.whatthecodec
+package com.javernaut.mediafile
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.google.common.truth.Truth.assertThat
-import com.javernaut.whatthecodec.domain.MediaFileBuilder
-import com.javernaut.whatthecodec.domain.MediaType
-import com.javernaut.whatthecodec.presentation.stream.helper.DispositionHelper
 import org.junit.Test
 import org.junit.runner.RunWith
 

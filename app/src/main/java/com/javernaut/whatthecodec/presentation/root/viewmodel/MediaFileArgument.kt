@@ -2,7 +2,7 @@ package com.javernaut.whatthecodec.presentation.root.viewmodel
 
 import android.os.Parcel
 import android.os.Parcelable
-import com.javernaut.whatthecodec.domain.MediaType
+import com.javernaut.mediafile.MediaType
 
 class MediaFileArgument(val uri: String, val type: MediaType) : Parcelable {
 

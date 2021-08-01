@@ -24,8 +24,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.res.stringResource
 import androidx.core.content.MimeTypeFilter
 import androidx.lifecycle.ViewModelProvider
+import com.javernaut.mediafile.MediaType
 import com.javernaut.whatthecodec.R
-import com.javernaut.whatthecodec.domain.MediaType
 import com.javernaut.whatthecodec.presentation.compose.theme.WhatTheCodecTheme
 import com.javernaut.whatthecodec.presentation.root.viewmodel.MediaFileArgument
 import com.javernaut.whatthecodec.presentation.root.viewmodel.MediaFileViewModel

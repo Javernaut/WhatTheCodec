@@ -7,14 +7,14 @@
 
 extern "C" {
 JNIEXPORT void JNICALL
-Java_com_javernaut_whatthecodec_domain_FrameLoader_nativeRelease(JNIEnv *, jclass,
+Java_com_javernaut_mediafile_FrameLoader_nativeRelease(JNIEnv *, jclass,
                                                            jlong jFrameLoaderContextHandle) {
     frame_loader_context_free(jFrameLoaderContextHandle);
 }
 
 
 JNIEXPORT jboolean JNICALL
-Java_com_javernaut_whatthecodec_domain_FrameLoader_nativeLoadFrame(JNIEnv *env, jclass,
+Java_com_javernaut_mediafile_FrameLoader_nativeLoadFrame(JNIEnv *env, jclass,
                                                                    jlong jFrameLoaderContextHandle,
                                                                    jint index,
                                                                    jobject jBitmap) {

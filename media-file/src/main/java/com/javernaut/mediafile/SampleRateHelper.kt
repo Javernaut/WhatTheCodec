@@ -1,7 +1,6 @@
-package com.javernaut.whatthecodec.presentation.audio.ui
+package com.javernaut.mediafile
 
 import android.content.res.Resources
-import com.javernaut.whatthecodec.R
 import java.text.DecimalFormat
 
 object SampleRateHelper {

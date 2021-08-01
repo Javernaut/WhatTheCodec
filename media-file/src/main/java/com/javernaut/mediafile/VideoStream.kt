@@ -1,4 +1,4 @@
-package com.javernaut.whatthecodec.domain
+package com.javernaut.mediafile
 
 /**
  * Represents metadata of a video stream in a video file. Allows video frames reading.

@@ -6,9 +6,9 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hadilq.liveevent.LiveEvent
-import com.javernaut.whatthecodec.domain.AudioStream
-import com.javernaut.whatthecodec.domain.MediaFile
-import com.javernaut.whatthecodec.domain.SubtitleStream
+import com.javernaut.mediafile.AudioStream
+import com.javernaut.mediafile.MediaFile
+import com.javernaut.mediafile.SubtitleStream
 import com.javernaut.whatthecodec.presentation.root.viewmodel.model.AvailableTab
 import com.javernaut.whatthecodec.presentation.root.viewmodel.model.BasicVideoInfo
 import com.javernaut.whatthecodec.presentation.root.viewmodel.model.FrameMetrics
@@ -173,14 +173,13 @@ class MediaFileViewModel(
     }
 
     private fun MediaFile.toBasicInfo(): BasicVideoInfo? {
-        if (videoStream == null) {
-            return null
+        return videoStream?.let {
+            BasicVideoInfo(
+                fileFormatName,
+                fullFeatured,
+                it
+            )
         }
-        return BasicVideoInfo(
-            fileFormatName,
-            fullFeatured,
-            videoStream
-        )
     }
 
     companion object {
