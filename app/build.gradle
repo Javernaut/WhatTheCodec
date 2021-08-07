@@ -19,6 +19,9 @@ android {
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt')
         }
+        debug {
+            signingConfig signingConfigs.debug
+        }
     }
     buildFeatures {
         compose true
@@ -46,6 +49,26 @@ android {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
         useIR = true
     }
+    signingConfigs {
+        google {
+            keyAlias WTC_GOOGLE_KEY_ALIAS
+            keyPassword WTC_GOOGLE_KEY_PASSWORD
+            storeFile file(WTC_GOOGLE_STORE_FILE)
+            storePassword WTC_GOOGLE_STORE_PASSWORD
+        }
+        amazon {
+            keyAlias WTC_AMAZON_KEY_ALIAS
+            keyPassword WTC_AMAZON_KEY_PASSWORD
+            storeFile file(WTC_AMAZON_STORE_FILE)
+            storePassword WTC_AMAZON_STORE_PASSWORD
+        }
+        huawei {
+            keyAlias WTC_AMAZON_KEY_ALIAS
+            keyPassword WTC_AMAZON_KEY_PASSWORD
+            storeFile file(WTC_AMAZON_STORE_FILE)
+            storePassword WTC_AMAZON_STORE_PASSWORD
+        }
+    }
     flavorDimensions "market"
     productFlavors {
         google {
@@ -54,6 +77,7 @@ android {
                 // Since the App Bundle is used, there is no problem in packaging all these ABIs
                 abiFilters 'x86', 'x86_64', 'armeabi-v7a', 'arm64-v8a'
             }
+            signingConfig signingConfigs.google
         }
         amazon {
             dimension "market"
@@ -65,6 +89,7 @@ android {
                 // apps in this market.
                 abiFilters 'armeabi-v7a'
             }
+            signingConfig signingConfigs.amazon
         }
         huawei {
             dimension "market"
@@ -73,6 +98,7 @@ android {
                 // Huawei App Gallery supports App Bundle format
                 abiFilters 'x86', 'x86_64', 'armeabi-v7a', 'arm64-v8a'
             }
+            signingConfig signingConfigs.huawei
         }
         ci {
             dimension "market"
