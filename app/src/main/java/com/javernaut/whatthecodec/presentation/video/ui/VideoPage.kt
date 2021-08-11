@@ -12,7 +12,6 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import com.javernaut.mediafile.displayable.toDisplayable
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.presentation.audio.ui.streamCardsInColumn
 import com.javernaut.whatthecodec.presentation.root.viewmodel.MediaFileViewModel
@@ -23,6 +22,7 @@ import com.javernaut.whatthecodec.presentation.stream.model.StreamFeature
 import com.javernaut.whatthecodec.presentation.stream.model.makeStream
 import com.javernaut.whatthecodec.presentation.video.ui.view.FramesHeader
 import com.javernaut.whatthecodec.presentation.video.ui.view.getPreviewViewWidth
+import io.github.javernaut.mediafile.displayable.toDisplayable
 
 @Composable
 fun VideoPage(viewModel: MediaFileViewModel) {

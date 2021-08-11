@@ -6,14 +6,14 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hadilq.liveevent.LiveEvent
-import com.javernaut.mediafile.AudioStream
-import com.javernaut.mediafile.MediaFile
-import com.javernaut.mediafile.SubtitleStream
 import com.javernaut.whatthecodec.presentation.root.viewmodel.model.AvailableTab
 import com.javernaut.whatthecodec.presentation.root.viewmodel.model.BasicVideoInfo
 import com.javernaut.whatthecodec.presentation.root.viewmodel.model.FrameMetrics
 import com.javernaut.whatthecodec.presentation.root.viewmodel.model.NoPreviewAvailable
 import com.javernaut.whatthecodec.presentation.root.viewmodel.model.Preview
+import io.github.javernaut.mediafile.AudioStream
+import io.github.javernaut.mediafile.MediaFile
+import io.github.javernaut.mediafile.SubtitleStream
 
 class MediaFileViewModel(
     private val desiredFrameWidth: Int,

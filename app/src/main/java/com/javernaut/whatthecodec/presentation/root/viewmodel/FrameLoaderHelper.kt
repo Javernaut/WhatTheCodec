@@ -3,8 +3,6 @@ package com.javernaut.whatthecodec.presentation.root.viewmodel
 import android.graphics.Bitmap
 import android.graphics.Color
 import androidx.palette.graphics.Palette
-import com.javernaut.mediafile.FrameLoader
-import com.javernaut.mediafile.MediaFile
 import com.javernaut.whatthecodec.presentation.root.viewmodel.model.ActualFrame
 import com.javernaut.whatthecodec.presentation.root.viewmodel.model.ActualPreview
 import com.javernaut.whatthecodec.presentation.root.viewmodel.model.DecodingErrorFrame
@@ -12,6 +10,8 @@ import com.javernaut.whatthecodec.presentation.root.viewmodel.model.Frame
 import com.javernaut.whatthecodec.presentation.root.viewmodel.model.FrameMetrics
 import com.javernaut.whatthecodec.presentation.root.viewmodel.model.LoadingFrame
 import com.javernaut.whatthecodec.presentation.root.viewmodel.model.PlaceholderFrame
+import io.github.javernaut.mediafile.FrameLoader
+import io.github.javernaut.mediafile.MediaFile
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job

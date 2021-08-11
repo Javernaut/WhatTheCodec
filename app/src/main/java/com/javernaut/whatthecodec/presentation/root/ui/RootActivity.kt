@@ -24,7 +24,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.res.stringResource
 import androidx.core.content.MimeTypeFilter
 import androidx.lifecycle.ViewModelProvider
-import com.javernaut.mediafile.creator.MediaType
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.presentation.compose.theme.WhatTheCodecTheme
 import com.javernaut.whatthecodec.presentation.root.viewmodel.MediaFileArgument
@@ -33,6 +32,7 @@ import com.javernaut.whatthecodec.presentation.root.viewmodel.MediaFileViewModel
 import com.javernaut.whatthecodec.presentation.settings.SettingsActivity
 import com.javernaut.whatthecodec.presentation.video.ui.view.getDesiredFrameWidth
 import com.javernaut.whatthecodec.util.TinyActivityCompat
+import io.github.javernaut.mediafile.creator.MediaType
 
 class RootActivity : AppCompatActivity() {
 

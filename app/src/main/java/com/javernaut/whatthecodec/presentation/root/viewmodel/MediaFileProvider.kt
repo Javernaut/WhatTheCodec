@@ -1,8 +1,8 @@
 package com.javernaut.whatthecodec.presentation.root.viewmodel
 
 import android.content.Context
-import com.javernaut.mediafile.MediaFile
-import com.javernaut.mediafile.creator.MediaFileCreator
+import io.github.javernaut.mediafile.MediaFile
+import io.github.javernaut.mediafile.creator.MediaFileCreator
 
 class MediaFileProvider(context: Context) {
     private val mediaFileCreator = MediaFileCreator(context)

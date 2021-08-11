@@ -110,7 +110,7 @@ android {
 }
 
 dependencies {
-    implementation "com.javernaut.mediafile:mediafile:1.0.0"
+    implementation "io.github.javernaut:mediafile:0.1.0"
 
     def coroutines_version = "1.5.1"
 
