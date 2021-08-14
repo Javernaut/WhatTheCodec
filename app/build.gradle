@@ -148,10 +148,6 @@ dependencies {
     implementation "com.google.accompanist:accompanist-pager-indicators:$rootProject.accompanistVersion"
 }
 
-repositories {
-    mavenCentral()
-}
-
 detekt {
     config = files("../config/detekt/detekt.yml")
     buildUponDefaultConfig = true
