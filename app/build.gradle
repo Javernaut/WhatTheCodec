@@ -51,22 +51,22 @@ android {
     }
     signingConfigs {
         google {
-            keyAlias WTC_GOOGLE_KEY_ALIAS
-            keyPassword WTC_GOOGLE_KEY_PASSWORD
-            storeFile file(WTC_GOOGLE_STORE_FILE)
-            storePassword WTC_GOOGLE_STORE_PASSWORD
+            keyAlias rootProject.ext["signing.google.alias"]
+            keyPassword rootProject.ext["signing.google.passowrd"]
+            storeFile file(rootProject.ext["signing.google.storeFile"])
+            storePassword rootProject.ext["signing.google.storePassword"]
         }
         amazon {
-            keyAlias WTC_AMAZON_KEY_ALIAS
-            keyPassword WTC_AMAZON_KEY_PASSWORD
-            storeFile file(WTC_AMAZON_STORE_FILE)
-            storePassword WTC_AMAZON_STORE_PASSWORD
+            keyAlias rootProject.ext["signing.amazon.alias"]
+            keyPassword rootProject.ext["signing.amazon.passowrd"]
+            storeFile file(rootProject.ext["signing.amazon.storeFile"])
+            storePassword rootProject.ext["signing.amazon.storePassword"]
         }
         huawei {
-            keyAlias WTC_AMAZON_KEY_ALIAS
-            keyPassword WTC_AMAZON_KEY_PASSWORD
-            storeFile file(WTC_AMAZON_STORE_FILE)
-            storePassword WTC_AMAZON_STORE_PASSWORD
+            keyAlias rootProject.ext["signing.huawei.alias"]
+            keyPassword rootProject.ext["signing.huawei.passowrd"]
+            storeFile file(rootProject.ext["signing.huawei.storeFile"])
+            storePassword rootProject.ext["signing.huawei.storePassword"]
         }
     }
     flavorDimensions "market"
@@ -110,7 +110,7 @@ android {
 }
 
 dependencies {
-    implementation "io.github.javernaut:mediafile:0.1.0"
+    implementation "io.github.javernaut:mediafile:0.4.0"
 
     def coroutines_version = "1.5.1"
 
