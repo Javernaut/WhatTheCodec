@@ -51,22 +51,28 @@ android {
     }
     signingConfigs {
         google {
-            keyAlias rootProject.ext["signing.google.alias"]
-            keyPassword rootProject.ext["signing.google.passowrd"]
-            storeFile file(rootProject.ext["signing.google.storeFile"])
-            storePassword rootProject.ext["signing.google.storePassword"]
+            if (!rootProject.ext["signing.google.alias"].isEmpty()) {
+                keyAlias rootProject.ext["signing.google.alias"]
+                keyPassword rootProject.ext["signing.google.passowrd"]
+                storeFile file(rootProject.ext["signing.google.storeFile"])
+                storePassword rootProject.ext["signing.google.storePassword"]
+            }
         }
         amazon {
-            keyAlias rootProject.ext["signing.amazon.alias"]
-            keyPassword rootProject.ext["signing.amazon.passowrd"]
-            storeFile file(rootProject.ext["signing.amazon.storeFile"])
-            storePassword rootProject.ext["signing.amazon.storePassword"]
+            if (!rootProject.ext["signing.amazon.alias"].isEmpty()) {
+                keyAlias rootProject.ext["signing.amazon.alias"]
+                keyPassword rootProject.ext["signing.amazon.passowrd"]
+                storeFile file(rootProject.ext["signing.amazon.storeFile"])
+                storePassword rootProject.ext["signing.amazon.storePassword"]
+            }
         }
         huawei {
-            keyAlias rootProject.ext["signing.huawei.alias"]
-            keyPassword rootProject.ext["signing.huawei.passowrd"]
-            storeFile file(rootProject.ext["signing.huawei.storeFile"])
-            storePassword rootProject.ext["signing.huawei.storePassword"]
+            if (!rootProject.ext["signing.huawei.alias"].isEmpty()) {
+                keyAlias rootProject.ext["signing.huawei.alias"]
+                keyPassword rootProject.ext["signing.huawei.passowrd"]
+                storeFile file(rootProject.ext["signing.huawei.storeFile"])
+                storePassword rootProject.ext["signing.huawei.storePassword"]
+            }
         }
     }
     flavorDimensions "market"
