@@ -15,6 +15,3 @@ jobs:
 
       - name: Building the APK
         run: ./gradlew detekt buildCiDebug
-        env:
-          GITHUB_USERNAME: ${{ github.actor }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

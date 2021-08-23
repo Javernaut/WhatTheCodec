@@ -1,7 +1,4 @@
 // Create variables with empty default values
-ext["gihtubPackages.user"] = ''
-ext["gihtubPackages.token"] = ''
-
 ext["signing.google.alias"] = ''
 ext["signing.google.passowrd"] = ''
 ext["signing.google.storeFile"] = ''
@@ -23,9 +20,4 @@ if (secretPropsFile.exists()) {
     Properties p = new Properties()
     new FileInputStream(secretPropsFile).withCloseable { is -> p.load(is) }
     p.each { name, value -> ext[name] = value }
-} else {
-    // Use system environment variables
-    ext["gihtubPackages.user"] = System.getenv('GITHUB_USERNAME')
-    ext["gihtubPackages.token"] = System.getenv('GITHUB_TOKEN')
-    // Don't read anything else for now
 }

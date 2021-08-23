@@ -4,16 +4,16 @@ apply from: "${rootDir}/scripts/read-arguments.gradle"
 buildscript {
     ext.kotlinVersion = '1.5.21'
     ext.composeVersion = '1.0.1'
-    ext.accompanistVersion = '0.16.1'
+    ext.accompanistVersion = '0.17.0'
     repositories {
         google()
         mavenCentral()
         maven { url "https://plugins.gradle.org/m2/" }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.0.0'
+        classpath 'com.android.tools.build:gradle:7.0.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
-        classpath "io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.17.1"
+        classpath "io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.18.0"
     }
 }
 
@@ -22,12 +22,8 @@ allprojects {
         google()
         mavenCentral()
         maven {
-            name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/Javernaut/MediaFile")
-            credentials {
-                username = rootProject.ext["gihtubPackages.user"]
-                password = rootProject.ext["gihtubPackages.token"]
-            }
+            name 'MaventCentralSnapshots'
+            url 'https://s01.oss.sonatype.org/content/repositories/snapshots/'
         }
     }
 }
