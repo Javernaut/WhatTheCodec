@@ -2,6 +2,7 @@ package com.javernaut.whatthecodec.presentation.video.ui.view
 
 import android.app.Activity
 import android.graphics.Point
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,6 +15,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -50,12 +52,12 @@ fun getPreviewViewWidth(activity: Activity): Int {
 fun FramesHeader(preview: Preview, dstFrameWidth: Int) {
     when (preview) {
         is ActualPreview -> {
+            val backgroundColor by animateColorAsState(Color(preview.backgroundColor))
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .wrapContentHeight()
-                    // TODO add the animation for the colour change
-                    .background(color = Color(preview.backgroundColor)),
+                    .background(color = backgroundColor),
                 contentAlignment = Alignment.Center
             ) {
                 FramesGrid(
