@@ -66,6 +66,10 @@ private fun convertToStream(basicVideoInfo: BasicVideoInfo, resources: Resources
             add(StreamFeature(R.string.page_video_bit_rate, it))
         }
 
+        videoStream.frameRate.toDisplayable(resources)?.let {
+            add(StreamFeature(R.string.page_video_frame_rate, it))
+        }
+
         add(StreamFeature(R.string.page_video_frame_width, videoStream.frameWidth.toString()))
         add(StreamFeature(R.string.page_video_frame_height, videoStream.frameHeight.toString()))
     }
