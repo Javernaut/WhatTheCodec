@@ -34,7 +34,7 @@ fun MainScreen(
     mediaFileViewModel: MediaFileViewModel,
     menuActions: @Composable RowScope.() -> Unit = {}
 ) {
-    val pagerState = rememberPagerState(pageCount = tabsToShow.size)
+    val pagerState = rememberPagerState()
     Scaffold(
         topBar = {
             MainScreenTopAppBar(tabsToShow = tabsToShow, pagerState, menuActions)
@@ -100,7 +100,7 @@ private fun MainScreenContent(
     pagerState: PagerState,
     viewModel: MediaFileViewModel
 ) {
-    HorizontalPager(pagerState, modifier) { page ->
+    HorizontalPager(tabsToShow.size, modifier, pagerState) { page ->
         when (tabsToShow[page]) {
             AvailableTab.VIDEO -> VideoPage(viewModel)
             AvailableTab.AUDIO -> AudioPage(viewModel)
