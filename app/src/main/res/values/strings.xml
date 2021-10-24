@@ -20,6 +20,7 @@
     <string name="page_video_preview_frame_decoding_error">Couldn\'t decode this frame</string>
     <string name="page_video_codec_name">Video codec</string>
     <string name="page_video_bit_rate">@string/info_bit_rate</string>
+    <string name="page_video_frame_rate">Frame rate</string>
     <string name="page_video_frame_width">Width</string>
     <string name="page_video_frame_height">Height</string>
     <string name="page_stream_title_prefix">Stream #</string>
