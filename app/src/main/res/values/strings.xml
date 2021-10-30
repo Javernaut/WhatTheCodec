@@ -40,12 +40,16 @@
     <string name="empty_root_or">or</string>
     <string name="settings_title">Settings</string>
     <string name="settings_category_general">General</string>
+    <string name="settings_category_content">Content</string>
     <string name="settings_category_about">About</string>
     <string name="settings_theme_light">Light</string>
     <string name="settings_theme_dark">Dark</string>
     <string name="settings_theme_battery_saver">Set by Battery Saver</string>
     <string name="settings_theme_system_default">System default</string>
     <string name="settings_theme_title">App Theme</string>
+    <string name="settings_content_video_title">@string/tab_video</string>
+    <string name="settings_content_audio_title">@string/tab_audio</string>
+    <string name="settings_content_subtitles_title">@string/tab_subtitles</string>
     <string name="settings_source_code_title">Source Code</string>
     <string name="settings_privacy_policy_title">Privacy Policy</string>
 </resources>

@@ -7,12 +7,14 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.material.Checkbox
 import androidx.compose.material.ContentAlpha
 import androidx.compose.material.LocalContentAlpha
 import androidx.compose.material.MaterialTheme
@@ -21,6 +23,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -98,20 +101,123 @@ fun SingleChoicePreferenceDialog(
 }
 
 @Composable
+fun MultiSelectListPreference(
+    key: String,
+    defaultValue: Set<String>,
+    title: String,
+    displayableEntries: List<String>,
+    entriesCodes: List<String>,
+    summaryBuilder: (List<String>) -> String = { it.joinToString() },
+    onNewCodeSelected: ((Set<String>) -> Unit)? = null
+) {
+    val applicationContext = LocalContext.current.applicationContext
+    val defaultSharedPreferences =
+        PreferenceManager.getDefaultSharedPreferences(applicationContext)
+    val selectedItemCodes = defaultSharedPreferences.getStringSet(key, defaultValue)!!
+    val currentlySelectedItemIndexes = List(displayableEntries.size) {
+        selectedItemCodes.contains(entriesCodes[it])
+    }
+
+    var dialogOpened by remember { mutableStateOf(false) }
+    Preference(
+        title = title,
+        // TODO what if nothing is selected ?
+        summary = summaryBuilder(displayableEntries.filterIndexed { index, s ->
+            currentlySelectedItemIndexes[index]
+        })
+    ) {
+        dialogOpened = true
+    }
+
+    if (dialogOpened) {
+        MultiChoicePreferenceDialog(
+            title = title,
+            onDismissRequest = { dialogOpened = false },
+            items = displayableEntries,
+            initialSelectedPositions = currentlySelectedItemIndexes
+        ) { resultList ->
+            val newValueToSet = entriesCodes.filterIndexed { index, s ->
+                resultList[index]
+            }.toSet()
+            defaultSharedPreferences
+                .edit()
+                .putStringSet(key, newValueToSet)
+                .apply()
+            onNewCodeSelected?.invoke(newValueToSet)
+        }
+    }
+}
+
+@Composable
+fun MultiChoicePreferenceDialog(
+    title: String,
+    onDismissRequest: () -> Unit,
+    items: List<String>,
+    initialSelectedPositions: List<Boolean>,
+    resultListener: (List<Boolean>) -> Unit
+) {
+    val itemsStates = remember {
+        initialSelectedPositions.map { mutableStateOf(it) }
+    }
+    PreferenceDialog(title, onDismissRequest,
+        buttons = {
+            CancelDialogButton(onDismissRequest)
+            Spacer(modifier = Modifier.width(8.dp))
+            TextButton(onClick = {
+                resultListener(itemsStates.map { it.value })
+                onDismissRequest()
+            }) {
+                Text(
+                    stringResource(id = android.R.string.ok).toUpperCase(),
+                )
+            }
+        },
+        content = {
+            // TODO Consider scrolling
+            items.forEachIndexed { index, item ->
+                PreferenceCheckboxButton(
+                    item, itemsStates[index]
+                )
+            }
+        })
+}
+
+@Composable
+private fun CancelDialogButton(onDismissRequest: () -> Unit) {
+    TextButton(onClick = onDismissRequest) {
+        Text(
+            stringResource(id = android.R.string.cancel).toUpperCase(),
+        )
+    }
+}
+
+@Composable
 private fun PreferenceDialog(
     title: String,
     onDismissRequest: () -> Unit,
     content: @Composable () -> Unit
 ) {
-    Dialog(
+    PreferenceDialog(
         title, onDismissRequest,
         buttons = {
-            TextButton(onClick = onDismissRequest) {
-                Text(
-                    stringResource(id = android.R.string.cancel).toUpperCase(),
-                )
-            }
+            CancelDialogButton(onDismissRequest)
         }, content = content
+    )
+}
+
+@Composable
+private fun PreferenceDialog(
+    title: String,
+    onDismissRequest: () -> Unit,
+    buttons: @Composable RowScope.() -> Unit = {
+        CancelDialogButton(onDismissRequest)
+    },
+    content: @Composable () -> Unit
+) {
+    WtcDialog(
+        title, onDismissRequest,
+        buttons = buttons,
+        content = content
     )
 }
 
@@ -121,14 +227,7 @@ private fun PreferenceRadioButton(
     selected: Boolean,
     clickListener: () -> Unit
 ) {
-    Row(
-        Modifier
-            .fillMaxWidth()
-            .heightIn(min = dimensionResource(id = R.dimen.common_clickable_item_height))
-            .clickable { clickListener() }
-            .padding(horizontal = 24.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
+    PreferenceItemRow(clickListener) {
         RadioButton(
             selected = selected,
             onClick = null
@@ -142,6 +241,47 @@ private fun PreferenceRadioButton(
             color = MaterialTheme.colors.onSurface
         )
     }
+}
+
+@Composable
+private fun PreferenceCheckboxButton(
+    text: String,
+    selected: MutableState<Boolean>,
+) {
+    PreferenceItemRow(clickListener = {
+        selected.value = !selected.value
+    }) {
+        Checkbox(
+            checked = selected.value,
+            onCheckedChange = {
+                selected.value = it
+            }
+        )
+        Spacer(modifier = Modifier.width(24.dp))
+        Text(
+            text = text,
+            style = MaterialTheme.typography.body1.copy(
+                fontSize = 18.sp
+            ),
+            color = MaterialTheme.colors.onSurface
+        )
+    }
+}
+
+@Composable
+private fun PreferenceItemRow(
+    clickListener: () -> Unit,
+    content: @Composable RowScope.() -> Unit,
+) {
+    Row(
+        Modifier
+            .fillMaxWidth()
+            .heightIn(min = dimensionResource(id = R.dimen.common_clickable_item_height))
+            .clickable(onClick = clickListener)
+            .padding(horizontal = 24.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        content = content
+    )
 }
 
 @Composable

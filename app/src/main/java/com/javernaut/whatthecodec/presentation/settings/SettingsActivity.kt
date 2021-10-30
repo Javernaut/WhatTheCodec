@@ -10,6 +10,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Scaffold
@@ -51,7 +53,11 @@ class SettingsActivity : AppCompatActivity() {
                 SettingsTopAppBar()
             }
         ) {
-            Column(Modifier.padding(it)) {
+            Column(
+                Modifier
+                    .verticalScroll(rememberScrollState())
+                    .padding(it)
+            ) {
                 SettingsContent()
             }
         }
@@ -61,7 +67,16 @@ class SettingsActivity : AppCompatActivity() {
     private fun SettingsContent() {
         PreferenceTitle(title = R.string.settings_category_general)
         ThemeSelectionPreference()
+
         PreferenceDivider()
+
+        PreferenceTitle(title = R.string.settings_category_content)
+        PreferredVideoContentPreference()
+        PreferredAudioContentPreference()
+        PreferredSubtitlesContentPreference()
+
+        PreferenceDivider()
+
         PreferenceTitle(title = R.string.settings_category_about)
         OpenUrlPreference(
             title = R.string.settings_source_code_title,
@@ -98,6 +113,45 @@ class SettingsActivity : AppCompatActivity() {
         ) {
             ThemeManager.setNightModePreference(it)
         }
+    }
+
+    @Composable
+    private fun PreferredVideoContentPreference() {
+        val entriesCodes =
+            stringArrayResource(id = R.array.settings_content_video_entryValues).toList()
+        MultiSelectListPreference(
+            "video_content",
+            defaultValue = entriesCodes.toSet(),
+            title = stringResource(id = R.string.settings_content_video_title),
+            displayableEntries = stringArrayResource(id = R.array.settings_content_video_entries).toList(),
+            entriesCodes = entriesCodes
+        )
+    }
+
+    @Composable
+    private fun PreferredAudioContentPreference() {
+        val entriesCodes =
+            stringArrayResource(id = R.array.settings_content_audio_entryValues).toList()
+        MultiSelectListPreference(
+            "audio_content",
+            defaultValue = entriesCodes.toSet(),
+            title = stringResource(id = R.string.settings_content_audio_title),
+            displayableEntries = stringArrayResource(id = R.array.settings_content_audio_entries).toList(),
+            entriesCodes = entriesCodes
+        )
+    }
+
+    @Composable
+    private fun PreferredSubtitlesContentPreference() {
+        val entriesCodes =
+            stringArrayResource(id = R.array.settings_content_subtitles_entryValues).toList()
+        MultiSelectListPreference(
+            "subtitles_content",
+            defaultValue = entriesCodes.toSet(),
+            title = stringResource(id = R.string.settings_content_subtitles_title),
+            displayableEntries = stringArrayResource(id = R.array.settings_content_subtitles_entries).toList(),
+            entriesCodes = entriesCodes
+        )
     }
 
     @Composable

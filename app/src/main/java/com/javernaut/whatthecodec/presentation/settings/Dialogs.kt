@@ -3,6 +3,7 @@ package com.javernaut.whatthecodec.presentation.settings
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
@@ -13,15 +14,16 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 
 @Composable
-fun Dialog(
+fun WtcDialog(
     title: String,
     onDismissRequest: () -> Unit,
-    buttons: @Composable () -> Unit,
+    buttons: @Composable RowScope.() -> Unit,
     content: @Composable () -> Unit
 ) {
-    androidx.compose.ui.window.Dialog(onDismissRequest = onDismissRequest) {
+    Dialog(onDismissRequest = onDismissRequest) {
         Surface(
             Modifier.fillMaxWidth(),
             shape = MaterialTheme.shapes.medium,
@@ -42,10 +44,9 @@ fun Dialog(
                     Modifier
                         .fillMaxWidth()
                         .padding(8.dp),
-                    horizontalArrangement = Arrangement.End
-                ) {
-                    buttons()
-                }
+                    horizontalArrangement = Arrangement.End,
+                    content = buttons
+                )
             }
         }
     }
