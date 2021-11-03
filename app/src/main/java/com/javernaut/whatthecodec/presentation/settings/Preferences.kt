@@ -65,7 +65,7 @@ fun ListPreference(
     if (dialogOpened) {
         SingleChoicePreferenceDialog(
             title = title,
-            onDismissRequest = { dialogOpened = false },
+            dismissRequest = { dialogOpened = false },
             items = displayableEntries,
             currentlySelectedIndex = currentlySelectedItemIndex
         ) {
@@ -79,22 +79,25 @@ fun ListPreference(
     }
 }
 
-
 @Composable
 fun SingleChoicePreferenceDialog(
     title: String,
-    onDismissRequest: () -> Unit,
+    dismissRequest: () -> Unit,
     items: List<String>,
     currentlySelectedIndex: Int,
     clickListener: (Int) -> Unit
 ) {
-    PreferenceDialog(title, onDismissRequest) {
+    var selectedIndex by remember { mutableStateOf(currentlySelectedIndex) }
+    PreferenceDialog(title, dismissRequest,
+        applyRequest = {
+            clickListener(selectedIndex)
+        }
+    ) {
         items.forEachIndexed { index, item ->
             PreferenceRadioButton(
-                item, index == currentlySelectedIndex
+                item, index == selectedIndex
             ) {
-                clickListener(index)
-                onDismissRequest()
+                selectedIndex = index
             }
         }
     }
@@ -160,31 +163,39 @@ fun MultiChoicePreferenceDialog(
         initialSelectedPositions.map { mutableStateOf(it) }
     }
     PreferenceDialog(title, onDismissRequest,
-        buttons = {
-            CancelDialogButton(onDismissRequest)
-            Spacer(modifier = Modifier.width(8.dp))
-            TextButton(onClick = {
-                resultListener(itemsStates.map { it.value })
-                onDismissRequest()
-            }) {
-                Text(
-                    stringResource(id = android.R.string.ok).toUpperCase(),
-                )
-            }
-        },
-        content = {
-            // TODO Consider scrolling
-            items.forEachIndexed { index, item ->
-                PreferenceCheckboxButton(
-                    item, itemsStates[index]
-                )
-            }
-        })
+        applyRequest = {
+            resultListener(itemsStates.map { it.value })
+        }
+    ) {
+        // TODO Consider scrolling
+        items.forEachIndexed { index, item ->
+            PreferenceCheckboxButton(
+                item, itemsStates[index]
+            )
+        }
+    }
 }
 
 @Composable
-private fun CancelDialogButton(onDismissRequest: () -> Unit) {
-    TextButton(onClick = onDismissRequest) {
+private fun DefaultPreferenceDialogActions(
+    dismissRequest: () -> Unit,
+    applyRequest: () -> Unit
+) {
+    CancelDialogButton(dismissRequest)
+    Spacer(modifier = Modifier.width(8.dp))
+    TextButton(onClick = {
+        applyRequest()
+        dismissRequest()
+    }) {
+        Text(
+            stringResource(id = android.R.string.ok).toUpperCase(),
+        )
+    }
+}
+
+@Composable
+private fun CancelDialogButton(dismissRequest: () -> Unit) {
+    TextButton(onClick = dismissRequest) {
         Text(
             stringResource(id = android.R.string.cancel).toUpperCase(),
         )
@@ -194,28 +205,15 @@ private fun CancelDialogButton(onDismissRequest: () -> Unit) {
 @Composable
 private fun PreferenceDialog(
     title: String,
-    onDismissRequest: () -> Unit,
-    content: @Composable () -> Unit
-) {
-    PreferenceDialog(
-        title, onDismissRequest,
-        buttons = {
-            CancelDialogButton(onDismissRequest)
-        }, content = content
-    )
-}
-
-@Composable
-private fun PreferenceDialog(
-    title: String,
-    onDismissRequest: () -> Unit,
-    buttons: @Composable RowScope.() -> Unit = {
-        CancelDialogButton(onDismissRequest)
+    dismissRequest: () -> Unit,
+    applyRequest: () -> Unit,
+    buttons: @Composable (RowScope.() -> Unit) = {
+        DefaultPreferenceDialogActions(dismissRequest, applyRequest)
     },
     content: @Composable () -> Unit
 ) {
     WtcDialog(
-        title, onDismissRequest,
+        title, dismissRequest,
         buttons = buttons,
         content = content
     )

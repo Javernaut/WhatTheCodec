@@ -45,7 +45,7 @@ fun WtcDialog(
                         .fillMaxWidth()
                         .padding(8.dp),
                     horizontalArrangement = Arrangement.End,
-                    content = buttons
+                    content = { buttons() }
                 )
             }
         }
