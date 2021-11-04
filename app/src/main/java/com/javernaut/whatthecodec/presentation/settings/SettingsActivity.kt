@@ -24,6 +24,11 @@ import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.presentation.compose.common.WtcTopAppBar
+import com.javernaut.whatthecodec.presentation.compose.preference.ListPreference
+import com.javernaut.whatthecodec.presentation.compose.preference.MultiSelectListPreference
+import com.javernaut.whatthecodec.presentation.compose.preference.Preference
+import com.javernaut.whatthecodec.presentation.compose.preference.PreferenceDivider
+import com.javernaut.whatthecodec.presentation.compose.preference.PreferenceTitle
 import com.javernaut.whatthecodec.presentation.compose.theme.WhatTheCodecTheme
 
 class SettingsActivity : AppCompatActivity() {

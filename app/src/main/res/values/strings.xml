@@ -52,4 +52,5 @@
     <string name="settings_content_subtitles_title">@string/tab_subtitles</string>
     <string name="settings_source_code_title">Source Code</string>
     <string name="settings_privacy_policy_title">Privacy Policy</string>
+    <string name="settings_nothing_is_selected">Nothing is selected</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.javernaut.whatthecodec.presentation.settings
+package com.javernaut.whatthecodec.presentation.compose.common
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
