@@ -9,6 +9,7 @@ import androidx.compose.material.Tab
 import androidx.compose.material.TabRowDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.key
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -21,7 +22,7 @@ import com.google.accompanist.pager.rememberPagerState
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.presentation.audio.ui.AudioPage
 import com.javernaut.whatthecodec.presentation.compose.common.WtcTopAppBar
-import com.javernaut.whatthecodec.presentation.root.viewmodel.MediaFileViewModel
+import com.javernaut.whatthecodec.presentation.root.viewmodel.ScreenState
 import com.javernaut.whatthecodec.presentation.root.viewmodel.model.AvailableTab
 import com.javernaut.whatthecodec.presentation.subtitle.ui.SubtitlePage
 import com.javernaut.whatthecodec.presentation.video.ui.VideoPage
@@ -30,20 +31,19 @@ import kotlinx.coroutines.launch
 @Composable
 @OptIn(ExperimentalPagerApi::class)
 fun MainScreen(
-    tabsToShow: List<AvailableTab>,
-    mediaFileViewModel: MediaFileViewModel,
+    screenState: ScreenState,
     menuActions: @Composable RowScope.() -> Unit = {}
 ) {
     val pagerState = rememberPagerState()
+    val tabsToShow = screenState.availableTabs
     Scaffold(
         topBar = {
             MainScreenTopAppBar(tabsToShow = tabsToShow, pagerState, menuActions)
         }
     ) {
-        MainScreenContent(Modifier.padding(it), tabsToShow, pagerState, mediaFileViewModel)
+        MainScreenContent(Modifier.padding(it), tabsToShow, screenState, pagerState)
     }
 }
-
 
 @Composable
 @ExperimentalPagerApi
@@ -97,14 +97,14 @@ private val AvailableTab.title: Int
 private fun MainScreenContent(
     modifier: Modifier = Modifier,
     tabsToShow: List<AvailableTab>,
+    screenState: ScreenState,
     pagerState: PagerState,
-    viewModel: MediaFileViewModel
 ) {
     HorizontalPager(tabsToShow.size, modifier, pagerState) { page ->
         when (tabsToShow[page]) {
-            AvailableTab.VIDEO -> VideoPage(viewModel)
-            AvailableTab.AUDIO -> AudioPage(viewModel)
-            AvailableTab.SUBTITLES -> SubtitlePage(viewModel)
+            AvailableTab.VIDEO -> VideoPage(screenState.videoPage!!)
+            AvailableTab.AUDIO -> AudioPage(screenState.audioPage!!)
+            AvailableTab.SUBTITLES -> SubtitlePage(screenState.subtitlesPage!!)
         }
     }
 }

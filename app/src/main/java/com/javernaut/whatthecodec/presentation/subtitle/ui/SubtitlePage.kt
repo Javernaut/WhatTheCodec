@@ -2,12 +2,9 @@ package com.javernaut.whatthecodec.presentation.subtitle.ui
 
 import android.content.res.Resources
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.platform.LocalContext
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.presentation.audio.ui.StreamsPage
-import com.javernaut.whatthecodec.presentation.root.viewmodel.MediaFileViewModel
 import com.javernaut.whatthecodec.presentation.stream.model.StreamFeature
 import com.javernaut.whatthecodec.presentation.stream.model.makeStream
 import io.github.javernaut.mediafile.SubtitleStream
@@ -24,9 +21,6 @@ private fun convertStream(subtitleStream: SubtitleStream, resources: Resources) 
 
 
 @Composable
-fun SubtitlePage(viewModel: MediaFileViewModel) {
-    val subtitlePageState by viewModel.subtitleStreamsLiveData.observeAsState()
-    subtitlePageState?.let {
-        StreamsPage(streamCards = it.map { convertStream(it, LocalContext.current.resources) })
-    }
+fun SubtitlePage(streams: List<SubtitleStream>) {
+    StreamsPage(streamCards = streams.map { convertStream(it, LocalContext.current.resources) })
 }

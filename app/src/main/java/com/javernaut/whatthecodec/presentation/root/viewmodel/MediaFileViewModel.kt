@@ -10,6 +10,7 @@ import com.javernaut.whatthecodec.presentation.root.viewmodel.model.AvailableTab
 import com.javernaut.whatthecodec.presentation.root.viewmodel.model.BasicVideoInfo
 import com.javernaut.whatthecodec.presentation.root.viewmodel.model.FrameMetrics
 import com.javernaut.whatthecodec.presentation.root.viewmodel.model.NoPreviewAvailable
+import com.javernaut.whatthecodec.presentation.root.viewmodel.model.NotYetEvaluated
 import com.javernaut.whatthecodec.presentation.root.viewmodel.model.Preview
 import io.github.javernaut.mediafile.AudioStream
 import io.github.javernaut.mediafile.MediaFile
@@ -28,52 +29,24 @@ class MediaFileViewModel(
 
     private var frameMetrics: FrameMetrics? = null
 
-    private val _basicVideoInfoLiveData = MutableLiveData<BasicVideoInfo?>()
-    private val _previewLiveData = MutableLiveData<Preview>()
+    private val _screenState = MutableLiveData<ScreenState?>()
     private val _errorMessageLiveEvent = LiveEvent<Boolean>()
-    private val _availableTabsLiveData = MutableLiveData<List<AvailableTab>>()
-    private val _audioStreamsLiveData = MutableLiveData<List<AudioStream>>()
-    private val _subtitleStreamsLiveData = MutableLiveData<List<SubtitleStream>>()
 
     init {
         pendingMediaFileArgument = savedStateHandle[KEY_MEDIA_FILE_ARGUMENT]
     }
 
     /**
-     * Basic info about video stream. See [BasicVideoInfo] for details.
+     * Exposes the whole info about the selected media file
      */
-    val basicVideoInfoLiveData: LiveData<BasicVideoInfo?>
-        get() = _basicVideoInfoLiveData
+    val screenState: LiveData<ScreenState?>
+        get() = _screenState
 
     /**
      * Notifies about error during opening a file.
      */
     val errorMessageLiveEvent: LiveData<Boolean>
         get() = _errorMessageLiveEvent
-
-    /**
-     * Exposes actual Bitmap objects that need to be shown as frames.
-     */
-    val previewLiveData: LiveData<Preview>
-        get() = _previewLiveData
-
-    /**
-     * Tabs that should be visible in UI.
-     */
-    val availableTabsLiveData: LiveData<List<AvailableTab>>
-        get() = _availableTabsLiveData
-
-    /**
-     * List of [AudioStream] object for displaying in UI.
-     */
-    val audioStreamsLiveData: LiveData<List<AudioStream>>
-        get() = _audioStreamsLiveData
-
-    /**
-     * List of [SubtitleStream] object for displaying in UI.
-     */
-    val subtitleStreamsLiveData: LiveData<List<SubtitleStream>>
-        get() = _subtitleStreamsLiveData
 
     override fun onCleared() {
         if (frameLoaderHelper == null) {
@@ -106,17 +79,17 @@ class MediaFileViewModel(
     }
 
     private fun applyMediaFile(mediaFile: MediaFile) {
-        _basicVideoInfoLiveData.value = mediaFile.toBasicInfo()
+        _screenState.value = ScreenState(
+            mediaFile.toBasicInfo(),
+            mediaFile.audioStreams,
+            mediaFile.subtitleStreams
+        )
         frameMetrics = computeFrameMetrics()
 
         if (mediaFile.supportsFrameLoading()) {
             frameLoaderHelper = FrameLoaderHelper(frameMetrics!!, viewModelScope, ::applyPreview)
         }
 
-        _audioStreamsLiveData.value = mediaFile.audioStreams
-        _subtitleStreamsLiveData.value = mediaFile.subtitleStreams
-
-        setupTabsAvailable(mediaFile)
         tryLoadVideoFrames()
     }
 
@@ -130,30 +103,22 @@ class MediaFileViewModel(
         frameLoaderHelper = null
     }
 
-    private fun setupTabsAvailable(mediaFile: MediaFile) {
-        val tabs = mutableListOf<AvailableTab>()
-        if (mediaFile.videoStream != null) {
-            tabs.add(AvailableTab.VIDEO)
-        }
-        if (mediaFile.audioStreams.isNotEmpty()) {
-            tabs.add(AvailableTab.AUDIO)
-        }
-        if (mediaFile.subtitleStreams.isNotEmpty()) {
-            tabs.add(AvailableTab.SUBTITLES)
-        }
-        _availableTabsLiveData.value = tabs
-    }
-
     private fun tryLoadVideoFrames() {
         if (frameLoaderHelper != null) {
             frameLoaderHelper?.loadFrames(mediaFile!!)
         } else {
-            _previewLiveData.value = NoPreviewAvailable
+            applyPreview(NoPreviewAvailable)
         }
     }
 
     private fun applyPreview(preview: Preview) {
-        _previewLiveData.value = (preview)
+        _screenState.value = _screenState.value?.let {
+            it.copy(
+                videoPage = it.videoPage?.copy(
+                    preview = preview
+                )
+            )
+        }
     }
 
     private fun clearPendingUri() {
@@ -161,7 +126,7 @@ class MediaFileViewModel(
     }
 
     private fun computeFrameMetrics(): FrameMetrics? {
-        val basicVideoInfo = _basicVideoInfoLiveData.value
+        val basicVideoInfo = _screenState.value?.videoPage
 
         return basicVideoInfo?.let {
             val frameHeight = it.videoStream.frameHeight
@@ -175,6 +140,7 @@ class MediaFileViewModel(
     private fun MediaFile.toBasicInfo(): BasicVideoInfo? {
         return videoStream?.let {
             BasicVideoInfo(
+                NotYetEvaluated,
                 fileFormatName,
                 fullFeatured,
                 it
@@ -185,4 +151,23 @@ class MediaFileViewModel(
     companion object {
         const val KEY_MEDIA_FILE_ARGUMENT = "key_video_file_uri"
     }
+}
+
+data class ScreenState(
+    val videoPage: BasicVideoInfo?,
+    val audioPage: List<AudioStream>?,
+    val subtitlesPage: List<SubtitleStream>?
+) {
+    val availableTabs: List<AvailableTab>
+        get() = mutableListOf<AvailableTab>().apply {
+            if (videoPage != null) {
+                add(AvailableTab.VIDEO)
+            }
+            if (!audioPage.isNullOrEmpty()) {
+                add(AvailableTab.AUDIO)
+            }
+            if (!subtitlesPage.isNullOrEmpty()) {
+                add(AvailableTab.SUBTITLES)
+            }
+        }
 }

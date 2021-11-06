@@ -49,13 +49,13 @@ class RootActivity : AppCompatActivity() {
 
         setContent {
             WhatTheCodecTheme {
-                val tabsToShow by mediaFileViewModel.availableTabsLiveData.observeAsState()
-                if (tabsToShow == null) {
+                val screenState by mediaFileViewModel.screenState.observeAsState()
+                if (screenState == null) {
                     EmptyScreen(::onPickVideoClicked, ::onPickAudioClicked) {
                         CommonMenuItems()
                     }
                 } else {
-                    MainScreen(tabsToShow!!, mediaFileViewModel) {
+                    MainScreen(screenState!!) {
                         SelectFileMenuItems()
                         CommonMenuItems()
                     }

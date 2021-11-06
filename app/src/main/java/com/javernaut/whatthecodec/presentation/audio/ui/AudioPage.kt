@@ -9,13 +9,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.javernaut.whatthecodec.R
-import com.javernaut.whatthecodec.presentation.root.viewmodel.MediaFileViewModel
 import com.javernaut.whatthecodec.presentation.stream.adapter.StreamCard
 import com.javernaut.whatthecodec.presentation.stream.model.StreamCard
 import com.javernaut.whatthecodec.presentation.stream.model.StreamFeature
@@ -47,11 +44,8 @@ private fun convertStream(audioStream: AudioStream, resources: Resources) =
 
 
 @Composable
-fun AudioPage(viewModel: MediaFileViewModel) {
-    val audioPageState by viewModel.audioStreamsLiveData.observeAsState()
-    audioPageState?.let {
-        StreamsPage(streamCards = it.map { convertStream(it, LocalContext.current.resources) })
-    }
+fun AudioPage(streams: List<AudioStream>) {
+    StreamsPage(streamCards = streams.map { convertStream(it, LocalContext.current.resources) })
 }
 
 @Composable

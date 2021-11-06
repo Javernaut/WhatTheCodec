@@ -7,16 +7,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.presentation.audio.ui.streamCardsInColumn
-import com.javernaut.whatthecodec.presentation.root.viewmodel.MediaFileViewModel
 import com.javernaut.whatthecodec.presentation.root.viewmodel.model.BasicVideoInfo
-import com.javernaut.whatthecodec.presentation.root.viewmodel.model.Preview
 import com.javernaut.whatthecodec.presentation.stream.model.StreamCard
 import com.javernaut.whatthecodec.presentation.stream.model.StreamFeature
 import com.javernaut.whatthecodec.presentation.stream.model.makeStream
@@ -25,34 +21,20 @@ import com.javernaut.whatthecodec.presentation.video.ui.view.getPreviewViewWidth
 import io.github.javernaut.mediafile.displayable.toDisplayable
 
 @Composable
-fun VideoPage(viewModel: MediaFileViewModel) {
-    val videoInfo by viewModel.basicVideoInfoLiveData.observeAsState()
-    val preview by viewModel.previewLiveData.observeAsState()
-
-    preview?.let {
-        VideoPage(it, videoInfo)
-    }
-}
-
-@Composable
-private fun VideoPage(preview: Preview, videoInfo: BasicVideoInfo?) {
+fun VideoPage(videoInfo: BasicVideoInfo) {
     val resources = LocalContext.current.resources
-    val videoInfoCards = videoInfo?.let {
-        listOf(
-            convertToContainer(it, resources),
-            convertToStream(it, resources)
-        )
-    }
+    val videoInfoCards = listOf(
+        convertToContainer(videoInfo, resources),
+        convertToStream(videoInfo, resources)
+    )
     LazyColumn(Modifier.fillMaxSize()) {
         item {
-            FramesHeader(preview, getPreviewViewWidth(LocalContext.current as Activity))
+            FramesHeader(videoInfo.preview, getPreviewViewWidth(LocalContext.current as Activity))
         }
         item {
             Spacer(modifier = Modifier.height(16.dp))
         }
-        videoInfoCards?.let {
-            streamCardsInColumn(videoInfoCards)
-        }
+        streamCardsInColumn(videoInfoCards)
     }
 }
 

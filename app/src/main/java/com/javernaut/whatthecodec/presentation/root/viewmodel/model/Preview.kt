@@ -2,6 +2,7 @@ package com.javernaut.whatthecodec.presentation.root.viewmodel.model
 
 sealed class Preview
 
+object NotYetEvaluated : Preview()
 object NoPreviewAvailable : Preview()
 
 data class ActualPreview(
