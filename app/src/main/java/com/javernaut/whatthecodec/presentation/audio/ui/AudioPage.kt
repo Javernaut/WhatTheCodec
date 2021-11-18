@@ -1,22 +1,14 @@
 package com.javernaut.whatthecodec.presentation.audio.ui
 
 import android.content.res.Resources
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListScope
-import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.unit.dp
 import com.javernaut.whatthecodec.R
-import com.javernaut.whatthecodec.presentation.stream.adapter.StreamCard
-import com.javernaut.whatthecodec.presentation.stream.model.StreamCard
+import com.javernaut.whatthecodec.presentation.stream.adapter.StreamFeaturesGrid
 import com.javernaut.whatthecodec.presentation.stream.model.StreamFeature
 import com.javernaut.whatthecodec.presentation.stream.model.makeStream
+import com.javernaut.whatthecodec.presentation.subtitle.ui.SimplePage
 import io.github.javernaut.mediafile.AudioStream
 import io.github.javernaut.mediafile.displayable.toDisplayable
 
@@ -42,28 +34,24 @@ private fun convertStream(audioStream: AudioStream, resources: Resources) =
         }
     }
 
-
 @Composable
-fun AudioPage(streams: List<AudioStream>) {
-    StreamsPage(streamCards = streams.map { convertStream(it, LocalContext.current.resources) })
-}
-
-@Composable
-fun StreamsPage(streamCards: List<StreamCard>) {
-    LazyColumn(
-        Modifier
-            .fillMaxSize()
-    ) {
-        item {
-            Spacer(modifier = Modifier.height(16.dp))
-        }
-        streamCardsInColumn(streamCards)
+fun AudioPage(
+    streams: List<AudioStream>,
+    modifier: Modifier = Modifier
+) {
+    SimplePage(streams, modifier) { item, itemModifier ->
+        AudioCardContent(item, itemModifier)
     }
 }
 
-fun LazyListScope.streamCardsInColumn(streamCards: List<StreamCard>) {
-    val commonModifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp)
-    items(streamCards) {
-        StreamCard(commonModifier, it)
-    }
+@Composable
+fun AudioCardContent(
+    stream: AudioStream,
+    modifier: Modifier = Modifier
+) {
+    val convertedStream = convertStream(stream, LocalContext.current.resources)
+    StreamFeaturesGrid(
+        features = convertedStream.features,
+        modifier = modifier
+    )
 }

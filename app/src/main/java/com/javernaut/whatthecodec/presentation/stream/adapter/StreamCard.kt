@@ -39,18 +39,32 @@ import com.javernaut.whatthecodec.presentation.stream.model.StreamFeature
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun StreamCard(modifier: Modifier = Modifier, streamCard: StreamCard) {
+    StreamCard(streamCard.title, modifier) {
+        StreamFeaturesGrid(
+            modifier = it,
+            features = streamCard.features
+        )
+    }
+}
+
+@OptIn(ExperimentalAnimationApi::class)
+@Composable
+fun StreamCard(
+    title: String,
+    modifier: Modifier = Modifier,
+    content: @Composable (Modifier) -> Unit
+) {
     Card(modifier) {
         Column {
             var gridVisible by remember { mutableStateOf(true) }
-            StreamCardTopRow(streamCard, gridVisible) {
+            StreamCardTopRow(title, gridVisible) {
                 gridVisible = !gridVisible
             }
             AnimatedVisibility(visible = gridVisible) {
-                StreamFeaturesGrid(
+                content(
                     Modifier
                         .fillMaxWidth()
-                        .padding(bottom = 8.dp),
-                    features = streamCard.features
+                        .padding(bottom = 8.dp)
                 )
             }
         }
@@ -59,7 +73,7 @@ fun StreamCard(modifier: Modifier = Modifier, streamCard: StreamCard) {
 
 @Composable
 private fun StreamCardTopRow(
-    streamCard: StreamCard,
+    title: String,
     gridVisible: Boolean,
     arrowClicked: () -> Unit
 ) {
@@ -70,7 +84,7 @@ private fun StreamCardTopRow(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = streamCard.title,
+            text = title,
             modifier = Modifier
                 .weight(1f)
                 .padding(

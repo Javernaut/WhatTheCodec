@@ -3,16 +3,17 @@ package com.javernaut.whatthecodec.presentation.video.ui
 import android.app.Activity
 import android.content.res.Resources
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.javernaut.whatthecodec.R
-import com.javernaut.whatthecodec.presentation.audio.ui.streamCardsInColumn
 import com.javernaut.whatthecodec.presentation.root.viewmodel.model.BasicVideoInfo
+import com.javernaut.whatthecodec.presentation.stream.adapter.StreamCard
 import com.javernaut.whatthecodec.presentation.stream.model.StreamCard
 import com.javernaut.whatthecodec.presentation.stream.model.StreamFeature
 import com.javernaut.whatthecodec.presentation.stream.model.makeStream
@@ -21,20 +22,26 @@ import com.javernaut.whatthecodec.presentation.video.ui.view.getPreviewViewWidth
 import io.github.javernaut.mediafile.displayable.toDisplayable
 
 @Composable
-fun VideoPage(videoInfo: BasicVideoInfo) {
+fun VideoPage(
+    videoInfo: BasicVideoInfo,
+    modifier: Modifier = Modifier
+) {
     val resources = LocalContext.current.resources
     val videoInfoCards = listOf(
         convertToContainer(videoInfo, resources),
         convertToStream(videoInfo, resources)
     )
-    LazyColumn(Modifier.fillMaxSize()) {
+    LazyColumn(modifier) {
         item {
             FramesHeader(videoInfo.preview, getPreviewViewWidth(LocalContext.current as Activity))
         }
         item {
             Spacer(modifier = Modifier.height(16.dp))
         }
-        streamCardsInColumn(videoInfoCards)
+        val commonModifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp)
+        items(videoInfoCards) {
+            StreamCard(commonModifier, it)
+        }
     }
 }
 

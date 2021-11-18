@@ -2,6 +2,7 @@ package com.javernaut.whatthecodec.presentation.root.ui
 
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.material.ScrollableTabRow
@@ -9,7 +10,6 @@ import androidx.compose.material.Tab
 import androidx.compose.material.TabRowDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.key
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -101,10 +101,11 @@ private fun MainScreenContent(
     pagerState: PagerState,
 ) {
     HorizontalPager(tabsToShow.size, modifier, pagerState) { page ->
+        val pageModifier = Modifier.fillMaxSize()
         when (tabsToShow[page]) {
-            AvailableTab.VIDEO -> VideoPage(screenState.videoPage!!)
-            AvailableTab.AUDIO -> AudioPage(screenState.audioPage!!)
-            AvailableTab.SUBTITLES -> SubtitlePage(screenState.subtitlesPage!!)
+            AvailableTab.VIDEO -> VideoPage(screenState.videoPage!!, pageModifier)
+            AvailableTab.AUDIO -> AudioPage(screenState.audioPage!!, pageModifier)
+            AvailableTab.SUBTITLES -> SubtitlePage(screenState.subtitlesPage!!, pageModifier)
         }
     }
 }
