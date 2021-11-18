@@ -51,7 +51,7 @@ fun <T : MediaStream> SimplePage(
         modifier = modifier,
         contentPadding = commonPaddingValues
     ) {
-        itemsIndexed(streams) { index: Int, item: T ->
+        itemsIndexed(streams) { _, item: T ->
             StreamCard(
                 title = makeCardTitle(basicStreamInfo = item.basicInfo),
                 modifier = commonItemModifier,
@@ -69,13 +69,13 @@ fun SubtitleCardContent(
 ) {
     val convertedStream = convertStream(stream, LocalContext.current.resources)
     StreamFeaturesGrid(
-        features = convertedStream.features,
+        features = convertedStream,
         modifier = modifier
     )
 }
 
 @Composable
-private fun makeCardTitle(basicStreamInfo: BasicStreamInfo): String {
+fun makeCardTitle(basicStreamInfo: BasicStreamInfo): String {
     val title = basicStreamInfo.title
     val index = basicStreamInfo.index
 

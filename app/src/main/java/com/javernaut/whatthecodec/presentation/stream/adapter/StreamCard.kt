@@ -33,19 +33,7 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.presentation.compose.common.GridLayout
-import com.javernaut.whatthecodec.presentation.stream.model.StreamCard
 import com.javernaut.whatthecodec.presentation.stream.model.StreamFeature
-
-@OptIn(ExperimentalAnimationApi::class)
-@Composable
-fun StreamCard(modifier: Modifier = Modifier, streamCard: StreamCard) {
-    StreamCard(streamCard.title, modifier) {
-        StreamFeaturesGrid(
-            modifier = it,
-            features = streamCard.features
-        )
-    }
-}
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable

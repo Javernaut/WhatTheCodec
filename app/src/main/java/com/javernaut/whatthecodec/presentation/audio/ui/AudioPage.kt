@@ -51,7 +51,7 @@ fun AudioCardContent(
 ) {
     val convertedStream = convertStream(stream, LocalContext.current.resources)
     StreamFeaturesGrid(
-        features = convertedStream.features,
+        features = convertedStream,
         modifier = modifier
     )
 }
