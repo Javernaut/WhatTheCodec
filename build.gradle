@@ -3,8 +3,8 @@ apply from: "${rootDir}/scripts/read-arguments.gradle"
 
 buildscript {
     ext.kotlinVersion = '1.5.31'
-    ext.composeVersion = '1.0.4'
-    ext.accompanistVersion = '0.20.0'
+    ext.composeVersion = '1.0.5'
+    ext.accompanistVersion = '0.20.2'
     repositories {
         google()
         mavenCentral()
