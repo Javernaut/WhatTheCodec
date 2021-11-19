@@ -3,8 +3,6 @@ package com.javernaut.whatthecodec.presentation.video
 import android.app.Activity
 import android.content.res.Resources
 import androidx.annotation.StringRes
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
@@ -38,14 +36,12 @@ fun VideoPage(
         item {
             FramesHeader(videoInfo.preview, getPreviewViewWidth(LocalContext.current as Activity))
         }
-        item {
-            Spacer(modifier = Modifier.height(16.dp))
-        }
         val commonModifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp)
         item {
             Container(
                 basicVideoInfo = videoInfo,
                 modifier = commonModifier
+                    .padding(top = 16.dp)
             )
         }
         item {
