@@ -1,33 +1,23 @@
 package com.javernaut.whatthecodec.presentation.subtitle.ui
 
 import android.content.res.Resources
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.presentation.stream.adapter.StreamCard
-import com.javernaut.whatthecodec.presentation.stream.adapter.StreamFeaturesGrid
-import com.javernaut.whatthecodec.presentation.stream.model.StreamFeature
-import com.javernaut.whatthecodec.presentation.stream.model.makeStream
+import com.javernaut.whatthecodec.presentation.stream.adapter.TempStreamFeaturesGrid
 import io.github.javernaut.mediafile.BasicStreamInfo
 import io.github.javernaut.mediafile.MediaStream
 import io.github.javernaut.mediafile.SubtitleStream
-
-private fun convertStream(subtitleStream: SubtitleStream, resources: Resources) =
-    makeStream(subtitleStream.basicInfo, resources) {
-        add(
-            StreamFeature(
-                R.string.page_subtitle_codec_name,
-                subtitleStream.basicInfo.codecName
-            )
-        )
-    }
+import io.github.javernaut.mediafile.displayable.displayableLanguage
+import io.github.javernaut.mediafile.displayable.getDisplayableDisposition
 
 @Composable
 fun SubtitlePage(
@@ -67,10 +57,10 @@ fun SubtitleCardContent(
     stream: SubtitleStream,
     modifier: Modifier = Modifier
 ) {
-    val convertedStream = convertStream(stream, LocalContext.current.resources)
-    StreamFeaturesGrid(
-        features = convertedStream,
-        modifier = modifier
+    TempStreamFeaturesGrid(
+        stream,
+        SubtitleFeature.values().toList(),
+        modifier
     )
 }
 
@@ -85,4 +75,42 @@ fun makeCardTitle(basicStreamInfo: BasicStreamInfo): String {
     } else {
         "$prefix$index - $title"
     }
+}
+
+enum class SubtitleFeature(
+    @StringRes override val key: Int,
+    @StringRes override val title: Int
+) :
+    TempStreamFeature<SubtitleStream> {
+
+    CODEC(
+        key = R.string.settings_content_codec,
+        title = R.string.page_subtitle_codec_name
+    ) {
+        override fun getValue(stream: SubtitleStream, resources: Resources): String {
+            return stream.basicInfo.codecName
+        }
+    },
+    LANGUAGE(
+        key = R.string.settings_content_language,
+        title = R.string.page_stream_language
+    ) {
+        override fun getValue(stream: SubtitleStream, resources: Resources): String? {
+            return stream.basicInfo.displayableLanguage
+        }
+    },
+    DISPOSITION(
+        key = R.string.settings_content_disposition,
+        title = R.string.page_stream_disposition
+    ) {
+        override fun getValue(stream: SubtitleStream, resources: Resources): String? {
+            return stream.basicInfo.getDisplayableDisposition(resources)
+        }
+    };
+}
+
+interface TempStreamFeature<T : MediaStream> {
+    val key: Int
+    val title: Int
+    fun getValue(stream: T, resources: Resources): String?
 }

@@ -35,26 +35,43 @@ import androidx.compose.ui.unit.dp
 import androidx.core.content.getSystemService
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.presentation.compose.theme.WhatTheCodecTheme
-import com.javernaut.whatthecodec.presentation.stream.model.StreamFeature
+import com.javernaut.whatthecodec.presentation.subtitle.ui.TempStreamFeature
+import io.github.javernaut.mediafile.MediaStream
 
 @Composable
 fun StreamFeatureItem(
+    title: String,
+    value: String,
     modifier: Modifier = Modifier,
-    streamFeature: StreamFeature
 ) {
     Box(modifier = modifier) {
         var expanded by remember { mutableStateOf(false) }
-        StreamFeature(streamFeature = streamFeature) {
+        StreamFeature(title, value) {
             expanded = true
         }
         val context = LocalContext.current
         CopyToClipboardDropdown(
             expanded,
-            streamFeature.description,
+            value,
             { expanded = false }
         ) {
-            copyTextToClipboard(context, streamFeature.description)
+            copyTextToClipboard(context, value)
         }
+    }
+}
+
+@Composable
+fun <T : MediaStream> StreamFeatureItem(
+    stream: T,
+    streamFeature: TempStreamFeature<T>,
+    modifier: Modifier = Modifier
+) {
+    streamFeature.getValue(stream, LocalContext.current.resources)?.let { value ->
+        StreamFeatureItem(
+            stringResource(id = streamFeature.getTitle()).toUpperCase(),
+            value,
+            modifier
+        )
     }
 }
 
@@ -74,11 +91,10 @@ private fun copyTextToClipboard(context: Context, valueToCopy: String) {
 fun PreviewStreamFeatureInLight() {
     WhatTheCodecTheme(darkTheme = false) {
         Surface {
-            val streamFeature = StreamFeature(
-                R.string.page_audio_codec_name,
+            StreamFeature(
+                stringResource(id = R.string.page_audio_codec_name).toUpperCase(),
                 "Some value"
-            )
-            StreamFeature(streamFeature = streamFeature) { }
+            ) { }
         }
     }
 }
@@ -88,11 +104,10 @@ fun PreviewStreamFeatureInLight() {
 fun PreviewStreamFeatureInDark() {
     WhatTheCodecTheme(darkTheme = true) {
         Surface {
-            val streamFeature = StreamFeature(
-                R.string.page_audio_codec_name,
+            StreamFeature(
+                stringResource(id = R.string.page_audio_codec_name).toUpperCase(),
                 "Some value"
-            )
-            StreamFeature(streamFeature = streamFeature) { }
+            ) { }
         }
     }
 }
@@ -100,8 +115,9 @@ fun PreviewStreamFeatureInDark() {
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun StreamFeature(
+    title: String,
+    value: String,
     modifier: Modifier = Modifier,
-    streamFeature: StreamFeature,
     longClickListener: () -> Unit
 ) {
     Column(
@@ -116,13 +132,13 @@ fun StreamFeature(
     ) {
         CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
             Text(
-                stringResource(id = streamFeature.title).toUpperCase(),
+                title,
                 style = MaterialTheme.typography.caption
             )
         }
         Spacer(Modifier.height(8.dp))
         Text(
-            streamFeature.description,
+            value,
             style = MaterialTheme.typography.body1
         )
     }
