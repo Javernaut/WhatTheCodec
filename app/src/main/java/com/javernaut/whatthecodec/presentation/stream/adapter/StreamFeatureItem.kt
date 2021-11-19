@@ -68,7 +68,7 @@ fun <T : MediaStream> StreamFeatureItem(
 ) {
     streamFeature.getValue(stream, LocalContext.current.resources)?.let { value ->
         StreamFeatureItem(
-            stringResource(id = streamFeature.getTitle()).toUpperCase(),
+            stringResource(id = streamFeature.title).toUpperCase(),
             value,
             modifier
         )

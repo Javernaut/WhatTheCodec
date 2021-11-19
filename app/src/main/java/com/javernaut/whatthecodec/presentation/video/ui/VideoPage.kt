@@ -12,8 +12,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.javernaut.whatthecodec.R
+import com.javernaut.whatthecodec.presentation.compose.common.GridLayout
 import com.javernaut.whatthecodec.presentation.root.viewmodel.model.BasicVideoInfo
 import com.javernaut.whatthecodec.presentation.stream.adapter.StreamCard
+import com.javernaut.whatthecodec.presentation.stream.adapter.StreamFeatureItem
 import com.javernaut.whatthecodec.presentation.stream.adapter.StreamFeaturesGrid
 import com.javernaut.whatthecodec.presentation.stream.model.StreamFeature
 import com.javernaut.whatthecodec.presentation.stream.model.makeStream
@@ -58,9 +60,24 @@ private fun Container(
 ) {
     StreamCard(
         title = stringResource(id = R.string.info_container),
-        modifier
+        modifier = modifier
     ) {
-        StreamFeaturesGrid(it, convertToContainer(basicVideoInfo, LocalContext.current.resources))
+        GridLayout(modifier = it, columns = 2) {
+            StreamFeatureItem(
+                title = stringResource(id = R.string.info_file_format).toUpperCase(),
+                value = basicVideoInfo.fileFormat
+            )
+            StreamFeatureItem(
+                title = stringResource(id = R.string.info_protocol_title).toUpperCase(),
+                value = stringResource(
+                    id = if (basicVideoInfo.fullFeatured) {
+                        R.string.info_protocol_file
+                    } else {
+                        R.string.info_protocol_pipe
+                    }
+                )
+            )
+        }
     }
 }
 
@@ -75,25 +92,6 @@ private fun VideoStream(
     ) {
         StreamFeaturesGrid(it, convertToStream(videoStream, LocalContext.current.resources))
     }
-}
-
-private fun convertToContainer(
-    basicVideoInfo: BasicVideoInfo,
-    resources: Resources
-): List<StreamFeature> {
-    return listOf(
-        StreamFeature(R.string.info_file_format, basicVideoInfo.fileFormat),
-
-        StreamFeature(
-            R.string.info_protocol_title, resources.getString(
-                if (basicVideoInfo.fullFeatured) {
-                    R.string.info_protocol_file
-                } else {
-                    R.string.info_protocol_pipe
-                }
-            )
-        )
-    )
 }
 
 private fun convertToStream(
