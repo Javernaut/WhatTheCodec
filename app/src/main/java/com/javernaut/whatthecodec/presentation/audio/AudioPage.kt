@@ -5,9 +5,11 @@ import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.javernaut.whatthecodec.R
+import com.javernaut.whatthecodec.presentation.settings.PreferencesKeys
 import com.javernaut.whatthecodec.presentation.stream.SimplePage
 import com.javernaut.whatthecodec.presentation.stream.StreamFeature
 import com.javernaut.whatthecodec.presentation.stream.StreamFeaturesGrid
+import com.javernaut.whatthecodec.presentation.stream.getFilteredStreamFeatures
 import io.github.javernaut.mediafile.AudioStream
 import io.github.javernaut.mediafile.displayable.displayableLanguage
 import io.github.javernaut.mediafile.displayable.getDisplayableDisposition
@@ -19,19 +21,21 @@ fun AudioPage(
     modifier: Modifier = Modifier
 ) {
     SimplePage(streams, modifier) { item, itemModifier ->
-        // TODO extract SimpleCardContent?
-        // TODO merge some part into the SimplePage?
         AudioCardContent(item, itemModifier)
     }
 }
 
 @Composable
-fun AudioCardContent(
+private fun AudioCardContent(
     stream: AudioStream,
     modifier: Modifier = Modifier
 ) {
-    // TODO Reflect changes from SubtitleCardContent
-    val streamFeatures = AudioFeature.values().toList()
+    val streamFeatures = getFilteredStreamFeatures(
+        defaultValueResId = R.array.settings_content_audio_entryValues,
+        preferenceKey = PreferencesKeys.AUDIO,
+        allValues = AudioFeature.values().toList()
+    )
+
     StreamFeaturesGrid(
         stream,
         streamFeatures,
@@ -39,7 +43,7 @@ fun AudioCardContent(
     )
 }
 
-enum class AudioFeature(
+private enum class AudioFeature(
     @StringRes override val key: Int,
     @StringRes override val title: Int
 ) :

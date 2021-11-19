@@ -15,10 +15,12 @@ import androidx.compose.ui.unit.dp
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.presentation.compose.common.GridLayout
 import com.javernaut.whatthecodec.presentation.root.viewmodel.model.BasicVideoInfo
+import com.javernaut.whatthecodec.presentation.settings.PreferencesKeys
 import com.javernaut.whatthecodec.presentation.stream.StreamCard
 import com.javernaut.whatthecodec.presentation.stream.StreamFeature
 import com.javernaut.whatthecodec.presentation.stream.StreamFeatureItem
 import com.javernaut.whatthecodec.presentation.stream.StreamFeaturesGrid
+import com.javernaut.whatthecodec.presentation.stream.getFilteredStreamFeatures
 import com.javernaut.whatthecodec.presentation.stream.makeCardTitle
 import com.javernaut.whatthecodec.presentation.video.ui.view.FramesHeader
 import com.javernaut.whatthecodec.presentation.video.ui.view.getPreviewViewWidth
@@ -92,13 +94,21 @@ private fun VideoStream(
         title = makeCardTitle(videoStream.basicInfo),
         modifier
     ) {
-        // TODO Filter it
-        val streamFeatures = VideoFeature.values().toList()
-        StreamFeaturesGrid(stream = videoStream, features = streamFeatures, modifier = it)
+        val streamFeatures = getFilteredStreamFeatures(
+            defaultValueResId = R.array.settings_content_video_entryValues,
+            preferenceKey = PreferencesKeys.VIDEO,
+            allValues = VideoFeature.values().toList()
+        )
+
+        StreamFeaturesGrid(
+            stream = videoStream,
+            features = streamFeatures,
+            modifier = it
+        )
     }
 }
 
-enum class VideoFeature(
+private enum class VideoFeature(
     @StringRes override val key: Int,
     @StringRes override val title: Int
 ) :

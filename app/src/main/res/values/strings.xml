@@ -33,6 +33,7 @@
     <string name="page_subtitle_codec_name">Subtitle codec</string>
     <string name="page_stream_language">Language</string>
     <string name="page_stream_disposition">Disposition</string>
+    <string name="page_stream_no_info">No info to display</string>
     <string name="stream_copy">Copy</string>
     <string name="stream_text_copied_pattern" formatted="false">\"%s\" copied to clipboard</string>
     <string name="empty_root_description">Open a video or audio file\nto see its details</string>

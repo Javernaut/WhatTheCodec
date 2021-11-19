@@ -29,9 +29,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
@@ -93,10 +95,23 @@ fun <T : MediaStream> StreamFeaturesGrid(
     features: List<StreamFeature<T>>,
     modifier: Modifier = Modifier
 ) {
-    GridLayout(modifier, 2) {
-        features.forEach {
-            StreamFeatureItem(stream, it)
+    val resources = LocalContext.current.resources
+    val displayableFeatures = features.filter {
+        it.getValue(stream, resources) != null
+    }
+
+    if (displayableFeatures.isNotEmpty()) {
+        GridLayout(modifier, 2) {
+            displayableFeatures.forEach {
+                StreamFeatureItem(stream, it)
+            }
         }
+    } else {
+        Text(
+            text = stringResource(id = R.string.page_stream_no_info),
+            textAlign = TextAlign.Center,
+            modifier = modifier.padding(vertical = 8.dp)
+        )
     }
 }
 

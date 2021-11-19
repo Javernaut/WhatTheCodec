@@ -125,7 +125,7 @@ class SettingsActivity : AppCompatActivity() {
         val entriesCodes =
             stringArrayResource(id = R.array.settings_content_video_entryValues).toList()
         MultiSelectListPreference(
-            "video_content",
+            PreferencesKeys.VIDEO,
             defaultValue = entriesCodes.toSet(),
             title = stringResource(id = R.string.settings_content_video_title),
             displayableEntries = stringArrayResource(id = R.array.settings_content_video_entries).toList(),
@@ -138,7 +138,7 @@ class SettingsActivity : AppCompatActivity() {
         val entriesCodes =
             stringArrayResource(id = R.array.settings_content_audio_entryValues).toList()
         MultiSelectListPreference(
-            "audio_content",
+            PreferencesKeys.AUDIO,
             defaultValue = entriesCodes.toSet(),
             title = stringResource(id = R.string.settings_content_audio_title),
             displayableEntries = stringArrayResource(id = R.array.settings_content_audio_entries).toList(),
@@ -151,7 +151,7 @@ class SettingsActivity : AppCompatActivity() {
         val entriesCodes =
             stringArrayResource(id = R.array.settings_content_subtitles_entryValues).toList()
         MultiSelectListPreference(
-            "subtitles_content",
+            PreferencesKeys.SUBTITLES,
             defaultValue = entriesCodes.toSet(),
             title = stringResource(id = R.string.settings_content_subtitles_title),
             displayableEntries = stringArrayResource(id = R.array.settings_content_subtitles_entries).toList(),
