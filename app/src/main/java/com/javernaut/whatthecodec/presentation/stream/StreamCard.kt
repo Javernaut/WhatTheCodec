@@ -1,4 +1,4 @@
-package com.javernaut.whatthecodec.presentation.stream.adapter
+package com.javernaut.whatthecodec.presentation.stream
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
@@ -6,10 +6,13 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
@@ -28,12 +31,13 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.presentation.compose.common.GridLayout
-import com.javernaut.whatthecodec.presentation.subtitle.ui.StreamFeature
+import io.github.javernaut.mediafile.BasicStreamInfo
 import io.github.javernaut.mediafile.MediaStream
 
 @OptIn(ExperimentalAnimationApi::class)
@@ -57,6 +61,55 @@ fun StreamCard(
                 )
             }
         }
+    }
+}
+
+@Composable
+fun <T : MediaStream> SimplePage(
+    streams: List<T>,
+    modifier: Modifier = Modifier,
+    cardContent: @Composable (T, Modifier) -> Unit
+) {
+    val commonPaddingValues = PaddingValues(8.dp)
+    val commonItemModifier = Modifier.padding(commonPaddingValues)
+    LazyColumn(
+        modifier = modifier,
+        contentPadding = commonPaddingValues
+    ) {
+        itemsIndexed(streams) { _, item: T ->
+            StreamCard(
+                title = makeCardTitle(basicStreamInfo = item.basicInfo),
+                modifier = commonItemModifier,
+            ) {
+                cardContent(item, it)
+            }
+        }
+    }
+}
+
+@Composable
+fun <T : MediaStream> StreamFeaturesGrid(
+    stream: T,
+    features: List<StreamFeature<T>>,
+    modifier: Modifier = Modifier
+) {
+    GridLayout(modifier, 2) {
+        features.forEach {
+            StreamFeatureItem(stream, it)
+        }
+    }
+}
+
+@Composable
+fun makeCardTitle(basicStreamInfo: BasicStreamInfo): String {
+    val title = basicStreamInfo.title
+    val index = basicStreamInfo.index
+
+    val prefix = stringResource(R.string.page_stream_title_prefix)
+    return if (title == null) {
+        prefix + index
+    } else {
+        "$prefix$index - $title"
     }
 }
 
@@ -104,18 +157,5 @@ private fun StreamCardTopRow(
                 )
                 .padding(12.dp),
         )
-    }
-}
-
-@Composable
-fun <T : MediaStream> StreamFeaturesGrid(
-    stream: T,
-    features: List<StreamFeature<T>>,
-    modifier: Modifier = Modifier
-) {
-    GridLayout(modifier, 2) {
-        features.forEach {
-            StreamFeatureItem(stream, it)
-        }
     }
 }

@@ -1,20 +1,13 @@
-package com.javernaut.whatthecodec.presentation.subtitle.ui
+package com.javernaut.whatthecodec.presentation.subtitle
 
 import android.content.res.Resources
 import androidx.annotation.StringRes
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import com.javernaut.whatthecodec.R
-import com.javernaut.whatthecodec.presentation.stream.adapter.StreamCard
-import com.javernaut.whatthecodec.presentation.stream.adapter.StreamFeaturesGrid
-import io.github.javernaut.mediafile.BasicStreamInfo
-import io.github.javernaut.mediafile.MediaStream
+import com.javernaut.whatthecodec.presentation.stream.SimplePage
+import com.javernaut.whatthecodec.presentation.stream.StreamFeature
+import com.javernaut.whatthecodec.presentation.stream.StreamFeaturesGrid
 import io.github.javernaut.mediafile.SubtitleStream
 import io.github.javernaut.mediafile.displayable.displayableLanguage
 import io.github.javernaut.mediafile.displayable.getDisplayableDisposition
@@ -26,29 +19,6 @@ fun SubtitlePage(
 ) {
     SimplePage(streams, modifier) { item, itemModifier ->
         SubtitleCardContent(item, itemModifier)
-    }
-}
-
-@Composable
-fun <T : MediaStream> SimplePage(
-    streams: List<T>,
-    modifier: Modifier = Modifier,
-    cardContent: @Composable (T, Modifier) -> Unit
-) {
-    val commonPaddingValues = PaddingValues(8.dp)
-    val commonItemModifier = Modifier.padding(commonPaddingValues)
-    LazyColumn(
-        modifier = modifier,
-        contentPadding = commonPaddingValues
-    ) {
-        itemsIndexed(streams) { _, item: T ->
-            StreamCard(
-                title = makeCardTitle(basicStreamInfo = item.basicInfo),
-                modifier = commonItemModifier,
-            ) {
-                cardContent(item, it)
-            }
-        }
     }
 }
 
@@ -68,19 +38,6 @@ fun SubtitleCardContent(
             streamFeatures,
             modifier
         )
-    }
-}
-
-@Composable
-fun makeCardTitle(basicStreamInfo: BasicStreamInfo): String {
-    val title = basicStreamInfo.title
-    val index = basicStreamInfo.index
-
-    val prefix = stringResource(R.string.page_stream_title_prefix)
-    return if (title == null) {
-        prefix + index
-    } else {
-        "$prefix$index - $title"
     }
 }
 
@@ -111,10 +68,4 @@ enum class SubtitleFeature(
         override fun getValue(stream: SubtitleStream, resources: Resources) =
             stream.basicInfo.getDisplayableDisposition(resources)
     };
-}
-
-interface StreamFeature<T : MediaStream> {
-    val key: Int
-    val title: Int
-    fun getValue(stream: T, resources: Resources): String?
 }

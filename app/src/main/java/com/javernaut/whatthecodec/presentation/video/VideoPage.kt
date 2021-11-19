@@ -1,4 +1,4 @@
-package com.javernaut.whatthecodec.presentation.video.ui
+package com.javernaut.whatthecodec.presentation.video
 
 import android.app.Activity
 import android.content.res.Resources
@@ -15,11 +15,11 @@ import androidx.compose.ui.unit.dp
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.presentation.compose.common.GridLayout
 import com.javernaut.whatthecodec.presentation.root.viewmodel.model.BasicVideoInfo
-import com.javernaut.whatthecodec.presentation.stream.adapter.StreamCard
-import com.javernaut.whatthecodec.presentation.stream.adapter.StreamFeatureItem
-import com.javernaut.whatthecodec.presentation.stream.adapter.StreamFeaturesGrid
-import com.javernaut.whatthecodec.presentation.subtitle.ui.StreamFeature
-import com.javernaut.whatthecodec.presentation.subtitle.ui.makeCardTitle
+import com.javernaut.whatthecodec.presentation.stream.StreamCard
+import com.javernaut.whatthecodec.presentation.stream.StreamFeature
+import com.javernaut.whatthecodec.presentation.stream.StreamFeatureItem
+import com.javernaut.whatthecodec.presentation.stream.StreamFeaturesGrid
+import com.javernaut.whatthecodec.presentation.stream.makeCardTitle
 import com.javernaut.whatthecodec.presentation.video.ui.view.FramesHeader
 import com.javernaut.whatthecodec.presentation.video.ui.view.getPreviewViewWidth
 import io.github.javernaut.mediafile.VideoStream
@@ -94,7 +94,7 @@ private fun VideoStream(
     ) {
         // TODO Filter it
         val streamFeatures = VideoFeature.values().toList()
-        StreamFeaturesGrid(stream = videoStream, features = streamFeatures, modifier = modifier)
+        StreamFeaturesGrid(stream = videoStream, features = streamFeatures, modifier = it)
     }
 }
 

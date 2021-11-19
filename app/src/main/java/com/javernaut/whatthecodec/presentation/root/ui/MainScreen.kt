@@ -20,12 +20,12 @@ import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.pagerTabIndicatorOffset
 import com.google.accompanist.pager.rememberPagerState
 import com.javernaut.whatthecodec.R
-import com.javernaut.whatthecodec.presentation.audio.ui.AudioPage
+import com.javernaut.whatthecodec.presentation.audio.AudioPage
 import com.javernaut.whatthecodec.presentation.compose.common.WtcTopAppBar
 import com.javernaut.whatthecodec.presentation.root.viewmodel.ScreenState
 import com.javernaut.whatthecodec.presentation.root.viewmodel.model.AvailableTab
-import com.javernaut.whatthecodec.presentation.subtitle.ui.SubtitlePage
-import com.javernaut.whatthecodec.presentation.video.ui.VideoPage
+import com.javernaut.whatthecodec.presentation.subtitle.SubtitlePage
+import com.javernaut.whatthecodec.presentation.video.VideoPage
 import kotlinx.coroutines.launch
 
 @Composable

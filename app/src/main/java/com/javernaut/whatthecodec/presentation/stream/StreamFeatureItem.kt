@@ -1,4 +1,4 @@
-package com.javernaut.whatthecodec.presentation.stream.adapter
+package com.javernaut.whatthecodec.presentation.stream
 
 import android.content.ClipData
 import android.content.ClipboardManager
@@ -35,7 +35,6 @@ import androidx.compose.ui.unit.dp
 import androidx.core.content.getSystemService
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.presentation.compose.theme.WhatTheCodecTheme
-import com.javernaut.whatthecodec.presentation.subtitle.ui.StreamFeature
 import io.github.javernaut.mediafile.MediaStream
 
 @Composable
@@ -114,7 +113,7 @@ fun PreviewStreamFeatureInDark() {
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun StreamFeature(
+private fun StreamFeature(
     title: String,
     value: String,
     modifier: Modifier = Modifier,
@@ -145,7 +144,7 @@ fun StreamFeature(
 }
 
 @Composable
-fun CopyToClipboardDropdown(
+private fun CopyToClipboardDropdown(
     expanded: Boolean,
     title: String,
     dismissCallback: () -> Unit,

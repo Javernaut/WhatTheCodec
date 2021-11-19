@@ -1,13 +1,13 @@
-package com.javernaut.whatthecodec.presentation.audio.ui
+package com.javernaut.whatthecodec.presentation.audio
 
 import android.content.res.Resources
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.javernaut.whatthecodec.R
-import com.javernaut.whatthecodec.presentation.stream.adapter.StreamFeaturesGrid
-import com.javernaut.whatthecodec.presentation.subtitle.ui.SimplePage
-import com.javernaut.whatthecodec.presentation.subtitle.ui.StreamFeature
+import com.javernaut.whatthecodec.presentation.stream.SimplePage
+import com.javernaut.whatthecodec.presentation.stream.StreamFeature
+import com.javernaut.whatthecodec.presentation.stream.StreamFeaturesGrid
 import io.github.javernaut.mediafile.AudioStream
 import io.github.javernaut.mediafile.displayable.displayableLanguage
 import io.github.javernaut.mediafile.displayable.getDisplayableDisposition
