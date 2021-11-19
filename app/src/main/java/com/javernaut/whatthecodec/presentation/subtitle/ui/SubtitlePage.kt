@@ -57,11 +57,18 @@ fun SubtitleCardContent(
     stream: SubtitleStream,
     modifier: Modifier = Modifier
 ) {
-    TempStreamFeaturesGrid(
-        stream,
-        SubtitleFeature.values().toList(),
-        modifier
-    )
+    // TODO Filter the list
+    // Preference as state?
+    val streamFeatures = SubtitleFeature.values().toList()
+    if (streamFeatures.isEmpty()) {
+        // TODO extract the logic of showing a empty stub into a single place
+    } else {
+        TempStreamFeaturesGrid(
+            stream,
+            streamFeatures,
+            modifier
+        )
+    }
 }
 
 @Composable
