@@ -12,7 +12,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.presentation.stream.adapter.StreamCard
-import com.javernaut.whatthecodec.presentation.stream.adapter.TempStreamFeaturesGrid
+import com.javernaut.whatthecodec.presentation.stream.adapter.StreamFeaturesGrid
 import io.github.javernaut.mediafile.BasicStreamInfo
 import io.github.javernaut.mediafile.MediaStream
 import io.github.javernaut.mediafile.SubtitleStream
@@ -63,7 +63,7 @@ fun SubtitleCardContent(
     if (streamFeatures.isEmpty()) {
         // TODO extract the logic of showing a empty stub into a single place
     } else {
-        TempStreamFeaturesGrid(
+        StreamFeaturesGrid(
             stream,
             streamFeatures,
             modifier
@@ -88,35 +88,32 @@ enum class SubtitleFeature(
     @StringRes override val key: Int,
     @StringRes override val title: Int
 ) :
-    TempStreamFeature<SubtitleStream> {
+    StreamFeature<SubtitleStream> {
 
     CODEC(
         key = R.string.settings_content_codec,
         title = R.string.page_subtitle_codec_name
     ) {
-        override fun getValue(stream: SubtitleStream, resources: Resources): String {
-            return stream.basicInfo.codecName
-        }
+        override fun getValue(stream: SubtitleStream, resources: Resources) =
+            stream.basicInfo.codecName
     },
     LANGUAGE(
         key = R.string.settings_content_language,
         title = R.string.page_stream_language
     ) {
-        override fun getValue(stream: SubtitleStream, resources: Resources): String? {
-            return stream.basicInfo.displayableLanguage
-        }
+        override fun getValue(stream: SubtitleStream, resources: Resources) =
+            stream.basicInfo.displayableLanguage
     },
     DISPOSITION(
         key = R.string.settings_content_disposition,
         title = R.string.page_stream_disposition
     ) {
-        override fun getValue(stream: SubtitleStream, resources: Resources): String? {
-            return stream.basicInfo.getDisplayableDisposition(resources)
-        }
+        override fun getValue(stream: SubtitleStream, resources: Resources) =
+            stream.basicInfo.getDisplayableDisposition(resources)
     };
 }
 
-interface TempStreamFeature<T : MediaStream> {
+interface StreamFeature<T : MediaStream> {
     val key: Int
     val title: Int
     fun getValue(stream: T, resources: Resources): String?

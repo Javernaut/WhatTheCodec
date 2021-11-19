@@ -28,14 +28,12 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.presentation.compose.common.GridLayout
-import com.javernaut.whatthecodec.presentation.stream.model.StreamFeature
-import com.javernaut.whatthecodec.presentation.subtitle.ui.TempStreamFeature
+import com.javernaut.whatthecodec.presentation.subtitle.ui.StreamFeature
 import io.github.javernaut.mediafile.MediaStream
 
 @OptIn(ExperimentalAnimationApi::class)
@@ -110,24 +108,9 @@ private fun StreamCardTopRow(
 }
 
 @Composable
-fun StreamFeaturesGrid(
-    modifier: Modifier = Modifier,
-    features: List<StreamFeature>
-) {
-    GridLayout(modifier, 2) {
-        features.forEach {
-            StreamFeatureItem(
-                stringResource(id = it.title).toUpperCase(),
-                it.description
-            )
-        }
-    }
-}
-
-@Composable
-fun <T : MediaStream> TempStreamFeaturesGrid(
+fun <T : MediaStream> StreamFeaturesGrid(
     stream: T,
-    features: List<TempStreamFeature<T>>,
+    features: List<StreamFeature<T>>,
     modifier: Modifier = Modifier
 ) {
     GridLayout(modifier, 2) {

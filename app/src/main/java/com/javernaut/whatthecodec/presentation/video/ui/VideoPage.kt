@@ -2,6 +2,7 @@ package com.javernaut.whatthecodec.presentation.video.ui
 
 import android.app.Activity
 import android.content.res.Resources
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -17,12 +18,13 @@ import com.javernaut.whatthecodec.presentation.root.viewmodel.model.BasicVideoIn
 import com.javernaut.whatthecodec.presentation.stream.adapter.StreamCard
 import com.javernaut.whatthecodec.presentation.stream.adapter.StreamFeatureItem
 import com.javernaut.whatthecodec.presentation.stream.adapter.StreamFeaturesGrid
-import com.javernaut.whatthecodec.presentation.stream.model.StreamFeature
-import com.javernaut.whatthecodec.presentation.stream.model.makeStream
+import com.javernaut.whatthecodec.presentation.subtitle.ui.StreamFeature
 import com.javernaut.whatthecodec.presentation.subtitle.ui.makeCardTitle
 import com.javernaut.whatthecodec.presentation.video.ui.view.FramesHeader
 import com.javernaut.whatthecodec.presentation.video.ui.view.getPreviewViewWidth
 import io.github.javernaut.mediafile.VideoStream
+import io.github.javernaut.mediafile.displayable.displayableLanguage
+import io.github.javernaut.mediafile.displayable.getDisplayableDisposition
 import io.github.javernaut.mediafile.displayable.toDisplayable
 
 @Composable
@@ -90,27 +92,65 @@ private fun VideoStream(
         title = makeCardTitle(videoStream.basicInfo),
         modifier
     ) {
-        StreamFeaturesGrid(it, convertToStream(videoStream, LocalContext.current.resources))
+        // TODO Filter it
+        val streamFeatures = VideoFeature.values().toList()
+        StreamFeaturesGrid(stream = videoStream, features = streamFeatures, modifier = modifier)
     }
 }
 
-private fun convertToStream(
-    videoStream: VideoStream,
-    resources: Resources
-): List<StreamFeature> {
+enum class VideoFeature(
+    @StringRes override val key: Int,
+    @StringRes override val title: Int
+) :
+    StreamFeature<VideoStream> {
 
-    return makeStream(videoStream.basicInfo, resources) {
-        add(StreamFeature(R.string.page_video_codec_name, videoStream.basicInfo.codecName))
-
-        videoStream.bitRate.toDisplayable(resources)?.let {
-            add(StreamFeature(R.string.page_video_bit_rate, it))
-        }
-
-        videoStream.frameRate.toDisplayable(resources)?.let {
-            add(StreamFeature(R.string.page_video_frame_rate, it))
-        }
-
-        add(StreamFeature(R.string.page_video_frame_width, videoStream.frameWidth.toString()))
-        add(StreamFeature(R.string.page_video_frame_height, videoStream.frameHeight.toString()))
-    }
+    CODEC(
+        key = R.string.settings_content_codec,
+        title = R.string.page_video_codec_name
+    ) {
+        override fun getValue(stream: VideoStream, resources: Resources) =
+            stream.basicInfo.codecName
+    },
+    BITRATE(
+        key = R.string.settings_content_bitrate,
+        title = R.string.page_video_bit_rate
+    ) {
+        override fun getValue(stream: VideoStream, resources: Resources) =
+            stream.bitRate.toDisplayable(resources)
+    },
+    FRAME_RATE(
+        key = R.string.settings_content_video_frame_rate,
+        title = R.string.page_video_frame_rate
+    ) {
+        override fun getValue(stream: VideoStream, resources: Resources) =
+            stream.frameRate.toDisplayable(resources)
+    },
+    FRAME_WIDTH(
+        key = R.string.settings_content_video_width,
+        title = R.string.page_video_frame_width
+    ) {
+        override fun getValue(stream: VideoStream, resources: Resources) =
+            stream.frameWidth.toString()
+    },
+    FRAME_HEIGHT(
+        key = R.string.settings_content_video_height,
+        title = R.string.page_video_frame_height
+    ) {
+        override fun getValue(stream: VideoStream, resources: Resources) =
+            stream.frameHeight.toString()
+    },
+    LANGUAGE(
+        key = R.string.settings_content_language,
+        title = R.string.page_stream_language
+    ) {
+        override fun getValue(stream: VideoStream, resources: Resources) =
+            stream.basicInfo.displayableLanguage
+    },
+    DISPOSITION(
+        key = R.string.settings_content_disposition,
+        title = R.string.page_stream_disposition
+    ) {
+        override fun getValue(stream: VideoStream, resources: Resources) =
+            stream.basicInfo.getDisplayableDisposition(resources)
+    };
 }

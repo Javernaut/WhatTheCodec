@@ -35,7 +35,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.content.getSystemService
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.presentation.compose.theme.WhatTheCodecTheme
-import com.javernaut.whatthecodec.presentation.subtitle.ui.TempStreamFeature
+import com.javernaut.whatthecodec.presentation.subtitle.ui.StreamFeature
 import io.github.javernaut.mediafile.MediaStream
 
 @Composable
@@ -63,7 +63,7 @@ fun StreamFeatureItem(
 @Composable
 fun <T : MediaStream> StreamFeatureItem(
     stream: T,
-    streamFeature: TempStreamFeature<T>,
+    streamFeature: StreamFeature<T>,
     modifier: Modifier = Modifier
 ) {
     streamFeature.getValue(stream, LocalContext.current.resources)?.let { value ->
