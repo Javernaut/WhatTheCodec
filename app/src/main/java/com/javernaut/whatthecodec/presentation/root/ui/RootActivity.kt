@@ -5,6 +5,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
@@ -23,7 +24,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.res.stringResource
 import androidx.core.content.MimeTypeFilter
-import androidx.lifecycle.ViewModelProvider
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.presentation.compose.theme.WhatTheCodecTheme
 import com.javernaut.whatthecodec.presentation.root.viewmodel.MediaFileArgument
@@ -36,10 +36,8 @@ import io.github.javernaut.mediafile.creator.MediaType
 
 class RootActivity : AppCompatActivity() {
 
-    private val mediaFileViewModel by lazy(LazyThreadSafetyMode.NONE) {
-        ViewModelProvider(
-            this, MediaFileViewModelFactory(this, getDesiredFrameWidth(this))
-        ).get(MediaFileViewModel::class.java)
+    private val mediaFileViewModel by viewModels<MediaFileViewModel> {
+        MediaFileViewModelFactory(this, getDesiredFrameWidth(this))
     }
 
     private var intentActionViewConsumed = false
