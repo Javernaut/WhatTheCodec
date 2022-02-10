@@ -1,7 +1,6 @@
 package com.javernaut.whatthecodec.presentation.stream
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -42,7 +41,6 @@ import com.javernaut.whatthecodec.presentation.compose.common.GridLayout
 import io.github.javernaut.mediafile.BasicStreamInfo
 import io.github.javernaut.mediafile.MediaStream
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun StreamCard(
     title: String,
