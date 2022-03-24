@@ -3,17 +3,17 @@ apply from: "${rootDir}/scripts/read-arguments.gradle"
 
 buildscript {
     ext.kotlinVersion = '1.6.10'
-    ext.composeVersion = '1.1.0'
-    ext.accompanistVersion = '0.23.0'
+    ext.composeVersion = '1.1.1'
+    ext.accompanistVersion = '0.23.1'
     repositories {
         google()
         mavenCentral()
         maven { url "https://plugins.gradle.org/m2/" }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.1.1'
+        classpath 'com.android.tools.build:gradle:7.1.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
-        classpath "io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.18.0"
+        classpath "io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.19.0"
     }
 }
 
