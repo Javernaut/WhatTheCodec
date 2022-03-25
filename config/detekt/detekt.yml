@@ -3,6 +3,7 @@ complexity:
     active: true
     functionThreshold: 8
     constructorThreshold: 8
+    ignoreAnnotated: [ 'Parcelize', 'Composable' ]
   TooManyFunctions:
     active: true
     thresholdInFiles: 40
@@ -14,3 +15,7 @@ complexity:
 style:
   MagicNumber:
     active: false
+
+naming:
+  FunctionNaming:
+    ignoreAnnotated: [ 'Composable' ]
