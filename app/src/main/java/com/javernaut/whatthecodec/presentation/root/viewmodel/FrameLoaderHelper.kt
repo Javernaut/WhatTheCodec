@@ -119,7 +119,6 @@ class FrameLoaderHelper(
         scope.launch(Dispatchers.Default) {
             framesLoadingJob.join()
 
-            cachedFrameBitmaps.values.forEach { it.recycle() }
             cachedFrameBitmaps.clear()
         }
     }

@@ -86,9 +86,9 @@ class MediaFileViewModel(
         )
         frameMetrics = computeFrameMetrics()
 
-        if (mediaFile.supportsFrameLoading()) {
-            frameLoaderHelper = FrameLoaderHelper(frameMetrics!!, viewModelScope, ::applyPreview)
-        }
+        frameLoaderHelper = if (mediaFile.supportsFrameLoading())
+            FrameLoaderHelper(frameMetrics!!, viewModelScope, ::applyPreview)
+        else null
 
         tryLoadVideoFrames()
     }
