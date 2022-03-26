@@ -27,8 +27,10 @@ private fun <T> SharedPreferences.getValueAsState(
         mutableStateOf(valueExtractor(key, defaultValue))
     }
 
-    val listener = SharedPreferences.OnSharedPreferenceChangeListener { pref, _ ->
-        resultState.value = pref.valueExtractor(key, null)
+    val listener = SharedPreferences.OnSharedPreferenceChangeListener { pref, impactedKey ->
+        if (key == impactedKey) {
+            resultState.value = pref.valueExtractor(key, null)
+        }
     }
 
     DisposableEffect(key1 = key) {
