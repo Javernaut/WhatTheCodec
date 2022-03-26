@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--  TODO Consider moving the translations directly to media-file on its next release  -->
+    <string name="media_file_audio_sample_rate_postfix">кГц</string>
+    <string name="media_file_bitrate_bps">біт/с</string>
+    <string name="media_file_bitrate_gbps">Гбіт/с</string>
+    <string name="media_file_bitrate_kbps">кбіт/с</string>
+    <string name="media_file_bitrate_mbps">Мбіт/с</string>
+    <string name="media_file_disposition_attached_pic">Додана картинка</string>
+    <string name="media_file_disposition_clean_effects">Тільки музика або ефекти</string>
+    <string name="media_file_disposition_comment">Коментар</string>
+    <string name="media_file_disposition_default">За замовчуванням</string>
+    <string name="media_file_disposition_dub">Дубляж</string>
+    <string name="media_file_disposition_forced">Примусово обираємий</string>
+    <string name="media_file_disposition_hearing_impaired">Для людей з вадами слуху</string>
+    <string name="media_file_disposition_karaoke">Караоке</string>
+    <string name="media_file_disposition_lyrics">Текст пісні</string>
+    <string name="media_file_disposition_original">Мова оригіналу</string>
+    <string name="media_file_disposition_timed_thumbnails">Мініатюри</string>
+    <string name="media_file_disposition_visual_impaired">Для слабозорих</string>
+    <string name="media_file_framerate_fps">кадр(ів) в секунду</string>
+</resources>
