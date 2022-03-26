@@ -34,7 +34,7 @@
     <string name="page_stream_no_info">Нема інформації для показу</string>
     <string name="stream_copy">Скопіювати</string>
     <string name="stream_text_copied_pattern" formatted="false">\"%s\" скопійовано в буфер обміну</string>
-    <string name="empty_root_description">Відрийте відео або аудіо файл,\nщоб побачити їх інформацію</string>
+    <string name="empty_root_description">Відкрийте відео або аудіо файл,\nщоб побачити їх інформацію</string>
     <string name="empty_root_choose">Виберіть</string>
     <string name="empty_root_or">або</string>
     <string name="settings_title">Налаштування</string>
