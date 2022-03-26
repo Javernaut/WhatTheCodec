@@ -13,8 +13,6 @@
     <string name="info_container">Container</string>
     <string name="info_file_format">File format</string>
     <string name="info_protocol_title">Used protocol</string>
-    <string name="info_protocol_file">file</string>
-    <string name="info_protocol_pipe">pipe</string>
     <string name="info_bit_rate">Bit rate</string>
     <string name="page_video_preview_missing_decoder">Missing decoder\nPreview is unavailable</string>
     <string name="page_video_preview_frame_decoding_error">Couldn\'t decode this frame</string>

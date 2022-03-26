@@ -89,4 +89,6 @@
     <string name="settings_source_code_summary" translatable="false">https://github.com/Javernaut/WhatTheCodec</string>
     <string name="settings_privacy_policy_summary" translatable="false">https://github.com/Javernaut/WhatTheCodec/wiki/Privacy-Policy</string>
     <string name="app_name" translatable="false">WhatTheCodec</string>
+    <string name="info_protocol_file" translatable="false">file</string>
+    <string name="info_protocol_pipe" translatable="false">pipe</string>
 </resources>
