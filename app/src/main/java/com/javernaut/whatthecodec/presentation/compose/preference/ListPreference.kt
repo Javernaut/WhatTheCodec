@@ -219,12 +219,14 @@ private fun PreferenceRadioButton(
     clickListener: () -> Unit
 ) {
     PreferenceItemRow(clickListener) {
+        // The onClick is null, which means there will be no enforcing of 48dp touch area
         RadioButton(
+            modifier = Modifier.padding(horizontal = 24.dp),
             selected = selected,
             onClick = null
         )
-        Spacer(modifier = Modifier.width(24.dp))
         Text(
+            modifier = Modifier.padding(end = 24.dp),
             text = text,
             style = MaterialTheme.typography.body1.copy(
                 fontSize = 18.sp
@@ -242,14 +244,17 @@ private fun PreferenceCheckboxButton(
     PreferenceItemRow(clickListener = {
         selected.value = !selected.value
     }) {
+        // The onClick is not null, so the size of the Checkbox itself will be 48dp.
+        // So applying smaller paddings.
         Checkbox(
+            modifier = Modifier.padding(horizontal = 12.dp),
             checked = selected.value,
             onCheckedChange = {
                 selected.value = it
             }
         )
-        Spacer(modifier = Modifier.width(24.dp))
         Text(
+            modifier = Modifier.padding(end = 24.dp),
             text = text,
             style = MaterialTheme.typography.body1.copy(
                 fontSize = 18.sp
@@ -268,8 +273,7 @@ private fun PreferenceItemRow(
         Modifier
             .fillMaxWidth()
             .heightIn(min = dimensionResource(id = R.dimen.common_clickable_item_height))
-            .clickable(onClick = clickListener)
-            .padding(horizontal = 24.dp),
+            .clickable(onClick = clickListener),
         verticalAlignment = Alignment.CenterVertically,
         content = content
     )
