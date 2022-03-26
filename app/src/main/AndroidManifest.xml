@@ -16,7 +16,8 @@
         android:theme="@style/Theme.WhatTheCodec.NoActionBar">
         <activity
             android:name=".presentation.root.ui.RootActivity"
-            android:launchMode="singleTop">
+            android:launchMode="singleTop"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
