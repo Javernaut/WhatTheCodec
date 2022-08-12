@@ -1,4 +1,4 @@
-package com.javernaut.whatthecodec.presentation.video.ui.view
+package com.javernaut.whatthecodec.presentation.video
 
 import android.app.Activity
 import android.graphics.Point
