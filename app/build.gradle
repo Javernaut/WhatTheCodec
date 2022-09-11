@@ -32,7 +32,7 @@ android {
         compose true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion rootProject.composeCompilerVersion
+        kotlinCompilerExtensionVersion libs.versions.compose.compiler.get()
     }
     bundle {
         language {
@@ -127,7 +127,7 @@ dependencies {
 
     implementation libs.bundles.lifecycle
 
-    implementation 'androidx.appcompat:appcompat:1.4.2'
+    implementation libs.androidx.appcompat
     implementation libs.palette
     implementation libs.savedstate
     implementation libs.viewpager2
@@ -136,18 +136,8 @@ dependencies {
     // TODO replace with own implementation
     implementation libs.liveevent
 
-    // Compose
-    implementation "androidx.compose.runtime:runtime:$rootProject.composeVersion"
-    implementation "androidx.compose.ui:ui:$rootProject.composeVersion"
-    implementation "androidx.compose.foundation:foundation:$rootProject.composeVersion"
-    implementation "androidx.compose.foundation:foundation-layout:$rootProject.composeVersion"
-    implementation "androidx.compose.material:material:$rootProject.composeVersion"
-    implementation "androidx.compose.material:material-icons-extended:$rootProject.composeVersion"
-    implementation "androidx.compose.runtime:runtime-livedata:$rootProject.composeVersion"
-    implementation "androidx.compose.ui:ui-tooling:$rootProject.composeVersion"
-    implementation "androidx.activity:activity-compose:1.4.0"
-    implementation "com.google.accompanist:accompanist-pager:$rootProject.accompanistVersion"
-    implementation "com.google.accompanist:accompanist-pager-indicators:$rootProject.accompanistVersion"
+    implementation libs.bundles.compose
+    implementation libs.bundles.compose.accompanist
 }
 
 detekt {
