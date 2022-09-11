@@ -30,7 +30,7 @@ import com.javernaut.whatthecodec.presentation.root.viewmodel.MediaFileArgument
 import com.javernaut.whatthecodec.presentation.root.viewmodel.MediaFileViewModel
 import com.javernaut.whatthecodec.presentation.root.viewmodel.MediaFileViewModelFactory
 import com.javernaut.whatthecodec.presentation.settings.SettingsActivity
-import com.javernaut.whatthecodec.presentation.video.ui.view.getDesiredFrameWidth
+import com.javernaut.whatthecodec.presentation.video.getDesiredFrameWidth
 import com.javernaut.whatthecodec.util.TinyActivityCompat
 import io.github.javernaut.mediafile.creator.MediaType
 

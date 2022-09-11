@@ -1,4 +1,4 @@
-package com.javernaut.whatthecodec.presentation.video.ui.view
+package com.javernaut.whatthecodec.presentation.video
 
 import android.app.Activity
 import android.graphics.Point
@@ -29,6 +29,7 @@ import com.javernaut.whatthecodec.presentation.root.viewmodel.model.ActualPrevie
 import com.javernaut.whatthecodec.presentation.root.viewmodel.model.Frame
 import com.javernaut.whatthecodec.presentation.root.viewmodel.model.FrameMetrics
 import com.javernaut.whatthecodec.presentation.root.viewmodel.model.NoPreviewAvailable
+import com.javernaut.whatthecodec.presentation.root.viewmodel.model.NotYetEvaluated
 import com.javernaut.whatthecodec.presentation.root.viewmodel.model.Preview
 import kotlin.math.min
 
@@ -51,6 +52,7 @@ fun getPreviewViewWidth(activity: Activity): Int {
 @Composable
 fun FramesHeader(preview: Preview, dstFrameWidth: Int) {
     when (preview) {
+        is NotYetEvaluated -> { }
         is ActualPreview -> {
             val backgroundColor by animateColorAsState(Color(preview.backgroundColor))
             Box(

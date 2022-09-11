@@ -20,8 +20,6 @@ import com.javernaut.whatthecodec.presentation.stream.StreamFeatureItem
 import com.javernaut.whatthecodec.presentation.stream.StreamFeaturesGrid
 import com.javernaut.whatthecodec.presentation.stream.getFilteredStreamFeatures
 import com.javernaut.whatthecodec.presentation.stream.makeCardTitle
-import com.javernaut.whatthecodec.presentation.video.ui.view.FramesHeader
-import com.javernaut.whatthecodec.presentation.video.ui.view.getPreviewViewWidth
 import io.github.javernaut.mediafile.VideoStream
 import io.github.javernaut.mediafile.displayable.displayableLanguage
 import io.github.javernaut.mediafile.displayable.getDisplayableDisposition
