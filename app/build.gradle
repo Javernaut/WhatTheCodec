@@ -125,20 +125,16 @@ dependencies {
 
     implementation libs.material
 
-    def lifecycle_version = "2.5.1"
-
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycle_version"
+    implementation libs.bundles.lifecycle
 
     implementation 'androidx.appcompat:appcompat:1.4.2'
-    implementation 'androidx.palette:palette-ktx:1.0.0'
-    implementation 'androidx.savedstate:savedstate:1.2.0'
-    implementation 'androidx.viewpager2:viewpager2:1.0.0'
-    implementation 'androidx.browser:browser:1.4.0'
+    implementation libs.palette
+    implementation libs.savedstate
+    implementation libs.viewpager2
+    implementation libs.browser
 
     // TODO replace with own implementation
-    implementation "com.github.hadilq.liveevent:liveevent:1.2.0"
+    implementation libs.liveevent
 
     // Compose
     implementation "androidx.compose.runtime:runtime:$rootProject.composeVersion"
