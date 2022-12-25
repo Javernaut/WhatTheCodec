@@ -18,12 +18,12 @@ Have a look at the app yourself:
 
 Or see the gifs if it is more convenient:
 
-| Video file with video, audio and subtitle streams | Audio file |
-| :---: | :---: |
-| <img src="images/screens/video.gif"> | <img src="images/screens/audio.gif"> |
+| Video file with video, audio and subtitle streams |              Audio file              |
+|:-------------------------------------------------:|:------------------------------------:|
+|       <img src="images/screens/video.gif">        | <img src="images/screens/audio.gif"> |
 
-| Handling ACTION_VIEW from Dropbox app | Picking file from Google Drive app |
-| :---: | :---: |
+| Handling ACTION_VIEW from Dropbox app  |  Picking file from Google Drive app  |
+|:--------------------------------------:|:------------------------------------:|
 | <img src="images/screens/dropbox.gif"> | <img src="images/screens/drive.gif"> |
 
 ## License
