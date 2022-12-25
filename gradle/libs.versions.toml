@@ -1,6 +1,6 @@
 [versions]
-gradleplugin = "7.2.2"
-detektplugin = "1.19.0"
+gradleplugin = "7.3.1"
+detektplugin = "1.22.0"
 kotlin = "1.7.10"
 coroutines = "1.6.4"
 lifecycle = "2.5.1"
