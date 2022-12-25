@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    compileSdkVersion 32
+    compileSdkVersion 33
     defaultConfig {
         applicationId "com.javernaut.whatthecodec"
         minSdkVersion 21
