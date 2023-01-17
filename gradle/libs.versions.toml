@@ -1,5 +1,5 @@
 [versions]
-gradleplugin = "7.3.1"
+gradleplugin = "7.4.0"
 detektplugin = "1.22.0"
 kotlin = "1.7.20"
 coroutines = "1.6.4"
