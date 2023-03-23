@@ -12,7 +12,7 @@ class MediaFileViewModelFactory(
 
     private val mediaFileProvider = MediaFileProvider(activity)
 
-    override fun <T : ViewModel?> create(
+    override fun <T : ViewModel> create(
         key: String,
         modelClass: Class<T>,
         handle: SavedStateHandle
