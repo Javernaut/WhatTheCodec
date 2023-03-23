@@ -1,9 +1,9 @@
 [versions]
-gradleplugin = "7.4.0"
+gradleplugin = "7.4.2"
 detektplugin = "1.22.0"
 kotlin = "1.8.10"
 coroutines = "1.6.4"
-lifecycle = "2.5.1"
+lifecycle = "2.6.1"
 compose-animation = "1.4.0"
 compose-compiler = "1.4.4"
 compose-foundation = "1.4.0"
@@ -26,10 +26,10 @@ lifecycle-viewmodel-savedstate = { module = "androidx.lifecycle:lifecycle-viewmo
 
 liveevent = "com.github.hadilq.liveevent:liveevent:1.2.0"
 palette = "androidx.palette:palette-ktx:1.0.0"
-savedstate = "androidx.savedstate:savedstate:1.2.0"
+savedstate = "androidx.savedstate:savedstate:1.2.1"
 viewpager2 = "androidx.viewpager2:viewpager2:1.0.0"
 browser = "androidx.browser:browser:1.4.0"
-androidx-appcompat = "androidx.appcompat:appcompat:1.5.1"
+androidx-appcompat = "androidx.appcompat:appcompat:1.6.1"
 
 androidx-activity-compose = "androidx.activity:activity-compose:1.7.0"
 compose-accompanist-pager = { module = "com.google.accompanist:accompanist-pager", version.ref = "compose-accompanist" }
