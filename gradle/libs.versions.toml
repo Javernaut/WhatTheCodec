@@ -18,7 +18,7 @@ mediafile = "io.github.javernaut:mediafile:1.0.3"
 coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 
-material = "com.google.android.material:material:1.7.0"
+material = "com.google.android.material:material:1.8.0"
 
 lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
 lifecycle-livedata-ktx = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "lifecycle" }
@@ -28,7 +28,7 @@ liveevent = "com.github.hadilq.liveevent:liveevent:1.2.0"
 palette = "androidx.palette:palette-ktx:1.0.0"
 savedstate = "androidx.savedstate:savedstate:1.2.1"
 viewpager2 = "androidx.viewpager2:viewpager2:1.0.0"
-browser = "androidx.browser:browser:1.4.0"
+browser = "androidx.browser:browser:1.5.0"
 androidx-appcompat = "androidx.appcompat:appcompat:1.6.1"
 
 androidx-activity-compose = "androidx.activity:activity-compose:1.7.0"
