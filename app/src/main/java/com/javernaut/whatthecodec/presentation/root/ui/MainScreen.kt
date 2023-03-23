@@ -1,9 +1,13 @@
 package com.javernaut.whatthecodec.presentation.root.ui
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PagerState
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.Scaffold
 import androidx.compose.material.ScrollableTabRow
 import androidx.compose.material.Tab
@@ -15,10 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.pagerTabIndicatorOffset
-import com.google.accompanist.pager.rememberPagerState
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.presentation.audio.AudioPage
 import com.javernaut.whatthecodec.presentation.compose.common.WtcTopAppBar
@@ -29,7 +30,7 @@ import com.javernaut.whatthecodec.presentation.video.VideoPage
 import kotlinx.coroutines.launch
 
 @Composable
-@OptIn(ExperimentalPagerApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 fun MainScreen(
     screenState: ScreenState,
     menuActions: @Composable RowScope.() -> Unit = {}
@@ -46,7 +47,8 @@ fun MainScreen(
 }
 
 @Composable
-@ExperimentalPagerApi
+@ExperimentalFoundationApi
+@OptIn(ExperimentalPagerApi::class)
 private fun MainScreenTopAppBar(
     tabsToShow: List<AvailableTab>,
     pagerState: PagerState,
@@ -93,7 +95,7 @@ private val AvailableTab.title: Int
     }
 
 @Composable
-@ExperimentalPagerApi
+@ExperimentalFoundationApi
 private fun MainScreenContent(
     modifier: Modifier = Modifier,
     tabsToShow: List<AvailableTab>,
