@@ -5,11 +5,12 @@ plugins {
 }
 
 android {
-    compileSdkVersion 33
+    namespace "com.javernaut.whatthecodec"
+    compileSdk 33
     defaultConfig {
-        applicationId "com.javernaut.whatthecodec"
-        minSdkVersion 21
-        targetSdkVersion 32
+        minSdk 21
+        targetSdk 32
+
         versionCode 3601
         versionName "3.6.0"
 

@@ -1,8 +1,8 @@
 [versions]
-gradleplugin = "7.4.2"
+gradleplugin = "8.1.0"
 detektplugin = "1.22.0"
 kotlin = "1.8.10"
-coroutines = "1.6.4"
+coroutines = "1.7.3"
 lifecycle = "2.6.1"
 compose-animation = "1.4.0"
 compose-compiler = "1.4.4"
@@ -18,7 +18,7 @@ mediafile = "io.github.javernaut:mediafile:1.0.3"
 coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 
-material = "com.google.android.material:material:1.8.0"
+material = "com.google.android.material:material:1.9.0"
 
 lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
 lifecycle-livedata-ktx = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "lifecycle" }
