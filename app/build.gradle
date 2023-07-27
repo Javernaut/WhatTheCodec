@@ -79,7 +79,7 @@ android {
             }
         }
     }
-    flavorDimensions "market"
+    flavorDimensions = "market"
     productFlavors {
         google {
             dimension "market"
