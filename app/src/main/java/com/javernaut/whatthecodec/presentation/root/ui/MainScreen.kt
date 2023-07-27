@@ -35,8 +35,13 @@ fun MainScreen(
     screenState: ScreenState,
     menuActions: @Composable RowScope.() -> Unit = {}
 ) {
-    val pagerState = rememberPagerState()
     val tabsToShow = screenState.availableTabs
+    val pagerState = rememberPagerState(
+        initialPage = 0,
+        initialPageOffsetFraction = 0f
+    ) {
+        tabsToShow.size
+    }
     Scaffold(
         topBar = {
             MainScreenTopAppBar(tabsToShow = tabsToShow, pagerState, menuActions)
@@ -102,7 +107,7 @@ private fun MainScreenContent(
     screenState: ScreenState,
     pagerState: PagerState,
 ) {
-    HorizontalPager(tabsToShow.size, modifier, pagerState) { page ->
+    HorizontalPager(pagerState, modifier) { page ->
         val pageModifier = Modifier.fillMaxSize()
         when (tabsToShow[page]) {
             AvailableTab.VIDEO -> VideoPage(screenState.videoPage!!, pageModifier)
