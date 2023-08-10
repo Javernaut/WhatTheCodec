@@ -141,6 +141,6 @@ dependencies {
 }
 
 detekt {
-    config = files("../config/detekt/detekt.yml")
+    config.setFrom("$projectDir/../config/detekt/detekt.yml")
     buildUponDefaultConfig = true
 }
