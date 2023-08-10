@@ -138,7 +138,6 @@ dependencies {
     implementation libs.liveevent
 
     implementation libs.bundles.compose
-    implementation libs.bundles.compose.accompanist
 }
 
 detekt {
