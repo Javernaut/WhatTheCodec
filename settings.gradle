@@ -3,10 +3,6 @@ pluginManagement {
         gradlePluginPortal()
         google()
         mavenCentral()
-        maven {
-            name 'MaventCentralSnapshots'
-            url 'https://s01.oss.sonatype.org/content/repositories/snapshots/'
-        }
     }
 }
 
@@ -15,6 +11,10 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven {
+            name 'MaventCentralSnapshots'
+            url 'https://s01.oss.sonatype.org/content/repositories/snapshots/'
+        }
     }
 }
 

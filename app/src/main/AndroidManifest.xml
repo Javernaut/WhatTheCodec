@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.javernaut.whatthecodec">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
@@ -15,9 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.WhatTheCodec.NoActionBar">
         <activity
-            android:name=".presentation.root.ui.RootActivity"
-            android:launchMode="singleTop"
-            android:exported="true">
+            android:name="com.javernaut.whatthecodec.presentation.root.ui.RootActivity"
+            android:exported="true"
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -31,10 +30,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".presentation.settings.SettingsActivity"
+            android:name="com.javernaut.whatthecodec.presentation.settings.SettingsActivity"
             android:exported="false"
             android:label="@string/settings_title"
-            android:parentActivityName=".presentation.root.ui.RootActivity" />
+            android:parentActivityName="com.javernaut.whatthecodec.presentation.root.ui.RootActivity" />
     </application>
 
 </manifest>

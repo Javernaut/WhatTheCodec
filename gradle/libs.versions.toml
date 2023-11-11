@@ -1,23 +1,23 @@
 [versions]
-gradleplugin = "8.1.0"
+gradleplugin = "8.1.3"
 detektplugin = "1.23.1"
-kotlin = "1.9.0"
+kotlin = "1.9.20"
 coroutines = "1.7.3"
-lifecycle = "2.6.1"
-compose-animation = "1.5.0"
-compose-compiler = "1.5.1"
-compose-foundation = "1.5.0"
-compose-material = "1.5.0"
-compose-runtime = "1.5.0"
-compose-ui = "1.5.0"
+lifecycle = "2.6.2"
+compose-animation = "1.5.4"
+compose-compiler = "1.5.4"
+compose-foundation = "1.5.4"
+compose-material = "1.5.4"
+compose-runtime = "1.5.4"
+compose-ui = "1.5.4"
 
 [libraries]
-mediafile = "io.github.javernaut:mediafile:1.0.3"
+mediafile = "io.github.javernaut:mediafile:1.1.0-SNAPSHOT"
 
 coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 
-material = "com.google.android.material:material:1.9.0"
+material = "com.google.android.material:material:1.10.0"
 
 lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
 lifecycle-livedata-ktx = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "lifecycle" }
@@ -30,7 +30,7 @@ viewpager2 = "androidx.viewpager2:viewpager2:1.0.0"
 browser = "androidx.browser:browser:1.6.0"
 androidx-appcompat = "androidx.appcompat:appcompat:1.6.1"
 
-androidx-activity-compose = "androidx.activity:activity-compose:1.7.2"
+androidx-activity-compose = "androidx.activity:activity-compose:1.8.0"
 compose-runtime = { module = "androidx.compose.runtime:runtime", version.ref = "compose-runtime" }
 compose-ui = { module = "androidx.compose.ui:ui", version.ref = "compose-ui" }
 compose-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "compose-foundation" }
