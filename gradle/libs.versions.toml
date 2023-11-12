@@ -12,7 +12,7 @@ compose-runtime = "1.5.4"
 compose-ui = "1.5.4"
 
 [libraries]
-mediafile = "io.github.javernaut:mediafile:1.1.0-SNAPSHOT"
+mediafile = "io.github.javernaut:mediafile:1.1.0"
 
 coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
