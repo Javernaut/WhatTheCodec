@@ -4,14 +4,17 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.material.Button
-import androidx.compose.material.Text
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import com.javernaut.whatthecodec.presentation.compose.theme.WhatTheCodecTheme
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import com.javernaut.whatthecodec.presentation.compose.preference.MultiChoicePreferenceDialog
+import com.javernaut.whatthecodec.presentation.compose.theme.m3.WhatTheCodecThemeM3
 
 class ComposePlaygroundActivity : AppCompatActivity() {
 
@@ -19,9 +22,11 @@ class ComposePlaygroundActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         var savedSelection = listOf(true, false, true)
         setContent {
-            WhatTheCodecTheme {
+            WhatTheCodecThemeM3 {
                 var dialogOpened by remember { mutableStateOf(true) }
-                Button(onClick = { dialogOpened = true }) {
+                Button(
+                    modifier = Modifier.padding(16.dp),
+                    onClick = { dialogOpened = true }) {
                     Text(text = "Open dialog")
                 }
                 if (dialogOpened) {
