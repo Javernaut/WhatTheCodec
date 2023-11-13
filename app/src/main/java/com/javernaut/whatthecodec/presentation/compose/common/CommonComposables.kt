@@ -9,6 +9,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.contentColorFor
 import androidx.compose.material.primarySurface
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
@@ -21,6 +22,23 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun getAppBarElevation() = if (isSystemInDarkTheme()) 1.dp else AppBarDefaults.TopAppBarElevation
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun WtcTopAppBarM3(
+    title: @Composable () -> Unit,
+    modifier: Modifier = Modifier,
+    navigationIcon: @Composable () -> Unit = {},
+    actions: @Composable RowScope.() -> Unit = {}
+) {
+    androidx.compose.material3.TopAppBar(
+        title = title,
+        modifier = modifier,
+        navigationIcon = navigationIcon,
+        actions = actions
+    )
+}
+
+@Deprecated("Use WtcTopAppBarM3 instead")
 @Composable
 fun WtcTopAppBar(
     title: @Composable () -> Unit,

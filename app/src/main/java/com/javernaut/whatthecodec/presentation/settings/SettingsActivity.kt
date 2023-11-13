@@ -12,18 +12,18 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import com.javernaut.whatthecodec.R
-import com.javernaut.whatthecodec.presentation.compose.common.WtcTopAppBar
+import com.javernaut.whatthecodec.presentation.compose.common.WtcTopAppBarM3
 import com.javernaut.whatthecodec.presentation.compose.preference.ListPreference
 import com.javernaut.whatthecodec.presentation.compose.preference.MultiSelectListPreference
 import com.javernaut.whatthecodec.presentation.compose.preference.Preference
@@ -90,7 +90,7 @@ class SettingsActivity : AppCompatActivity() {
 
     @Composable
     private fun SettingsTopAppBar() {
-        WtcTopAppBar(
+        WtcTopAppBarM3(
             title = { Text(text = stringResource(id = R.string.settings_title)) },
             navigationIcon = {
                 IconButton(onClick = { onSupportNavigateUp() }) {
