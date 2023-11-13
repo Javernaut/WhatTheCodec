@@ -14,12 +14,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.ContentAlpha
-import androidx.compose.material.DropdownMenu
-import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.LocalContentAlpha
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
@@ -132,13 +132,13 @@ private fun StreamFeature(
         CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
             Text(
                 title,
-                style = MaterialTheme.typography.caption
+                style = MaterialTheme.typography.bodySmall
             )
         }
         Spacer(Modifier.height(8.dp))
         Text(
             value,
-            style = MaterialTheme.typography.body1
+            style = MaterialTheme.typography.bodyLarge
         )
     }
 }
@@ -154,15 +154,14 @@ private fun CopyToClipboardDropdown(
         expanded = expanded,
         onDismissRequest = dismissCallback
     ) {
-        DropdownMenuItem(enabled = false, onClick = { }) {
-            val colors = MaterialTheme.colors
-            Text(title, color = if (colors.isLight) colors.primary else colors.secondary)
-        }
+        DropdownMenuItem(enabled = false, onClick = { }, text = {
+            Text(title, color = MaterialTheme.colorScheme.primary)
+        })
         DropdownMenuItem(onClick = {
             copyCallback()
             dismissCallback()
-        }) {
+        }, text = {
             Text(stringResource(id = R.string.stream_copy))
-        }
+        })
     }
 }
