@@ -4,6 +4,8 @@ complexity:
     functionThreshold: 8
     constructorThreshold: 8
     ignoreAnnotated: [ 'Parcelize', 'Composable' ]
+  LongMethod:
+    ignoreAnnotated: [ 'Composable' ]
   TooManyFunctions:
     active: true
     thresholdInFiles: 40
