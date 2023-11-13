@@ -11,8 +11,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.ContentAlpha
 import androidx.compose.material.LocalContentAlpha
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
@@ -52,7 +52,7 @@ fun getPreviewViewWidth(activity: Activity): Int {
 @Composable
 fun FramesHeader(preview: Preview, dstFrameWidth: Int) {
     when (preview) {
-        is NotYetEvaluated -> { }
+        is NotYetEvaluated -> {}
         is ActualPreview -> {
             val backgroundColor by animateColorAsState(Color(preview.backgroundColor))
             Box(
@@ -70,6 +70,7 @@ fun FramesHeader(preview: Preview, dstFrameWidth: Int) {
                 )
             }
         }
+
         NoPreviewAvailable -> {
             CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
                 Text(
@@ -77,7 +78,7 @@ fun FramesHeader(preview: Preview, dstFrameWidth: Int) {
                         .fillMaxWidth()
                         .padding(top = 16.dp),
                     text = stringResource(id = R.string.page_video_preview_missing_decoder),
-                    style = MaterialTheme.typography.subtitle1,
+                    style = MaterialTheme.typography.bodyLarge,
                     textAlign = TextAlign.Center,
                 )
             }
