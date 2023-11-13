@@ -28,7 +28,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import com.javernaut.whatthecodec.R
-import com.javernaut.whatthecodec.presentation.compose.common.WtcTopAppBarM3
+import com.javernaut.whatthecodec.presentation.compose.common.WtcTopAppBarM3Large
 import com.javernaut.whatthecodec.presentation.compose.preference.ListPreference
 import com.javernaut.whatthecodec.presentation.compose.preference.MultiSelectListPreference
 import com.javernaut.whatthecodec.presentation.compose.preference.Preference
@@ -101,7 +101,7 @@ class SettingsActivity : AppCompatActivity() {
 
     @Composable
     private fun SettingsTopAppBar(scrollBehavior: TopAppBarScrollBehavior? = null) {
-        WtcTopAppBarM3(
+        WtcTopAppBarM3Large(
             title = { Text(text = stringResource(id = R.string.settings_title)) },
             navigationIcon = {
                 IconButton(onClick = { onSupportNavigateUp() }) {

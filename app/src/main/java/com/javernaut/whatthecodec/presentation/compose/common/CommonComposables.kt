@@ -25,13 +25,29 @@ fun getAppBarElevation() = if (isSystemInDarkTheme()) 1.dp else AppBarDefaults.T
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun WtcTopAppBarM3(
+fun WtcTopAppBarM3Large(
     title: @Composable () -> Unit,
     navigationIcon: @Composable () -> Unit = {},
     actions: @Composable (RowScope.() -> Unit) = {},
     scrollBehavior: TopAppBarScrollBehavior? = null
 ) {
     androidx.compose.material3.LargeTopAppBar(
+        title = title,
+        navigationIcon = navigationIcon,
+        actions = actions,
+        scrollBehavior = scrollBehavior
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun WtcTopAppBarM3(
+    title: @Composable () -> Unit,
+    navigationIcon: @Composable () -> Unit = {},
+    actions: @Composable (RowScope.() -> Unit) = {},
+    scrollBehavior: TopAppBarScrollBehavior? = null
+) {
+    androidx.compose.material3.TopAppBar(
         title = title,
         navigationIcon = navigationIcon,
         actions = actions,

@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.javernaut.whatthecodec.presentation.root.ui
 
 import androidx.compose.foundation.clickable
@@ -10,14 +12,15 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MusicNote
 import androidx.compose.material.icons.filled.Videocam
 import androidx.compose.material.ripple.rememberRipple
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -27,7 +30,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.javernaut.whatthecodec.R
-import com.javernaut.whatthecodec.presentation.compose.common.WtcTopAppBar
+import com.javernaut.whatthecodec.presentation.compose.common.WtcTopAppBarM3
 
 @Composable
 fun EmptyScreen(
@@ -44,12 +47,13 @@ fun EmptyScreen(
 
 @Composable
 private fun EmptyScreenTopAppBar(
-    menuActions: @Composable RowScope.() -> Unit
+    menuActions: @Composable (RowScope.() -> Unit)
 ) {
-    WtcTopAppBar(
+    WtcTopAppBarM3(
         title = {
             Text(text = stringResource(id = R.string.app_name))
-        }, actions = menuActions
+        },
+        actions = menuActions
     )
 }
 
@@ -63,16 +67,14 @@ private fun EmptyScreenContent(
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Text(
                 text = stringResource(id = R.string.empty_root_description),
-                style = MaterialTheme.typography.body1,
-                textAlign = TextAlign.Center,
-                color = MaterialTheme.colors.onSurface
+                style = MaterialTheme.typography.bodyLarge,
+                textAlign = TextAlign.Center
             )
             Spacer(modifier = Modifier.size(16.dp))
             Text(
                 text = stringResource(id = R.string.empty_root_choose),
-                style = MaterialTheme.typography.body1,
-                textAlign = TextAlign.Center,
-                color = MaterialTheme.colors.onSurface
+                style = MaterialTheme.typography.bodyLarge,
+                textAlign = TextAlign.Center
             )
             Spacer(modifier = Modifier.size(8.dp))
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -84,8 +86,7 @@ private fun EmptyScreenContent(
                 Text(
                     modifier = Modifier.padding(horizontal = 16.dp),
                     text = stringResource(id = R.string.empty_root_or),
-                    style = MaterialTheme.typography.body2,
-                    color = MaterialTheme.colors.onSurface
+                    style = MaterialTheme.typography.bodyMedium,
                 )
                 EmptyScreenIcon(
                     Icons.Filled.MusicNote,
@@ -106,7 +107,7 @@ private fun EmptyScreenIcon(
     Icon(
         imageVector = image,
         contentDescription = stringResource(id = contentDescriptionResId),
-        tint = MaterialTheme.colors.secondary,
+        tint = MaterialTheme.colorScheme.primary,
         modifier = Modifier
             .size(48.dp)
             .clickable(
