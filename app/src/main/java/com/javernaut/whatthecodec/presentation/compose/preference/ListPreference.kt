@@ -26,7 +26,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.javernaut.whatthecodec.R
-import com.javernaut.whatthecodec.presentation.compose.common.WtcDialog
+import com.javernaut.whatthecodec.presentation.compose.common.AlertDialog
 
 @Composable
 fun ListPreference(
@@ -202,16 +202,18 @@ private fun PreferenceDialog(
     applyRequest: () -> Unit,
     content: @Composable () -> Unit
 ) {
-    WtcDialog(
-        title,
-        dismissRequest,
-        dismissButton = {
-            CancelDialogButton(dismissRequest)
-        },
+    AlertDialog(
+        onDismissRequest = dismissRequest,
         confirmButton = {
             ConfirmDialogButton(dismissRequest, applyRequest)
         },
-        content = content
+        dismissButton = {
+            CancelDialogButton(dismissRequest)
+        },
+        content = content,
+        title = {
+            Text(text = title)
+        }
     )
 }
 

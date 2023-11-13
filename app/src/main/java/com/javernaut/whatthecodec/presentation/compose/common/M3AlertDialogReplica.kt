@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
-
 package com.javernaut.whatthecodec.presentation.compose.common
 
 import androidx.compose.foundation.layout.Arrangement
@@ -14,7 +12,6 @@ import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ProvideTextStyle
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
@@ -27,23 +24,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import kotlin.math.max
-
-@Composable
-fun WtcDialog(
-    title: String,
-    onDismissRequest: () -> Unit,
-    confirmButton: @Composable () -> Unit,
-    dismissButton: @Composable (() -> Unit)? = null,
-    content: @Composable () -> Unit
-) {
-    AlertDialog(onDismissRequest = onDismissRequest,
-        confirmButton = confirmButton,
-        dismissButton = dismissButton,
-        content = content,
-        title = {
-            Text(text = title)
-        })
-}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -62,7 +42,11 @@ fun AlertDialog(
     textContentColor: Color = AlertDialogDefaults.textContentColor,
     tonalElevation: Dp = AlertDialogDefaults.TonalElevation,
     properties: DialogProperties = DialogProperties()
-) = AlertDialog(onDismissRequest = onDismissRequest, modifier = modifier, properties = properties) {
+) = AlertDialog(
+    onDismissRequest = onDismissRequest,
+    modifier = modifier,
+    properties = properties
+) {
     AlertDialogContent(
         buttons = {
             AlertDialogFlowRow(
@@ -87,7 +71,7 @@ fun AlertDialog(
 }
 
 @Composable
-internal fun AlertDialogContent(
+private fun AlertDialogContent(
     buttons: @Composable () -> Unit,
     modifier: Modifier = Modifier,
     icon: (@Composable () -> Unit)?,
@@ -186,12 +170,8 @@ private val TextPadding = PaddingValues(bottom = 24.dp)
 private val ButtonsMainAxisSpacing = 8.dp
 private val ButtonsCrossAxisSpacing = 12.dp
 
-/**
- * Simple clone of FlowRow that arranges its children in a horizontal flow with limited
- * customization.
- */
 @Composable
-internal fun AlertDialogFlowRow(
+private fun AlertDialogFlowRow(
     mainAxisSpacing: Dp,
     crossAxisSpacing: Dp,
     content: @Composable () -> Unit
@@ -280,4 +260,3 @@ internal fun AlertDialogFlowRow(
         }
     }
 }
-
