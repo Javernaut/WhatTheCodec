@@ -9,11 +9,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.Checkbox
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.RadioButton
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.RadioButton
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
@@ -26,7 +26,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.presentation.compose.common.WtcDialog
 
@@ -228,10 +227,7 @@ private fun PreferenceRadioButton(
         Text(
             modifier = Modifier.padding(end = 24.dp),
             text = text,
-            style = MaterialTheme.typography.body1.copy(
-                fontSize = 18.sp
-            ),
-            color = MaterialTheme.colors.onSurface
+            style = MaterialTheme.typography.bodyLarge
         )
     }
 }
@@ -256,10 +252,7 @@ private fun PreferenceCheckboxButton(
         Text(
             modifier = Modifier.padding(end = 24.dp),
             text = text,
-            style = MaterialTheme.typography.body1.copy(
-                fontSize = 18.sp
-            ),
-            color = MaterialTheme.colors.onSurface
+            style = MaterialTheme.typography.bodyLarge
         )
     }
 }
