@@ -22,7 +22,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.presentation.audio.AudioPage
-import com.javernaut.whatthecodec.presentation.compose.common.WtcTopAppBarM3
+import com.javernaut.whatthecodec.presentation.compose.common.WtcTopAppBar
 import com.javernaut.whatthecodec.presentation.root.viewmodel.ScreenState
 import com.javernaut.whatthecodec.presentation.root.viewmodel.model.AvailableTab
 import com.javernaut.whatthecodec.presentation.subtitle.SubtitlePage
@@ -58,7 +58,7 @@ private fun MainScreenTopAppBar(
     pagerState: PagerState,
     menuActions: @Composable RowScope.() -> Unit = {}
 ) {
-    WtcTopAppBarM3(
+    WtcTopAppBar(
         title = {
             val scope = rememberCoroutineScope()
             ScrollableTabRow(

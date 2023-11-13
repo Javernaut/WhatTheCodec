@@ -1,37 +1,24 @@
 package com.javernaut.whatthecodec.presentation.compose.common
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.RowScope
-import androidx.compose.material.AppBarDefaults
-import androidx.compose.material.ContentAlpha
-import androidx.compose.material.LocalContentAlpha
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.TopAppBar
-import androidx.compose.material.contentColorFor
-import androidx.compose.material.primarySurface
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.LargeTopAppBar
+import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.unit.Constraints
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
-
-@Composable
-fun getAppBarElevation() = if (isSystemInDarkTheme()) 1.dp else AppBarDefaults.TopAppBarElevation
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun WtcTopAppBarM3Large(
+fun WtcTopAppBarLarge(
     title: @Composable () -> Unit,
     navigationIcon: @Composable () -> Unit = {},
     actions: @Composable (RowScope.() -> Unit) = {},
     scrollBehavior: TopAppBarScrollBehavior? = null
 ) {
-    androidx.compose.material3.LargeTopAppBar(
+    LargeTopAppBar(
         title = title,
         navigationIcon = navigationIcon,
         actions = actions,
@@ -40,44 +27,19 @@ fun WtcTopAppBarM3Large(
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun WtcTopAppBarM3(
-    title: @Composable () -> Unit,
-    navigationIcon: @Composable () -> Unit = {},
-    actions: @Composable (RowScope.() -> Unit) = {},
-    scrollBehavior: TopAppBarScrollBehavior? = null
-) {
-    androidx.compose.material3.TopAppBar(
-        title = title,
-        navigationIcon = navigationIcon,
-        actions = actions,
-        scrollBehavior = scrollBehavior
-    )
-}
-
-@Deprecated("Use WtcTopAppBarM3 instead")
 @Composable
 fun WtcTopAppBar(
     title: @Composable () -> Unit,
-    modifier: Modifier = Modifier,
-    navigationIcon: @Composable (() -> Unit)? = null,
-    actions: @Composable RowScope.() -> Unit = {},
-    backgroundColor: Color = MaterialTheme.colors.primarySurface,
-    contentColor: Color = contentColorFor(backgroundColor),
-    elevation: Dp = getAppBarElevation()
+    navigationIcon: @Composable () -> Unit = {},
+    actions: @Composable (RowScope.() -> Unit) = {},
+    scrollBehavior: TopAppBarScrollBehavior? = null
 ) {
+    // TODO Primary surface right away?
     TopAppBar(
         title = title,
-        modifier = modifier,
         navigationIcon = navigationIcon,
-        actions = {
-            CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.high) {
-                actions()
-            }
-        },
-        backgroundColor = backgroundColor,
-        contentColor = contentColor,
-        elevation = elevation
+        actions = actions,
+        scrollBehavior = scrollBehavior
     )
 }
 
