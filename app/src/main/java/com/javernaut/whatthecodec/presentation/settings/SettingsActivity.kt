@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.browser.customtabs.CustomTabsIntent
@@ -40,6 +41,7 @@ class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        enableEdgeToEdge()
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         setContent {
@@ -59,7 +61,8 @@ class SettingsActivity : AppCompatActivity() {
     fun SettingsScreen() {
         val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
         Scaffold(
-            modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+            modifier = Modifier
+                .nestedScroll(scrollBehavior.nestedScrollConnection),
             topBar = {
                 SettingsTopAppBar(scrollBehavior)
             }
@@ -108,7 +111,8 @@ class SettingsActivity : AppCompatActivity() {
                     )
                 }
             },
-            scrollBehavior = scrollBehavior)
+            scrollBehavior = scrollBehavior
+        )
     }
 
     @Composable

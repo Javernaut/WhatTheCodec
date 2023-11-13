@@ -31,6 +31,7 @@
         </activity>
         <activity
             android:name="com.javernaut.whatthecodec.presentation.settings.SettingsActivity"
+            android:theme="@style/AppThemeM3"
             android:exported="false"
             android:label="@string/settings_title"
             android:parentActivityName="com.javernaut.whatthecodec.presentation.root.ui.RootActivity" />
