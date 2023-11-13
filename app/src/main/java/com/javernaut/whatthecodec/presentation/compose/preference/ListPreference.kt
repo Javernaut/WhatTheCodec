@@ -4,11 +4,9 @@ import android.preference.PreferenceManager
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
@@ -169,12 +167,19 @@ fun MultiChoicePreferenceDialog(
 }
 
 @Composable
-private fun DefaultPreferenceDialogActions(
+private fun CancelDialogButton(dismissRequest: () -> Unit) {
+    TextButton(onClick = dismissRequest) {
+        Text(
+            stringResource(id = android.R.string.cancel),
+        )
+    }
+}
+
+@Composable
+private fun ConfirmDialogButton(
     dismissRequest: () -> Unit,
     applyRequest: () -> Unit
 ) {
-    CancelDialogButton(dismissRequest)
-    Spacer(modifier = Modifier.width(8.dp))
     TextButton(onClick = {
         applyRequest()
         dismissRequest()
@@ -185,28 +190,23 @@ private fun DefaultPreferenceDialogActions(
     }
 }
 
-@Composable
-private fun CancelDialogButton(dismissRequest: () -> Unit) {
-    TextButton(onClick = dismissRequest) {
-        Text(
-            stringResource(id = android.R.string.cancel),
-        )
-    }
-}
 
 @Composable
 private fun PreferenceDialog(
     title: String,
     dismissRequest: () -> Unit,
     applyRequest: () -> Unit,
-    buttons: @Composable (() -> Unit) = {
-        DefaultPreferenceDialogActions(dismissRequest, applyRequest)
-    },
     content: @Composable () -> Unit
 ) {
     WtcDialog(
-        title, dismissRequest,
-        buttons = buttons,
+        title,
+        dismissRequest,
+        dismissButton = {
+            CancelDialogButton(dismissRequest)
+        },
+        confirmButton = {
+            ConfirmDialogButton(dismissRequest, applyRequest)
+        },
         content = content
     )
 }

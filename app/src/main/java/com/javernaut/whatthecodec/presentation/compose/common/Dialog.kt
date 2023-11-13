@@ -32,12 +32,13 @@ import kotlin.math.max
 fun WtcDialog(
     title: String,
     onDismissRequest: () -> Unit,
-    buttons: @Composable () -> Unit,
+    confirmButton: @Composable () -> Unit,
+    dismissButton: @Composable (() -> Unit)? = null,
     content: @Composable () -> Unit
 ) {
-    AlertDialog(onDismissRequest = onDismissRequest, confirmButton = {
-        buttons()
-    },
+    AlertDialog(onDismissRequest = onDismissRequest,
+        confirmButton = confirmButton,
+        dismissButton = dismissButton,
         content = {
             // TODO Hoist the Column to consumers
             Column {
@@ -163,9 +164,11 @@ internal fun AlertDialogContent(
                     }
                 }
             }
-            Box(modifier = Modifier
-                .padding(DialogHorizontalPadding)
-                .align(Alignment.End)) {
+            Box(
+                modifier = Modifier
+                    .padding(DialogHorizontalPadding)
+                    .align(Alignment.End)
+            ) {
                 CompositionLocalProvider(LocalContentColor provides buttonContentColor) {
                     val textStyle = MaterialTheme.typography.labelLarge
                     ProvideTextStyle(value = textStyle, content = buttons)
