@@ -14,12 +14,16 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import com.javernaut.whatthecodec.R
@@ -30,6 +34,7 @@ import com.javernaut.whatthecodec.presentation.compose.preference.Preference
 import com.javernaut.whatthecodec.presentation.compose.preference.PreferenceTitle
 import com.javernaut.whatthecodec.presentation.compose.theme.WhatTheCodecTheme
 
+@OptIn(ExperimentalMaterial3Api::class)
 class SettingsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,9 +57,11 @@ class SettingsActivity : AppCompatActivity() {
 
     @Composable
     fun SettingsScreen() {
+        val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
         Scaffold(
+            modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
             topBar = {
-                SettingsTopAppBar()
+                SettingsTopAppBar(scrollBehavior)
             }
         ) {
             Column(
@@ -69,7 +76,8 @@ class SettingsActivity : AppCompatActivity() {
 
     @Composable
     private fun SettingsContent() {
-        PreferenceTitle(title = R.string.settings_category_general)
+        // TODO Thing again if this one should be deleted permanently
+//        PreferenceTitle(title = R.string.settings_category_general)
         ThemeSelectionPreference()
 
         PreferenceTitle(title = R.string.settings_category_content)
@@ -89,7 +97,7 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     @Composable
-    private fun SettingsTopAppBar() {
+    private fun SettingsTopAppBar(scrollBehavior: TopAppBarScrollBehavior? = null) {
         WtcTopAppBarM3(
             title = { Text(text = stringResource(id = R.string.settings_title)) },
             navigationIcon = {
@@ -99,7 +107,8 @@ class SettingsActivity : AppCompatActivity() {
                         contentDescription = stringResource(id = R.string.content_description_back)
                     )
                 }
-            })
+            },
+            scrollBehavior = scrollBehavior)
     }
 
     @Composable

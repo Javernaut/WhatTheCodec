@@ -10,6 +10,7 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.material.contentColorFor
 import androidx.compose.material.primarySurface
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
@@ -28,13 +29,15 @@ fun WtcTopAppBarM3(
     title: @Composable () -> Unit,
     modifier: Modifier = Modifier,
     navigationIcon: @Composable () -> Unit = {},
-    actions: @Composable RowScope.() -> Unit = {}
+    actions: @Composable() (RowScope.() -> Unit) = {},
+    scrollBehavior: TopAppBarScrollBehavior? = null
 ) {
-    androidx.compose.material3.TopAppBar(
+    androidx.compose.material3.LargeTopAppBar(
         title = title,
         modifier = modifier,
         navigationIcon = navigationIcon,
-        actions = actions
+        actions = actions,
+        scrollBehavior = scrollBehavior
     )
 }
 

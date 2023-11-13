@@ -24,7 +24,7 @@ fun Preference(
             .fillMaxWidth()
             .clickable(onClick = clickHandler)
             .padding(
-                start = 24.dp, top = 16.dp, end = 24.dp, bottom = 16.dp
+                start = 16.dp, top = 16.dp, end = 16.dp, bottom = 16.dp
             )
     ) {
         Text(
@@ -60,7 +60,7 @@ fun PreferenceTitle(@StringRes title: Int) {
         stringResource(id = title),
         Modifier
             .fillMaxWidth()
-            .padding(start = 24.dp, top = 24.dp, end = 24.dp, bottom = 8.dp),
+            .padding(start = 16.dp, top = 24.dp, end = 16.dp, bottom = 8.dp),
         style = MaterialTheme.typography.titleSmall,
         color = MaterialTheme.colorScheme.primary
     )
