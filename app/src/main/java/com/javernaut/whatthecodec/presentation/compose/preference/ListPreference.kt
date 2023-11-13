@@ -2,6 +2,7 @@ package com.javernaut.whatthecodec.presentation.compose.preference
 
 import android.preference.PreferenceManager
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -82,11 +83,13 @@ fun SingleChoicePreferenceDialog(
             clickListener(selectedIndex)
         }
     ) {
-        items.forEachIndexed { index, item ->
-            PreferenceRadioButton(
-                item, index == selectedIndex
-            ) {
-                selectedIndex = index
+        Column {
+            items.forEachIndexed { index, item ->
+                PreferenceRadioButton(
+                    item, index == selectedIndex
+                ) {
+                    selectedIndex = index
+                }
             }
         }
     }
@@ -158,10 +161,12 @@ fun MultiChoicePreferenceDialog(
         }
     ) {
         // TODO Consider scrolling
-        items.forEachIndexed { index, item ->
-            PreferenceCheckboxButton(
-                item, itemsStates[index]
-            )
+        Column {
+            items.forEachIndexed { index, item ->
+                PreferenceCheckboxButton(
+                    item, itemsStates[index]
+                )
+            }
         }
     }
 }
@@ -189,7 +194,6 @@ private fun ConfirmDialogButton(
         )
     }
 }
-
 
 @Composable
 private fun PreferenceDialog(

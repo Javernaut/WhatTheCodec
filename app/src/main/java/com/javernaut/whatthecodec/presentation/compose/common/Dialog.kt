@@ -39,12 +39,7 @@ fun WtcDialog(
     AlertDialog(onDismissRequest = onDismissRequest,
         confirmButton = confirmButton,
         dismissButton = dismissButton,
-        content = {
-            // TODO Hoist the Column to consumers
-            Column {
-                content()
-            }
-        },
+        content = content,
         title = {
             Text(text = title)
         })
