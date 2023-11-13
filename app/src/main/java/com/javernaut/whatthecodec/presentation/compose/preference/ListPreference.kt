@@ -180,7 +180,7 @@ private fun DefaultPreferenceDialogActions(
         dismissRequest()
     }) {
         Text(
-            stringResource(id = android.R.string.ok).toUpperCase(),
+            stringResource(id = android.R.string.ok),
         )
     }
 }
@@ -189,7 +189,7 @@ private fun DefaultPreferenceDialogActions(
 private fun CancelDialogButton(dismissRequest: () -> Unit) {
     TextButton(onClick = dismissRequest) {
         Text(
-            stringResource(id = android.R.string.cancel).toUpperCase(),
+            stringResource(id = android.R.string.cancel),
         )
     }
 }
@@ -199,7 +199,7 @@ private fun PreferenceDialog(
     title: String,
     dismissRequest: () -> Unit,
     applyRequest: () -> Unit,
-    buttons: @Composable (RowScope.() -> Unit) = {
+    buttons: @Composable (() -> Unit) = {
         DefaultPreferenceDialogActions(dismissRequest, applyRequest)
     },
     content: @Composable () -> Unit
