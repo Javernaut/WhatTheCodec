@@ -8,15 +8,15 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.material.DropdownMenu
-import androidx.compose.material.DropdownMenuItem
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.MusicNote
 import androidx.compose.material.icons.filled.Videocam
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
@@ -130,6 +130,7 @@ class RootActivity : AppCompatActivity() {
                     toast(R.string.message_permission_denied)
                 }
             }
+
             else -> {
                 super.onRequestPermissionsResult(requestCode, permissions, grantResults)
             }
@@ -170,12 +171,14 @@ class RootActivity : AppCompatActivity() {
             expanded = expanded.value,
             onDismissRequest = { expanded.value = false }
         ) {
-            DropdownMenuItem(onClick = {
-                SettingsActivity.start(this@RootActivity)
-                expanded.value = false
-            }) {
-                Text(stringResource(id = R.string.menu_settings))
-            }
+            DropdownMenuItem(
+                text = {
+                    Text(stringResource(id = R.string.menu_settings))
+                },
+                onClick = {
+                    SettingsActivity.start(this@RootActivity)
+                    expanded.value = false
+                })
         }
     }
 
