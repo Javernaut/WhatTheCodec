@@ -62,7 +62,6 @@ fun PreferenceTitle(@StringRes title: Int) {
             .fillMaxWidth()
             .padding(start = 24.dp, top = 24.dp, end = 24.dp, bottom = 8.dp),
         style = MaterialTheme.typography.titleSmall,
-        // TODO Check if direct color using is ok here
-        color = MaterialTheme.colorScheme.tertiary
+        color = MaterialTheme.colorScheme.primary
     )
 }
