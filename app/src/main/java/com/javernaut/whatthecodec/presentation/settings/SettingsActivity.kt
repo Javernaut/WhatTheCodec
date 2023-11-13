@@ -27,7 +27,6 @@ import com.javernaut.whatthecodec.presentation.compose.common.WtcTopAppBar
 import com.javernaut.whatthecodec.presentation.compose.preference.ListPreference
 import com.javernaut.whatthecodec.presentation.compose.preference.MultiSelectListPreference
 import com.javernaut.whatthecodec.presentation.compose.preference.Preference
-import com.javernaut.whatthecodec.presentation.compose.preference.PreferenceDivider
 import com.javernaut.whatthecodec.presentation.compose.preference.PreferenceTitle
 import com.javernaut.whatthecodec.presentation.compose.theme.WhatTheCodecTheme
 
@@ -73,14 +72,10 @@ class SettingsActivity : AppCompatActivity() {
         PreferenceTitle(title = R.string.settings_category_general)
         ThemeSelectionPreference()
 
-        PreferenceDivider()
-
         PreferenceTitle(title = R.string.settings_category_content)
         PreferredVideoContentPreference()
         PreferredAudioContentPreference()
         PreferredSubtitlesContentPreference()
-
-        PreferenceDivider()
 
         PreferenceTitle(title = R.string.settings_category_about)
         OpenUrlPreference(

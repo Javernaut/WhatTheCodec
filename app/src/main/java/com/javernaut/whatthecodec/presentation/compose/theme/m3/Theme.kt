@@ -2,9 +2,11 @@ package com.javernaut.whatthecodec.presentation.compose.theme.m3
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Typography
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.unit.sp
 
 private val LightColors = lightColorScheme(
     primary = md_theme_light_primary,
@@ -83,6 +85,10 @@ fun WhatTheCodecThemeM3(
 
     MaterialTheme(
         colorScheme = colors,
+        typography = Typography(
+            // Making it look more like the previous Headline 6, to align with Android 14 Settings app
+            titleLarge = MaterialTheme.typography.titleLarge.copy(fontSize = 20.sp)
+        ),
         content = content
     )
 }

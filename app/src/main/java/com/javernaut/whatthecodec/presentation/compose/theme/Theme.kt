@@ -6,6 +6,7 @@ import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import com.javernaut.whatthecodec.presentation.compose.theme.m3.WhatTheCodecThemeM3
 
 private val DarkColorPalette = darkColors(
     primary = Color.White,
@@ -41,6 +42,8 @@ fun WhatTheCodecTheme(
     MaterialTheme(
         colors = colors,
         shapes = Shapes,
-        content = content
+        content = {
+            WhatTheCodecThemeM3(darkTheme, content)
+        }
     )
 }
