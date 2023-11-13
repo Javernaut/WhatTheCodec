@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.javernaut.whatthecodec.presentation.root.ui
 
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -8,10 +10,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.material.Scaffold
-import androidx.compose.material.ScrollableTabRow
-import androidx.compose.material.Tab
-import androidx.compose.material.Text
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.ScrollableTabRow
+import androidx.compose.material3.Tab
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -19,7 +22,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.presentation.audio.AudioPage
-import com.javernaut.whatthecodec.presentation.compose.common.WtcTopAppBar
+import com.javernaut.whatthecodec.presentation.compose.common.WtcTopAppBarM3
 import com.javernaut.whatthecodec.presentation.root.viewmodel.ScreenState
 import com.javernaut.whatthecodec.presentation.root.viewmodel.model.AvailableTab
 import com.javernaut.whatthecodec.presentation.subtitle.SubtitlePage
@@ -55,7 +58,7 @@ private fun MainScreenTopAppBar(
     pagerState: PagerState,
     menuActions: @Composable RowScope.() -> Unit = {}
 ) {
-    WtcTopAppBar(
+    WtcTopAppBarM3(
         title = {
             val scope = rememberCoroutineScope()
             ScrollableTabRow(
