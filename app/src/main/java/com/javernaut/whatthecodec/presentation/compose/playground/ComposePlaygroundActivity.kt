@@ -14,7 +14,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.javernaut.whatthecodec.presentation.compose.preference.MultiChoicePreferenceDialog
-import com.javernaut.whatthecodec.presentation.compose.theme.m3.WhatTheCodecThemeM3
+import com.javernaut.whatthecodec.presentation.compose.theme.m3.WhatTheCodecTheme
 
 class ComposePlaygroundActivity : AppCompatActivity() {
 
@@ -22,7 +22,7 @@ class ComposePlaygroundActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         var savedSelection = listOf(true, false, true)
         setContent {
-            WhatTheCodecThemeM3 {
+            WhatTheCodecTheme {
                 var dialogOpened by remember { mutableStateOf(true) }
                 Button(
                     modifier = Modifier.padding(16.dp),

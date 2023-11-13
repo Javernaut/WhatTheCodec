@@ -36,7 +36,6 @@ compose-runtime = { module = "androidx.compose.runtime:runtime", version.ref = "
 compose-ui = { module = "androidx.compose.ui:ui", version.ref = "compose-ui" }
 compose-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "compose-foundation" }
 compose-foundation-layout = { module = "androidx.compose.foundation:foundation-layout", version.ref = "compose-foundation" }
-compose-material = { module = "androidx.compose.material:material", version.ref = "compose-material" }
 compose-material3 = { module = "androidx.compose.material3:material3", version.ref = "compose-material3" }
 compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "compose-material" }
 compose-runtime-livedata = { module = "androidx.compose.runtime:runtime-livedata", version.ref = "compose-runtime" }
@@ -45,7 +44,7 @@ compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = 
 [bundles]
 coroutines = ["coroutines-core", "coroutines-android"]
 lifecycle = ["lifecycle-viewmodel-ktx", "lifecycle-livedata-ktx", "lifecycle-viewmodel-savedstate"]
-compose = ["compose-runtime", "compose-ui", "compose-foundation", "compose-foundation-layout", "compose-material", "compose-material3", "compose-material-icons-extended", "compose-runtime-livedata", "compose-ui-tooling", "androidx-activity-compose"]
+compose = ["compose-runtime", "compose-ui", "compose-foundation", "compose-foundation-layout", "compose-material3", "compose-material-icons-extended", "compose-runtime-livedata", "compose-ui-tooling", "androidx-activity-compose"]
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "gradleplugin" }

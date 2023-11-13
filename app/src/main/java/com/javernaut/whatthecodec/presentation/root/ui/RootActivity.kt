@@ -26,7 +26,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.res.stringResource
 import androidx.core.content.MimeTypeFilter
 import com.javernaut.whatthecodec.R
-import com.javernaut.whatthecodec.presentation.compose.theme.WhatTheCodecTheme
+import com.javernaut.whatthecodec.presentation.compose.theme.m3.WhatTheCodecTheme
 import com.javernaut.whatthecodec.presentation.root.viewmodel.MediaFileArgument
 import com.javernaut.whatthecodec.presentation.root.viewmodel.MediaFileViewModel
 import com.javernaut.whatthecodec.presentation.root.viewmodel.MediaFileViewModelFactory

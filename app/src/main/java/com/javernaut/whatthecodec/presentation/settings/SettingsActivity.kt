@@ -33,7 +33,7 @@ import com.javernaut.whatthecodec.presentation.compose.preference.ListPreference
 import com.javernaut.whatthecodec.presentation.compose.preference.MultiSelectListPreference
 import com.javernaut.whatthecodec.presentation.compose.preference.Preference
 import com.javernaut.whatthecodec.presentation.compose.preference.PreferenceTitle
-import com.javernaut.whatthecodec.presentation.compose.theme.WhatTheCodecTheme
+import com.javernaut.whatthecodec.presentation.compose.theme.m3.WhatTheCodecTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 class SettingsActivity : AppCompatActivity() {

@@ -2,6 +2,7 @@ package com.javernaut.whatthecodec.presentation.compose.theme
 
 import androidx.compose.ui.graphics.Color
 
+// Old M2 Colors just in case
 val BrandBlue = Color(0xFF3949AB)
 val BrandBlueVariant = Color(0xFF303F9F)
 val ThemeLightSurface = Color.White
