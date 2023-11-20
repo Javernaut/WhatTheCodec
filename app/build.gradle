@@ -133,6 +133,7 @@ dependencies {
     implementation libs.savedstate
     implementation libs.viewpager2
     implementation libs.browser
+    implementation libs.window
 
     // TODO replace with own implementation
     implementation libs.liveevent

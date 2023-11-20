@@ -4,6 +4,7 @@ detektplugin = "1.23.3"
 kotlin = "1.9.20"
 coroutines = "1.7.3"
 lifecycle = "2.6.2"
+window = "1.2.0"
 compose-animation = "1.5.4"
 compose-compiler = "1.5.4"
 compose-foundation = "1.5.4"
@@ -22,6 +23,8 @@ material = "com.google.android.material:material:1.10.0"
 lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
 lifecycle-livedata-ktx = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "lifecycle" }
 lifecycle-viewmodel-savedstate = { module = "androidx.lifecycle:lifecycle-viewmodel-savedstate", version.ref = "lifecycle" }
+
+window = { module = "androidx.window:window", version.ref = "window" }
 
 liveevent = "com.github.hadilq.liveevent:liveevent:1.2.0"
 palette = "androidx.palette:palette-ktx:1.0.0"

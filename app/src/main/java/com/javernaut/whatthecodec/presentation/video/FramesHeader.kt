@@ -1,7 +1,6 @@
 package com.javernaut.whatthecodec.presentation.video
 
 import android.app.Activity
-import android.graphics.Point
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -23,6 +22,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.window.layout.WindowMetricsCalculator
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.presentation.compose.common.GridLayout
 import com.javernaut.whatthecodec.presentation.root.viewmodel.model.ActualPreview
@@ -44,15 +44,16 @@ fun getDesiredFrameWidth(activity: Activity): Int {
 }
 
 fun getPreviewViewWidth(activity: Activity): Int {
-    val point = Point()
-    activity.windowManager.defaultDisplay.getSize(point)
-    return min(point.x, point.y)
+    val metrics = WindowMetricsCalculator.getOrCreate().computeCurrentWindowMetrics(activity)
+    return with(metrics.bounds) {
+        min(width(), height())
+    }
 }
 
 @Composable
 fun FramesHeader(preview: Preview, dstFrameWidth: Int) {
     when (preview) {
-        is NotYetEvaluated -> { }
+        is NotYetEvaluated -> {}
         is ActualPreview -> {
             val backgroundColor by animateColorAsState(Color(preview.backgroundColor))
             Box(
@@ -70,6 +71,7 @@ fun FramesHeader(preview: Preview, dstFrameWidth: Int) {
                 )
             }
         }
+
         NoPreviewAvailable -> {
             CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
                 Text(
