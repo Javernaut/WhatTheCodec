@@ -26,9 +26,6 @@ android {
             signingConfig signingConfigs.debug
         }
     }
-    lintOptions {
-        disable 'ExtraTranslation'
-    }
     buildFeatures {
         compose true
     }
@@ -116,6 +113,9 @@ android {
                 abiFilters 'x86'
             }
         }
+    }
+    lint {
+        disable 'ExtraTranslation'
     }
 }
 
