@@ -11,8 +11,8 @@ android {
         minSdk 21
         targetSdk 34
 
-        versionCode 3601
-        versionName "3.6.0"
+        versionCode 3610
+        versionName "3.6.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -94,7 +94,7 @@ android {
                 // There is no point in x86 support here, as the majority of devices with the
                 // Amazon Appstore are ARM-based. And it seems to be a common practice for other
                 // apps in this market.
-                abiFilters 'armeabi-v7a'
+                abiFilters 'armeabi-v7a', 'arm64-v8a'
             }
             signingConfig signingConfigs.amazon
         }
