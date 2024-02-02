@@ -10,7 +10,7 @@ import android.os.Process
 
 object TinyActivityCompat {
     fun needRequestReadStoragePermission(context: Context) =
-        Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
+        Build.VERSION.SDK_INT in (Build.VERSION_CODES.M..Build.VERSION_CODES.S_V2) &&
                 context.checkPermission(
                     Manifest.permission.READ_EXTERNAL_STORAGE,
                     Process.myPid(),
