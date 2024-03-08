@@ -1,22 +1,14 @@
 package com.javernaut.whatthecodec.presentation.compose.preference
 
 import androidx.annotation.StringRes
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.ContentAlpha
-import androidx.compose.material.LocalContentAlpha
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -33,19 +25,18 @@ fun Preference(
             .fillMaxWidth()
             .clickable(onClick = clickHandler)
             .padding(
-                start = 72.dp, top = 16.dp, end = 8.dp, bottom = 16.dp
+                start = commonStartPadding, top = 16.dp, end = 8.dp, bottom = 16.dp
             )
     ) {
         Text(
             title,
-            style = MaterialTheme.typography.subtitle1
+            style = MaterialTheme.typography.titleMedium
         )
-        CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
-            Text(
-                summary,
-                style = MaterialTheme.typography.body2,
-            )
-        }
+        // TODO ContentAlpha.medium
+        Text(
+            summary,
+            style = MaterialTheme.typography.bodyMedium,
+        )
     }
 }
 
@@ -62,27 +53,21 @@ fun Preference(
     )
 
 @Composable
-fun PreferenceDivider() {
-    Spacer(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(1.dp)
-            .background(Color(if (isSystemInDarkTheme()) 0xFF282828 else 0xFFD9D9D9))
-    )
-}
-
-
-@Composable
 fun PreferenceTitle(@StringRes title: Int) {
     Text(
         stringResource(id = title),
         Modifier
             .fillMaxWidth()
-            .padding(start = 72.dp, top = 24.dp, end = 8.dp, bottom = 8.dp),
-        style = MaterialTheme.typography.subtitle2,
-        color = MaterialTheme.colors.secondary
+            .padding(start = commonStartPadding, top = 24.dp, end = 8.dp, bottom = 8.dp),
+        style = MaterialTheme.typography.titleSmall,
+// TODO        color = MaterialTheme.colors.secondary
+        color = MaterialTheme.colorScheme.secondary
     )
 }
+
+// TODO Check if this should be different and adjust the TopAppBar if so
+// https://m3.material.io/components/top-app-bar/specs#2be41d8e-79cf-4f1a-abc1-962744ca9291
+private val commonStartPadding = 56.dp
 
 @Preview
 @Composable

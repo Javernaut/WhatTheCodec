@@ -8,6 +8,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
@@ -24,7 +25,6 @@ import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.presentation.compose.preference.ListPreference
 import com.javernaut.whatthecodec.presentation.compose.preference.MultiSelectListPreference
 import com.javernaut.whatthecodec.presentation.compose.preference.Preference
-import com.javernaut.whatthecodec.presentation.compose.preference.PreferenceDivider
 import com.javernaut.whatthecodec.presentation.compose.preference.PreferenceTitle
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -55,14 +55,14 @@ private fun SettingsContent(openUrl: (String) -> Unit) {
     PreferenceTitle(title = R.string.settings_category_general)
     ThemeSelectionPreference()
 
-    PreferenceDivider()
+    HorizontalDivider()
 
     PreferenceTitle(title = R.string.settings_category_content)
     PreferredVideoContentPreference()
     PreferredAudioContentPreference()
     PreferredSubtitlesContentPreference()
 
-    PreferenceDivider()
+    HorizontalDivider()
 
     PreferenceTitle(title = R.string.settings_category_about)
     OpenUrlPreference(
@@ -83,7 +83,9 @@ private fun SettingsTopAppBar(scrollBehavior: TopAppBarScrollBehavior, goUp: () 
     TopAppBar(
         title = { Text(text = stringResource(id = R.string.settings_title)) },
         navigationIcon = {
-            IconButton(onClick = goUp) {
+            IconButton(
+                onClick = goUp
+            ) {
                 Icon(
                     Icons.AutoMirrored.Filled.ArrowBack,
                     contentDescription = stringResource(id = R.string.content_description_back)

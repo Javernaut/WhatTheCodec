@@ -9,11 +9,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.Checkbox
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.RadioButton
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.RadioButton
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
@@ -219,6 +219,7 @@ private fun PreferenceRadioButton(
     clickListener: () -> Unit
 ) {
     PreferenceItemRow(clickListener) {
+        // TODO Check if the comment still takes place for M3
         // The onClick is null, which means there will be no enforcing of 48dp touch area
         RadioButton(
             modifier = Modifier.padding(horizontal = 24.dp),
@@ -228,10 +229,10 @@ private fun PreferenceRadioButton(
         Text(
             modifier = Modifier.padding(end = 24.dp),
             text = text,
-            style = MaterialTheme.typography.body1.copy(
+            style = MaterialTheme.typography.bodyLarge.copy(
                 fontSize = 18.sp
             ),
-            color = MaterialTheme.colors.onSurface
+            color = MaterialTheme.colorScheme.onSurface
         )
     }
 }
@@ -256,10 +257,10 @@ private fun PreferenceCheckboxButton(
         Text(
             modifier = Modifier.padding(end = 24.dp),
             text = text,
-            style = MaterialTheme.typography.body1.copy(
+            style = MaterialTheme.typography.bodyLarge.copy(
                 fontSize = 18.sp
             ),
-            color = MaterialTheme.colors.onSurface
+            color = MaterialTheme.colorScheme.onSurface
         )
     }
 }
