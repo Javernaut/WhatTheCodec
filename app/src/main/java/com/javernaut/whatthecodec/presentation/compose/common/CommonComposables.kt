@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun getAppBarElevation() = if (isSystemInDarkTheme()) 1.dp else AppBarDefaults.TopAppBarElevation
 
+@Deprecated("Use M3 theme with WtcTopAppBarM3() instead")
 @Composable
 fun WtcTopAppBar(
     title: @Composable () -> Unit,

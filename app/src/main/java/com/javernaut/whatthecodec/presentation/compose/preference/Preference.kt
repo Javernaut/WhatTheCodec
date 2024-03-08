@@ -18,7 +18,9 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.javernaut.whatthecodec.presentation.compose.theme.WhatTheCodecTheme
 
 @Composable
 fun Preference(
@@ -80,4 +82,16 @@ fun PreferenceTitle(@StringRes title: Int) {
         style = MaterialTheme.typography.subtitle2,
         color = MaterialTheme.colors.secondary
     )
+}
+
+@Preview
+@Composable
+fun PreferencePreview() {
+    WhatTheCodecTheme {
+        Preference(
+            title = "Title",
+            summary = "Summary",
+            clickHandler = {}
+        )
+    }
 }
