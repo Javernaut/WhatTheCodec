@@ -2,13 +2,12 @@ package com.javernaut.whatthecodec.presentation.compose.preference
 
 import android.preference.PreferenceManager
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
@@ -85,11 +84,13 @@ fun SingleChoicePreferenceDialog(
             clickListener(selectedIndex)
         }
     ) {
-        items.forEachIndexed { index, item ->
-            PreferenceRadioButton(
-                item, index == selectedIndex
-            ) {
-                selectedIndex = index
+        Column {
+            items.forEachIndexed { index, item ->
+                PreferenceRadioButton(
+                    item, index == selectedIndex
+                ) {
+                    selectedIndex = index
+                }
             }
         }
     }
@@ -161,27 +162,24 @@ fun MultiChoicePreferenceDialog(
         }
     ) {
         // TODO Consider scrolling
-        items.forEachIndexed { index, item ->
-            PreferenceCheckboxButton(
-                item, itemsStates[index]
-            )
+        Column {
+            items.forEachIndexed { index, item ->
+                PreferenceCheckboxButton(
+                    item, itemsStates[index]
+                )
+            }
         }
     }
 }
 
 @Composable
-private fun DefaultPreferenceDialogActions(
-    dismissRequest: () -> Unit,
-    applyRequest: () -> Unit
-) {
-    CancelDialogButton(dismissRequest)
-    Spacer(modifier = Modifier.width(8.dp))
+private fun ApplyDialogButton(applyRequest: () -> Unit, dismissRequest: () -> Unit) {
     TextButton(onClick = {
         applyRequest()
         dismissRequest()
     }) {
         Text(
-            stringResource(id = android.R.string.ok).toUpperCase(),
+            stringResource(id = android.R.string.ok),
         )
     }
 }
@@ -190,7 +188,7 @@ private fun DefaultPreferenceDialogActions(
 private fun CancelDialogButton(dismissRequest: () -> Unit) {
     TextButton(onClick = dismissRequest) {
         Text(
-            stringResource(id = android.R.string.cancel).toUpperCase(),
+            stringResource(id = android.R.string.cancel),
         )
     }
 }
@@ -200,14 +198,13 @@ private fun PreferenceDialog(
     title: String,
     dismissRequest: () -> Unit,
     applyRequest: () -> Unit,
-    buttons: @Composable (RowScope.() -> Unit) = {
-        DefaultPreferenceDialogActions(dismissRequest, applyRequest)
-    },
     content: @Composable () -> Unit
 ) {
     WtcDialog(
-        title, dismissRequest,
-        buttons = buttons,
+        title,
+        dismissRequest,
+        dismissButton = { CancelDialogButton(dismissRequest) },
+        confirmButton = { ApplyDialogButton(applyRequest, dismissRequest) },
         content = content
     )
 }
