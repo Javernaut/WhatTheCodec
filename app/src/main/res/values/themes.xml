@@ -28,4 +28,6 @@
         <item name="colorPrimary">@color/colorSecondary</item>
     </style>
 
+    <style name="Theme.WhatTheCodecM3" parent="android:Theme.Material.Light.NoActionBar" />
+
 </resources>

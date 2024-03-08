@@ -4,20 +4,21 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.annotation.StringRes
-import androidx.appcompat.app.AppCompatActivity
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringArrayResource
@@ -29,17 +30,17 @@ import com.javernaut.whatthecodec.presentation.compose.preference.MultiSelectLis
 import com.javernaut.whatthecodec.presentation.compose.preference.Preference
 import com.javernaut.whatthecodec.presentation.compose.preference.PreferenceDivider
 import com.javernaut.whatthecodec.presentation.compose.preference.PreferenceTitle
-import com.javernaut.whatthecodec.presentation.compose.theme.WhatTheCodecTheme
+import com.javernaut.whatthecodec.presentation.compose.theme3.WhatTheCodecM3Theme
 
-class SettingsActivity : AppCompatActivity() {
+class SettingsActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
+
         super.onCreate(savedInstanceState)
 
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
         setContent {
-            WhatTheCodecTheme {
+            WhatTheCodecM3Theme {
                 SettingsScreen()
             }
         }
@@ -98,9 +99,12 @@ class SettingsActivity : AppCompatActivity() {
         WtcTopAppBar(
             title = { Text(text = stringResource(id = R.string.settings_title)) },
             navigationIcon = {
-                IconButton(onClick = { onSupportNavigateUp() }) {
+                IconButton(onClick = {
+                    // TODO Navigate up with nav controller instead
+                    finish()
+                }) {
                     Icon(
-                        Icons.Default.ArrowBack,
+                        Icons.AutoMirrored.Filled.ArrowBack,
                         contentDescription = stringResource(id = R.string.content_description_back)
                     )
                 }
