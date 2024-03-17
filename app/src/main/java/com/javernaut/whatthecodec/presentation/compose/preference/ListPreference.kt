@@ -4,13 +4,13 @@ import android.preference.PreferenceManager
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -18,6 +18,7 @@ import androidx.compose.material3.Checkbox
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -29,10 +30,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.presentation.compose.common.WtcDialog
 
@@ -230,21 +229,16 @@ private fun PreferenceRadioButton(
     selected: Boolean,
     clickListener: () -> Unit
 ) {
-    PreferenceItemRow(clickListener) {
-        // TODO Check if the comment still takes place for M3
-        // The onClick is null, which means there will be no enforcing of 48dp touch area
+    PreferenceItemRow(
+        clickListener, selected
+    ) {
         RadioButton(
-            modifier = Modifier.padding(horizontal = 24.dp),
             selected = selected,
             onClick = null
         )
         Text(
-            modifier = Modifier.padding(end = 24.dp),
             text = text,
-            style = MaterialTheme.typography.bodyLarge.copy(
-                fontSize = 18.sp
-            ),
-            color = MaterialTheme.colorScheme.onSurface
+            style = MaterialTheme.typography.bodyLarge
         )
     }
 }
@@ -254,25 +248,19 @@ private fun PreferenceCheckboxButton(
     text: String,
     selected: MutableState<Boolean>,
 ) {
-    PreferenceItemRow(clickListener = {
-        selected.value = !selected.value
-    }) {
-        // The onClick is not null, so the size of the Checkbox itself will be 48dp.
-        // So applying smaller paddings.
+    PreferenceItemRow(
+        clickListener = {
+            selected.value = !selected.value
+        },
+        checked = selected.value
+    ) {
         Checkbox(
-            modifier = Modifier.padding(horizontal = 12.dp),
             checked = selected.value,
-            onCheckedChange = {
-                selected.value = it
-            }
+            onCheckedChange = null
         )
         Text(
-            modifier = Modifier.padding(end = 24.dp),
             text = text,
-            style = MaterialTheme.typography.bodyLarge.copy(
-                fontSize = 18.sp
-            ),
-            color = MaterialTheme.colorScheme.onSurface
+            style = MaterialTheme.typography.bodyLarge,
         )
     }
 }
@@ -280,23 +268,35 @@ private fun PreferenceCheckboxButton(
 @Composable
 private fun PreferenceItemRow(
     clickListener: () -> Unit,
-    content: @Composable RowScope.() -> Unit,
+    checked: Boolean,
+    content: @Composable RowScope.() -> Unit
 ) {
-    Row(
-        Modifier
-            .fillMaxWidth()
-            .heightIn(min = dimensionResource(id = R.dimen.common_clickable_item_height))
-            .clickable(onClick = clickListener),
-        verticalAlignment = Alignment.CenterVertically,
-        content = content
-    )
+    Surface(
+        onClick = clickListener,
+        shape = MaterialTheme.shapes.medium,
+        tonalElevation = if (checked) 5.dp else 0.dp,
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .sizeIn(minHeight = 48.dp)
+                .padding(horizontal = 10.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = spacedBy(8.dp),
+            content = content
+        )
+    }
 }
 
 @Composable
 private fun ListPreferenceDialogContent(content: LazyListScope.() -> Unit) {
     Box {
         val listState = rememberLazyListState()
-        LazyColumn(state = listState, content = content)
+        LazyColumn(
+            state = listState,
+            verticalArrangement = spacedBy(4.dp),
+            content = content
+        )
 
         // Top divider
         ListPreferenceDialogDivider(
