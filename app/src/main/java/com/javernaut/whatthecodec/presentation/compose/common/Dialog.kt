@@ -1,6 +1,7 @@
 package com.javernaut.whatthecodec.presentation.compose.common
 
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 
 @Composable
@@ -12,7 +13,7 @@ fun WtcDialog(
     content: @Composable () -> Unit
 ) {
     AlertDialog(
-        title = { androidx.compose.material3.Text(text = title) },
+        title = { Text(text = title) },
         onDismissRequest = onDismissRequest,
         confirmButton = confirmButton,
         dismissButton = dismissButton,
