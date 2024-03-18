@@ -80,6 +80,7 @@ private fun SettingsContent(openUrl: (String) -> Unit) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun SettingsTopAppBar(scrollBehavior: TopAppBarScrollBehavior, goUp: () -> Unit) {
+    // TODO Think about another color for the status bar
     TopAppBar(
         title = { Text(text = stringResource(id = R.string.settings_title)) },
         navigationIcon = {

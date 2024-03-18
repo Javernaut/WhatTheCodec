@@ -274,7 +274,7 @@ private fun PreferenceItemRow(
     Surface(
         onClick = clickListener,
         shape = MaterialTheme.shapes.medium,
-        tonalElevation = if (checked) 5.dp else 0.dp,
+        tonalElevation = if (checked) 8.dp else 0.dp,
     ) {
         Row(
             modifier = Modifier
