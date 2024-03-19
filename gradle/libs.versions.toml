@@ -1,6 +1,6 @@
 [versions]
-gradleplugin = "8.3.0"
-detektplugin = "1.23.4"
+gradleplugin = "8.3.1"
+detektplugin = "1.23.5"
 kotlin = "1.9.22"
 coroutines = "1.8.0"
 lifecycle = "2.7.0"
@@ -31,7 +31,7 @@ liveevent = "com.github.hadilq.liveevent:liveevent:1.2.0"
 palette = "androidx.palette:palette-ktx:1.0.0"
 savedstate = "androidx.savedstate:savedstate:1.2.1"
 viewpager2 = "androidx.viewpager2:viewpager2:1.0.0"
-browser = "androidx.browser:browser:1.7.0"
+browser = "androidx.browser:browser:1.8.0"
 androidx-appcompat = "androidx.appcompat:appcompat:1.6.1"
 
 androidx-activity-compose = "androidx.activity:activity-compose:1.8.2"
