@@ -1,12 +1,10 @@
 package com.javernaut.whatthecodec.presentation.root.ui
 
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MusicNote
 import androidx.compose.material.icons.filled.Settings
@@ -48,7 +46,7 @@ fun EmptyScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun EmptyScreenTopAppBar(
-    onSettingsClicked: () -> Unit = {}
+    onSettingsClicked: () -> Unit
 ) {
     TopAppBar(
         title = { Text(text = stringResource(id = R.string.app_name)) },
@@ -69,56 +67,54 @@ private fun EmptyScreenContent(
     onAudioIconClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Box(modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Text(
-                text = stringResource(id = R.string.empty_root_description),
-                style = MaterialTheme.typography.headlineSmall,
-                textAlign = TextAlign.Center,
-                color = MaterialTheme.colorScheme.onSurface
+    Column(
+        modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = spacedBy(24.dp, Alignment.CenterVertically)
+    ) {
+        Text(
+            text = stringResource(id = R.string.empty_root_description),
+            style = MaterialTheme.typography.headlineSmall,
+            textAlign = TextAlign.Center,
+            color = MaterialTheme.colorScheme.onSurface
+        )
+        Text(
+            text = stringResource(id = R.string.empty_root_choose),
+            style = MaterialTheme.typography.titleLarge,
+            textAlign = TextAlign.Center,
+            color = MaterialTheme.colorScheme.onSurface
+        )
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            EmptyScreenMainAction(
+                Icons.Filled.Videocam,
+                R.string.tab_video,
+                onVideoIconClick
             )
-            Spacer(modifier = Modifier.size(24.dp))
             Text(
-                text = stringResource(id = R.string.empty_root_choose),
+                modifier = Modifier.padding(horizontal = 16.dp),
+                text = stringResource(id = R.string.empty_root_or),
                 style = MaterialTheme.typography.titleLarge,
-                textAlign = TextAlign.Center,
                 color = MaterialTheme.colorScheme.onSurface
             )
-            Spacer(modifier = Modifier.size(24.dp))
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                EmptyScreenIcon(
-                    Icons.Filled.Videocam,
-                    R.string.tab_video,
-                    onVideoIconClick
-                )
-                Text(
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                    text = stringResource(id = R.string.empty_root_or),
-                    style = MaterialTheme.typography.titleLarge,
-                    color = MaterialTheme.colorScheme.onSurface
-                )
-                EmptyScreenIcon(
-                    Icons.Filled.MusicNote,
-                    R.string.tab_audio,
-                    onAudioIconClick
-                )
-            }
+            EmptyScreenMainAction(
+                Icons.Filled.MusicNote,
+                R.string.tab_audio,
+                onAudioIconClick
+            )
         }
     }
 }
 
 @Composable
-private fun EmptyScreenIcon(
+private fun EmptyScreenMainAction(
     image: ImageVector,
-    contentDescriptionResId: Int,
+    text: Int,
     clickListener: () -> Unit
 ) {
-    val textContent = stringResource(id = contentDescriptionResId)
-
     ExtendedFloatingActionButton(
         onClick = clickListener,
-        icon = { Icon(image, textContent) },
-        text = { Text(text = textContent) },
+        icon = { Icon(image, null) },
+        text = { Text(text = stringResource(id = text)) },
     )
 }
 
