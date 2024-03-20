@@ -26,6 +26,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.core.content.MimeTypeFilter
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.presentation.compose.theme.WhatTheCodecTheme
+import com.javernaut.whatthecodec.presentation.compose.theme3.WhatTheCodecM3Theme
 import com.javernaut.whatthecodec.presentation.root.viewmodel.MediaFileArgument
 import com.javernaut.whatthecodec.presentation.root.viewmodel.MediaFileViewModel
 import com.javernaut.whatthecodec.presentation.root.viewmodel.MediaFileViewModelFactory
@@ -46,13 +47,15 @@ class RootActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            WhatTheCodecTheme {
-                val screenState by mediaFileViewModel.screenState.observeAsState()
-                if (screenState == null) {
+            val screenState by mediaFileViewModel.screenState.observeAsState()
+            if (screenState == null) {
+                WhatTheCodecM3Theme {
                     EmptyScreen(::onPickVideoClicked, ::onPickAudioClicked) {
-                        CommonMenuItems()
+                        SettingsActivity.start(this@RootActivity)
                     }
-                } else {
+                }
+            } else {
+                WhatTheCodecTheme {
                     MainScreen(screenState!!) {
                         SelectFileMenuItems()
                         CommonMenuItems()
@@ -127,6 +130,7 @@ class RootActivity : AppCompatActivity() {
                     toast(R.string.message_permission_denied)
                 }
             }
+
             else -> {
                 super.onRequestPermissionsResult(requestCode, permissions, grantResults)
             }

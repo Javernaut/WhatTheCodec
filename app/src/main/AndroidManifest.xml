@@ -36,7 +36,8 @@
             android:exported="false"
             android:label="@string/settings_title"
             android:parentActivityName="com.javernaut.whatthecodec.presentation.root.ui.RootActivity"
-            android:theme="@style/Theme.WhatTheCodecM3" />
+            android:theme="@style/Theme.WhatTheCodecM3"
+            android:windowSoftInputMode="adjustResize" />
     </application>
 
 </manifest>
