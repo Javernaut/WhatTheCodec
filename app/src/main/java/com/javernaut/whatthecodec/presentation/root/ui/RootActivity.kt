@@ -7,22 +7,8 @@ import android.widget.Toast
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.material.DropdownMenu
-import androidx.compose.material.DropdownMenuItem
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material.icons.filled.MusicNote
-import androidx.compose.material.icons.filled.Videocam
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.ui.res.stringResource
 import androidx.core.content.MimeTypeFilter
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.presentation.compose.theme.WhatTheCodecTheme
@@ -56,9 +42,8 @@ class RootActivity : AppCompatActivity() {
                 }
             } else {
                 WhatTheCodecTheme {
-                    MainScreen(screenState!!) {
-                        SelectFileMenuItems()
-                        CommonMenuItems()
+                    MainScreen(screenState!!, ::onPickVideoClicked, ::onPickAudioClicked) {
+                        SettingsActivity.start(this@RootActivity)
                     }
                 }
             }
@@ -133,49 +118,6 @@ class RootActivity : AppCompatActivity() {
 
             else -> {
                 super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-            }
-        }
-    }
-
-    @Composable
-    private fun SelectFileMenuItems() {
-        IconButton(onClick = ::onPickVideoClicked) {
-            Icon(
-                Icons.Filled.Videocam,
-                contentDescription = stringResource(id = R.string.menu_pick_video),
-            )
-        }
-        IconButton(onClick = ::onPickAudioClicked) {
-            Icon(
-                Icons.Filled.MusicNote,
-                contentDescription = stringResource(id = R.string.menu_pick_audio),
-            )
-        }
-    }
-
-    @Composable
-    private fun CommonMenuItems() {
-        val expanded = remember { mutableStateOf(false) }
-        IconButton(onClick = { expanded.value = true }) {
-            Icon(
-                Icons.Filled.MoreVert,
-                contentDescription = stringResource(id = R.string.menu_more),
-            )
-        }
-        MoreSettingsDropdown(expanded)
-    }
-
-    @Composable
-    private fun MoreSettingsDropdown(expanded: MutableState<Boolean>) {
-        DropdownMenu(
-            expanded = expanded.value,
-            onDismissRequest = { expanded.value = false }
-        ) {
-            DropdownMenuItem(onClick = {
-                SettingsActivity.start(this@RootActivity)
-                expanded.value = false
-            }) {
-                Text(stringResource(id = R.string.menu_settings))
             }
         }
     }

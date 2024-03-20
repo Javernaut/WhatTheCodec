@@ -1,17 +1,22 @@
 package com.javernaut.whatthecodec.presentation.root.ui
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.Scaffold
 import androidx.compose.material.ScrollableTabRow
 import androidx.compose.material.Tab
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.MusicNote
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.Videocam
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -30,7 +35,9 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalFoundationApi::class)
 fun MainScreen(
     screenState: ScreenState,
-    menuActions: @Composable RowScope.() -> Unit = {}
+    onVideoIconClick: () -> Unit,
+    onAudioIconClick: () -> Unit,
+    onSettingsClicked: () -> Unit
 ) {
     val tabsToShow = screenState.availableTabs
     val pagerState = rememberPagerState(
@@ -41,7 +48,13 @@ fun MainScreen(
     }
     Scaffold(
         topBar = {
-            MainScreenTopAppBar(tabsToShow = tabsToShow, pagerState, menuActions)
+            MainScreenTopAppBar(
+                tabsToShow = tabsToShow,
+                pagerState,
+                onVideoIconClick,
+                onAudioIconClick,
+                onSettingsClicked
+            )
         }
     ) {
         MainScreenContent(Modifier.padding(it), tabsToShow, screenState, pagerState)
@@ -53,7 +66,9 @@ fun MainScreen(
 private fun MainScreenTopAppBar(
     tabsToShow: List<AvailableTab>,
     pagerState: PagerState,
-    menuActions: @Composable RowScope.() -> Unit = {}
+    onVideoIconClick: () -> Unit,
+    onAudioIconClick: () -> Unit,
+    onSettingsClicked: () -> Unit
 ) {
     WtcTopAppBar(
         title = {
@@ -78,7 +93,26 @@ private fun MainScreenTopAppBar(
                 }
             }
         },
-        actions = menuActions
+        actions = {
+            IconButton(onClick = onVideoIconClick) {
+                Icon(
+                    Icons.Filled.Videocam,
+                    contentDescription = stringResource(id = R.string.menu_pick_video),
+                )
+            }
+            IconButton(onClick = onAudioIconClick) {
+                Icon(
+                    Icons.Filled.MusicNote,
+                    contentDescription = stringResource(id = R.string.menu_pick_audio),
+                )
+            }
+            IconButton(onClick = onSettingsClicked) {
+                Icon(
+                    imageVector = Icons.Filled.Settings,
+                    contentDescription = stringResource(id = R.string.menu_settings),
+                )
+            }
+        }
     )
 }
 
