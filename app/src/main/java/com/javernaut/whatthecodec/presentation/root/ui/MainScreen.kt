@@ -7,16 +7,18 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.Scaffold
-import androidx.compose.material.ScrollableTabRow
-import androidx.compose.material.Tab
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MusicNote
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Videocam
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.ScrollableTabRow
+import androidx.compose.material3.Tab
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -24,7 +26,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.presentation.audio.AudioPage
-import com.javernaut.whatthecodec.presentation.compose.common.WtcTopAppBar
 import com.javernaut.whatthecodec.presentation.root.viewmodel.ScreenState
 import com.javernaut.whatthecodec.presentation.root.viewmodel.model.AvailableTab
 import com.javernaut.whatthecodec.presentation.subtitle.SubtitlePage
@@ -40,10 +41,7 @@ fun MainScreen(
     onSettingsClicked: () -> Unit
 ) {
     val tabsToShow = screenState.availableTabs
-    val pagerState = rememberPagerState(
-        initialPage = 0,
-        initialPageOffsetFraction = 0f
-    ) {
+    val pagerState = rememberPagerState {
         tabsToShow.size
     }
     Scaffold(
@@ -61,6 +59,7 @@ fun MainScreen(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 @ExperimentalFoundationApi
 private fun MainScreenTopAppBar(
@@ -70,7 +69,7 @@ private fun MainScreenTopAppBar(
     onAudioIconClick: () -> Unit,
     onSettingsClicked: () -> Unit
 ) {
-    WtcTopAppBar(
+    TopAppBar(
         title = {
             val scope = rememberCoroutineScope()
             ScrollableTabRow(

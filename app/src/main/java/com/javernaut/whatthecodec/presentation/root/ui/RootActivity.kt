@@ -5,6 +5,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.getValue
@@ -30,20 +31,21 @@ class RootActivity : AppCompatActivity() {
     private var intentActionViewConsumed = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
 
         setContent {
-            val screenState by mediaFileViewModel.screenState.observeAsState()
-            if (screenState == null) {
-                WhatTheCodecM3Theme {
+            WhatTheCodecM3Theme {
+                val screenState by mediaFileViewModel.screenState.observeAsState()
+                if (screenState == null) {
                     EmptyScreen(::onPickVideoClicked, ::onPickAudioClicked) {
                         SettingsActivity.start(this@RootActivity)
                     }
-                }
-            } else {
-                WhatTheCodecTheme {
-                    MainScreen(screenState!!, ::onPickVideoClicked, ::onPickAudioClicked) {
-                        SettingsActivity.start(this@RootActivity)
+                } else {
+                    WhatTheCodecTheme {
+                        MainScreen(screenState!!, ::onPickVideoClicked, ::onPickAudioClicked) {
+                            SettingsActivity.start(this@RootActivity)
+                        }
                     }
                 }
             }
