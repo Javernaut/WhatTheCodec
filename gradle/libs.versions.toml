@@ -1,14 +1,14 @@
 [versions]
 gradleplugin = "8.3.1"
 detektplugin = "1.23.5"
-kotlin = "1.9.22"
+kotlin = "1.9.23"
 coroutines = "1.8.0"
 lifecycle = "2.7.0"
 window = "1.2.0"
 
 androidx-activity-compose = "1.8.2"
-androidx-compose-bom = "2024.02.02"
-androidx-compose-compiler = "1.5.10"
+androidx-compose-bom = "2024.03.00"
+androidx-compose-compiler = "1.5.11"
 
 [libraries]
 mediafile = "io.github.javernaut:mediafile:1.1.0"
