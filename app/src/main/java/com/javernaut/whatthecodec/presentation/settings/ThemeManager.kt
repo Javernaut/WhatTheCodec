@@ -20,7 +20,7 @@ object ThemeManager {
             "light" -> AppCompatDelegate.MODE_NIGHT_NO
             "dark" -> AppCompatDelegate.MODE_NIGHT_YES
             "auto" -> getAutoNightMode()
-            else -> throw IllegalArgumentException("illegal value of theme preference: $mode")
+            else -> throw IllegalArgumentException("Illegal value of theme preference: $mode")
         }
         AppCompatDelegate.setDefaultNightMode(nightMode)
     }
