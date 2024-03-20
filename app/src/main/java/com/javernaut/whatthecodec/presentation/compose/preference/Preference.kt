@@ -3,16 +3,22 @@ package com.javernaut.whatthecodec.presentation.compose.preference
 import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
-import com.javernaut.whatthecodec.presentation.compose.theme.WhatTheCodecTheme
+import com.javernaut.whatthecodec.R
+import com.javernaut.whatthecodec.presentation.compose.theme3.WhatTheCodecM3Theme
 
 @Composable
 fun Preference(
@@ -22,17 +28,15 @@ fun Preference(
 ) {
     Column(
         Modifier
-            .fillMaxWidth()
             .clickable(onClick = clickHandler)
-            .padding(
-                start = commonStartPadding, top = 16.dp, end = 8.dp, bottom = 16.dp
-            )
+            .fillMaxWidth()
+            .heightIn(min = 48.dp)
+            .padding(16.dp)
     ) {
         Text(
             title,
             style = MaterialTheme.typography.titleMedium
         )
-        // TODO ContentAlpha.medium
         Text(
             summary,
             style = MaterialTheme.typography.bodyMedium,
@@ -53,30 +57,78 @@ fun Preference(
     )
 
 @Composable
-fun PreferenceTitle(@StringRes title: Int) {
+fun PreferenceGroup(
+    content: @Composable ColumnScope.() -> Unit
+) {
+    Surface(
+        shape = MaterialTheme.shapes.medium,
+        color = MaterialTheme.colorScheme.surfaceContainer
+    ) {
+        Column(content = content)
+    }
+}
+
+@Composable
+fun PreferenceGroup(
+    @StringRes title: Int,
+    content: @Composable ColumnScope.() -> Unit
+) {
+    Column {
+        PreferenceTitle(title = title)
+        PreferenceGroup(content = content)
+    }
+}
+
+@Composable
+fun PreferenceDivider() {
+    HorizontalDivider(Modifier.padding(horizontal = 16.dp))
+}
+
+@Composable
+private fun PreferenceTitle(@StringRes title: Int) {
     Text(
         stringResource(id = title),
         Modifier
             .fillMaxWidth()
-            .padding(start = commonStartPadding, top = 24.dp, end = 8.dp, bottom = 8.dp),
+            .heightIn(min = 32.dp)
+            .padding(horizontal = 16.dp, vertical = 8.dp),
         style = MaterialTheme.typography.titleSmall,
-// TODO        color = MaterialTheme.colors.secondary
         color = MaterialTheme.colorScheme.secondary
     )
 }
 
-// TODO Check if this should be different and adjust the TopAppBar if so
-// https://m3.material.io/components/top-app-bar/specs#2be41d8e-79cf-4f1a-abc1-962744ca9291
-private val commonStartPadding = 56.dp
-
 @Preview
 @Composable
-fun PreferencePreview() {
-    WhatTheCodecTheme {
-        Preference(
-            title = "Title",
-            summary = "Summary",
-            clickHandler = {}
-        )
+private fun PreferencePreview() {
+    WhatTheCodecM3Theme {
+        PreferenceGroup {
+            Preference(
+                title = "Title",
+                summary = "Summary",
+                clickHandler = {}
+            )
+        }
+    }
+}
+
+@PreviewLightDark
+@Composable
+private fun PreviewPreferenceGroup() {
+    WhatTheCodecM3Theme {
+        Column {
+            PreferenceGroup(R.string.settings_title) {
+                Preference(title = "Title", summary = "Summary") {
+
+                }
+                PreferenceDivider()
+                Preference(title = "Title3", summary = "Summary2") {
+
+                }
+                PreferenceDivider()
+                Preference(title = "Title3", summary = "Summary3") {
+
+                }
+            }
+        }
     }
 }

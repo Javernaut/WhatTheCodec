@@ -1,14 +1,15 @@
 package com.javernaut.whatthecodec.presentation.settings
 
 import androidx.annotation.StringRes
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
@@ -21,11 +22,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.unit.dp
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.presentation.compose.preference.ListPreference
 import com.javernaut.whatthecodec.presentation.compose.preference.MultiSelectListPreference
 import com.javernaut.whatthecodec.presentation.compose.preference.Preference
-import com.javernaut.whatthecodec.presentation.compose.preference.PreferenceTitle
+import com.javernaut.whatthecodec.presentation.compose.preference.PreferenceDivider
+import com.javernaut.whatthecodec.presentation.compose.preference.PreferenceGroup
+import com.javernaut.whatthecodec.presentation.compose.theme3.WhatTheCodecM3Theme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -44,6 +49,8 @@ fun SettingsScreen(
             Modifier
                 .verticalScroll(rememberScrollState())
                 .padding(it)
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             SettingsContent(openUrl)
         }
@@ -51,36 +58,37 @@ fun SettingsScreen(
 }
 
 @Composable
-private fun SettingsContent(openUrl: (String) -> Unit) {
-    PreferenceTitle(title = R.string.settings_category_general)
-    ThemeSelectionPreference()
+private fun ColumnScope.SettingsContent(openUrl: (String) -> Unit) {
+    PreferenceGroup(title = R.string.settings_category_general) {
+        ThemeSelectionPreference()
+    }
 
-    HorizontalDivider()
+    PreferenceGroup(title = R.string.settings_category_content) {
+        PreferredVideoContentPreference()
+        PreferenceDivider()
+        PreferredAudioContentPreference()
+        PreferenceDivider()
+        PreferredSubtitlesContentPreference()
+    }
 
-    PreferenceTitle(title = R.string.settings_category_content)
-    PreferredVideoContentPreference()
-    PreferredAudioContentPreference()
-    PreferredSubtitlesContentPreference()
-
-    HorizontalDivider()
-
-    PreferenceTitle(title = R.string.settings_category_about)
-    OpenUrlPreference(
-        title = R.string.settings_source_code_title,
-        summary = R.string.settings_source_code_summary,
-        openUrl = openUrl
-    )
-    OpenUrlPreference(
-        title = R.string.settings_privacy_policy_title,
-        summary = R.string.settings_privacy_policy_summary,
-        openUrl = openUrl
-    )
+    PreferenceGroup(title = R.string.settings_category_about) {
+        OpenUrlPreference(
+            title = R.string.settings_source_code_title,
+            summary = R.string.settings_source_code_summary,
+            openUrl = openUrl
+        )
+        PreferenceDivider()
+        OpenUrlPreference(
+            title = R.string.settings_privacy_policy_title,
+            summary = R.string.settings_privacy_policy_summary,
+            openUrl = openUrl
+        )
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun SettingsTopAppBar(scrollBehavior: TopAppBarScrollBehavior, goUp: () -> Unit) {
-    // TODO Think about another color for the status bar
     TopAppBar(
         title = { Text(text = stringResource(id = R.string.settings_title)) },
         navigationIcon = {
@@ -158,5 +166,13 @@ private fun OpenUrlPreference(
     val url = stringResource(id = summary)
     Preference(title = title, summary = summary) {
         openUrl(url)
+    }
+}
+
+@PreviewLightDark
+@Composable
+private fun PreviewSettingsScreen() {
+    WhatTheCodecM3Theme {
+        SettingsScreen({}, {})
     }
 }
