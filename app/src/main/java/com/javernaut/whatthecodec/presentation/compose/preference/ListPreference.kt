@@ -22,7 +22,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -178,9 +177,12 @@ fun MultiChoicePreferenceDialog(
                     items[it]
                 }
             ) { index ->
+                var value by itemsStates[index]
                 PreferenceCheckboxButton(
-                    items[index], itemsStates[index]
-                )
+                    items[index], value
+                ) {
+                    value = it
+                }
             }
         }
     }
@@ -246,16 +248,17 @@ private fun PreferenceRadioButton(
 @Composable
 private fun PreferenceCheckboxButton(
     text: String,
-    selected: MutableState<Boolean>,
+    checked: Boolean,
+    onCheckedChange: (Boolean) -> Unit,
 ) {
     PreferenceItemRow(
         clickListener = {
-            selected.value = !selected.value
+            onCheckedChange(!checked)
         },
-        checked = selected.value
+        checked = checked
     ) {
         Checkbox(
-            checked = selected.value,
+            checked = checked,
             onCheckedChange = null
         )
         Text(
