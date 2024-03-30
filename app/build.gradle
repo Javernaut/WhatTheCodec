@@ -137,6 +137,7 @@ dependencies {
     implementation libs.viewpager2
     implementation libs.browser
     implementation libs.window
+    implementation libs.androidx.navigation.compose
 
     // TODO replace with own implementation
     implementation libs.liveevent

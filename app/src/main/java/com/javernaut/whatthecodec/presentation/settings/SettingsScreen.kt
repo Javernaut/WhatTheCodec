@@ -1,6 +1,9 @@
 package com.javernaut.whatthecodec.presentation.settings
 
+import android.content.Context
+import android.net.Uri
 import androidx.annotation.StringRes
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -20,6 +23,7 @@ import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
@@ -31,6 +35,20 @@ import com.javernaut.whatthecodec.presentation.compose.preference.Preference
 import com.javernaut.whatthecodec.presentation.compose.preference.PreferenceDivider
 import com.javernaut.whatthecodec.presentation.compose.preference.PreferenceGroup
 import com.javernaut.whatthecodec.presentation.compose.theme3.WhatTheCodecM3Theme
+
+@Composable
+fun SettingsScreen(goUp: () -> Unit) {
+    val context = LocalContext.current
+    SettingsScreen(openUrl = {
+        openUrl(context, it)
+    }, goUp)
+}
+
+private fun openUrl(context: Context, url: String) {
+    CustomTabsIntent.Builder()
+        .build()
+        .launchUrl(context, Uri.parse(url))
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
