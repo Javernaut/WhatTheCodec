@@ -9,7 +9,6 @@ import javax.inject.Inject
 import kotlin.math.min
 
 class FrameMetricsProvider @Inject constructor(
-    // TODO App context isn't suitable for getting the window metrics
     @ApplicationContext context: Context
 ) {
     private val desiredFrameWidth = getDesiredFrameWidth(context)
@@ -34,7 +33,7 @@ private fun getDesiredFrameWidth(context: Context): Int {
 
 // TODO Make private
 fun getPreviewViewWidth(context: Context): Int {
-    val metrics = WindowMetricsCalculator.getOrCreate().computeCurrentWindowMetrics(context)
+    val metrics = WindowMetricsCalculator.getOrCreate().computeMaximumWindowMetrics(context)
     return with(metrics.bounds) {
         min(width(), height())
     }
