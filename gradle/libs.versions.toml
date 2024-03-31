@@ -52,6 +52,6 @@ lifecycle = ["lifecycle-viewmodel-ktx", "lifecycle-livedata-ktx", "lifecycle-vie
 compose = ["androidx-compose-runtime", "androidx-compose-ui", "androidx-compose-foundation", "androidx-compose-foundation-layout", "androidx-compose-material", "androidx-compose-material-icons-extended", "androidx-compose-runtime-livedata", "androidx-compose-ui-tooling", "androidx-activity-compose", "androidx-compose-material3"]
 
 [plugins]
-android-application = { id = "com.android.application", version.ref = "gradleplugin" }
-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+androidApplication = { id = "com.android.application", version.ref = "gradleplugin" }
+jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detektplugin" }
