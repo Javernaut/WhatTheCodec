@@ -126,8 +126,8 @@ android {
 
 dependencies {
     ksp(libs.dagger.compiler)
-    ksp(libs.hilt.compiler)
-    implementation(libs.hilt.android)
+    ksp(libs.dagger.hilt.compiler)
+    implementation(libs.dagger.hilt.android)
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.bundles.compose)

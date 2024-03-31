@@ -12,12 +12,15 @@ import com.javernaut.whatthecodec.presentation.root.viewmodel.model.FrameMetrics
 import com.javernaut.whatthecodec.presentation.root.viewmodel.model.NoPreviewAvailable
 import com.javernaut.whatthecodec.presentation.root.viewmodel.model.NotYetEvaluated
 import com.javernaut.whatthecodec.presentation.root.viewmodel.model.Preview
+import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.javernaut.mediafile.AudioStream
 import io.github.javernaut.mediafile.MediaFile
 import io.github.javernaut.mediafile.SubtitleStream
+import javax.inject.Inject
 
-class MediaFileViewModel(
-    private val desiredFrameWidth: Int,
+@HiltViewModel
+class MediaFileViewModel @Inject constructor(
+    private val frameMetricsProvider: FrameMetricsProvider,
     private val mediaFileProvider: MediaFileProvider,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
@@ -26,8 +29,6 @@ class MediaFileViewModel(
 
     private var mediaFile: MediaFile? = null
     private var frameLoaderHelper: FrameLoaderHelper? = null
-
-    private var frameMetrics: FrameMetrics? = null
 
     private val _screenState = MutableLiveData<ScreenState?>()
     private val _errorMessageLiveEvent = LiveEvent<Boolean>()
@@ -84,7 +85,7 @@ class MediaFileViewModel(
             mediaFile.audioStreams,
             mediaFile.subtitleStreams
         )
-        frameMetrics = computeFrameMetrics()
+        val frameMetrics = computeFrameMetrics()
 
         frameLoaderHelper = if (mediaFile.supportsFrameLoading())
             FrameLoaderHelper(frameMetrics!!, viewModelScope, ::applyPreview)
@@ -129,11 +130,10 @@ class MediaFileViewModel(
         val basicVideoInfo = _screenState.value?.videoPage
 
         return basicVideoInfo?.let {
-            val frameHeight = it.videoStream.frameHeight
-            val frameWidth = it.videoStream.frameWidth.toDouble()
-            val desiredFrameHeight = (desiredFrameWidth * frameHeight / frameWidth).toInt()
-
-            FrameMetrics(desiredFrameWidth, desiredFrameHeight)
+            frameMetricsProvider.getTargetFrameMetrics(
+                it.videoStream.frameWidth,
+                it.videoStream.frameHeight
+            )
         }
     }
 

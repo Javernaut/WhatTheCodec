@@ -16,17 +16,15 @@ import com.javernaut.whatthecodec.presentation.compose.theme.WhatTheCodecTheme
 import com.javernaut.whatthecodec.presentation.compose.theme3.WhatTheCodecM3Theme
 import com.javernaut.whatthecodec.presentation.root.viewmodel.MediaFileArgument
 import com.javernaut.whatthecodec.presentation.root.viewmodel.MediaFileViewModel
-import com.javernaut.whatthecodec.presentation.root.viewmodel.MediaFileViewModelFactory
 import com.javernaut.whatthecodec.presentation.settings.SettingsActivity
-import com.javernaut.whatthecodec.presentation.video.getDesiredFrameWidth
 import com.javernaut.whatthecodec.util.TinyActivityCompat
+import dagger.hilt.android.AndroidEntryPoint
 import io.github.javernaut.mediafile.creator.MediaType
 
+@AndroidEntryPoint
 class RootActivity : AppCompatActivity() {
 
-    private val mediaFileViewModel by viewModels<MediaFileViewModel> {
-        MediaFileViewModelFactory(this, getDesiredFrameWidth(this))
-    }
+    private val mediaFileViewModel: MediaFileViewModel by viewModels()
 
     private var intentActionViewConsumed = false
 

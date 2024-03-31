@@ -12,6 +12,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.presentation.compose.common.GridLayout
+import com.javernaut.whatthecodec.presentation.root.viewmodel.getPreviewViewWidth
 import com.javernaut.whatthecodec.presentation.root.viewmodel.model.BasicVideoInfo
 import com.javernaut.whatthecodec.presentation.settings.PreferencesKeys
 import com.javernaut.whatthecodec.presentation.stream.StreamCard
