@@ -158,16 +158,15 @@ data class ScreenState(
     val audioPage: List<AudioStream>?,
     val subtitlesPage: List<SubtitleStream>?
 ) {
-    val availableTabs: List<AvailableTab>
-        get() = mutableListOf<AvailableTab>().apply {
-            if (videoPage != null) {
-                add(AvailableTab.VIDEO)
-            }
-            if (!audioPage.isNullOrEmpty()) {
-                add(AvailableTab.AUDIO)
-            }
-            if (!subtitlesPage.isNullOrEmpty()) {
-                add(AvailableTab.SUBTITLES)
-            }
+    val availableTabs = buildList {
+        if (videoPage != null) {
+            add(AvailableTab.VIDEO)
         }
+        if (!audioPage.isNullOrEmpty()) {
+            add(AvailableTab.AUDIO)
+        }
+        if (!subtitlesPage.isNullOrEmpty()) {
+            add(AvailableTab.SUBTITLES)
+        }
+    }
 }
