@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
     alias(libs.plugins.detekt)
+    alias(libs.plugins.googleKsp)
+    alias(libs.plugins.hilt)
 }
 
 android {
@@ -123,6 +125,10 @@ android {
 }
 
 dependencies {
+    ksp(libs.dagger.compiler)
+    ksp(libs.hilt.compiler)
+    implementation(libs.hilt.android)
+
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.bundles.compose)
 
@@ -149,4 +155,8 @@ dependencies {
 detekt {
     config.setFrom("$projectDir/../config/detekt/detekt.yml")
     buildUponDefaultConfig = true
+}
+
+hilt {
+    enableAggregatingTask = true
 }

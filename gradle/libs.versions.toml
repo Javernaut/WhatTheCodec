@@ -2,10 +2,13 @@
 gradleplugin = "8.3.1"
 detektplugin = "1.23.5"
 kotlin = "1.9.23"
+ksp = "1.9.23-1.0.19"
 coroutines = "1.8.0"
 lifecycle = "2.7.0"
 window = "1.2.0"
 navigation = "2.7.7"
+
+dagger = "2.51.1"
 
 androidx-activity-compose = "1.8.2"
 androidx-compose-bom = "2024.03.00"
@@ -46,6 +49,10 @@ androidx-compose-material3 = { module = "androidx.compose.material3:material3" }
 
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigation" }
 
+dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "dagger" }
+hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "dagger" }
+hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "dagger" }
+
 [bundles]
 coroutines = ["coroutines-core", "coroutines-android"]
 lifecycle = ["lifecycle-viewmodel-ktx", "lifecycle-livedata-ktx", "lifecycle-viewmodel-savedstate"]
@@ -54,4 +61,6 @@ compose = ["androidx-compose-runtime", "androidx-compose-ui", "androidx-compose-
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "gradleplugin" }
 jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+googleKsp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+hilt = { id = "com.google.dagger.hilt.android", version.ref = "dagger" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detektplugin" }
