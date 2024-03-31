@@ -1,38 +1,39 @@
 [versions]
-gradleplugin = "8.3.1"
-detektplugin = "1.23.5"
+androidGradlePlugin = "8.3.1"
+
 kotlin = "1.9.23"
-ksp = "1.9.23-1.0.19"
-coroutines = "1.8.0"
-lifecycle = "2.7.0"
-window = "1.2.0"
-navigation = "2.7.7"
+kotlinx-coroutines = "1.8.0"
 
-dagger = "2.51.1"
-
+androidx-lifecycle = "2.7.0"
+androidx-window = "1.2.0"
+androidx-navigation = "2.7.7"
 androidx-activity-compose = "1.8.2"
 androidx-compose-bom = "2024.03.00"
 androidx-compose-compiler = "1.5.11"
 
+google-ksp = "1.9.23-1.0.19"
+google-dagger = "2.51.1"
+
+detekt = "1.23.5"
+
 [libraries]
 mediafile = "io.github.javernaut:mediafile:1.1.0"
-
-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
-
 material = "com.google.android.material:material:1.11.0"
-
-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
-lifecycle-livedata-ktx = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "lifecycle" }
-lifecycle-viewmodel-savedstate = { module = "androidx.lifecycle:lifecycle-viewmodel-savedstate", version.ref = "lifecycle" }
-
-window = { module = "androidx.window:window", version.ref = "window" }
-
 liveevent = "com.github.hadilq.liveevent:liveevent:1.2.0"
-palette = "androidx.palette:palette-ktx:1.0.0"
-savedstate = "androidx.savedstate:savedstate:1.2.1"
-viewpager2 = "androidx.viewpager2:viewpager2:1.0.0"
-browser = "androidx.browser:browser:1.8.0"
+
+coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
+coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinx-coroutines" }
+
+androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "androidx-lifecycle" }
+androidx-lifecycle-livedata-ktx = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "androidx-lifecycle" }
+androidx-lifecycle-viewmodel-savedstate = { module = "androidx.lifecycle:lifecycle-viewmodel-savedstate", version.ref = "androidx-lifecycle" }
+
+androidx-window = { module = "androidx.window:window", version.ref = "androidx-window" }
+
+androidx-palette = "androidx.palette:palette-ktx:1.0.0"
+androidx-savedstate = "androidx.savedstate:savedstate:1.2.1"
+androidx-viewpager2 = "androidx.viewpager2:viewpager2:1.0.0"
+androidx-browser = "androidx.browser:browser:1.8.0"
 androidx-appcompat = "androidx.appcompat:appcompat:1.6.1"
 
 androidx-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "androidx-compose-bom" }
@@ -47,20 +48,31 @@ androidx-compose-material = { module = "androidx.compose.material:material" }
 androidx-compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended" }
 androidx-compose-material3 = { module = "androidx.compose.material3:material3" }
 
-androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigation" }
+androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "androidx-navigation" }
 
-dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "dagger" }
-dagger-hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "dagger" }
-dagger-hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "dagger" }
+dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "google-dagger" }
+dagger-hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "google-dagger" }
+dagger-hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "google-dagger" }
 
 [bundles]
-coroutines = ["coroutines-core", "coroutines-android"]
-lifecycle = ["lifecycle-viewmodel-ktx", "lifecycle-livedata-ktx", "lifecycle-viewmodel-savedstate"]
-compose = ["androidx-compose-runtime", "androidx-compose-ui", "androidx-compose-foundation", "androidx-compose-foundation-layout", "androidx-compose-material", "androidx-compose-material-icons-extended", "androidx-compose-runtime-livedata", "androidx-compose-ui-tooling", "androidx-activity-compose", "androidx-compose-material3"]
+kotlinx-coroutines = ["coroutines-core", "coroutines-android"]
+androidx-lifecycle = ["androidx-lifecycle-viewmodel-ktx", "androidx-lifecycle-livedata-ktx", "androidx-lifecycle-viewmodel-savedstate"]
+androidx-compose = [
+    "androidx-compose-runtime",
+    "androidx-compose-ui",
+    "androidx-compose-foundation",
+    "androidx-compose-foundation-layout",
+    "androidx-compose-material",
+    "androidx-compose-material-icons-extended",
+    "androidx-compose-runtime-livedata",
+    "androidx-compose-ui-tooling",
+    "androidx-activity-compose",
+    "androidx-compose-material3"
+]
 
 [plugins]
-androidApplication = { id = "com.android.application", version.ref = "gradleplugin" }
-jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-googleKsp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
-hilt = { id = "com.google.dagger.hilt.android", version.ref = "dagger" }
-detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detektplugin" }
+android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+google-ksp = { id = "com.google.devtools.ksp", version.ref = "google-ksp" }
+google-hilt = { id = "com.google.dagger.hilt.android", version.ref = "google-dagger" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }

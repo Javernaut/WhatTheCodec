@@ -1,9 +1,9 @@
 plugins {
-    alias(libs.plugins.androidApplication)
-    alias(libs.plugins.jetbrainsKotlinAndroid)
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.detekt)
-    alias(libs.plugins.googleKsp)
-    alias(libs.plugins.hilt)
+    alias(libs.plugins.google.ksp)
+    alias(libs.plugins.google.hilt)
 }
 
 android {
@@ -129,24 +129,22 @@ dependencies {
     ksp(libs.dagger.hilt.compiler)
     implementation(libs.dagger.hilt.android)
 
+    implementation(libs.bundles.kotlinx.coroutines)
+
     implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.bundles.compose)
+    implementation(libs.bundles.androidx.compose)
+
+    implementation(libs.bundles.androidx.lifecycle)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.palette)
+    implementation(libs.androidx.savedstate)
+    implementation(libs.androidx.viewpager2)
+    implementation(libs.androidx.browser)
+    implementation(libs.androidx.window)
+    implementation(libs.androidx.navigation.compose)
 
     implementation(libs.mediafile)
-
-    implementation(libs.bundles.coroutines)
-
     implementation(libs.material)
-
-    implementation(libs.bundles.lifecycle)
-
-    implementation(libs.androidx.appcompat)
-    implementation(libs.palette)
-    implementation(libs.savedstate)
-    implementation(libs.viewpager2)
-    implementation(libs.browser)
-    implementation(libs.window)
-    implementation(libs.androidx.navigation.compose)
 
     // TODO replace with own implementation
     implementation(libs.liveevent)
