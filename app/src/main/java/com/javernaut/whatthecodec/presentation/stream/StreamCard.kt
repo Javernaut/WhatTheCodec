@@ -4,11 +4,14 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.calculateEndPadding
+import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -66,19 +69,18 @@ fun StreamCard(
 @Composable
 fun <T : MediaStream> SimplePage(
     streams: List<T>,
+    contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
     cardContent: @Composable (T, Modifier) -> Unit
 ) {
-    val commonPaddingValues = PaddingValues(8.dp)
-    val commonItemModifier = Modifier.padding(commonPaddingValues)
     LazyColumn(
         modifier = modifier,
-        contentPadding = commonPaddingValues
+        contentPadding = contentPadding + PaddingValues(16.dp),
+        verticalArrangement = spacedBy(16.dp)
     ) {
         itemsIndexed(streams) { _, item: T ->
             StreamCard(
                 title = makeCardTitle(basicStreamInfo = item.basicInfo),
-                modifier = commonItemModifier,
             ) {
                 cardContent(item, it)
             }
@@ -170,3 +172,15 @@ private fun StreamCardTopRow(
         )
     }
 }
+
+operator fun PaddingValues.plus(other: PaddingValues) = PaddingValues(
+    start = calculateStartPadding(LayoutDirection.Ltr) +
+            other.calculateStartPadding(LayoutDirection.Ltr),
+
+    top = calculateTopPadding() + other.calculateTopPadding(),
+
+    end = calculateEndPadding(LayoutDirection.Ltr) +
+            other.calculateEndPadding(LayoutDirection.Ltr),
+
+    bottom = calculateBottomPadding() + other.calculateBottomPadding(),
+)

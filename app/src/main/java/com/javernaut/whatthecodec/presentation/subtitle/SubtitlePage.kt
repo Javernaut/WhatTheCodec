@@ -2,6 +2,7 @@ package com.javernaut.whatthecodec.presentation.subtitle
 
 import android.content.res.Resources
 import androidx.annotation.StringRes
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.javernaut.whatthecodec.R
@@ -17,9 +18,10 @@ import io.github.javernaut.mediafile.displayable.getDisplayableDisposition
 @Composable
 fun SubtitlePage(
     streams: List<SubtitleStream>,
+    contentPadding: PaddingValues,
     modifier: Modifier = Modifier
 ) {
-    SimplePage(streams, modifier) { item, itemModifier ->
+    SimplePage(streams, contentPadding, modifier) { item, itemModifier ->
         SubtitleCardContent(item, itemModifier)
     }
 }
@@ -32,7 +34,7 @@ private fun SubtitleCardContent(
     val streamFeatures = getFilteredStreamFeatures(
         defaultValueResId = R.array.settings_content_subtitles_entryValues,
         preferenceKey = PreferencesKeys.SUBTITLES,
-        allValues = SubtitleFeature.values().toList()
+        allValues = SubtitleFeature.entries
     )
 
     StreamFeaturesGrid(

@@ -147,8 +147,8 @@ private fun MainScreenContent(
         val pageModifier = Modifier.fillMaxSize()
         when (tabsToShow[page]) {
             AvailableTab.VIDEO -> VideoPage(screenState.videoPage!!, contentPadding, pageModifier)
-            AvailableTab.AUDIO -> AudioPage(screenState.audioPage!!, pageModifier)
-            AvailableTab.SUBTITLES -> SubtitlePage(screenState.subtitlesPage!!, pageModifier)
+            AvailableTab.AUDIO -> AudioPage(screenState.audioPage!!, contentPadding, pageModifier)
+            AvailableTab.SUBTITLES -> SubtitlePage(screenState.subtitlesPage!!, contentPadding, pageModifier)
         }
     }
 }

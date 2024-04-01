@@ -2,6 +2,7 @@ package com.javernaut.whatthecodec.presentation.audio
 
 import android.content.res.Resources
 import androidx.annotation.StringRes
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.javernaut.whatthecodec.R
@@ -18,9 +19,10 @@ import io.github.javernaut.mediafile.displayable.toDisplayable
 @Composable
 fun AudioPage(
     streams: List<AudioStream>,
+    contentPadding: PaddingValues,
     modifier: Modifier = Modifier
 ) {
-    SimplePage(streams, modifier) { item, itemModifier ->
+    SimplePage(streams, contentPadding, modifier) { item, itemModifier ->
         AudioCardContent(item, itemModifier)
     }
 }
@@ -33,7 +35,7 @@ private fun AudioCardContent(
     val streamFeatures = getFilteredStreamFeatures(
         defaultValueResId = R.array.settings_content_audio_entryValues,
         preferenceKey = PreferencesKeys.AUDIO,
-        allValues = AudioFeature.values().toList()
+        allValues = AudioFeature.entries
     )
 
     StreamFeaturesGrid(
