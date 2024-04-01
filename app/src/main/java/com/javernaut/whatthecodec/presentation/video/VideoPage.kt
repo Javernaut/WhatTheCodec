@@ -61,12 +61,12 @@ private fun Container(
     ) {
         Row(modifier = it) {
             StreamFeatureItem(
-                title = stringResource(id = R.string.info_file_format).toUpperCase(),
+                title = stringResource(id = R.string.info_file_format),
                 value = basicVideoInfo.fileFormat,
                 modifier = Modifier.weight(1f)
             )
             StreamFeatureItem(
-                title = stringResource(id = R.string.info_protocol_title).toUpperCase(),
+                title = stringResource(id = R.string.info_protocol_title),
                 value = stringResource(
                     id = if (basicVideoInfo.fullFeatured) {
                         R.string.info_protocol_file
@@ -92,7 +92,7 @@ private fun VideoStream(
         val streamFeatures = getFilteredStreamFeatures(
             defaultValueResId = R.array.settings_content_video_entryValues,
             preferenceKey = PreferencesKeys.VIDEO,
-            allValues = VideoFeature.values().toList()
+            allValues = VideoFeature.entries
         )
 
         StreamFeaturesGrid(
