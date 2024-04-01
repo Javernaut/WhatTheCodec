@@ -5,6 +5,8 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -37,7 +39,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.javernaut.whatthecodec.R
-import com.javernaut.whatthecodec.presentation.compose.common.GridLayout
 import io.github.javernaut.mediafile.BasicStreamInfo
 import io.github.javernaut.mediafile.MediaStream
 
@@ -87,6 +88,7 @@ fun <T : MediaStream> SimplePage(
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun <T : MediaStream> StreamFeaturesGrid(
     stream: T,
@@ -99,9 +101,12 @@ fun <T : MediaStream> StreamFeaturesGrid(
     }
 
     if (displayableFeatures.isNotEmpty()) {
-        GridLayout(modifier, 2) {
+        FlowRow(
+            modifier = modifier,
+            maxItemsInEachRow = 2
+        ) {
             displayableFeatures.forEach {
-                StreamFeatureItem(stream, it)
+                StreamFeatureItem(stream, it, Modifier.weight(1f))
             }
         }
     } else {
