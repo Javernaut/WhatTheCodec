@@ -7,12 +7,9 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.ContentAlpha
-import androidx.compose.material.LocalContentAlpha
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,7 +27,10 @@ import com.javernaut.whatthecodec.presentation.root.viewmodel.model.Preview
 
 
 @Composable
-fun FramesHeader(preview: Preview, modifier: Modifier = Modifier) {
+fun FramesHeader(
+    preview: Preview,
+    modifier: Modifier = Modifier
+) {
     when (preview) {
         is NotYetEvaluated -> {}
         is ActualPreview -> {
@@ -47,15 +47,14 @@ fun FramesHeader(preview: Preview, modifier: Modifier = Modifier) {
         }
 
         NoPreviewAvailable -> {
-            CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
-                Text(
-                    modifier = modifier
-                        .padding(top = 16.dp),
-                    text = stringResource(id = R.string.page_video_preview_missing_decoder),
-                    style = MaterialTheme.typography.subtitle1,
-                    textAlign = TextAlign.Center,
-                )
-            }
+            Text(
+                modifier = modifier
+                    .padding(top = 16.dp),
+                text = stringResource(id = R.string.page_video_preview_missing_decoder),
+                style = MaterialTheme.typography.bodyLarge,
+                textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
         }
     }
 
@@ -63,7 +62,7 @@ fun FramesHeader(preview: Preview, modifier: Modifier = Modifier) {
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun FramesGrid(
+private fun FramesGrid(
     newFrames: List<Frame>,
     frameMetrics: FrameMetrics,
     modifier: Modifier = Modifier,

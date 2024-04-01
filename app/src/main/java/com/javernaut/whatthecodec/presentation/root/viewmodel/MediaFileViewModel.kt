@@ -106,7 +106,8 @@ class MediaFileViewModel @Inject constructor(
 
     private fun tryLoadVideoFrames() {
         if (frameLoaderHelper != null) {
-            frameLoaderHelper?.loadFrames(mediaFile!!)
+            applyPreview(NoPreviewAvailable)
+//            frameLoaderHelper?.loadFrames(mediaFile!!)
         } else {
             applyPreview(NoPreviewAvailable)
         }
