@@ -1,8 +1,8 @@
 package com.javernaut.whatthecodec.presentation.root.ui
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
@@ -90,7 +90,9 @@ private fun MainScreenTopAppBar(
                 // Add tabs for all of our pages
                 tabsToShow.forEachIndexed { index, tabToShow ->
                     Tab(
-                        modifier = Modifier.fillMaxHeight(),
+                        // Hack. Setting the Tab itself to be as tall as the content area of a small
+                        // top app bar. Modifier.fillMaxHeight() doesn't work.
+                        modifier = Modifier.height(64.dp),
                         text = { Text(stringResource(id = tabToShow.title)) },
                         selected = pagerState.currentPage == index,
                         onClick = {
