@@ -2,11 +2,11 @@ package com.javernaut.whatthecodec.presentation.video
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.ContentAlpha
 import androidx.compose.material.LocalContentAlpha
 import androidx.compose.material.MaterialTheme
@@ -17,12 +17,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.javernaut.whatthecodec.R
-import com.javernaut.whatthecodec.presentation.compose.common.GridLayout
 import com.javernaut.whatthecodec.presentation.root.viewmodel.model.ActualPreview
 import com.javernaut.whatthecodec.presentation.root.viewmodel.model.Frame
 import com.javernaut.whatthecodec.presentation.root.viewmodel.model.FrameMetrics
@@ -32,22 +30,17 @@ import com.javernaut.whatthecodec.presentation.root.viewmodel.model.Preview
 
 
 @Composable
-fun FramesHeader(preview: Preview, dstFrameWidth: Int) {
+fun FramesHeader(preview: Preview, modifier: Modifier = Modifier) {
     when (preview) {
         is NotYetEvaluated -> {}
         is ActualPreview -> {
             val backgroundColor by animateColorAsState(Color(preview.backgroundColor))
             Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight()
+                modifier = modifier
                     .background(color = backgroundColor),
                 contentAlignment = Alignment.Center
             ) {
                 FramesGrid(
-                    with(LocalDensity.current) {
-                        Modifier.width(dstFrameWidth.toDp())
-                    },
                     preview.frames, preview.frameMetrics
                 )
             }
@@ -56,8 +49,7 @@ fun FramesHeader(preview: Preview, dstFrameWidth: Int) {
         NoPreviewAvailable -> {
             CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
                 Text(
-                    modifier = Modifier
-                        .fillMaxWidth()
+                    modifier = modifier
                         .padding(top = 16.dp),
                     text = stringResource(id = R.string.page_video_preview_missing_decoder),
                     style = MaterialTheme.typography.subtitle1,
@@ -69,17 +61,26 @@ fun FramesHeader(preview: Preview, dstFrameWidth: Int) {
 
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun FramesGrid(modifier: Modifier = Modifier, newFrames: List<Frame>, frameMetrics: FrameMetrics) {
-    GridLayout(
-        modifier
-            .padding(2.dp), 2
+fun FramesGrid(
+    newFrames: List<Frame>,
+    frameMetrics: FrameMetrics,
+    modifier: Modifier = Modifier,
+) {
+    FlowRow(
+        modifier = modifier
+            .padding(FramesGridCommonPadding),
+        horizontalArrangement = spacedBy(FramesGridCommonPadding),
+        verticalArrangement = spacedBy(FramesGridCommonPadding),
+        maxItemsInEachRow = 2
     ) {
         newFrames.forEach {
             Frame(
-                Modifier
-                    .padding(2.dp), it, frameMetrics
+                it, frameMetrics
             )
         }
     }
 }
+
+private val FramesGridCommonPadding = 4.dp

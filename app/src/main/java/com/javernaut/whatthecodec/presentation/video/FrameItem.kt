@@ -28,7 +28,11 @@ import com.javernaut.whatthecodec.presentation.root.viewmodel.model.LoadingFrame
 import com.javernaut.whatthecodec.presentation.root.viewmodel.model.PlaceholderFrame
 
 @Composable
-fun Frame(modifier: Modifier, frame: Frame, frameMetrics: FrameMetrics) {
+fun Frame(
+    frame: Frame,
+    frameMetrics: FrameMetrics,
+    modifier: Modifier = Modifier
+) {
     Box(modifier = with(LocalDensity.current) {
         modifier.size(frameMetrics.width.toDp(), frameMetrics.height.toDp())
     }, contentAlignment = Alignment.Center) {

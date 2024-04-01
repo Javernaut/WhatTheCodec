@@ -1,18 +1,16 @@
 package com.javernaut.whatthecodec.presentation.video
 
-import android.app.Activity
 import android.content.res.Resources
 import androidx.annotation.StringRes
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.presentation.compose.common.GridLayout
-import com.javernaut.whatthecodec.presentation.root.viewmodel.getPreviewViewWidth
 import com.javernaut.whatthecodec.presentation.root.viewmodel.model.BasicVideoInfo
 import com.javernaut.whatthecodec.presentation.settings.PreferencesKeys
 import com.javernaut.whatthecodec.presentation.stream.StreamCard
@@ -33,7 +31,7 @@ fun VideoPage(
 ) {
     LazyColumn(modifier) {
         item {
-            FramesHeader(videoInfo.preview, getPreviewViewWidth(LocalContext.current as Activity))
+            FramesHeader(videoInfo.preview, Modifier.fillMaxWidth())
         }
         val commonModifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp)
         item {
