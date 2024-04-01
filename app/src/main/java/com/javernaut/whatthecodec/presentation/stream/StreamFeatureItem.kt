@@ -28,7 +28,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.core.content.getSystemService
 import com.javernaut.whatthecodec.R
-import com.javernaut.whatthecodec.presentation.compose.theme3.WhatTheCodecM3Theme
+import com.javernaut.whatthecodec.presentation.compose.theme.WhatTheCodecTheme
 import io.github.javernaut.mediafile.MediaStream
 
 @Composable
@@ -82,7 +82,7 @@ private fun copyTextToClipboard(context: Context, valueToCopy: String) {
 @PreviewLightDark
 @Composable
 fun PreviewStreamFeature() {
-    WhatTheCodecM3Theme {
+    WhatTheCodecTheme {
         Surface {
             StreamFeature(
                 stringResource(id = R.string.page_audio_codec_name),

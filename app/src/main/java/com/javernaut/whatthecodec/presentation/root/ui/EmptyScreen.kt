@@ -26,7 +26,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.javernaut.whatthecodec.R
-import com.javernaut.whatthecodec.presentation.compose.theme3.WhatTheCodecM3Theme
+import com.javernaut.whatthecodec.presentation.compose.theme.WhatTheCodecTheme
 
 @Composable
 fun EmptyScreen(
@@ -121,7 +121,7 @@ private fun EmptyScreenMainAction(
 @PreviewLightDark
 @Composable
 private fun EmptyScreenPreview() {
-    WhatTheCodecM3Theme {
+    WhatTheCodecTheme {
         EmptyScreen({}, {}, {})
     }
 }

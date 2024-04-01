@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.javernaut.whatthecodec.presentation.compose.theme3.WhatTheCodecM3Theme
+import com.javernaut.whatthecodec.presentation.compose.theme.WhatTheCodecTheme
 import com.javernaut.whatthecodec.presentation.root.ui.EmptyScreen
 import com.javernaut.whatthecodec.presentation.settings.SettingsScreen
 
@@ -18,7 +18,7 @@ class ComposePlaygroundActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            WhatTheCodecM3Theme {
+            WhatTheCodecTheme {
                 val navController = rememberNavController()
                 NavHost(navController = navController, startDestination = "home") {
                     composable("home") {

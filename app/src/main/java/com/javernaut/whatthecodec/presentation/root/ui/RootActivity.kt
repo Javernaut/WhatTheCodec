@@ -13,7 +13,6 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.core.content.MimeTypeFilter
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.presentation.compose.theme.WhatTheCodecTheme
-import com.javernaut.whatthecodec.presentation.compose.theme3.WhatTheCodecM3Theme
 import com.javernaut.whatthecodec.presentation.root.viewmodel.MediaFileArgument
 import com.javernaut.whatthecodec.presentation.root.viewmodel.MediaFileViewModel
 import com.javernaut.whatthecodec.presentation.settings.SettingsActivity
@@ -33,17 +32,15 @@ class RootActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            WhatTheCodecM3Theme {
+            WhatTheCodecTheme {
                 val screenState by mediaFileViewModel.screenState.observeAsState()
                 if (screenState == null) {
                     EmptyScreen(::onPickVideoClicked, ::onPickAudioClicked) {
                         SettingsActivity.start(this@RootActivity)
                     }
                 } else {
-                    WhatTheCodecTheme {
-                        MainScreen(screenState!!, ::onPickVideoClicked, ::onPickAudioClicked) {
-                            SettingsActivity.start(this@RootActivity)
-                        }
+                    MainScreen(screenState!!, ::onPickVideoClicked, ::onPickAudioClicked) {
+                        SettingsActivity.start(this@RootActivity)
                     }
                 }
             }

@@ -34,7 +34,7 @@ import com.javernaut.whatthecodec.presentation.compose.preference.MultiSelectLis
 import com.javernaut.whatthecodec.presentation.compose.preference.Preference
 import com.javernaut.whatthecodec.presentation.compose.preference.PreferenceDivider
 import com.javernaut.whatthecodec.presentation.compose.preference.PreferenceGroup
-import com.javernaut.whatthecodec.presentation.compose.theme3.WhatTheCodecM3Theme
+import com.javernaut.whatthecodec.presentation.compose.theme.WhatTheCodecTheme
 
 @Composable
 fun SettingsScreen(goUp: () -> Unit) {
@@ -190,7 +190,7 @@ private fun OpenUrlPreference(
 @PreviewLightDark
 @Composable
 private fun PreviewSettingsScreen() {
-    WhatTheCodecM3Theme {
+    WhatTheCodecTheme {
         SettingsScreen({}, {})
     }
 }

@@ -18,7 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.javernaut.whatthecodec.R
-import com.javernaut.whatthecodec.presentation.compose.theme3.WhatTheCodecM3Theme
+import com.javernaut.whatthecodec.presentation.compose.theme.WhatTheCodecTheme
 
 @Composable
 fun Preference(
@@ -100,7 +100,7 @@ private fun PreferenceTitle(@StringRes title: Int) {
 @Preview
 @Composable
 private fun PreferencePreview() {
-    WhatTheCodecM3Theme {
+    WhatTheCodecTheme {
         PreferenceGroup {
             Preference(
                 title = "Title",
@@ -114,7 +114,7 @@ private fun PreferencePreview() {
 @PreviewLightDark
 @Composable
 private fun PreviewPreferenceGroup() {
-    WhatTheCodecM3Theme {
+    WhatTheCodecTheme {
         Column {
             PreferenceGroup(R.string.settings_title) {
                 Preference(title = "Title", summary = "Summary") {
