@@ -19,9 +19,13 @@ import androidx.compose.material3.ScrollableTabRow
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.javernaut.whatthecodec.R
@@ -33,7 +37,7 @@ import com.javernaut.whatthecodec.presentation.video.VideoPage
 import kotlinx.coroutines.launch
 
 @Composable
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 fun MainScreen(
     screenState: ScreenState,
     onVideoIconClick: () -> Unit,
@@ -44,11 +48,14 @@ fun MainScreen(
     val pagerState = rememberPagerState {
         tabsToShow.size
     }
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             MainScreenTopAppBar(
                 tabsToShow = tabsToShow,
                 pagerState,
+                scrollBehavior,
                 onVideoIconClick,
                 onAudioIconClick,
                 onSettingsClicked
@@ -65,15 +72,18 @@ fun MainScreen(
 private fun MainScreenTopAppBar(
     tabsToShow: List<AvailableTab>,
     pagerState: PagerState,
+    scrollBehavior: TopAppBarScrollBehavior,
     onVideoIconClick: () -> Unit,
     onAudioIconClick: () -> Unit,
     onSettingsClicked: () -> Unit
 ) {
     TopAppBar(
+        scrollBehavior = scrollBehavior,
         title = {
             val scope = rememberCoroutineScope()
             ScrollableTabRow(
                 edgePadding = 0.dp,
+                containerColor = Color.Transparent,
                 // Our selected tab is our current page
                 selectedTabIndex = pagerState.currentPage
             ) {
@@ -81,7 +91,7 @@ private fun MainScreenTopAppBar(
                 tabsToShow.forEachIndexed { index, tabToShow ->
                     Tab(
                         modifier = Modifier.fillMaxHeight(),
-                        text = { Text(stringResource(id = tabToShow.title).toUpperCase()) },
+                        text = { Text(stringResource(id = tabToShow.title)) },
                         selected = pagerState.currentPage == index,
                         onClick = {
                             scope.launch {
