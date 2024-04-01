@@ -10,6 +10,4 @@
     <color name="colorOnSurface">#000</color>
 
     <color name="colorBackground">@color/theme_light_background</color>
-
-    <color name="colorPreviewDecodingError">#8888</color>
 </resources>
