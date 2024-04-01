@@ -31,8 +31,7 @@ private fun getDesiredFrameWidth(context: Context): Int {
     return (previewWidth - totalSpacing) / 2
 }
 
-// TODO Make private
-fun getPreviewViewWidth(context: Context): Int {
+private fun getPreviewViewWidth(context: Context): Int {
     val metrics = WindowMetricsCalculator.getOrCreate().computeMaximumWindowMetrics(context)
     return with(metrics.bounds) {
         min(width(), height())
