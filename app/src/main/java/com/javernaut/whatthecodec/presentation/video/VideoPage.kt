@@ -2,6 +2,7 @@ package com.javernaut.whatthecodec.presentation.video
 
 import android.content.res.Resources
 import androidx.annotation.StringRes
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -10,7 +11,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.javernaut.whatthecodec.R
-import com.javernaut.whatthecodec.presentation.compose.common.GridLayout
 import com.javernaut.whatthecodec.presentation.root.viewmodel.model.BasicVideoInfo
 import com.javernaut.whatthecodec.presentation.settings.PreferencesKeys
 import com.javernaut.whatthecodec.presentation.stream.StreamCard
@@ -59,10 +59,11 @@ private fun Container(
         title = stringResource(id = R.string.info_container),
         modifier = modifier
     ) {
-        GridLayout(modifier = it, columns = 2) {
+        Row(modifier = it) {
             StreamFeatureItem(
                 title = stringResource(id = R.string.info_file_format).toUpperCase(),
-                value = basicVideoInfo.fileFormat
+                value = basicVideoInfo.fileFormat,
+                modifier = Modifier.weight(1f)
             )
             StreamFeatureItem(
                 title = stringResource(id = R.string.info_protocol_title).toUpperCase(),
@@ -72,7 +73,8 @@ private fun Container(
                     } else {
                         R.string.info_protocol_pipe
                     }
-                )
+                ),
+                modifier = Modifier.weight(1f)
             )
         }
     }
