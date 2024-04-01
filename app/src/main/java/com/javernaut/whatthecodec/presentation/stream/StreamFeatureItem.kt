@@ -11,8 +11,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.DropdownMenu
-import androidx.compose.material.DropdownMenuItem
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -133,14 +133,14 @@ private fun CopyToClipboardDropdown(
         expanded = expanded,
         onDismissRequest = dismissCallback
     ) {
-        DropdownMenuItem(enabled = false, onClick = { }) {
+        DropdownMenuItem(enabled = false, onClick = { }, text = {
             Text(title, color = MaterialTheme.colorScheme.primary)
-        }
+        })
         DropdownMenuItem(onClick = {
             copyCallback()
             dismissCallback()
-        }) {
+        }, text = {
             Text(stringResource(id = R.string.stream_copy))
-        }
+        })
     }
 }
