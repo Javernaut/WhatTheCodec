@@ -1,9 +1,9 @@
 package com.javernaut.whatthecodec.presentation.root.ui
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
@@ -62,7 +62,7 @@ fun MainScreen(
             )
         }
     ) {
-        MainScreenContent(Modifier.padding(it), tabsToShow, screenState, pagerState)
+        MainScreenContent(tabsToShow, screenState, pagerState, it, Modifier.fillMaxSize())
     }
 }
 
@@ -137,15 +137,16 @@ private val AvailableTab.title: Int
 @Composable
 @ExperimentalFoundationApi
 private fun MainScreenContent(
-    modifier: Modifier = Modifier,
     tabsToShow: List<AvailableTab>,
     screenState: ScreenState,
     pagerState: PagerState,
+    contentPadding: PaddingValues,
+    modifier: Modifier = Modifier,
 ) {
     HorizontalPager(pagerState, modifier) { page ->
         val pageModifier = Modifier.fillMaxSize()
         when (tabsToShow[page]) {
-            AvailableTab.VIDEO -> VideoPage(screenState.videoPage!!, pageModifier)
+            AvailableTab.VIDEO -> VideoPage(screenState.videoPage!!, contentPadding, pageModifier)
             AvailableTab.AUDIO -> AudioPage(screenState.audioPage!!, pageModifier)
             AvailableTab.SUBTITLES -> SubtitlePage(screenState.subtitlesPage!!, pageModifier)
         }

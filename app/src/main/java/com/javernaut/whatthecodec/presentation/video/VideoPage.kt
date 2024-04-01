@@ -2,6 +2,7 @@ package com.javernaut.whatthecodec.presentation.video
 
 import android.content.res.Resources
 import androidx.annotation.StringRes
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -27,13 +28,17 @@ import io.github.javernaut.mediafile.displayable.toDisplayable
 @Composable
 fun VideoPage(
     videoInfo: BasicVideoInfo,
+    contentPadding: PaddingValues,
     modifier: Modifier = Modifier
 ) {
-    LazyColumn(modifier) {
+    LazyColumn(
+        modifier = modifier,
+        contentPadding = contentPadding
+    ) {
         item {
             FramesHeader(videoInfo.preview, Modifier.fillMaxWidth())
         }
-        val commonModifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp)
+        val commonModifier = Modifier.padding(horizontal = 16.dp)
         item {
             Container(
                 basicVideoInfo = videoInfo,
@@ -44,7 +49,7 @@ fun VideoPage(
         item {
             VideoStream(
                 videoStream = videoInfo.videoStream,
-                modifier = commonModifier
+                modifier = commonModifier.padding(vertical = 16.dp)
             )
         }
     }
