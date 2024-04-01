@@ -138,7 +138,6 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.palette)
     implementation(libs.androidx.savedstate)
-    implementation(libs.androidx.viewpager2)
     implementation(libs.androidx.browser)
     implementation(libs.androidx.window)
     implementation(libs.androidx.navigation.compose)

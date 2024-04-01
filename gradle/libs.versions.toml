@@ -32,7 +32,6 @@ androidx-window = { module = "androidx.window:window", version.ref = "androidx-w
 
 androidx-palette = "androidx.palette:palette-ktx:1.0.0"
 androidx-savedstate = "androidx.savedstate:savedstate:1.2.1"
-androidx-viewpager2 = "androidx.viewpager2:viewpager2:1.0.0"
 androidx-browser = "androidx.browser:browser:1.8.0"
 androidx-appcompat = "androidx.appcompat:appcompat:1.6.1"
 
@@ -44,7 +43,6 @@ androidx-compose-foundation = { module = "androidx.compose.foundation:foundation
 androidx-compose-foundation-layout = { module = "androidx.compose.foundation:foundation-layout" }
 androidx-compose-ui = { module = "androidx.compose.ui:ui" }
 androidx-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
-androidx-compose-material = { module = "androidx.compose.material:material" }
 androidx-compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended" }
 androidx-compose-material3 = { module = "androidx.compose.material3:material3" }
 
@@ -62,7 +60,6 @@ androidx-compose = [
     "androidx-compose-ui",
     "androidx-compose-foundation",
     "androidx-compose-foundation-layout",
-    "androidx-compose-material",
     "androidx-compose-material-icons-extended",
     "androidx-compose-runtime-livedata",
     "androidx-compose-ui-tooling",
