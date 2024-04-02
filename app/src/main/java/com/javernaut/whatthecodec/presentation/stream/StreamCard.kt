@@ -21,6 +21,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -49,7 +50,12 @@ fun StreamCard(
     modifier: Modifier = Modifier,
     content: @Composable (Modifier) -> Unit
 ) {
-    Card(modifier) {
+    Card(
+        modifier = modifier,
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
+        )
+    ) {
         Column {
             var gridVisible by remember { mutableStateOf(true) }
             StreamCardTopRow(title, gridVisible) {
