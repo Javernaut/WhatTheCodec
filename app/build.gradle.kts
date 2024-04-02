@@ -10,7 +10,7 @@ android {
     namespace = "com.javernaut.whatthecodec"
     compileSdk = 34
     defaultConfig {
-        minSdk = 21
+        minSdk = 24
         targetSdk = 34
 
         versionCode = 3611
