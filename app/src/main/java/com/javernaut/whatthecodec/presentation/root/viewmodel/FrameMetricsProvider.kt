@@ -7,6 +7,7 @@ import com.javernaut.whatthecodec.presentation.root.viewmodel.model.FrameMetrics
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import kotlin.math.min
+import kotlin.math.roundToInt
 
 class FrameMetricsProvider @Inject constructor(
     @ApplicationContext context: Context
@@ -24,11 +25,11 @@ class FrameMetricsProvider @Inject constructor(
 private fun getDesiredFrameWidth(context: Context): Int {
     val previewWidth = getPreviewViewWidth(context)
 
-    // 2 (the resource value is only a half of the actual spacing) * 3 (there are 3 such spacings) = 6
+    // there are 3 such spacings (left, middle and right)
     val totalSpacing =
-        context.resources.getDimensionPixelSize(R.dimen.preview_frames_spacing) * 6
+        context.resources.getDimension(R.dimen.preview_frames_spacing) * 3
 
-    return (previewWidth - totalSpacing) / 2
+    return ((previewWidth - totalSpacing) / 2).roundToInt()
 }
 
 private fun getPreviewViewWidth(context: Context): Int {

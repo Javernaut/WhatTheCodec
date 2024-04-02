@@ -2,10 +2,7 @@ package com.javernaut.whatthecodec.presentation.video
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -14,10 +11,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.javernaut.whatthecodec.R
+import com.javernaut.whatthecodec.presentation.compose.common.GridLayout
 import com.javernaut.whatthecodec.presentation.root.viewmodel.model.ActualPreview
 import com.javernaut.whatthecodec.presentation.root.viewmodel.model.Frame
 import com.javernaut.whatthecodec.presentation.root.viewmodel.model.FrameMetrics
@@ -60,19 +59,19 @@ fun FramesHeader(
 
 }
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun FramesGrid(
     newFrames: List<Frame>,
     frameMetrics: FrameMetrics,
     modifier: Modifier = Modifier,
 ) {
-    FlowRow(
+    val previewFrameSpacing = dimensionResource(id = R.dimen.preview_frames_spacing)
+    GridLayout(
         modifier = modifier
-            .padding(FramesGridCommonPadding),
-        horizontalArrangement = spacedBy(FramesGridCommonPadding),
-        verticalArrangement = spacedBy(FramesGridCommonPadding),
-        maxItemsInEachRow = 2
+            .padding(previewFrameSpacing),
+        columns = 2,
+        horizontalSpacing = previewFrameSpacing,
+        verticalSpacing = previewFrameSpacing
     ) {
         newFrames.forEach {
             Frame(
@@ -81,5 +80,3 @@ private fun FramesGrid(
         }
     }
 }
-
-private val FramesGridCommonPadding = 4.dp
