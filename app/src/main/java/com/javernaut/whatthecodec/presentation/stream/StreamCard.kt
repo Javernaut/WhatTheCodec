@@ -7,7 +7,6 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.calculateEndPadding
@@ -41,6 +40,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.javernaut.whatthecodec.R
+import com.javernaut.whatthecodec.presentation.compose.common.GridLayout
 import io.github.javernaut.mediafile.BasicStreamInfo
 import io.github.javernaut.mediafile.MediaStream
 
@@ -107,12 +107,12 @@ fun <T : MediaStream> StreamFeaturesGrid(
     }
 
     if (displayableFeatures.isNotEmpty()) {
-        FlowRow(
+        GridLayout(
             modifier = modifier,
-            maxItemsInEachRow = 2
+            columns = 2
         ) {
             displayableFeatures.forEach {
-                StreamFeatureItem(stream, it, Modifier.weight(1f))
+                StreamFeatureItem(stream, it, Modifier.fillMaxWidth())
             }
         }
     } else {
