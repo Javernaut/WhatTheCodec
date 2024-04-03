@@ -35,13 +35,18 @@ class RootActivity : AppCompatActivity() {
             WhatTheCodecTheme {
                 val screenState by mediaFileViewModel.screenState.observeAsState()
                 if (screenState == null) {
-                    EmptyScreen(::onPickVideoClicked, ::onPickAudioClicked) {
-                        SettingsActivity.start(this@RootActivity)
-                    }
+                    EmptyScreen(
+                        ::onPickVideoClicked,
+                        ::onPickAudioClicked,
+                        ::onSettingsClicked
+                    )
                 } else {
-                    MainScreen(screenState!!, ::onPickVideoClicked, ::onPickAudioClicked) {
-                        SettingsActivity.start(this@RootActivity)
-                    }
+                    MainScreen(
+                        screenState!!,
+                        ::onPickVideoClicked,
+                        ::onPickAudioClicked,
+                        ::onSettingsClicked
+                    )
                 }
             }
         }
@@ -137,6 +142,10 @@ class RootActivity : AppCompatActivity() {
                 actualDisplayFileFromActionView()
             }
         }
+    }
+
+    private fun onSettingsClicked() {
+        SettingsActivity.start(this@RootActivity)
     }
 
     private inline fun checkPermissionAndTryOpenMedia(requestCode: Int, actualAction: () -> Unit) {
