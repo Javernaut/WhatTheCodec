@@ -1,9 +1,16 @@
 package com.javernaut.whatthecodec.home.ui
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.only
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
@@ -11,21 +18,20 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MusicNote
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Videocam
+import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.ScrollableTabRow
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.javernaut.whatthecodec.R
@@ -37,7 +43,7 @@ import com.javernaut.whatthecodec.home.ui.video.VideoPage
 import kotlinx.coroutines.launch
 
 @Composable
-@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalFoundationApi::class)
 fun MainScreen(
     screenState: ScreenState,
     onVideoIconClick: () -> Unit,
@@ -48,21 +54,25 @@ fun MainScreen(
     val pagerState = rememberPagerState {
         tabsToShow.size
     }
-    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+
     Scaffold(
-        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+        bottomBar = {
+            MainScreenBottomAppBar(onSettingsClicked, onVideoIconClick, onAudioIconClick)
+        },
         topBar = {
             MainScreenTopAppBar(
                 tabsToShow = tabsToShow,
-                pagerState,
-                scrollBehavior,
-                onVideoIconClick,
-                onAudioIconClick,
-                onSettingsClicked
+                pagerState = pagerState,
             )
         }
     ) {
-        MainScreenContent(tabsToShow, screenState, pagerState, it, Modifier.fillMaxSize())
+        MainScreenContent(
+            tabsToShow = tabsToShow,
+            screenState = screenState,
+            pagerState = pagerState,
+            it,
+            modifier = Modifier.fillMaxSize()
+        )
     }
 }
 
@@ -72,59 +82,29 @@ fun MainScreen(
 private fun MainScreenTopAppBar(
     tabsToShow: List<AvailableTab>,
     pagerState: PagerState,
-    scrollBehavior: TopAppBarScrollBehavior,
-    onVideoIconClick: () -> Unit,
-    onAudioIconClick: () -> Unit,
-    onSettingsClicked: () -> Unit
 ) {
-    TopAppBar(
-        scrollBehavior = scrollBehavior,
-        title = {
-            val scope = rememberCoroutineScope()
-            ScrollableTabRow(
-                edgePadding = 0.dp,
-                containerColor = Color.Transparent,
-                // Our selected tab is our current page
-                selectedTabIndex = pagerState.currentPage
-            ) {
-                // Add tabs for all of our pages
-                tabsToShow.forEachIndexed { index, tabToShow ->
-                    Tab(
-                        // Hack. Setting the Tab itself to be as tall as the content area of a small
-                        // top app bar. Modifier.fillMaxHeight() doesn't work.
-                        modifier = Modifier.height(64.dp),
-                        text = { Text(stringResource(id = tabToShow.title)) },
-                        selected = pagerState.currentPage == index,
-                        onClick = {
-                            scope.launch {
-                                pagerState.animateScrollToPage(index)
-                            }
-                        },
-                    )
-                }
-            }
-        },
-        actions = {
-            IconButton(onClick = onVideoIconClick) {
-                Icon(
-                    Icons.Filled.Videocam,
-                    contentDescription = stringResource(id = R.string.menu_pick_video),
-                )
-            }
-            IconButton(onClick = onAudioIconClick) {
-                Icon(
-                    Icons.Filled.MusicNote,
-                    contentDescription = stringResource(id = R.string.menu_pick_audio),
-                )
-            }
-            IconButton(onClick = onSettingsClicked) {
-                Icon(
-                    imageVector = Icons.Filled.Settings,
-                    contentDescription = stringResource(id = R.string.menu_settings),
-                )
-            }
+    val scope = rememberCoroutineScope()
+    PrimaryTabRow(
+        selectedTabIndex = pagerState.currentPage,
+        modifier = Modifier
+            .fillMaxWidth()
+            .windowInsetsPadding(
+                WindowInsets.systemBars.only(WindowInsetsSides.Horizontal)
+            )
+    ) {
+        tabsToShow.forEachIndexed { index, tabToShow ->
+            Tab(
+                text = { Text(stringResource(id = tabToShow.title)) },
+                selected = pagerState.currentPage == index,
+                onClick = {
+                    scope.launch {
+                        pagerState.animateScrollToPage(index)
+                    }
+                },
+                modifier = Modifier.windowInsetsPadding(TopAppBarDefaults.windowInsets)
+            )
         }
-    )
+    }
 }
 
 private val AvailableTab.title: Int
@@ -143,12 +123,58 @@ private fun MainScreenContent(
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
 ) {
+    val pageModifier = Modifier.fillMaxSize()
     HorizontalPager(pagerState, modifier) { page ->
-        val pageModifier = Modifier.fillMaxSize()
         when (tabsToShow[page]) {
             AvailableTab.VIDEO -> VideoPage(screenState.videoPage!!, contentPadding, pageModifier)
             AvailableTab.AUDIO -> AudioPage(screenState.audioPage!!, contentPadding, pageModifier)
-            AvailableTab.SUBTITLES -> SubtitlePage(screenState.subtitlesPage!!, contentPadding, pageModifier)
+            AvailableTab.SUBTITLES -> SubtitlePage(
+                screenState.subtitlesPage!!,
+                contentPadding,
+                pageModifier
+            )
         }
     }
+}
+
+@Composable
+private fun MainScreenBottomAppBar(
+    onSettingsClicked: () -> Unit,
+    onVideoIconClick: () -> Unit,
+    onAudioIconClick: () -> Unit
+) {
+    BottomAppBar(
+        actions = {
+            IconButton(onClick = onSettingsClicked) {
+                Icon(
+                    imageVector = Icons.Filled.Settings,
+                    contentDescription = stringResource(id = R.string.menu_settings),
+                )
+            }
+        },
+        floatingActionButton = {
+            Row(
+                horizontalArrangement = spacedBy(16.dp)
+            ) {
+                FloatingActionButton(
+                    onClick = onVideoIconClick,
+                    elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
+                ) {
+                    Icon(
+                        Icons.Filled.Videocam,
+                        contentDescription = stringResource(id = R.string.menu_pick_video),
+                    )
+                }
+                FloatingActionButton(
+                    onClick = onAudioIconClick,
+                    elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
+                ) {
+                    Icon(
+                        Icons.Filled.MusicNote,
+                        contentDescription = stringResource(id = R.string.menu_pick_audio),
+                    )
+                }
+            }
+        }
+    )
 }
