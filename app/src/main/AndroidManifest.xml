@@ -16,7 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.WhatTheCodec.NoActionBar">
         <activity
-            android:name="com.javernaut.whatthecodec.presentation.root.ui.RootActivity"
+            android:name="com.javernaut.whatthecodec.home.ui.RootActivity"
             android:exported="true"
             android:launchMode="singleTop"
             android:windowSoftInputMode="adjustResize">
@@ -33,10 +33,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.javernaut.whatthecodec.presentation.settings.SettingsActivity"
+            android:name="com.javernaut.whatthecodec.settings.SettingsActivity"
             android:exported="false"
             android:label="@string/settings_title"
-            android:parentActivityName="com.javernaut.whatthecodec.presentation.root.ui.RootActivity"
+            android:parentActivityName="com.javernaut.whatthecodec.settings.SettingsActivity"
             android:theme="@style/Theme.WhatTheCodecM3"
             android:windowSoftInputMode="adjustResize" />
     </application>

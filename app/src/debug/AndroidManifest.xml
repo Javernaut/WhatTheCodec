@@ -4,12 +4,12 @@
 
     <application>
         <activity
-            android:name="com.javernaut.whatthecodec.presentation.compose.playground.ComposePlaygroundActivity"
+            android:name="com.javernaut.whatthecodec.compose.playground.ComposePlaygroundActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustResize"
             android:theme="@style/Theme.WhatTheCodec.NoActionBar" />
         <activity
-            android:name=".presentation.settings.SettingsActivity"
+            android:name=".settings.SettingsActivity"
             android:exported="true"
             tools:replace="android:exported" />
     </application>

@@ -1,7 +1,7 @@
 package com.javernaut.whatthecodec
 
 import android.app.Application
-import com.javernaut.whatthecodec.presentation.settings.ThemeManager
+import com.javernaut.whatthecodec.settings.ThemeManager
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
