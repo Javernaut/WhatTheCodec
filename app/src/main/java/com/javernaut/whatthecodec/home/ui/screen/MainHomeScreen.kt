@@ -34,6 +34,7 @@ import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -104,6 +105,7 @@ fun LandscapeMainScreen(
                 MainScreenTopAppBar(
                     tabsToShow = tabsToShow,
                     pagerState = pagerState,
+                    inPortrait = false
                 )
             }
         ) {
@@ -177,6 +179,7 @@ fun PortraitMainScreen(
             MainScreenTopAppBar(
                 tabsToShow = tabsToShow,
                 pagerState = pagerState,
+                inPortrait = true
             )
         }
     ) {
@@ -195,6 +198,7 @@ fun PortraitMainScreen(
 private fun MainScreenTopAppBar(
     tabsToShow: List<AvailableTab>,
     pagerState: PagerState,
+    inPortrait: Boolean,
 ) {
     val scope = rememberCoroutineScope()
     PrimaryTabRow(
@@ -206,7 +210,8 @@ private fun MainScreenTopAppBar(
             )
     ) {
         tabsToShow.forEachIndexed { index, tabToShow ->
-            LeadingIconTab(
+            MainScreenIconTab(
+                tall = inPortrait,
                 text = { Text(stringResource(id = tabToShow.title)) },
                 icon = {
                     Icon(imageVector = tabToShow.icon, contentDescription = null)
@@ -220,6 +225,34 @@ private fun MainScreenTopAppBar(
                 modifier = Modifier.windowInsetsPadding(TopAppBarDefaults.windowInsets)
             )
         }
+    }
+}
+
+@Composable
+fun MainScreenIconTab(
+    tall: Boolean,
+    selected: Boolean,
+    onClick: () -> Unit,
+    text: @Composable () -> Unit,
+    icon: @Composable () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    if (tall) {
+        Tab(
+            selected = selected,
+            onClick = onClick,
+            text = text,
+            icon = icon,
+            modifier = modifier
+        )
+    } else {
+        LeadingIconTab(
+            selected = selected,
+            onClick = onClick,
+            text = text,
+            icon = icon,
+            modifier = modifier
+        )
     }
 }
 
