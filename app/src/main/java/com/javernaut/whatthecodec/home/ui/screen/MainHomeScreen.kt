@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
@@ -35,6 +36,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.javernaut.whatthecodec.R
+import com.javernaut.whatthecodec.compose.common.OrientationLayout
 import com.javernaut.whatthecodec.home.presentation.ScreenState
 import com.javernaut.whatthecodec.home.presentation.model.AvailableTab
 import com.javernaut.whatthecodec.home.ui.audio.AudioPage
@@ -43,8 +45,47 @@ import com.javernaut.whatthecodec.home.ui.video.VideoPage
 import kotlinx.coroutines.launch
 
 @Composable
-@OptIn(ExperimentalFoundationApi::class)
 fun MainHomeScreen(
+    screenState: ScreenState,
+    onVideoIconClick: () -> Unit,
+    onAudioIconClick: () -> Unit,
+    onSettingsClicked: () -> Unit
+) {
+    OrientationLayout(
+        portraitContent = {
+            PortraitMainScreen(
+                screenState,
+                onVideoIconClick,
+                onAudioIconClick,
+                onSettingsClicked
+            )
+        },
+        landscapeContent = {
+            LandscapeMainScreen(
+                screenState,
+                onVideoIconClick,
+                onAudioIconClick,
+                onSettingsClicked
+            )
+        }
+    )
+}
+
+@Composable
+fun LandscapeMainScreen(
+    screenState: ScreenState,
+    onVideoIconClick: () -> Unit,
+    onAudioIconClick: () -> Unit,
+    onSettingsClicked: () -> Unit
+) {
+    Text(text = "In development", modifier = Modifier
+        .fillMaxSize()
+        .wrapContentSize())
+}
+
+@Composable
+@OptIn(ExperimentalFoundationApi::class)
+fun PortraitMainScreen(
     screenState: ScreenState,
     onVideoIconClick: () -> Unit,
     onAudioIconClick: () -> Unit,
@@ -67,7 +108,6 @@ fun MainHomeScreen(
         }
     ) {
         MainScreenContent(
-            tabsToShow = tabsToShow,
             screenState = screenState,
             pagerState = pagerState,
             contentPadding = it,
@@ -113,7 +153,6 @@ private fun MainScreenTopAppBar(
 @Composable
 @ExperimentalFoundationApi
 private fun MainScreenContent(
-    tabsToShow: List<AvailableTab>,
     screenState: ScreenState,
     pagerState: PagerState,
     contentPadding: PaddingValues,
@@ -121,7 +160,7 @@ private fun MainScreenContent(
 ) {
     val pageModifier = Modifier.fillMaxSize()
     HorizontalPager(pagerState, modifier) { page ->
-        when (tabsToShow[page]) {
+        when (screenState.availableTabs[page]) {
             AvailableTab.VIDEO ->
                 VideoPage(screenState.videoPage!!, contentPadding, pageModifier)
 
