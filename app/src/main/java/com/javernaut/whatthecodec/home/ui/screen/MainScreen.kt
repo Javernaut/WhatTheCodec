@@ -1,4 +1,4 @@
-package com.javernaut.whatthecodec.home.ui
+package com.javernaut.whatthecodec.home.ui.screen
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement.spacedBy

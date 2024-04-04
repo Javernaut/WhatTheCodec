@@ -8,13 +8,12 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.core.content.MimeTypeFilter
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.compose.theme.WhatTheCodecTheme
 import com.javernaut.whatthecodec.home.presentation.MediaFileArgument
 import com.javernaut.whatthecodec.home.presentation.MediaFileViewModel
+import com.javernaut.whatthecodec.home.ui.screen.HomeScreen
 import com.javernaut.whatthecodec.settings.SettingsActivity
 import com.javernaut.whatthecodec.util.TinyActivityCompat
 import dagger.hilt.android.AndroidEntryPoint
@@ -33,21 +32,12 @@ class RootActivity : AppCompatActivity() {
 
         setContent {
             WhatTheCodecTheme {
-                val screenState by mediaFileViewModel.screenState.observeAsState()
-                if (screenState == null) {
-                    EmptyScreen(
-                        ::onPickVideoClicked,
-                        ::onPickAudioClicked,
-                        ::onSettingsClicked
-                    )
-                } else {
-                    MainScreen(
-                        screenState!!,
-                        ::onPickVideoClicked,
-                        ::onPickAudioClicked,
-                        ::onSettingsClicked
-                    )
-                }
+                HomeScreen(
+                    mediaFileViewModel,
+                    ::onPickVideoClicked,
+                    ::onPickAudioClicked,
+                    ::onSettingsClicked
+                )
             }
         }
 
