@@ -15,8 +15,10 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Audiotrack
 import androidx.compose.material.icons.filled.MusicNote
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.Subtitles
 import androidx.compose.material.icons.filled.Videocam
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -24,14 +26,16 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LeadingIconTab
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.javernaut.whatthecodec.R
@@ -70,7 +74,7 @@ fun MainScreen(
             tabsToShow = tabsToShow,
             screenState = screenState,
             pagerState = pagerState,
-            it,
+            contentPadding = it,
             modifier = Modifier.fillMaxSize()
         )
     }
@@ -93,8 +97,11 @@ private fun MainScreenTopAppBar(
             )
     ) {
         tabsToShow.forEachIndexed { index, tabToShow ->
-            Tab(
+            LeadingIconTab(
                 text = { Text(stringResource(id = tabToShow.title)) },
+                icon = {
+                    Icon(imageVector = tabToShow.icon, contentDescription = null)
+                },
                 selected = pagerState.currentPage == index,
                 onClick = {
                     scope.launch {
@@ -112,6 +119,13 @@ private val AvailableTab.title: Int
         AvailableTab.VIDEO -> R.string.tab_video
         AvailableTab.AUDIO -> R.string.tab_audio
         AvailableTab.SUBTITLES -> R.string.tab_subtitles
+    }
+
+private val AvailableTab.icon: ImageVector
+    get() = when (this) {
+        AvailableTab.VIDEO -> Icons.Filled.Videocam
+        AvailableTab.AUDIO -> Icons.Filled.Audiotrack
+        AvailableTab.SUBTITLES -> Icons.Filled.Subtitles
     }
 
 @Composable
@@ -144,6 +158,7 @@ private fun MainScreenBottomAppBar(
     onAudioIconClick: () -> Unit
 ) {
     BottomAppBar(
+        containerColor = MaterialTheme.colorScheme.surfaceContainer,
         actions = {
             IconButton(onClick = onSettingsClicked) {
                 Icon(
