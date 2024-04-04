@@ -2,14 +2,19 @@ package com.javernaut.whatthecodec.home.ui.screen
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement.spacedBy
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.only
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsPadding
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
@@ -27,10 +32,13 @@ import androidx.compose.material3.LeadingIconTab
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SmallFloatingActionButton
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
@@ -71,6 +79,7 @@ fun MainHomeScreen(
     )
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun LandscapeMainScreen(
     screenState: ScreenState,
@@ -78,9 +87,73 @@ fun LandscapeMainScreen(
     onAudioIconClick: () -> Unit,
     onSettingsClicked: () -> Unit
 ) {
-    Text(text = "In development", modifier = Modifier
-        .fillMaxSize()
-        .wrapContentSize())
+    val tabsToShow = screenState.availableTabs
+    val pagerState = rememberPagerState {
+        tabsToShow.size
+    }
+
+    Row {
+        MainScreenSideBar(
+            onVideoIconClick, onAudioIconClick, onSettingsClicked
+        )
+        Scaffold(
+            modifier = Modifier.consumeWindowInsets(
+                WindowInsets.systemBars.only(WindowInsetsSides.Start)
+            ),
+            topBar = {
+                MainScreenTopAppBar(
+                    tabsToShow = tabsToShow,
+                    pagerState = pagerState,
+                )
+            }
+        ) {
+            MainScreenContent(
+                screenState = screenState,
+                pagerState = pagerState,
+                contentPadding = it,
+                modifier = Modifier
+                    .fillMaxSize()
+            )
+        }
+    }
+}
+
+@Composable
+private fun MainScreenSideBar(
+    onVideoIconClick: () -> Unit,
+    onAudioIconClick: () -> Unit,
+    onSettingsClicked: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Surface(
+        color = MaterialTheme.colorScheme.surfaceContainer,
+        modifier = modifier
+    ) {
+        Column(
+            modifier = Modifier
+                .windowInsetsPadding(
+                    WindowInsets.systemBars.only(
+                        WindowInsetsSides.Vertical + WindowInsetsSides.Start
+                    )
+                )
+                .padding(16.dp),
+            verticalArrangement = spacedBy(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            SideMainAction(
+                image = Icons.Filled.Videocam,
+                contentDescription = stringResource(id = R.string.menu_pick_video),
+                clickListener = onVideoIconClick
+            )
+            SideMainAction(
+                image = Icons.Filled.MusicNote,
+                contentDescription = stringResource(id = R.string.menu_pick_audio),
+                clickListener = onAudioIconClick
+            )
+            Spacer(modifier = Modifier.weight(1f))
+            HomeScreenSettingsAction(onSettingsClicked)
+        }
+    }
 }
 
 @Composable
@@ -214,6 +287,22 @@ private fun BottomMainAction(
     modifier: Modifier = Modifier
 ) {
     FloatingActionButton(
+        onClick = clickListener,
+        elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation(),
+        modifier = modifier
+    ) {
+        Icon(image, contentDescription)
+    }
+}
+
+@Composable
+private fun SideMainAction(
+    image: ImageVector,
+    contentDescription: String,
+    clickListener: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    SmallFloatingActionButton(
         onClick = clickListener,
         elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation(),
         modifier = modifier
