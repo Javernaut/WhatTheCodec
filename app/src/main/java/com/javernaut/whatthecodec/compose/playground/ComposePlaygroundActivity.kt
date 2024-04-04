@@ -8,7 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.javernaut.whatthecodec.compose.theme.WhatTheCodecTheme
-import com.javernaut.whatthecodec.home.ui.screen.EmptyScreen
+import com.javernaut.whatthecodec.home.ui.screen.EmptyHomeScreen
 import com.javernaut.whatthecodec.settings.ui.SettingsScreen
 
 class ComposePlaygroundActivity : AppCompatActivity() {
@@ -22,7 +22,7 @@ class ComposePlaygroundActivity : AppCompatActivity() {
                 val navController = rememberNavController()
                 NavHost(navController = navController, startDestination = "home") {
                     composable("home") {
-                        EmptyScreen(
+                        EmptyHomeScreen(
                             onVideoIconClick = {},
                             onAudioIconClick = {},
                             onSettingsClicked = {

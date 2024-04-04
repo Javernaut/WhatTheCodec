@@ -7,12 +7,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MusicNote
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Videocam
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -29,7 +27,7 @@ import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.compose.theme.WhatTheCodecTheme
 
 @Composable
-fun EmptyScreen(
+fun EmptyHomeScreen(
     onVideoIconClick: () -> Unit,
     onAudioIconClick: () -> Unit,
     onSettingsClicked: () -> Unit
@@ -51,12 +49,7 @@ private fun EmptyScreenTopAppBar(
     TopAppBar(
         title = { Text(text = stringResource(id = R.string.app_name)) },
         actions = {
-            IconButton(onClick = onSettingsClicked) {
-                Icon(
-                    imageVector = Icons.Filled.Settings,
-                    contentDescription = stringResource(id = R.string.menu_settings),
-                )
-            }
+            HomeScreenSettingsAction(onSettingsClicked)
         }
     )
 }
@@ -122,6 +115,6 @@ private fun EmptyScreenMainAction(
 @Composable
 private fun EmptyScreenPreview() {
     WhatTheCodecTheme {
-        EmptyScreen({}, {}, {})
+        EmptyHomeScreen({}, {}, {})
     }
 }

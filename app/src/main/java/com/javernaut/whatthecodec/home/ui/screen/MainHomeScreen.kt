@@ -4,12 +4,10 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.only
-import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
@@ -17,7 +15,6 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Audiotrack
 import androidx.compose.material.icons.filled.MusicNote
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Subtitles
 import androidx.compose.material.icons.filled.Videocam
 import androidx.compose.material3.BottomAppBar
@@ -25,7 +22,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.LeadingIconTab
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.PrimaryTabRow
@@ -48,7 +44,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 @OptIn(ExperimentalFoundationApi::class)
-fun MainScreen(
+fun MainHomeScreen(
     screenState: ScreenState,
     onVideoIconClick: () -> Unit,
     onAudioIconClick: () -> Unit,
@@ -93,7 +89,7 @@ private fun MainScreenTopAppBar(
         modifier = Modifier
             .fillMaxWidth()
             .windowInsetsPadding(
-                WindowInsets.systemBars.only(WindowInsetsSides.Horizontal)
+                TopAppBarDefaults.windowInsets.only(WindowInsetsSides.Horizontal)
             )
     ) {
         tabsToShow.forEachIndexed { index, tabToShow ->
@@ -114,20 +110,6 @@ private fun MainScreenTopAppBar(
     }
 }
 
-private val AvailableTab.title: Int
-    get() = when (this) {
-        AvailableTab.VIDEO -> R.string.tab_video
-        AvailableTab.AUDIO -> R.string.tab_audio
-        AvailableTab.SUBTITLES -> R.string.tab_subtitles
-    }
-
-private val AvailableTab.icon: ImageVector
-    get() = when (this) {
-        AvailableTab.VIDEO -> Icons.Filled.Videocam
-        AvailableTab.AUDIO -> Icons.Filled.Audiotrack
-        AvailableTab.SUBTITLES -> Icons.Filled.Subtitles
-    }
-
 @Composable
 @ExperimentalFoundationApi
 private fun MainScreenContent(
@@ -140,8 +122,12 @@ private fun MainScreenContent(
     val pageModifier = Modifier.fillMaxSize()
     HorizontalPager(pagerState, modifier) { page ->
         when (tabsToShow[page]) {
-            AvailableTab.VIDEO -> VideoPage(screenState.videoPage!!, contentPadding, pageModifier)
-            AvailableTab.AUDIO -> AudioPage(screenState.audioPage!!, contentPadding, pageModifier)
+            AvailableTab.VIDEO ->
+                VideoPage(screenState.videoPage!!, contentPadding, pageModifier)
+
+            AvailableTab.AUDIO ->
+                AudioPage(screenState.audioPage!!, contentPadding, pageModifier)
+
             AvailableTab.SUBTITLES -> SubtitlePage(
                 screenState.subtitlesPage!!,
                 contentPadding,
@@ -160,36 +146,53 @@ private fun MainScreenBottomAppBar(
     BottomAppBar(
         containerColor = MaterialTheme.colorScheme.surfaceContainer,
         actions = {
-            IconButton(onClick = onSettingsClicked) {
-                Icon(
-                    imageVector = Icons.Filled.Settings,
-                    contentDescription = stringResource(id = R.string.menu_settings),
-                )
-            }
+            HomeScreenSettingsAction(onSettingsClicked)
         },
         floatingActionButton = {
             Row(
                 horizontalArrangement = spacedBy(16.dp)
             ) {
-                FloatingActionButton(
-                    onClick = onVideoIconClick,
-                    elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
-                ) {
-                    Icon(
-                        Icons.Filled.Videocam,
-                        contentDescription = stringResource(id = R.string.menu_pick_video),
-                    )
-                }
-                FloatingActionButton(
-                    onClick = onAudioIconClick,
-                    elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
-                ) {
-                    Icon(
-                        Icons.Filled.MusicNote,
-                        contentDescription = stringResource(id = R.string.menu_pick_audio),
-                    )
-                }
+                BottomMainAction(
+                    image = Icons.Filled.Videocam,
+                    contentDescription = stringResource(id = R.string.menu_pick_video),
+                    clickListener = onVideoIconClick
+                )
+                BottomMainAction(
+                    image = Icons.Filled.MusicNote,
+                    contentDescription = stringResource(id = R.string.menu_pick_audio),
+                    clickListener = onAudioIconClick
+                )
             }
         }
     )
 }
+
+@Composable
+private fun BottomMainAction(
+    image: ImageVector,
+    contentDescription: String,
+    clickListener: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    FloatingActionButton(
+        onClick = clickListener,
+        elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation(),
+        modifier = modifier
+    ) {
+        Icon(image, contentDescription)
+    }
+}
+
+private val AvailableTab.title: Int
+    get() = when (this) {
+        AvailableTab.VIDEO -> R.string.tab_video
+        AvailableTab.AUDIO -> R.string.tab_audio
+        AvailableTab.SUBTITLES -> R.string.tab_subtitles
+    }
+
+private val AvailableTab.icon: ImageVector
+    get() = when (this) {
+        AvailableTab.VIDEO -> Icons.Filled.Videocam
+        AvailableTab.AUDIO -> Icons.Filled.Audiotrack
+        AvailableTab.SUBTITLES -> Icons.Filled.Subtitles
+    }
