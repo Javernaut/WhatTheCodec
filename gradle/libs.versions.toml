@@ -46,6 +46,9 @@ androidx-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
 androidx-compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended" }
 androidx-compose-material3 = { module = "androidx.compose.material3:material3" }
 
+# This dependency is defined, but not used. This is necessary for Dependabot to actually update Compose Compiler.
+androidx-compose-compiler = { group = "androidx.compose.compiler", name = "compiler", version.ref = "androidx-compose-compiler" }
+
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "androidx-navigation" }
 
 dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "google-dagger" }

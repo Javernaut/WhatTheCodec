@@ -1,0 +1,20 @@
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "gradle"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    registries: "*"
+    labels:
+      - "dependencies"
+    groups:
+      kotlin-ksp-compose:
+        patterns:
+          - "org.jetbrains.kotlin.android"
+          - "com.google.devtools.ksp"
+          - "androidx.compose.compiler:compiler"
+    open-pull-requests-limit: 10
