@@ -26,8 +26,8 @@ private fun getDesiredFrameWidth(context: Context): Int {
     val previewWidth = getPreviewViewWidth(context)
 
     // there are 3 such spacings (left, middle and right)
-    val totalSpacing =
-        context.resources.getDimension(R.dimen.preview_frames_spacing) * 3
+    val totalNumberOfSpacings = 3
+    val totalSpacing = context.resources.getDimension(R.dimen.preview_frames_spacing) * totalNumberOfSpacings
 
     return ((previewWidth - totalSpacing) / 2).roundToInt()
 }
