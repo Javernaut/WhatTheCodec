@@ -1,8 +1,8 @@
 # What the Codec
 
-[![Integrity check](https://github.com/Javernaut/WhatTheCodec/actions/workflows/integrity_check.yml/badge.svg?branch=master)](https://github.com/Javernaut/WhatTheCodec/actions/workflows/integrity_check.yml)
+[![Build](https://github.com/Javernaut/WhatTheCodec/actions/workflows/Build.yml/badge.svg?branch=main)](https://github.com/Javernaut/WhatTheCodec/actions/workflows/Build.yml)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/db175d84403d4a76a77f09036f3ef913)](https://www.codacy.com/manual/Javernaut/WhatTheCodec)
-[![MIT license](http://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/Javernaut/WhatTheCodec/blob/master/LICENSE.txt)
+[![MIT license](http://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/Javernaut/WhatTheCodec/blob/main/LICENSE.txt)
 [![Android Weekly #378](https://androidweekly.net/issues/issue-378/badge)](https://androidweekly.net/issues/issue-378)
 [![Android Weekly #396](https://androidweekly.net/issues/issue-396/badge)](https://androidweekly.net/issues/issue-396)
 
@@ -28,4 +28,4 @@ Or see the gifs if it is more convenient:
 
 ## License
 
-WhatTheCodec app's source code is available under the MIT license. See the [LICENSE.txt](https://github.com/Javernaut/WhatTheCodec/blob/master/LICENSE.txt) file for more details.
+WhatTheCodec app's source code is available under the MIT license. See the [LICENSE.txt](https://github.com/Javernaut/WhatTheCodec/blob/main/LICENSE.txt) file for more details.
