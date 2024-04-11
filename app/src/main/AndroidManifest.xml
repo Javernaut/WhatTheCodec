@@ -14,7 +14,7 @@
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.WhatTheCodec.NoActionBar">
+        android:theme="@style/Theme.WhatTheCodecM3">
         <activity
             android:name="com.javernaut.whatthecodec.home.ui.RootActivity"
             android:exported="true"
@@ -37,7 +37,6 @@
             android:exported="false"
             android:label="@string/settings_title"
             android:parentActivityName="com.javernaut.whatthecodec.settings.SettingsActivity"
-            android:theme="@style/Theme.WhatTheCodecM3"
             android:windowSoftInputMode="adjustResize" />
     </application>
 
