@@ -143,7 +143,6 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
 
     implementation(libs.mediafile)
-    implementation(libs.material)
 
     // TODO replace with own implementation
     implementation(libs.liveevent)
