@@ -41,12 +41,6 @@ class RootActivity : AppCompatActivity() {
             }
         }
 
-        mediaFileViewModel.errorMessageLiveEvent.observe(this) {
-            if (it) {
-                toast(R.string.message_couldnt_open_file)
-            }
-        }
-
         intentActionViewConsumed =
             savedInstanceState?.getBoolean(EXTRA_INTENT_ACTION_VIEW_CONSUMED) == true
         if (!intentActionViewConsumed) {
@@ -104,6 +98,7 @@ class RootActivity : AppCompatActivity() {
                         else -> actualPickAudioFile()
                     }
                 } else {
+                    // TODO Migrate to Snackbar
                     toast(R.string.message_permission_denied)
                 }
             }

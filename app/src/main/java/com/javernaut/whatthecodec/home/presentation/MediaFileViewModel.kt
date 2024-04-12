@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.hadilq.liveevent.LiveEvent
 import com.javernaut.whatthecodec.home.presentation.model.AvailableTab
 import com.javernaut.whatthecodec.home.presentation.model.BasicVideoInfo
 import com.javernaut.whatthecodec.home.presentation.model.FrameMetrics
@@ -16,6 +15,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.javernaut.mediafile.AudioStream
 import io.github.javernaut.mediafile.MediaFile
 import io.github.javernaut.mediafile.SubtitleStream
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -31,7 +33,7 @@ class MediaFileViewModel @Inject constructor(
     private var frameLoaderHelper: FrameLoaderHelper? = null
 
     private val _screenState = MutableLiveData<ScreenState?>()
-    private val _errorMessageLiveEvent = LiveEvent<Boolean>()
+    private val _screenMessageChannel = Channel<ScreenMessage>()
 
     init {
         pendingMediaFileArgument = savedStateHandle[KEY_MEDIA_FILE_ARGUMENT]
@@ -46,8 +48,7 @@ class MediaFileViewModel @Inject constructor(
     /**
      * Notifies about error during opening a file.
      */
-    val errorMessageLiveEvent: LiveData<Boolean>
-        get() = _errorMessageLiveEvent
+    val screenMessage = _screenMessageChannel.receiveAsFlow()
 
     override fun onCleared() {
         if (frameLoaderHelper == null) {
@@ -75,7 +76,9 @@ class MediaFileViewModel @Inject constructor(
             mediaFile = newMediaFile
             applyMediaFile(newMediaFile)
         } else {
-            _errorMessageLiveEvent.value = true
+            viewModelScope.launch {
+                _screenMessageChannel.send(ScreenMessage.FileOpeningError)
+            }
         }
     }
 
@@ -169,4 +172,8 @@ data class ScreenState(
             add(AvailableTab.SUBTITLES)
         }
     }
+}
+
+sealed interface ScreenMessage {
+    data object FileOpeningError : ScreenMessage
 }

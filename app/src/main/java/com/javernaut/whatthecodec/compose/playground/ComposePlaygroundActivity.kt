@@ -10,6 +10,7 @@ import androidx.navigation.compose.rememberNavController
 import com.javernaut.whatthecodec.compose.theme.WhatTheCodecTheme
 import com.javernaut.whatthecodec.home.ui.screen.EmptyHomeScreen
 import com.javernaut.whatthecodec.settings.ui.SettingsScreen
+import kotlinx.coroutines.flow.emptyFlow
 
 class ComposePlaygroundActivity : AppCompatActivity() {
 
@@ -27,7 +28,8 @@ class ComposePlaygroundActivity : AppCompatActivity() {
                             onAudioIconClick = {},
                             onSettingsClicked = {
                                 navController.navigate("settings")
-                            }
+                            },
+                            emptyFlow()
                         )
                     }
                     composable("settings") {

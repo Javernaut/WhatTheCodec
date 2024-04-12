@@ -13,9 +13,13 @@ import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -25,14 +29,34 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.compose.theme.WhatTheCodecTheme
+import com.javernaut.whatthecodec.home.presentation.ScreenMessage
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.launch
 
 @Composable
 fun EmptyHomeScreen(
     onVideoIconClick: () -> Unit,
     onAudioIconClick: () -> Unit,
-    onSettingsClicked: () -> Unit
+    onSettingsClicked: () -> Unit,
+    screenMassages: Flow<ScreenMessage>
 ) {
+    val scope = rememberCoroutineScope()
+    val snackbarHostState = remember { SnackbarHostState() }
+    ObserveAsEvents(screenMassages) {
+        when (it) {
+            ScreenMessage.FileOpeningError -> {
+                scope.launch {
+                    // TODO Read the value from resources
+                    snackbarHostState.showSnackbar("Couldn't open the file")
+                }
+            }
+        }
+    }
     Scaffold(
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState)
+        },
         topBar = {
             EmptyScreenTopAppBar(onSettingsClicked)
         }
@@ -115,6 +139,6 @@ private fun EmptyScreenMainAction(
 @Composable
 private fun EmptyScreenPreview() {
     WhatTheCodecTheme {
-        EmptyHomeScreen({}, {}, {})
+        EmptyHomeScreen({}, {}, {}, emptyFlow())
     }
 }
