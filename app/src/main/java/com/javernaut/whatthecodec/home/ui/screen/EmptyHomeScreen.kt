@@ -145,6 +145,7 @@ fun ObserveScreenMessages(
                 resources.getString(
                     when (it) {
                         ScreenMessage.FileOpeningError -> R.string.message_couldnt_open_file
+                        ScreenMessage.PermissionDeniedError -> R.string.message_permission_denied
                     }
                 )
             )

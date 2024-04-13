@@ -82,6 +82,12 @@ class MediaFileViewModel @Inject constructor(
         }
     }
 
+    fun onPermissionDenied() {
+        viewModelScope.launch {
+            _screenMessageChannel.send(ScreenMessage.PermissionDeniedError)
+        }
+    }
+
     private fun applyMediaFile(mediaFile: MediaFile) {
         _screenState.value = ScreenState(
             mediaFile.toBasicInfo(),
@@ -176,4 +182,5 @@ data class ScreenState(
 
 sealed interface ScreenMessage {
     data object FileOpeningError : ScreenMessage
+    data object PermissionDeniedError : ScreenMessage
 }
