@@ -33,11 +33,14 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SmallFloatingActionButton
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -46,11 +49,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.compose.common.OrientationLayout
+import com.javernaut.whatthecodec.home.presentation.ScreenMessage
 import com.javernaut.whatthecodec.home.presentation.ScreenState
 import com.javernaut.whatthecodec.home.presentation.model.AvailableTab
 import com.javernaut.whatthecodec.home.ui.audio.AudioPage
 import com.javernaut.whatthecodec.home.ui.subtitle.SubtitlePage
 import com.javernaut.whatthecodec.home.ui.video.VideoPage
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 @Composable
@@ -58,7 +63,8 @@ fun MainHomeScreen(
     screenState: ScreenState,
     onVideoIconClick: () -> Unit,
     onAudioIconClick: () -> Unit,
-    onSettingsClicked: () -> Unit
+    onSettingsClicked: () -> Unit,
+    screenMessage: Flow<ScreenMessage>
 ) {
     OrientationLayout(
         portraitContent = {
@@ -66,7 +72,8 @@ fun MainHomeScreen(
                 screenState,
                 onVideoIconClick,
                 onAudioIconClick,
-                onSettingsClicked
+                onSettingsClicked,
+                screenMessage
             )
         },
         landscapeContent = {
@@ -74,7 +81,8 @@ fun MainHomeScreen(
                 screenState,
                 onVideoIconClick,
                 onAudioIconClick,
-                onSettingsClicked
+                onSettingsClicked,
+                screenMessage
             )
         }
     )
@@ -86,7 +94,8 @@ fun LandscapeMainScreen(
     screenState: ScreenState,
     onVideoIconClick: () -> Unit,
     onAudioIconClick: () -> Unit,
-    onSettingsClicked: () -> Unit
+    onSettingsClicked: () -> Unit,
+    screenMessage: Flow<ScreenMessage>
 ) {
     val tabsToShow = screenState.availableTabs
     val pagerState = rememberPagerState {
@@ -97,10 +106,21 @@ fun LandscapeMainScreen(
         MainScreenSideBar(
             onVideoIconClick, onAudioIconClick, onSettingsClicked
         )
+
+        val snackbarHostState = remember { SnackbarHostState() }
+
+        ObserveScreenMessages(
+            screenMassages = screenMessage,
+            snackbarHostState = snackbarHostState
+        )
+
         Scaffold(
             modifier = Modifier.consumeWindowInsets(
                 WindowInsets.systemBars.only(WindowInsetsSides.Start)
             ),
+            snackbarHost = {
+                SnackbarHost(hostState = snackbarHostState)
+            },
             topBar = {
                 MainScreenTopAppBar(
                     tabsToShow = tabsToShow,
@@ -164,14 +184,25 @@ fun PortraitMainScreen(
     screenState: ScreenState,
     onVideoIconClick: () -> Unit,
     onAudioIconClick: () -> Unit,
-    onSettingsClicked: () -> Unit
+    onSettingsClicked: () -> Unit,
+    screenMessage: Flow<ScreenMessage>
 ) {
     val tabsToShow = screenState.availableTabs
     val pagerState = rememberPagerState {
         tabsToShow.size
     }
 
+    val snackbarHostState = remember { SnackbarHostState() }
+
+    ObserveScreenMessages(
+        screenMassages = screenMessage,
+        snackbarHostState = snackbarHostState
+    )
+
     Scaffold(
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState)
+        },
         bottomBar = {
             MainScreenBottomAppBar(onSettingsClicked, onVideoIconClick, onAudioIconClick)
         },

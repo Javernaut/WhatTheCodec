@@ -39,7 +39,8 @@ fun HomeScreen(
             screenState!!,
             onVideoIconClick,
             onAudioIconClick,
-            onSettingsClicked
+            onSettingsClicked,
+            viewModel.screenMessage
         )
     }
 }
