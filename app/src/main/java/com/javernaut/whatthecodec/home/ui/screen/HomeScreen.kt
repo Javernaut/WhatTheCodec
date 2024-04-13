@@ -40,6 +40,7 @@ fun HomeScreen(
             onVideoIconClick,
             onAudioIconClick,
             onSettingsClicked,
+            viewModel::copyToClipboard,
             viewModel.screenMessage
         )
     }

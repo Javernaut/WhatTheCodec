@@ -64,6 +64,7 @@ fun MainHomeScreen(
     onVideoIconClick: () -> Unit,
     onAudioIconClick: () -> Unit,
     onSettingsClicked: () -> Unit,
+    onCopyValue: (String) -> Unit,
     screenMessage: Flow<ScreenMessage>
 ) {
     OrientationLayout(
@@ -73,6 +74,7 @@ fun MainHomeScreen(
                 onVideoIconClick,
                 onAudioIconClick,
                 onSettingsClicked,
+                onCopyValue,
                 screenMessage
             )
         },
@@ -82,6 +84,7 @@ fun MainHomeScreen(
                 onVideoIconClick,
                 onAudioIconClick,
                 onSettingsClicked,
+                onCopyValue,
                 screenMessage
             )
         }
@@ -95,6 +98,7 @@ fun LandscapeMainScreen(
     onVideoIconClick: () -> Unit,
     onAudioIconClick: () -> Unit,
     onSettingsClicked: () -> Unit,
+    onCopyValue: (String) -> Unit,
     screenMessage: Flow<ScreenMessage>
 ) {
     val tabsToShow = screenState.availableTabs
@@ -133,6 +137,7 @@ fun LandscapeMainScreen(
                 screenState = screenState,
                 pagerState = pagerState,
                 contentPadding = it,
+                onCopyValue = onCopyValue,
                 modifier = Modifier
                     .fillMaxSize()
             )
@@ -185,6 +190,7 @@ fun PortraitMainScreen(
     onVideoIconClick: () -> Unit,
     onAudioIconClick: () -> Unit,
     onSettingsClicked: () -> Unit,
+    onCopyValue: (String) -> Unit,
     screenMessage: Flow<ScreenMessage>
 ) {
     val tabsToShow = screenState.availableTabs
@@ -218,6 +224,7 @@ fun PortraitMainScreen(
             screenState = screenState,
             pagerState = pagerState,
             contentPadding = it,
+            onCopyValue = onCopyValue,
             modifier = Modifier.fillMaxSize()
         )
     }
@@ -293,20 +300,22 @@ private fun MainScreenContent(
     screenState: ScreenState,
     pagerState: PagerState,
     contentPadding: PaddingValues,
+    onCopyValue: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val pageModifier = Modifier.fillMaxSize()
     HorizontalPager(pagerState, modifier) { page ->
         when (screenState.availableTabs[page]) {
             AvailableTab.VIDEO ->
-                VideoPage(screenState.videoPage!!, contentPadding, pageModifier)
+                VideoPage(screenState.videoPage!!, contentPadding, onCopyValue, pageModifier)
 
             AvailableTab.AUDIO ->
-                AudioPage(screenState.audioPage!!, contentPadding, pageModifier)
+                AudioPage(screenState.audioPage!!, contentPadding, onCopyValue, pageModifier)
 
             AvailableTab.SUBTITLES -> SubtitlePage(
                 screenState.subtitlesPage!!,
                 contentPadding,
+                onCopyValue,
                 pageModifier
             )
         }

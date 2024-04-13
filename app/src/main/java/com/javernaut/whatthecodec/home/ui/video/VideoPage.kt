@@ -29,6 +29,7 @@ import io.github.javernaut.mediafile.displayable.toDisplayable
 fun VideoPage(
     videoInfo: BasicVideoInfo,
     contentPadding: PaddingValues,
+    onCopyValue: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -42,6 +43,7 @@ fun VideoPage(
         item {
             Container(
                 basicVideoInfo = videoInfo,
+                onCopyValue = onCopyValue,
                 modifier = commonModifier
                     .padding(top = 16.dp)
             )
@@ -49,6 +51,7 @@ fun VideoPage(
         item {
             VideoStream(
                 videoStream = videoInfo.videoStream,
+                onCopyValue = onCopyValue,
                 modifier = commonModifier.padding(vertical = 16.dp)
             )
         }
@@ -58,6 +61,7 @@ fun VideoPage(
 @Composable
 private fun Container(
     basicVideoInfo: BasicVideoInfo,
+    onCopyValue: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     StreamCard(
@@ -68,6 +72,7 @@ private fun Container(
             StreamFeatureItem(
                 title = stringResource(id = R.string.info_file_format),
                 value = basicVideoInfo.fileFormat,
+                onCopyValue = onCopyValue,
                 modifier = Modifier.weight(1f)
             )
             StreamFeatureItem(
@@ -79,6 +84,7 @@ private fun Container(
                         R.string.info_protocol_pipe
                     }
                 ),
+                onCopyValue = onCopyValue,
                 modifier = Modifier.weight(1f)
             )
         }
@@ -88,6 +94,7 @@ private fun Container(
 @Composable
 private fun VideoStream(
     videoStream: VideoStream,
+    onCopyValue: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     StreamCard(
@@ -103,6 +110,7 @@ private fun VideoStream(
         StreamFeaturesGrid(
             stream = videoStream,
             features = streamFeatures,
+            onCopyValue = onCopyValue,
             modifier = it
         )
     }

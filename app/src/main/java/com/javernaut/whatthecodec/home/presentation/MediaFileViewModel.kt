@@ -22,6 +22,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MediaFileViewModel @Inject constructor(
+    private val clipboard: Clipboard,
     private val frameMetricsProvider: FrameMetricsProvider,
     private val mediaFileProvider: MediaFileProvider,
     private val savedStateHandle: SavedStateHandle
@@ -46,7 +47,7 @@ class MediaFileViewModel @Inject constructor(
         get() = _screenState
 
     /**
-     * Notifies about error during opening a file.
+     * One time notifications about important events.
      */
     val screenMessage = _screenMessageChannel.receiveAsFlow()
 
@@ -76,15 +77,22 @@ class MediaFileViewModel @Inject constructor(
             mediaFile = newMediaFile
             applyMediaFile(newMediaFile)
         } else {
-            viewModelScope.launch {
-                _screenMessageChannel.send(ScreenMessage.FileOpeningError)
-            }
+            sendMessage(ScreenMessage.FileOpeningError)
         }
     }
 
+    fun copyToClipboard(value: String) {
+        clipboard.copy(value)
+        sendMessage(ScreenMessage.ValueCopied(value))
+    }
+
     fun onPermissionDenied() {
+        sendMessage(ScreenMessage.PermissionDeniedError)
+    }
+
+    private fun sendMessage(message: ScreenMessage) {
         viewModelScope.launch {
-            _screenMessageChannel.send(ScreenMessage.PermissionDeniedError)
+            _screenMessageChannel.send(message)
         }
     }
 
@@ -183,4 +191,5 @@ data class ScreenState(
 sealed interface ScreenMessage {
     data object FileOpeningError : ScreenMessage
     data object PermissionDeniedError : ScreenMessage
+    class ValueCopied(val value: String) : ScreenMessage
 }

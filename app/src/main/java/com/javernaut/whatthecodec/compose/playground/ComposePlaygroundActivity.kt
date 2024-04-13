@@ -47,26 +47,15 @@ class PlaygroundViewModel : ViewModel() {
     private val _screenMessageChannel = Channel<PlaygroundScreenMessage>()
     val screenMessage = _screenMessageChannel.receiveAsFlow()
 
-//    private val _screenMessage =
-//        MutableStateFlow<PlaygroundScreenMessage>(PlaygroundScreenMessage.NoMessage)
-//    val screenMessage = _screenMessage.asStateFlow()
-
     fun doSomething() {
         viewModelScope.launch {
             _screenMessageChannel.send(PlaygroundScreenMessage.FileOpeningError)
         }
     }
-
-//    fun resetMessage() {
-//        viewModelScope.launch {
-//            _screenMessage.value = PlaygroundScreenMessage.NoMessage
-//        }
-//    }
 }
 
 sealed interface PlaygroundScreenMessage {
     data object FileOpeningError : PlaygroundScreenMessage
-//    data object NoMessage : PlaygroundScreenMessage
 }
 
 @Composable

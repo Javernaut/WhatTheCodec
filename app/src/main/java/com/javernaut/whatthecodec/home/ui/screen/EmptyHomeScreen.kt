@@ -142,12 +142,18 @@ fun ObserveScreenMessages(
     ObserveAsEvents(screenMassages) {
         scope.launch {
             snackbarHostState.showSnackbar(
-                resources.getString(
-                    when (it) {
-                        ScreenMessage.FileOpeningError -> R.string.message_couldnt_open_file
-                        ScreenMessage.PermissionDeniedError -> R.string.message_permission_denied
-                    }
-                )
+                when (it) {
+                    ScreenMessage.FileOpeningError ->
+                        resources.getString(R.string.message_couldnt_open_file)
+
+                    ScreenMessage.PermissionDeniedError ->
+                        resources.getString(R.string.message_permission_denied)
+
+                    is ScreenMessage.ValueCopied ->
+                        resources.getString(
+                            R.string.stream_text_copied_pattern, it.value
+                        )
+                }
             )
         }
     }

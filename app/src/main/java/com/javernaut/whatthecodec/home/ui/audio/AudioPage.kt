@@ -20,16 +20,18 @@ import io.github.javernaut.mediafile.displayable.toDisplayable
 fun AudioPage(
     streams: List<AudioStream>,
     contentPadding: PaddingValues,
+    onCopyValue: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     SimplePage(streams, contentPadding, modifier) { item, itemModifier ->
-        AudioCardContent(item, itemModifier)
+        AudioCardContent(item, onCopyValue, itemModifier)
     }
 }
 
 @Composable
 private fun AudioCardContent(
     stream: AudioStream,
+    onCopyValue: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val streamFeatures = getFilteredStreamFeatures(
@@ -41,6 +43,7 @@ private fun AudioCardContent(
     StreamFeaturesGrid(
         stream,
         streamFeatures,
+        onCopyValue,
         modifier
     )
 }
