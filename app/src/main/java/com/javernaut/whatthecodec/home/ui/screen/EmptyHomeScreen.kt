@@ -13,26 +13,46 @@ import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.compose.theme.WhatTheCodecTheme
+import com.javernaut.whatthecodec.home.presentation.ScreenMessage
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.launch
 
 @Composable
 fun EmptyHomeScreen(
     onVideoIconClick: () -> Unit,
     onAudioIconClick: () -> Unit,
-    onSettingsClicked: () -> Unit
+    onSettingsClicked: () -> Unit,
+    screenMassages: Flow<ScreenMessage>
 ) {
+    val snackbarHostState = remember { SnackbarHostState() }
+
+    ObserveScreenMessages(
+        screenMassages = screenMassages,
+        snackbarHostState = snackbarHostState
+    )
+
     Scaffold(
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState)
+        },
         topBar = {
             EmptyScreenTopAppBar(onSettingsClicked)
         }
@@ -111,10 +131,38 @@ private fun EmptyScreenMainAction(
     )
 }
 
+@Composable
+fun ObserveScreenMessages(
+    screenMassages: Flow<ScreenMessage>,
+    snackbarHostState: SnackbarHostState
+) {
+    val scope = rememberCoroutineScope()
+    val resources = LocalContext.current.resources
+
+    ObserveAsEvents(screenMassages) {
+        scope.launch {
+            snackbarHostState.showSnackbar(
+                when (it) {
+                    ScreenMessage.FileOpeningError ->
+                        resources.getString(R.string.message_couldnt_open_file)
+
+                    ScreenMessage.PermissionDeniedError ->
+                        resources.getString(R.string.message_permission_denied)
+
+                    is ScreenMessage.ValueCopied ->
+                        resources.getString(
+                            R.string.stream_text_copied_pattern, it.value
+                        )
+                }
+            )
+        }
+    }
+}
+
 @PreviewLightDark
 @Composable
 private fun EmptyScreenPreview() {
     WhatTheCodecTheme {
-        EmptyHomeScreen({}, {}, {})
+        EmptyHomeScreen({}, {}, {}, emptyFlow())
     }
 }

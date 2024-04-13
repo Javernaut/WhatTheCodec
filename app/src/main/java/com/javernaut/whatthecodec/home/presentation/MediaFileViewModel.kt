@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.hadilq.liveevent.LiveEvent
 import com.javernaut.whatthecodec.home.presentation.model.AvailableTab
 import com.javernaut.whatthecodec.home.presentation.model.BasicVideoInfo
 import com.javernaut.whatthecodec.home.presentation.model.FrameMetrics
@@ -16,10 +15,14 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.javernaut.mediafile.AudioStream
 import io.github.javernaut.mediafile.MediaFile
 import io.github.javernaut.mediafile.SubtitleStream
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class MediaFileViewModel @Inject constructor(
+    private val clipboard: Clipboard,
     private val frameMetricsProvider: FrameMetricsProvider,
     private val mediaFileProvider: MediaFileProvider,
     private val savedStateHandle: SavedStateHandle
@@ -31,7 +34,7 @@ class MediaFileViewModel @Inject constructor(
     private var frameLoaderHelper: FrameLoaderHelper? = null
 
     private val _screenState = MutableLiveData<ScreenState?>()
-    private val _errorMessageLiveEvent = LiveEvent<Boolean>()
+    private val _screenMessageChannel = Channel<ScreenMessage>()
 
     init {
         pendingMediaFileArgument = savedStateHandle[KEY_MEDIA_FILE_ARGUMENT]
@@ -44,10 +47,9 @@ class MediaFileViewModel @Inject constructor(
         get() = _screenState
 
     /**
-     * Notifies about error during opening a file.
+     * One time notifications about important events.
      */
-    val errorMessageLiveEvent: LiveData<Boolean>
-        get() = _errorMessageLiveEvent
+    val screenMessage = _screenMessageChannel.receiveAsFlow()
 
     override fun onCleared() {
         if (frameLoaderHelper == null) {
@@ -75,7 +77,22 @@ class MediaFileViewModel @Inject constructor(
             mediaFile = newMediaFile
             applyMediaFile(newMediaFile)
         } else {
-            _errorMessageLiveEvent.value = true
+            sendMessage(ScreenMessage.FileOpeningError)
+        }
+    }
+
+    fun copyToClipboard(value: String) {
+        clipboard.copy(value)
+        sendMessage(ScreenMessage.ValueCopied(value))
+    }
+
+    fun onPermissionDenied() {
+        sendMessage(ScreenMessage.PermissionDeniedError)
+    }
+
+    private fun sendMessage(message: ScreenMessage) {
+        viewModelScope.launch {
+            _screenMessageChannel.send(message)
         }
     }
 
@@ -169,4 +186,10 @@ data class ScreenState(
             add(AvailableTab.SUBTITLES)
         }
     }
+}
+
+sealed interface ScreenMessage {
+    data object FileOpeningError : ScreenMessage
+    data object PermissionDeniedError : ScreenMessage
+    class ValueCopied(val value: String) : ScreenMessage
 }

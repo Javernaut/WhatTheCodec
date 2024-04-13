@@ -19,16 +19,18 @@ import io.github.javernaut.mediafile.displayable.getDisplayableDisposition
 fun SubtitlePage(
     streams: List<SubtitleStream>,
     contentPadding: PaddingValues,
+    onCopyValue: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     SimplePage(streams, contentPadding, modifier) { item, itemModifier ->
-        SubtitleCardContent(item, itemModifier)
+        SubtitleCardContent(item, onCopyValue, itemModifier)
     }
 }
 
 @Composable
 private fun SubtitleCardContent(
     stream: SubtitleStream,
+    onCopyValue: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val streamFeatures = getFilteredStreamFeatures(
@@ -40,6 +42,7 @@ private fun SubtitleCardContent(
     StreamFeaturesGrid(
         stream,
         streamFeatures,
+        onCopyValue,
         modifier
     )
 }

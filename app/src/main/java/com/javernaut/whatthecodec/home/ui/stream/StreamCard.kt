@@ -6,7 +6,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.calculateEndPadding
@@ -94,11 +93,11 @@ fun <T : MediaStream> SimplePage(
     }
 }
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun <T : MediaStream> StreamFeaturesGrid(
     stream: T,
     features: List<StreamFeature<T>>,
+    onCopyValue: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val resources = LocalContext.current.resources
@@ -112,7 +111,7 @@ fun <T : MediaStream> StreamFeaturesGrid(
             columns = 2
         ) {
             displayableFeatures.forEach {
-                StreamFeatureItem(stream, it, Modifier.fillMaxWidth())
+                StreamFeatureItem(stream, it, onCopyValue, Modifier.fillMaxWidth())
             }
         }
     } else {

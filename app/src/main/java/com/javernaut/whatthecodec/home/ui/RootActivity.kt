@@ -3,13 +3,11 @@ package com.javernaut.whatthecodec.home.ui
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.MimeTypeFilter
-import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.compose.theme.WhatTheCodecTheme
 import com.javernaut.whatthecodec.home.presentation.MediaFileArgument
 import com.javernaut.whatthecodec.home.presentation.MediaFileViewModel
@@ -38,12 +36,6 @@ class RootActivity : AppCompatActivity() {
                     ::onPickAudioClicked,
                     ::onSettingsClicked
                 )
-            }
-        }
-
-        mediaFileViewModel.errorMessageLiveEvent.observe(this) {
-            if (it) {
-                toast(R.string.message_couldnt_open_file)
             }
         }
 
@@ -104,7 +96,7 @@ class RootActivity : AppCompatActivity() {
                         else -> actualPickAudioFile()
                     }
                 } else {
-                    toast(R.string.message_permission_denied)
+                    mediaFileViewModel.onPermissionDenied()
                 }
             }
 
@@ -177,10 +169,6 @@ class RootActivity : AppCompatActivity() {
 
     private fun openMediaFile(uri: Uri, mediaType: MediaType) {
         mediaFileViewModel.openMediaFile(MediaFileArgument(uri.toString(), mediaType))
-    }
-
-    private fun toast(msg: Int) {
-        Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
     }
 
     companion object {

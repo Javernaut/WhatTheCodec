@@ -1,9 +1,5 @@
 package com.javernaut.whatthecodec.home.ui.stream
 
-import android.content.ClipData
-import android.content.ClipboardManager
-import android.content.Context
-import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement.spacedBy
@@ -26,7 +22,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
-import androidx.core.content.getSystemService
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.compose.theme.WhatTheCodecTheme
 import io.github.javernaut.mediafile.MediaStream
@@ -35,20 +30,23 @@ import io.github.javernaut.mediafile.MediaStream
 fun StreamFeatureItem(
     title: String,
     value: String,
+    onCopyValue: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Box(modifier = modifier) {
         var expanded by remember { mutableStateOf(false) }
-        StreamFeature(title, value) {
+        StreamFeature(
+            title = title,
+            value = value
+        ) {
             expanded = true
         }
-        val context = LocalContext.current
         CopyToClipboardDropdown(
-            expanded,
-            value,
-            { expanded = false }
+            expanded = expanded,
+            title = value,
+            dismissCallback = { expanded = false }
         ) {
-            copyTextToClipboard(context, value)
+            onCopyValue(value)
         }
     }
 }
@@ -57,26 +55,17 @@ fun StreamFeatureItem(
 fun <T : MediaStream> StreamFeatureItem(
     stream: T,
     streamFeature: StreamFeature<T>,
+    onCopyValue: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     streamFeature.getValue(stream, LocalContext.current.resources)?.let { value ->
         StreamFeatureItem(
             stringResource(id = streamFeature.title),
             value,
+            onCopyValue,
             modifier
         )
     }
-}
-
-private fun copyTextToClipboard(context: Context, valueToCopy: String) {
-    val clipboardManager = context.getSystemService<ClipboardManager>()!!
-    clipboardManager.setPrimaryClip(
-        ClipData.newPlainText(valueToCopy, valueToCopy)
-    )
-    val toastMessage = context.getString(
-        R.string.stream_text_copied_pattern, valueToCopy
-    )
-    Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show()
 }
 
 @PreviewLightDark
