@@ -23,6 +23,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
@@ -41,18 +42,13 @@ fun EmptyHomeScreen(
     onSettingsClicked: () -> Unit,
     screenMassages: Flow<ScreenMessage>
 ) {
-    val scope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
-    ObserveAsEvents(screenMassages) {
-        when (it) {
-            ScreenMessage.FileOpeningError -> {
-                scope.launch {
-                    // TODO Read the value from resources
-                    snackbarHostState.showSnackbar("Couldn't open the file")
-                }
-            }
-        }
-    }
+
+    ObserveScreenMessages(
+        screenMassages = screenMassages,
+        snackbarHostState = snackbarHostState
+    )
+
     Scaffold(
         snackbarHost = {
             SnackbarHost(hostState = snackbarHostState)
@@ -133,6 +129,27 @@ private fun EmptyScreenMainAction(
         icon = { Icon(image, null) },
         text = { Text(text = stringResource(id = text)) },
     )
+}
+
+@Composable
+fun ObserveScreenMessages(
+    screenMassages: Flow<ScreenMessage>,
+    snackbarHostState: SnackbarHostState
+) {
+    val scope = rememberCoroutineScope()
+    val resources = LocalContext.current.resources
+
+    ObserveAsEvents(screenMassages) {
+        scope.launch {
+            snackbarHostState.showSnackbar(
+                resources.getString(
+                    when (it) {
+                        ScreenMessage.FileOpeningError -> R.string.message_couldnt_open_file
+                    }
+                )
+            )
+        }
+    }
 }
 
 @PreviewLightDark
