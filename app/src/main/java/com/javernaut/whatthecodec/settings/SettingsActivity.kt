@@ -8,7 +8,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.browser.customtabs.CustomTabsIntent
-import com.javernaut.whatthecodec.compose.theme.WhatTheCodecDynamicTheme
+import com.javernaut.whatthecodec.compose.theme.WhatTheCodecTheme
 import com.javernaut.whatthecodec.settings.ui.SettingsScreen
 
 // AppCompatActivity (and AppCompat theme) is used for automatic reloading when user changes a theme
@@ -21,7 +21,7 @@ class SettingsActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            WhatTheCodecDynamicTheme {
+            WhatTheCodecTheme.Dynamic {
                 // TODO Navigate up with nav controller instead
                 SettingsScreen(::openUrl, ::finish)
             }

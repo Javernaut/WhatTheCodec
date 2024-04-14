@@ -29,7 +29,7 @@ class RootActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            WhatTheCodecTheme {
+            WhatTheCodecTheme.Dynamic {
                 HomeScreen(
                     mediaFileViewModel,
                     ::onPickVideoClicked,

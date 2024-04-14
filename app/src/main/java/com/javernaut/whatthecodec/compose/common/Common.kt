@@ -1,8 +1,17 @@
 package com.javernaut.whatthecodec.compose.common
 
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
+import android.util.Log
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 
 @Composable
 fun OrientationLayout(
@@ -15,6 +24,37 @@ fun OrientationLayout(
             portraitContent()
         } else {
             landscapeContent()
+        }
+    }
+}
+
+@Composable
+fun SystemBroadcastReceiver(
+    systemAction: String,
+    onSystemEvent: (intent: Intent?) -> Unit
+) {
+    // Grab the current context in this part of the UI tree
+    val context = LocalContext.current
+
+    // Safely use the latest onSystemEvent lambda passed to the function
+    val currentOnSystemEvent by rememberUpdatedState(onSystemEvent)
+
+    // If either context or systemAction changes, unregister and register again
+    DisposableEffect(context, systemAction) {
+        val intentFilter = IntentFilter(systemAction)
+        val broadcast = object : BroadcastReceiver() {
+            override fun onReceive(context: Context?, intent: Intent?) {
+                currentOnSystemEvent(intent)
+            }
+        }
+
+        Log.e("AppThememe", "registering the receiver")
+        context.registerReceiver(broadcast, intentFilter)
+
+        // When the effect leaves the Composition, remove the callback
+        onDispose {
+            Log.e("AppThememe", "unregistering the receiver")
+            context.unregisterReceiver(broadcast)
         }
     }
 }

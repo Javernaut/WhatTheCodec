@@ -35,7 +35,7 @@ class ComposePlaygroundActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            WhatTheCodecTheme {
+            WhatTheCodecTheme.Dynamic {
                 PlaygroundScreen()
             }
         }

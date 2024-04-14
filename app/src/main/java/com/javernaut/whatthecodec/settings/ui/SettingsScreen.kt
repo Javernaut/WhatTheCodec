@@ -200,7 +200,7 @@ private fun OpenUrlPreference(
 @PreviewLightDark
 @Composable
 private fun PreviewSettingsScreen() {
-    WhatTheCodecTheme {
+    WhatTheCodecTheme.Static {
         SettingsScreen({}, {})
     }
 }

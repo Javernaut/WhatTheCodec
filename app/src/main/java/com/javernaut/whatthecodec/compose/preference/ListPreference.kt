@@ -26,6 +26,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -51,7 +52,7 @@ fun ListPreference(
 
     val currentlySelectedItemIndex = entriesCodes.indexOf(selectedItemCode)
 
-    var dialogOpened by remember { mutableStateOf(false) }
+    var dialogOpened by rememberSaveable { mutableStateOf(false) }
     Preference(
         title = title,
         summary = displayableEntries[currentlySelectedItemIndex]
@@ -83,7 +84,7 @@ fun ListPreference(
     selectedItemIndex: Int,
     onNewCodeSelected: (Int) -> Unit
 ) {
-    var dialogOpened by remember { mutableStateOf(false) }
+    var dialogOpened by rememberSaveable { mutableStateOf(false) }
     Preference(
         title = title,
         summary = displayableEntries[selectedItemIndex]
@@ -111,7 +112,7 @@ fun SingleChoicePreferenceDialog(
     currentlySelectedIndex: Int,
     clickListener: (Int) -> Unit
 ) {
-    var selectedIndex by remember { mutableIntStateOf(currentlySelectedIndex) }
+    var selectedIndex by rememberSaveable { mutableIntStateOf(currentlySelectedIndex) }
     PreferenceDialog(title, dismissRequest,
         applyRequest = {
             clickListener(selectedIndex)
@@ -151,7 +152,7 @@ fun MultiSelectListPreference(
         selectedItemCodes.contains(entriesCodes[it])
     }
 
-    var dialogOpened by remember { mutableStateOf(false) }
+    var dialogOpened by rememberSaveable { mutableStateOf(false) }
     Preference(
         title = title,
         summary = summaryBuilder(displayableEntries.filterIndexed { index, s ->
