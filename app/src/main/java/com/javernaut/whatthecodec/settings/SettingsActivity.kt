@@ -11,8 +11,6 @@ import androidx.browser.customtabs.CustomTabsIntent
 import com.javernaut.whatthecodec.compose.theme.WhatTheCodecTheme
 import com.javernaut.whatthecodec.settings.ui.SettingsScreen
 
-// AppCompatActivity (and AppCompat theme) is used for automatic reloading when user changes a theme
-// It tracks both 'local' day/night mode and a theme according to the system (auto or battery)
 class SettingsActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {

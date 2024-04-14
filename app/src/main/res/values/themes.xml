@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!--  TODO Inherit from system theme once AppCompat is fully removed  -->
-    <style name="Theme.WhatTheCodecM3" parent="Theme.AppCompat.DayNight.NoActionBar" />
+    <style name="Theme.WhatTheCodecM3" parent="android:Theme.Material.NoActionBar" />
 
 </resources>

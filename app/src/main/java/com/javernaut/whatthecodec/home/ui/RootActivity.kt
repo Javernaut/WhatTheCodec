@@ -3,10 +3,10 @@ package com.javernaut.whatthecodec.home.ui
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.MimeTypeFilter
 import com.javernaut.whatthecodec.compose.theme.WhatTheCodecTheme
 import com.javernaut.whatthecodec.home.presentation.MediaFileArgument
@@ -18,7 +18,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import io.github.javernaut.mediafile.creator.MediaType
 
 @AndroidEntryPoint
-class RootActivity : AppCompatActivity() {
+class RootActivity : ComponentActivity() {
 
     private val mediaFileViewModel: MediaFileViewModel by viewModels()
 
