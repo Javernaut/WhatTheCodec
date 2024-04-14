@@ -23,6 +23,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -76,6 +77,33 @@ fun ListPreference(
 }
 
 @Composable
+fun ListPreference(
+    title: String,
+    displayableEntries: List<String>,
+    selectedItemIndex: Int,
+    onNewCodeSelected: (Int) -> Unit
+) {
+    var dialogOpened by remember { mutableStateOf(false) }
+    Preference(
+        title = title,
+        summary = displayableEntries[selectedItemIndex]
+    ) {
+        dialogOpened = true
+    }
+
+    if (dialogOpened) {
+        SingleChoicePreferenceDialog(
+            title = title,
+            dismissRequest = { dialogOpened = false },
+            items = displayableEntries,
+            currentlySelectedIndex = selectedItemIndex
+        ) {
+            onNewCodeSelected(it)
+        }
+    }
+}
+
+@Composable
 fun SingleChoicePreferenceDialog(
     title: String,
     dismissRequest: () -> Unit,
@@ -83,7 +111,7 @@ fun SingleChoicePreferenceDialog(
     currentlySelectedIndex: Int,
     clickListener: (Int) -> Unit
 ) {
-    var selectedIndex by remember { mutableStateOf(currentlySelectedIndex) }
+    var selectedIndex by remember { mutableIntStateOf(currentlySelectedIndex) }
     PreferenceDialog(title, dismissRequest,
         applyRequest = {
             clickListener(selectedIndex)
