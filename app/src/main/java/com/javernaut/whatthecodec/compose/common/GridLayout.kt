@@ -6,6 +6,7 @@ import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import kotlin.math.max
 import kotlin.math.nextUp
 import kotlin.math.roundToInt
 
@@ -39,10 +40,10 @@ fun GridLayout(
         val maxHeights = chunkedPlacables.map { it.maxByOrNull { it.height }!!.height }
         val maxWidth = chunkedPlacables.maxOf { it.sumOf { it.width } }
         val dstHeight = maxHeights.sum() + totalVerticalSpacing
-        val dstWidth = maxWidth + totalVerticalSpacing
+        val dstWidth = maxWidth + totalHorizontalSpacing
 
         var runningY = 0
-        layout(dstWidth, dstHeight) {
+        layout(max(dstWidth, constraints.minWidth), dstHeight) {
             chunkedPlacables.forEachIndexed { index, list ->
                 var runningX = 0
                 list.forEach {

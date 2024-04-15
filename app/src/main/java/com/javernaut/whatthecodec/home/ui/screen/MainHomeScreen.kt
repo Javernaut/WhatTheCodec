@@ -49,9 +49,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.compose.common.OrientationLayout
-import com.javernaut.whatthecodec.home.presentation.ScreenMessage
-import com.javernaut.whatthecodec.home.presentation.ScreenState
 import com.javernaut.whatthecodec.home.presentation.model.AvailableTab
+import com.javernaut.whatthecodec.home.presentation.model.ScreenMessage
+import com.javernaut.whatthecodec.home.presentation.model.ScreenState
 import com.javernaut.whatthecodec.home.ui.audio.AudioPage
 import com.javernaut.whatthecodec.home.ui.subtitle.SubtitlePage
 import com.javernaut.whatthecodec.home.ui.video.VideoPage

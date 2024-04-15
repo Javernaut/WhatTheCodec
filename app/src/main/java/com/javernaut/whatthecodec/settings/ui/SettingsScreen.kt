@@ -40,7 +40,13 @@ import com.javernaut.whatthecodec.compose.preference.PreferenceGroup
 import com.javernaut.whatthecodec.compose.theme.WhatTheCodecTheme
 import com.javernaut.whatthecodec.compose.theme.dynamic.AppTheme
 import com.javernaut.whatthecodec.compose.theme.dynamic.ThemeViewModel
-import com.javernaut.whatthecodec.settings.PreferencesKeys
+import com.javernaut.whatthecodec.home.data.model.AudioStreamFeature
+import com.javernaut.whatthecodec.home.data.model.SubtitleStreamFeature
+import com.javernaut.whatthecodec.home.data.model.VideoStreamFeature
+import com.javernaut.whatthecodec.home.ui.audio.displayableResource
+import com.javernaut.whatthecodec.home.ui.subtitle.displayableResource
+import com.javernaut.whatthecodec.home.ui.video.displayableResource
+import com.javernaut.whatthecodec.settings.presentation.SettingsViewModel
 
 @Composable
 fun SettingsScreen(goUp: () -> Unit) {
@@ -147,42 +153,63 @@ private fun ThemeSelectionPreference(
 }
 
 @Composable
-private fun PreferredVideoContentPreference() {
-    val entriesCodes =
-        stringArrayResource(id = R.array.settings_content_video_entryValues).toList()
+private fun PreferredVideoContentPreference(
+    viewModel: SettingsViewModel = viewModel()
+) {
+    val selectedItems by viewModel.videoStreamFeatures.collectAsState()
     MultiSelectListPreference(
-        PreferencesKeys.VIDEO,
-        defaultValue = entriesCodes.toSet(),
         title = stringResource(id = R.string.settings_content_video_title),
-        displayableEntries = stringArrayResource(id = R.array.settings_content_video_entries).toList(),
-        entriesCodes = entriesCodes
-    )
+        items = VideoStreamFeature.entries.map {
+            stringResource(id = it.displayableResource)
+        },
+        currentlySelectedIndexes = selectedItems.map { it.ordinal },
+    ) { newItemsPositions ->
+        viewModel.setVideoStreamFeatures(
+            newItemsPositions.mapTo(mutableSetOf()) {
+                VideoStreamFeature.entries[it]
+            }
+        )
+    }
 }
 
 @Composable
-private fun PreferredAudioContentPreference() {
-    val entriesCodes =
-        stringArrayResource(id = R.array.settings_content_audio_entryValues).toList()
+private fun PreferredAudioContentPreference(
+    viewModel: SettingsViewModel = viewModel()
+) {
+    val selectedItems by viewModel.audioStreamFeatures.collectAsState()
     MultiSelectListPreference(
-        PreferencesKeys.AUDIO,
-        defaultValue = entriesCodes.toSet(),
         title = stringResource(id = R.string.settings_content_audio_title),
-        displayableEntries = stringArrayResource(id = R.array.settings_content_audio_entries).toList(),
-        entriesCodes = entriesCodes
-    )
+        items = AudioStreamFeature.entries.map {
+            stringResource(id = it.displayableResource)
+        },
+        currentlySelectedIndexes = selectedItems.map { it.ordinal },
+    ) { newItemsPositions ->
+        viewModel.setAudioStreamFeatures(
+            newItemsPositions.mapTo(mutableSetOf()) {
+                AudioStreamFeature.entries[it]
+            }
+        )
+    }
 }
 
 @Composable
-private fun PreferredSubtitlesContentPreference() {
-    val entriesCodes =
-        stringArrayResource(id = R.array.settings_content_subtitles_entryValues).toList()
+private fun PreferredSubtitlesContentPreference(
+    viewModel: SettingsViewModel = viewModel()
+) {
+    val selectedItems by viewModel.subtitleStreamFeatures.collectAsState()
     MultiSelectListPreference(
-        PreferencesKeys.SUBTITLES,
-        defaultValue = entriesCodes.toSet(),
         title = stringResource(id = R.string.settings_content_subtitles_title),
-        displayableEntries = stringArrayResource(id = R.array.settings_content_subtitles_entries).toList(),
-        entriesCodes = entriesCodes
-    )
+        items = SubtitleStreamFeature.entries.map {
+            stringResource(id = it.displayableResource)
+        },
+        currentlySelectedIndexes = selectedItems.map { it.ordinal },
+    ) { newItemsPositions ->
+        viewModel.setSubtitleStreamFeatures(
+            newItemsPositions.mapTo(mutableSetOf()) {
+                SubtitleStreamFeature.entries[it]
+            }
+        )
+    }
 }
 
 @Composable

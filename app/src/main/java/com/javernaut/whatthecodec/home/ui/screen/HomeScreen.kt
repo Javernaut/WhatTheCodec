@@ -6,8 +6,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
@@ -26,7 +26,7 @@ fun HomeScreen(
     onAudioIconClick: () -> Unit,
     onSettingsClicked: () -> Unit
 ) {
-    val screenState by viewModel.screenState.observeAsState()
+    val screenState by viewModel.screenState.collectAsState()
     if (screenState == null) {
         EmptyHomeScreen(
             onVideoIconClick,

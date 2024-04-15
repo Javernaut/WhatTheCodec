@@ -1,21 +1,26 @@
 package com.javernaut.whatthecodec.home.presentation
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.javernaut.whatthecodec.home.presentation.model.AvailableTab
-import com.javernaut.whatthecodec.home.presentation.model.BasicVideoInfo
+import com.javernaut.whatthecodec.home.data.StreamFeatureRepository
+import com.javernaut.whatthecodec.home.data.model.VideoStreamFeature
+import com.javernaut.whatthecodec.home.presentation.model.AudioPage
 import com.javernaut.whatthecodec.home.presentation.model.FrameMetrics
 import com.javernaut.whatthecodec.home.presentation.model.NoPreviewAvailable
 import com.javernaut.whatthecodec.home.presentation.model.NotYetEvaluated
 import com.javernaut.whatthecodec.home.presentation.model.Preview
+import com.javernaut.whatthecodec.home.presentation.model.ScreenMessage
+import com.javernaut.whatthecodec.home.presentation.model.ScreenState
+import com.javernaut.whatthecodec.home.presentation.model.SubtitlesPage
+import com.javernaut.whatthecodec.home.presentation.model.VideoPage
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.github.javernaut.mediafile.AudioStream
 import io.github.javernaut.mediafile.MediaFile
-import io.github.javernaut.mediafile.SubtitleStream
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -25,26 +30,53 @@ class MediaFileViewModel @Inject constructor(
     private val clipboard: Clipboard,
     private val frameMetricsProvider: FrameMetricsProvider,
     private val mediaFileProvider: MediaFileProvider,
+    private val streamFeatureRepository: StreamFeatureRepository,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     private var pendingMediaFileArgument: MediaFileArgument? = null
 
-    private var mediaFile: MediaFile? = null
+    private var _preview = MutableStateFlow<Preview>(NotYetEvaluated)
+    private var _mediaFile = MutableStateFlow<MediaFile?>(null)
+    private var _screenState = MutableStateFlow<ScreenState?>(null)
     private var frameLoaderHelper: FrameLoaderHelper? = null
 
-    private val _screenState = MutableLiveData<ScreenState?>()
     private val _screenMessageChannel = Channel<ScreenMessage>()
 
     init {
         pendingMediaFileArgument = savedStateHandle[KEY_MEDIA_FILE_ARGUMENT]
+
+        viewModelScope.launch {
+            combine(
+                _mediaFile.onEach {
+                    // Resetting the preview on each setting of a new MediaFile
+                    _preview.value = NotYetEvaluated
+                },
+                _preview,
+                streamFeatureRepository.videoStreamFeatures,
+                streamFeatureRepository.audioStreamFeatures,
+                streamFeatureRepository.subtitleStreamFeatures,
+            ) { mediaFile, preview, videoFeatures, audioFeatures, subtitleFeatures ->
+                mediaFile?.let {
+                    ScreenState(
+                        videoPage = mediaFile.toVideoPage(preview, videoFeatures),
+
+                        audioPage = mediaFile.audioStreams.takeIf { it.isNotEmpty() }
+                            ?.let { AudioPage(it, audioFeatures) },
+
+                        subtitlesPage = mediaFile.subtitleStreams.takeIf { it.isNotEmpty() }
+                            ?.let { SubtitlesPage(it, subtitleFeatures) }
+                    )
+                }
+            }.collect(_screenState)
+        }
     }
 
     /**
      * Exposes the whole info about the selected media file
      */
-    val screenState: LiveData<ScreenState?>
-        get() = _screenState
+    val screenState: StateFlow<ScreenState?> = _screenState
+
 
     /**
      * One time notifications about important events.
@@ -53,7 +85,7 @@ class MediaFileViewModel @Inject constructor(
 
     override fun onCleared() {
         if (frameLoaderHelper == null) {
-            mediaFile?.release()
+            _mediaFile.value?.release()
         } else {
             frameLoaderHelper?.release()
         }
@@ -74,7 +106,7 @@ class MediaFileViewModel @Inject constructor(
 
             releasePreviousMediaFileAndFrameLoader(newMediaFile)
 
-            mediaFile = newMediaFile
+            _mediaFile.value = newMediaFile
             applyMediaFile(newMediaFile)
         } else {
             sendMessage(ScreenMessage.FileOpeningError)
@@ -97,18 +129,13 @@ class MediaFileViewModel @Inject constructor(
     }
 
     private fun applyMediaFile(mediaFile: MediaFile) {
-        _screenState.value = ScreenState(
-            mediaFile.toBasicInfo(),
-            mediaFile.audioStreams,
-            mediaFile.subtitleStreams
-        )
         val frameMetrics = computeFrameMetrics()
 
         frameLoaderHelper = if (mediaFile.supportsFrameLoading())
             FrameLoaderHelper(frameMetrics!!, viewModelScope, ::applyPreview)
         else null
 
-        tryLoadVideoFrames()
+        tryLoadVideoFrames(mediaFile)
     }
 
     private fun releasePreviousMediaFileAndFrameLoader(newMediaFile: MediaFile) {
@@ -116,27 +143,21 @@ class MediaFileViewModel @Inject constructor(
             frameLoaderHelper?.release(newMediaFile.supportsFrameLoading())
         } else {
             // MediaFile is released only if there was no FrameLoaderHelper used.
-            mediaFile?.release()
+            _mediaFile.value?.release()
         }
         frameLoaderHelper = null
     }
 
-    private fun tryLoadVideoFrames() {
+    private fun tryLoadVideoFrames(mediaFile: MediaFile) {
         if (frameLoaderHelper != null) {
-            frameLoaderHelper?.loadFrames(mediaFile!!)
+            frameLoaderHelper?.loadFrames(mediaFile)
         } else {
             applyPreview(NoPreviewAvailable)
         }
     }
 
     private fun applyPreview(preview: Preview) {
-        _screenState.value = _screenState.value?.let {
-            it.copy(
-                videoPage = it.videoPage?.copy(
-                    preview = preview
-                )
-            )
-        }
+        _preview.value = preview
     }
 
     private fun clearPendingUri() {
@@ -144,23 +165,27 @@ class MediaFileViewModel @Inject constructor(
     }
 
     private fun computeFrameMetrics(): FrameMetrics? {
-        val basicVideoInfo = _screenState.value?.videoPage
+        val videoStream = _mediaFile.value?.videoStream
 
-        return basicVideoInfo?.let {
+        return videoStream?.let {
             frameMetricsProvider.getTargetFrameMetrics(
-                it.videoStream.frameWidth,
-                it.videoStream.frameHeight
+                it.frameWidth,
+                it.frameHeight
             )
         }
     }
 
-    private fun MediaFile.toBasicInfo(): BasicVideoInfo? {
+    private fun MediaFile.toVideoPage(
+        preview: Preview,
+        streamFeatures: Set<VideoStreamFeature>
+    ): VideoPage? {
         return videoStream?.let {
-            BasicVideoInfo(
-                NotYetEvaluated,
+            VideoPage(
+                preview,
                 fileFormatName,
                 fullFeatured,
-                it
+                it,
+                streamFeatures
             )
         }
     }
@@ -168,28 +193,4 @@ class MediaFileViewModel @Inject constructor(
     companion object {
         const val KEY_MEDIA_FILE_ARGUMENT = "key_video_file_uri"
     }
-}
-
-data class ScreenState(
-    val videoPage: BasicVideoInfo?,
-    val audioPage: List<AudioStream>?,
-    val subtitlesPage: List<SubtitleStream>?
-) {
-    val availableTabs = buildList {
-        if (videoPage != null) {
-            add(AvailableTab.VIDEO)
-        }
-        if (!audioPage.isNullOrEmpty()) {
-            add(AvailableTab.AUDIO)
-        }
-        if (!subtitlesPage.isNullOrEmpty()) {
-            add(AvailableTab.SUBTITLES)
-        }
-    }
-}
-
-sealed interface ScreenMessage {
-    data object FileOpeningError : ScreenMessage
-    data object PermissionDeniedError : ScreenMessage
-    class ValueCopied(val value: String) : ScreenMessage
 }

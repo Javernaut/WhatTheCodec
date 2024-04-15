@@ -1,6 +1,5 @@
 package com.javernaut.whatthecodec.compose.preference
 
-import android.preference.PreferenceManager
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -30,7 +29,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.javernaut.whatthecodec.R
@@ -95,49 +93,45 @@ fun SingleChoicePreferenceDialog(
 
 @Composable
 fun MultiSelectListPreference(
-    key: String,
-    defaultValue: Set<String>,
     title: String,
-    displayableEntries: List<String>,
-    entriesCodes: List<String>,
-    summaryBuilder: (List<String>) -> String = { it.joinToString() },
-    onNewCodeSelected: ((Set<String>) -> Unit)? = null
+    items: List<String>,
+    currentlySelectedIndexes: Collection<Int>,
+    onNewCodeSelected: ((Collection<Int>) -> Unit) = { }
 ) {
-    val applicationContext = LocalContext.current.applicationContext
-    val defaultSharedPreferences =
-        PreferenceManager.getDefaultSharedPreferences(applicationContext)
-    val selectedItemCodes = defaultSharedPreferences.getStringSet(key, defaultValue)!!
-    val currentlySelectedItemIndexes = List(displayableEntries.size) {
-        selectedItemCodes.contains(entriesCodes[it])
-    }
-
     var dialogOpened by rememberSaveable { mutableStateOf(false) }
-    Preference(
-        title = title,
-        summary = summaryBuilder(displayableEntries.filterIndexed { index, s ->
-            currentlySelectedItemIndexes[index]
-        }).ifEmpty {
+
+    val summary = items.filterIndexed { index, _ ->
+        currentlySelectedIndexes.contains(index)
+    }.joinToString()
+        .ifEmpty {
             stringResource(id = R.string.settings_nothing_is_selected)
         }
+
+    Preference(
+        title = title,
+        summary = summary
     ) {
         dialogOpened = true
     }
 
     if (dialogOpened) {
+        val initialSelectedPositions = List(items.size) {
+            currentlySelectedIndexes.contains(it)
+        }
+
         MultiChoicePreferenceDialog(
             title = title,
             onDismissRequest = { dialogOpened = false },
-            items = displayableEntries,
-            initialSelectedPositions = currentlySelectedItemIndexes
+            items = items,
+            initialSelectedPositions = initialSelectedPositions
         ) { resultList ->
-            val newValueToSet = entriesCodes.filterIndexed { index, s ->
-                resultList[index]
-            }.toSet()
-            defaultSharedPreferences
-                .edit()
-                .putStringSet(key, newValueToSet)
-                .apply()
-            onNewCodeSelected?.invoke(newValueToSet)
+            onNewCodeSelected(mutableSetOf<Int>().also { set ->
+                resultList.forEachIndexed { index, item ->
+                    if (item) {
+                        set.add(index)
+                    }
+                }
+            })
         }
     }
 }

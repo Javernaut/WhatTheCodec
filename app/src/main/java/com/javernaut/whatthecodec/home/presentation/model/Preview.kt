@@ -2,8 +2,8 @@ package com.javernaut.whatthecodec.home.presentation.model
 
 sealed class Preview
 
-object NotYetEvaluated : Preview()
-object NoPreviewAvailable : Preview()
+data object NotYetEvaluated : Preview()
+data object NoPreviewAvailable : Preview()
 
 data class ActualPreview(
     val frameMetrics: FrameMetrics,
