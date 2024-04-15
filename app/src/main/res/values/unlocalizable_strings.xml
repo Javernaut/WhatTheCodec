@@ -1,16 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="settings_theme_default_pref_value" translatable="false">@string/settings_theme_light_pref_value</string>
 
-    <string name="settings_theme_light_pref_value" translatable="false">light</string>
-    <string name="settings_theme_dark_pref_value" translatable="false">dark</string>
-    <string name="settings_theme_auto_pref_value" translatable="false">auto</string>
+    <string name="app_name" translatable="false">WhatTheCodec</string>
 
-    <string-array name="settings_theme_entryValues">
-        <item>@string/settings_theme_light_pref_value</item>
-        <item>@string/settings_theme_dark_pref_value</item>
-        <item>@string/settings_theme_auto_pref_value</item>
-    </string-array>
+    <string name="info_protocol_file" translatable="false">file</string>
+    <string name="info_protocol_pipe" translatable="false">pipe</string>
 
     <string-array name="settings_theme_entries">
         <item>@string/settings_theme_light</item>
@@ -18,77 +12,7 @@
         <item>@string/settings_theme_battery_saver</item>
     </string-array>
 
-    <string name="settings_content_video_frame_rate" translatable="false">frame_rate</string>
-    <string name="settings_content_video_width" translatable="false">width</string>
-    <string name="settings_content_video_height" translatable="false">height</string>
-
-    <string name="settings_content_codec" translatable="false">codec</string>
-    <string name="settings_content_bitrate" translatable="false">bitrate</string>
-    <string name="settings_content_language" translatable="false">language</string>
-    <string name="settings_content_disposition" translatable="false">disposition</string>
-
-    <string-array name="settings_content_video_entryValues">
-        <item>@string/settings_content_codec</item>
-        <item>@string/settings_content_bitrate</item>
-        <item>@string/settings_content_video_frame_rate</item>
-        <item>@string/settings_content_video_width</item>
-        <item>@string/settings_content_video_height</item>
-        <item>@string/settings_content_language</item>
-        <item>@string/settings_content_disposition</item>
-    </string-array>
-
-    <string-array name="settings_content_video_entries">
-        <item>@string/page_video_codec_name</item>
-        <item>@string/page_video_bit_rate</item>
-        <item>@string/page_video_frame_rate</item>
-        <item>@string/page_video_frame_width</item>
-        <item>@string/page_video_frame_height</item>
-        <item>@string/page_stream_language</item>
-        <item>@string/page_stream_disposition</item>
-    </string-array>
-
-    <string name="settings_content_audio_channels" translatable="false">channels</string>
-    <string name="settings_content_audio_channel_layout" translatable="false">channel_layout</string>
-    <string name="settings_content_audio_sample_format" translatable="false">sample_format</string>
-    <string name="settings_content_audio_sample_rate" translatable="false">sample_rate</string>
-
-    <string-array name="settings_content_audio_entryValues">
-        <item>@string/settings_content_codec</item>
-        <item>@string/settings_content_bitrate</item>
-        <item>@string/settings_content_audio_channels</item>
-        <item>@string/settings_content_audio_channel_layout</item>
-        <item>@string/settings_content_audio_sample_format</item>
-        <item>@string/settings_content_audio_sample_rate</item>
-        <item>@string/settings_content_language</item>
-        <item>@string/settings_content_disposition</item>
-    </string-array>
-
-    <string-array name="settings_content_audio_entries">
-        <item>@string/page_audio_codec_name</item>
-        <item>@string/page_audio_bit_rate</item>
-        <item>@string/page_audio_channels</item>
-        <item>@string/page_audio_channel_layout</item>
-        <item>@string/page_audio_sample_format</item>
-        <item>@string/page_audio_sample_rate</item>
-        <item>@string/page_stream_language</item>
-        <item>@string/page_stream_disposition</item>
-    </string-array>
-
-    <string-array name="settings_content_subtitles_entryValues">
-        <item>@string/settings_content_codec</item>
-        <item>@string/settings_content_language</item>
-        <item>@string/settings_content_disposition</item>
-    </string-array>
-
-    <string-array name="settings_content_subtitles_entries">
-        <item>@string/page_subtitle_codec_name</item>
-        <item>@string/page_stream_language</item>
-        <item>@string/page_stream_disposition</item>
-    </string-array>
-
     <string name="settings_source_code_summary" translatable="false">https://github.com/Javernaut/WhatTheCodec</string>
     <string name="settings_privacy_policy_summary" translatable="false">https://github.com/Javernaut/WhatTheCodec/wiki/Privacy-Policy</string>
-    <string name="app_name" translatable="false">WhatTheCodec</string>
-    <string name="info_protocol_file" translatable="false">file</string>
-    <string name="info_protocol_pipe" translatable="false">pipe</string>
+
 </resources>

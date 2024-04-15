@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <string-array name="settings_theme_entries" tools:ignore="InconsistentArrays">
+<resources>
+    <string-array name="settings_theme_entries">
         <item>@string/settings_theme_light</item>
         <item>@string/settings_theme_dark</item>
         <item>@string/settings_theme_system_default</item>
