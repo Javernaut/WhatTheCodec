@@ -37,9 +37,9 @@ import com.javernaut.whatthecodec.compose.preference.MultiSelectListPreference
 import com.javernaut.whatthecodec.compose.preference.Preference
 import com.javernaut.whatthecodec.compose.preference.PreferenceDivider
 import com.javernaut.whatthecodec.compose.preference.PreferenceGroup
-import com.javernaut.whatthecodec.compose.theme.AppTheme
-import com.javernaut.whatthecodec.compose.theme.ThemeViewModel
 import com.javernaut.whatthecodec.compose.theme.WhatTheCodecTheme
+import com.javernaut.whatthecodec.compose.theme.dynamic.AppTheme
+import com.javernaut.whatthecodec.compose.theme.dynamic.ThemeViewModel
 import com.javernaut.whatthecodec.settings.PreferencesKeys
 
 @Composable

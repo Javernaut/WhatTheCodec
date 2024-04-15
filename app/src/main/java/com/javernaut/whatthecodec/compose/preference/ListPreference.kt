@@ -38,47 +38,6 @@ import com.javernaut.whatthecodec.compose.common.WtcDialog
 
 @Composable
 fun ListPreference(
-    key: String,
-    defaultValue: String,
-    title: String,
-    displayableEntries: List<String>,
-    entriesCodes: List<String>,
-    onNewCodeSelected: (String) -> Unit
-) {
-    val applicationContext = LocalContext.current.applicationContext
-    val defaultSharedPreferences =
-        PreferenceManager.getDefaultSharedPreferences(applicationContext)
-    val selectedItemCode = defaultSharedPreferences.getString(key, defaultValue)
-
-    val currentlySelectedItemIndex = entriesCodes.indexOf(selectedItemCode)
-
-    var dialogOpened by rememberSaveable { mutableStateOf(false) }
-    Preference(
-        title = title,
-        summary = displayableEntries[currentlySelectedItemIndex]
-    ) {
-        dialogOpened = true
-    }
-
-    if (dialogOpened) {
-        SingleChoicePreferenceDialog(
-            title = title,
-            dismissRequest = { dialogOpened = false },
-            items = displayableEntries,
-            currentlySelectedIndex = currentlySelectedItemIndex
-        ) {
-            val newValueToSet = entriesCodes[it]
-            defaultSharedPreferences
-                .edit()
-                .putString(key, newValueToSet)
-                .apply()
-            onNewCodeSelected(newValueToSet)
-        }
-    }
-}
-
-@Composable
-fun ListPreference(
     title: String,
     displayableEntries: List<String>,
     selectedItemIndex: Int,

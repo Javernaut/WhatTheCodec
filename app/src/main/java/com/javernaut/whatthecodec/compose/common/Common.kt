@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.util.Log
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -48,12 +47,10 @@ fun SystemBroadcastReceiver(
             }
         }
 
-        Log.e("AppThememe", "registering the receiver")
         context.registerReceiver(broadcast, intentFilter)
 
         // When the effect leaves the Composition, remove the callback
         onDispose {
-            Log.e("AppThememe", "unregistering the receiver")
             context.unregisterReceiver(broadcast)
         }
     }

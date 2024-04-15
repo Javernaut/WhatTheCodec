@@ -24,10 +24,12 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.compose.theme.WhatTheCodecTheme
 import com.javernaut.whatthecodec.home.ui.screen.ObserveAsEvents
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class ComposePlaygroundActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {

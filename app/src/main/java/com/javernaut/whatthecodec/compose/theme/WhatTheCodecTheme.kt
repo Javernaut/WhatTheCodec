@@ -18,6 +18,8 @@ import androidx.core.content.getSystemService
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.javernaut.whatthecodec.compose.common.SystemBroadcastReceiver
+import com.javernaut.whatthecodec.compose.theme.dynamic.AppTheme
+import com.javernaut.whatthecodec.compose.theme.dynamic.ThemeViewModel
 
 object WhatTheCodecTheme {
     @Composable
