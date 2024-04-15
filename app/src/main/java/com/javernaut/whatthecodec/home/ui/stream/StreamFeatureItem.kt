@@ -71,7 +71,7 @@ fun <T : MediaStream> StreamFeatureItem(
 @PreviewLightDark
 @Composable
 fun PreviewStreamFeature() {
-    WhatTheCodecTheme {
+    WhatTheCodecTheme.Static {
         Surface {
             StreamFeature(
                 stringResource(id = R.string.page_audio_codec_name),

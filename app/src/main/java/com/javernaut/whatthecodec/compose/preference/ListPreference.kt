@@ -23,8 +23,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,24 +38,15 @@ import com.javernaut.whatthecodec.compose.common.WtcDialog
 
 @Composable
 fun ListPreference(
-    key: String,
-    defaultValue: String,
     title: String,
     displayableEntries: List<String>,
-    entriesCodes: List<String>,
-    onNewCodeSelected: (String) -> Unit
+    selectedItemIndex: Int,
+    onNewCodeSelected: (Int) -> Unit
 ) {
-    val applicationContext = LocalContext.current.applicationContext
-    val defaultSharedPreferences =
-        PreferenceManager.getDefaultSharedPreferences(applicationContext)
-    val selectedItemCode = defaultSharedPreferences.getString(key, defaultValue)
-
-    val currentlySelectedItemIndex = entriesCodes.indexOf(selectedItemCode)
-
-    var dialogOpened by remember { mutableStateOf(false) }
+    var dialogOpened by rememberSaveable { mutableStateOf(false) }
     Preference(
         title = title,
-        summary = displayableEntries[currentlySelectedItemIndex]
+        summary = displayableEntries[selectedItemIndex]
     ) {
         dialogOpened = true
     }
@@ -63,14 +56,9 @@ fun ListPreference(
             title = title,
             dismissRequest = { dialogOpened = false },
             items = displayableEntries,
-            currentlySelectedIndex = currentlySelectedItemIndex
+            currentlySelectedIndex = selectedItemIndex
         ) {
-            val newValueToSet = entriesCodes[it]
-            defaultSharedPreferences
-                .edit()
-                .putString(key, newValueToSet)
-                .apply()
-            onNewCodeSelected(newValueToSet)
+            onNewCodeSelected(it)
         }
     }
 }
@@ -83,7 +71,7 @@ fun SingleChoicePreferenceDialog(
     currentlySelectedIndex: Int,
     clickListener: (Int) -> Unit
 ) {
-    var selectedIndex by remember { mutableStateOf(currentlySelectedIndex) }
+    var selectedIndex by rememberSaveable { mutableIntStateOf(currentlySelectedIndex) }
     PreferenceDialog(title, dismissRequest,
         applyRequest = {
             clickListener(selectedIndex)
@@ -123,7 +111,7 @@ fun MultiSelectListPreference(
         selectedItemCodes.contains(entriesCodes[it])
     }
 
-    var dialogOpened by remember { mutableStateOf(false) }
+    var dialogOpened by rememberSaveable { mutableStateOf(false) }
     Preference(
         title = title,
         summary = summaryBuilder(displayableEntries.filterIndexed { index, s ->

@@ -1,9 +1,9 @@
 package com.javernaut.whatthecodec.compose.playground
 
 import android.os.Bundle
+import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -24,18 +24,20 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.compose.theme.WhatTheCodecTheme
 import com.javernaut.whatthecodec.home.ui.screen.ObserveAsEvents
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
-class ComposePlaygroundActivity : AppCompatActivity() {
+@AndroidEntryPoint
+class ComposePlaygroundActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
 
         setContent {
-            WhatTheCodecTheme {
+            WhatTheCodecTheme.Dynamic {
                 PlaygroundScreen()
             }
         }

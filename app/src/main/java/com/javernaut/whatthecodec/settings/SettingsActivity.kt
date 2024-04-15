@@ -4,16 +4,16 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
 import androidx.browser.customtabs.CustomTabsIntent
 import com.javernaut.whatthecodec.compose.theme.WhatTheCodecTheme
 import com.javernaut.whatthecodec.settings.ui.SettingsScreen
+import dagger.hilt.android.AndroidEntryPoint
 
-// AppCompatActivity (and AppCompat theme) is used for automatic reloading when user changes a theme
-// It tracks both 'local' day/night mode and a theme according to the system (auto or battery)
-class SettingsActivity : AppCompatActivity() {
+@AndroidEntryPoint
+class SettingsActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
@@ -21,7 +21,7 @@ class SettingsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            WhatTheCodecTheme {
+            WhatTheCodecTheme.Dynamic {
                 // TODO Navigate up with nav controller instead
                 SettingsScreen(::openUrl, ::finish)
             }

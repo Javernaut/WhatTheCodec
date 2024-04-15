@@ -21,6 +21,8 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
@@ -28,6 +30,7 @@ import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.compose.preference.ListPreference
 import com.javernaut.whatthecodec.compose.preference.MultiSelectListPreference
@@ -35,8 +38,9 @@ import com.javernaut.whatthecodec.compose.preference.Preference
 import com.javernaut.whatthecodec.compose.preference.PreferenceDivider
 import com.javernaut.whatthecodec.compose.preference.PreferenceGroup
 import com.javernaut.whatthecodec.compose.theme.WhatTheCodecTheme
+import com.javernaut.whatthecodec.compose.theme.dynamic.AppTheme
+import com.javernaut.whatthecodec.compose.theme.dynamic.ThemeViewModel
 import com.javernaut.whatthecodec.settings.PreferencesKeys
-import com.javernaut.whatthecodec.settings.ThemeManager
 
 @Composable
 fun SettingsScreen(goUp: () -> Unit) {
@@ -126,15 +130,19 @@ private fun SettingsTopAppBar(scrollBehavior: TopAppBarScrollBehavior, goUp: () 
 }
 
 @Composable
-private fun ThemeSelectionPreference() {
+private fun ThemeSelectionPreference(
+    themeViewModel: ThemeViewModel = viewModel()
+) {
+    val selectedTheme by themeViewModel.appTheme.collectAsState()
+    val selectedThemeIndex = AppTheme.entries.indexOf(selectedTheme)
     ListPreference(
-        "theme",
-        defaultValue = stringResource(id = R.string.settings_theme_default_pref_value),
         title = stringResource(id = R.string.settings_theme_title),
         displayableEntries = stringArrayResource(id = R.array.settings_theme_entries).toList(),
-        entriesCodes = stringArrayResource(id = R.array.settings_theme_entryValues).toList()
+        selectedItemIndex = selectedThemeIndex
     ) {
-        ThemeManager.setNightModePreference(it)
+        themeViewModel.setAppTheme(
+            AppTheme.entries[it]
+        )
     }
 }
 
@@ -192,7 +200,7 @@ private fun OpenUrlPreference(
 @PreviewLightDark
 @Composable
 private fun PreviewSettingsScreen() {
-    WhatTheCodecTheme {
+    WhatTheCodecTheme.Static {
         SettingsScreen({}, {})
     }
 }

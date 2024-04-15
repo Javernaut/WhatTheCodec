@@ -135,11 +135,11 @@ dependencies {
     implementation(libs.bundles.androidx.compose)
 
     implementation(libs.bundles.androidx.lifecycle)
-    implementation(libs.androidx.appcompat)
     implementation(libs.androidx.palette)
     implementation(libs.androidx.savedstate)
     implementation(libs.androidx.browser)
     implementation(libs.androidx.window)
+    implementation(libs.androidx.datastore.preferences)
     implementation(libs.androidx.navigation.compose)
 
     implementation(libs.mediafile)

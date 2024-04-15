@@ -162,7 +162,7 @@ fun ObserveScreenMessages(
 @PreviewLightDark
 @Composable
 private fun EmptyScreenPreview() {
-    WhatTheCodecTheme {
+    WhatTheCodecTheme.Static {
         EmptyHomeScreen({}, {}, {}, emptyFlow())
     }
 }

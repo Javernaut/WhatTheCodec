@@ -100,7 +100,7 @@ private fun PreferenceTitle(@StringRes title: Int) {
 @Preview
 @Composable
 private fun PreferencePreview() {
-    WhatTheCodecTheme {
+    WhatTheCodecTheme.Static {
         PreferenceGroup {
             Preference(
                 title = "Title",
@@ -114,7 +114,7 @@ private fun PreferencePreview() {
 @PreviewLightDark
 @Composable
 private fun PreviewPreferenceGroup() {
-    WhatTheCodecTheme {
+    WhatTheCodecTheme.Static {
         Column {
             PreferenceGroup(R.string.settings_title) {
                 Preference(title = "Title", summary = "Summary") {
