@@ -1,6 +1,7 @@
 package com.javernaut.whatthecodec.home.data
 
 import android.content.Context
+import androidx.annotation.Keep
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
@@ -88,6 +89,7 @@ inline fun <reified E : Enum<E>> completeEnumSet(): EnumSet<E> {
     return EnumSet.allOf(E::class.java)
 }
 
+@Keep
 enum class VideoStreamFeature {
     Codec,
     Bitrate,
@@ -98,6 +100,7 @@ enum class VideoStreamFeature {
     Disposition
 }
 
+@Keep
 enum class AudioStreamFeature {
     Codec,
     Bitrate,
@@ -109,6 +112,7 @@ enum class AudioStreamFeature {
     Disposition
 }
 
+@Keep
 enum class SubtitleStreamFeature {
     Codec,
     Language,

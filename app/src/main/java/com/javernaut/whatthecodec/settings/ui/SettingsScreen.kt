@@ -40,7 +40,10 @@ import com.javernaut.whatthecodec.compose.preference.PreferenceGroup
 import com.javernaut.whatthecodec.compose.theme.WhatTheCodecTheme
 import com.javernaut.whatthecodec.compose.theme.dynamic.AppTheme
 import com.javernaut.whatthecodec.compose.theme.dynamic.ThemeViewModel
-import com.javernaut.whatthecodec.settings.PreferencesKeys
+import com.javernaut.whatthecodec.home.data.AudioStreamFeature
+import com.javernaut.whatthecodec.home.data.SubtitleStreamFeature
+import com.javernaut.whatthecodec.home.data.VideoStreamFeature
+import com.javernaut.whatthecodec.settings.presentation.SettingsViewModel
 
 @Composable
 fun SettingsScreen(goUp: () -> Unit) {
@@ -147,42 +150,63 @@ private fun ThemeSelectionPreference(
 }
 
 @Composable
-private fun PreferredVideoContentPreference() {
-    val entriesCodes =
-        stringArrayResource(id = R.array.settings_content_video_entryValues).toList()
+private fun PreferredVideoContentPreference(
+    viewModel: SettingsViewModel = viewModel()
+) {
+    val selectedItems by viewModel.videoStreamFeatures.collectAsState()
     MultiSelectListPreference(
-        PreferencesKeys.VIDEO,
-        defaultValue = entriesCodes.toSet(),
         title = stringResource(id = R.string.settings_content_video_title),
-        displayableEntries = stringArrayResource(id = R.array.settings_content_video_entries).toList(),
-        entriesCodes = entriesCodes
-    )
+        items = VideoStreamFeature.entries.map {
+            stringResource(id = it.displayableResource)
+        },
+        currentlySelectedIndexes = selectedItems.map { it.ordinal },
+    ) { newItemsPositions ->
+        viewModel.setVideoStreamFeatures(
+            newItemsPositions.mapTo(mutableSetOf()) {
+                VideoStreamFeature.entries[it]
+            }
+        )
+    }
 }
 
 @Composable
-private fun PreferredAudioContentPreference() {
-    val entriesCodes =
-        stringArrayResource(id = R.array.settings_content_audio_entryValues).toList()
+private fun PreferredAudioContentPreference(
+    viewModel: SettingsViewModel = viewModel()
+) {
+    val selectedItems by viewModel.audioStreamFeatures.collectAsState()
     MultiSelectListPreference(
-        PreferencesKeys.AUDIO,
-        defaultValue = entriesCodes.toSet(),
         title = stringResource(id = R.string.settings_content_audio_title),
-        displayableEntries = stringArrayResource(id = R.array.settings_content_audio_entries).toList(),
-        entriesCodes = entriesCodes
-    )
+        items = AudioStreamFeature.entries.map {
+            stringResource(id = it.displayableResource)
+        },
+        currentlySelectedIndexes = selectedItems.map { it.ordinal },
+    ) { newItemsPositions ->
+        viewModel.setAudioStreamFeatures(
+            newItemsPositions.mapTo(mutableSetOf()) {
+                AudioStreamFeature.entries[it]
+            }
+        )
+    }
 }
 
 @Composable
-private fun PreferredSubtitlesContentPreference() {
-    val entriesCodes =
-        stringArrayResource(id = R.array.settings_content_subtitles_entryValues).toList()
+private fun PreferredSubtitlesContentPreference(
+    viewModel: SettingsViewModel = viewModel()
+) {
+    val selectedItems by viewModel.subtitleStreamFeatures.collectAsState()
     MultiSelectListPreference(
-        PreferencesKeys.SUBTITLES,
-        defaultValue = entriesCodes.toSet(),
         title = stringResource(id = R.string.settings_content_subtitles_title),
-        displayableEntries = stringArrayResource(id = R.array.settings_content_subtitles_entries).toList(),
-        entriesCodes = entriesCodes
-    )
+        items = SubtitleStreamFeature.entries.map {
+            stringResource(id = it.displayableResource)
+        },
+        currentlySelectedIndexes = selectedItems.map { it.ordinal },
+    ) { newItemsPositions ->
+        viewModel.setSubtitleStreamFeatures(
+            newItemsPositions.mapTo(mutableSetOf()) {
+                SubtitleStreamFeature.entries[it]
+            }
+        )
+    }
 }
 
 @Composable
@@ -204,3 +228,34 @@ private fun PreviewSettingsScreen() {
         SettingsScreen({}, {})
     }
 }
+
+// TODO Move this mapping to a better place
+private val VideoStreamFeature.displayableResource: Int
+    get() = when (this) {
+        VideoStreamFeature.Codec -> R.string.page_video_codec_name
+        VideoStreamFeature.Bitrate -> R.string.page_video_bit_rate
+        VideoStreamFeature.FrameRate -> R.string.page_video_frame_rate
+        VideoStreamFeature.FrameWidth -> R.string.page_video_frame_width
+        VideoStreamFeature.FrameHeight -> R.string.page_video_frame_height
+        VideoStreamFeature.Language -> R.string.page_stream_language
+        VideoStreamFeature.Disposition -> R.string.page_stream_disposition
+    }
+
+private val AudioStreamFeature.displayableResource: Int
+    get() = when (this) {
+        AudioStreamFeature.Codec -> R.string.page_audio_codec_name
+        AudioStreamFeature.Bitrate -> R.string.page_audio_bit_rate
+        AudioStreamFeature.Channels -> R.string.page_audio_channels
+        AudioStreamFeature.ChannelLayout -> R.string.page_audio_channel_layout
+        AudioStreamFeature.SampleFormat -> R.string.page_audio_sample_format
+        AudioStreamFeature.SampleRate -> R.string.page_audio_sample_rate
+        AudioStreamFeature.Language -> R.string.page_stream_language
+        AudioStreamFeature.Disposition -> R.string.page_stream_disposition
+    }
+
+private val SubtitleStreamFeature.displayableResource: Int
+    get() = when (this) {
+        SubtitleStreamFeature.Codec -> R.string.page_subtitle_codec_name
+        SubtitleStreamFeature.Language -> R.string.page_stream_language
+        SubtitleStreamFeature.Disposition -> R.string.page_stream_disposition
+    }
