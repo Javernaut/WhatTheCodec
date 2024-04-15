@@ -19,6 +19,7 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -34,6 +35,7 @@ class MediaFileViewModel @Inject constructor(
 
     private var pendingMediaFileArgument: MediaFileArgument? = null
 
+    private var _preview = MutableStateFlow<Preview>(NotYetEvaluated)
     private var _mediaFile = MutableStateFlow<MediaFile?>(null)
     private var _screenState = MutableStateFlow<ScreenState?>(null)
     private var frameLoaderHelper: FrameLoaderHelper? = null
@@ -45,14 +47,18 @@ class MediaFileViewModel @Inject constructor(
 
         viewModelScope.launch {
             combine(
-                _mediaFile,
+                _mediaFile.onEach {
+                    // Resetting the preview on each setting of a new MediaFile
+                    _preview.value = NotYetEvaluated
+                },
+                _preview,
                 streamFeatureRepository.videoStreamFeatures,
                 streamFeatureRepository.audioStreamFeatures,
                 streamFeatureRepository.subtitleStreamFeatures,
-            ) { mediaFile, videoFeatures, audioFeatures, subtitleFeatures ->
+            ) { mediaFile, preview, videoFeatures, audioFeatures, subtitleFeatures ->
                 mediaFile?.let {
                     ScreenState(
-                        videoPage = mediaFile.toVideoPage(videoFeatures),
+                        videoPage = mediaFile.toVideoPage(preview, videoFeatures),
 
                         audioPage = mediaFile.audioStreams.takeIf { it.isNotEmpty() }
                             ?.let { AudioPage(it, audioFeatures) },
@@ -150,13 +156,14 @@ class MediaFileViewModel @Inject constructor(
     }
 
     private fun applyPreview(preview: Preview) {
-        _screenState.value = _screenState.value?.let {
-            it.copy(
-                videoPage = it.videoPage?.copy(
-                    preview = preview
-                )
-            )
-        }
+        _preview.value = preview
+//        _screenState.value = _screenState.value?.let {
+//            it.copy(
+//                videoPage = it.videoPage?.copy(
+//                    preview = preview
+//                )
+//            )
+//        }
     }
 
     private fun clearPendingUri() {
@@ -174,10 +181,13 @@ class MediaFileViewModel @Inject constructor(
         }
     }
 
-    private fun MediaFile.toVideoPage(streamFeatures: Set<VideoStreamFeature>): VideoPage? {
+    private fun MediaFile.toVideoPage(
+        preview: Preview,
+        streamFeatures: Set<VideoStreamFeature>
+    ): VideoPage? {
         return videoStream?.let {
             VideoPage(
-                NotYetEvaluated,
+                preview,
                 fileFormatName,
                 fullFeatured,
                 it,
