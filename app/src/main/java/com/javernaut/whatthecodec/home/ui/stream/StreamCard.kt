@@ -31,7 +31,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -94,24 +93,18 @@ fun <T : MediaStream> SimplePage(
 }
 
 @Composable
-fun <T : MediaStream> StreamFeaturesGrid(
-    stream: T,
-    features: List<StreamFeature<T>>,
+fun StreamFeaturesGrid(
+    features: List<DisplayableStreamFeature>,
     onCopyValue: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val resources = LocalContext.current.resources
-    val displayableFeatures = features.filter {
-        it.getValue(stream, resources) != null
-    }
-
-    if (displayableFeatures.isNotEmpty()) {
+    if (features.isNotEmpty()) {
         GridLayout(
             modifier = modifier,
             columns = 2
         ) {
-            displayableFeatures.forEach {
-                StreamFeatureItem(stream, it, onCopyValue, Modifier.fillMaxWidth())
+            features.forEach {
+                StreamFeatureItem(it.name, it.value, onCopyValue, Modifier.fillMaxWidth())
             }
         }
     } else {

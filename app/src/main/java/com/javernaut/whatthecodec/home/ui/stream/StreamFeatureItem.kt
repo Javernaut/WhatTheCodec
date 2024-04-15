@@ -18,13 +18,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.compose.theme.WhatTheCodecTheme
-import io.github.javernaut.mediafile.MediaStream
 
 @Composable
 fun StreamFeatureItem(
@@ -35,7 +33,7 @@ fun StreamFeatureItem(
 ) {
     Box(modifier = modifier) {
         var expanded by remember { mutableStateOf(false) }
-        StreamFeature(
+        StreamFeatureContent(
             title = title,
             value = value
         ) {
@@ -51,29 +49,12 @@ fun StreamFeatureItem(
     }
 }
 
-@Composable
-fun <T : MediaStream> StreamFeatureItem(
-    stream: T,
-    streamFeature: StreamFeature<T>,
-    onCopyValue: (String) -> Unit,
-    modifier: Modifier = Modifier
-) {
-    streamFeature.getValue(stream, LocalContext.current.resources)?.let { value ->
-        StreamFeatureItem(
-            stringResource(id = streamFeature.title),
-            value,
-            onCopyValue,
-            modifier
-        )
-    }
-}
-
 @PreviewLightDark
 @Composable
 fun PreviewStreamFeature() {
     WhatTheCodecTheme.Static {
         Surface {
-            StreamFeature(
+            StreamFeatureContent(
                 stringResource(id = R.string.page_audio_codec_name),
                 "Some value"
             ) { }
@@ -83,7 +64,7 @@ fun PreviewStreamFeature() {
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun StreamFeature(
+private fun StreamFeatureContent(
     title: String,
     value: String,
     modifier: Modifier = Modifier,

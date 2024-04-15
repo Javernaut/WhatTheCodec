@@ -39,7 +39,7 @@ fun GridLayout(
         val maxHeights = chunkedPlacables.map { it.maxByOrNull { it.height }!!.height }
         val maxWidth = chunkedPlacables.maxOf { it.sumOf { it.width } }
         val dstHeight = maxHeights.sum() + totalVerticalSpacing
-        val dstWidth = maxWidth + totalVerticalSpacing
+        val dstWidth = maxWidth + totalHorizontalSpacing
 
         var runningY = 0
         layout(dstWidth, dstHeight) {

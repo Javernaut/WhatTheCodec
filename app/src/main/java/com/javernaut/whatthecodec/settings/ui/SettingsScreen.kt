@@ -43,6 +43,9 @@ import com.javernaut.whatthecodec.compose.theme.dynamic.ThemeViewModel
 import com.javernaut.whatthecodec.home.data.AudioStreamFeature
 import com.javernaut.whatthecodec.home.data.SubtitleStreamFeature
 import com.javernaut.whatthecodec.home.data.VideoStreamFeature
+import com.javernaut.whatthecodec.home.ui.audio.displayableResource
+import com.javernaut.whatthecodec.home.ui.subtitle.displayableResource
+import com.javernaut.whatthecodec.home.ui.video.displayableResource
 import com.javernaut.whatthecodec.settings.presentation.SettingsViewModel
 
 @Composable
@@ -228,34 +231,3 @@ private fun PreviewSettingsScreen() {
         SettingsScreen({}, {})
     }
 }
-
-// TODO Move this mapping to a better place
-private val VideoStreamFeature.displayableResource: Int
-    get() = when (this) {
-        VideoStreamFeature.Codec -> R.string.page_video_codec_name
-        VideoStreamFeature.Bitrate -> R.string.page_video_bit_rate
-        VideoStreamFeature.FrameRate -> R.string.page_video_frame_rate
-        VideoStreamFeature.FrameWidth -> R.string.page_video_frame_width
-        VideoStreamFeature.FrameHeight -> R.string.page_video_frame_height
-        VideoStreamFeature.Language -> R.string.page_stream_language
-        VideoStreamFeature.Disposition -> R.string.page_stream_disposition
-    }
-
-private val AudioStreamFeature.displayableResource: Int
-    get() = when (this) {
-        AudioStreamFeature.Codec -> R.string.page_audio_codec_name
-        AudioStreamFeature.Bitrate -> R.string.page_audio_bit_rate
-        AudioStreamFeature.Channels -> R.string.page_audio_channels
-        AudioStreamFeature.ChannelLayout -> R.string.page_audio_channel_layout
-        AudioStreamFeature.SampleFormat -> R.string.page_audio_sample_format
-        AudioStreamFeature.SampleRate -> R.string.page_audio_sample_rate
-        AudioStreamFeature.Language -> R.string.page_stream_language
-        AudioStreamFeature.Disposition -> R.string.page_stream_disposition
-    }
-
-private val SubtitleStreamFeature.displayableResource: Int
-    get() = when (this) {
-        SubtitleStreamFeature.Codec -> R.string.page_subtitle_codec_name
-        SubtitleStreamFeature.Language -> R.string.page_stream_language
-        SubtitleStreamFeature.Disposition -> R.string.page_stream_disposition
-    }
