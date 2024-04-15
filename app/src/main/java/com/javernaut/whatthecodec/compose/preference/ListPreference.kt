@@ -100,7 +100,7 @@ fun MultiSelectListPreference(
 ) {
     var dialogOpened by rememberSaveable { mutableStateOf(false) }
 
-    val summary = items.filterIndexed { index, item ->
+    val summary = items.filterIndexed { index, _ ->
         currentlySelectedIndexes.contains(index)
     }.joinToString()
         .ifEmpty {

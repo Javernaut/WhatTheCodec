@@ -6,7 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import com.javernaut.whatthecodec.R
-import com.javernaut.whatthecodec.home.data.SubtitleStreamFeature
+import com.javernaut.whatthecodec.home.data.model.SubtitleStreamFeature
 import com.javernaut.whatthecodec.home.presentation.model.SubtitlesPage
 import com.javernaut.whatthecodec.home.ui.stream.DisplayableStreamFeature
 import com.javernaut.whatthecodec.home.ui.stream.SimplePage

@@ -4,13 +4,14 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.javernaut.whatthecodec.home.data.StreamFeatureRepository
-import com.javernaut.whatthecodec.home.data.VideoStreamFeature
+import com.javernaut.whatthecodec.home.data.model.VideoStreamFeature
 import com.javernaut.whatthecodec.home.presentation.model.AudioPage
-import com.javernaut.whatthecodec.home.presentation.model.AvailableTab
 import com.javernaut.whatthecodec.home.presentation.model.FrameMetrics
 import com.javernaut.whatthecodec.home.presentation.model.NoPreviewAvailable
 import com.javernaut.whatthecodec.home.presentation.model.NotYetEvaluated
 import com.javernaut.whatthecodec.home.presentation.model.Preview
+import com.javernaut.whatthecodec.home.presentation.model.ScreenMessage
+import com.javernaut.whatthecodec.home.presentation.model.ScreenState
 import com.javernaut.whatthecodec.home.presentation.model.SubtitlesPage
 import com.javernaut.whatthecodec.home.presentation.model.VideoPage
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -157,13 +158,6 @@ class MediaFileViewModel @Inject constructor(
 
     private fun applyPreview(preview: Preview) {
         _preview.value = preview
-//        _screenState.value = _screenState.value?.let {
-//            it.copy(
-//                videoPage = it.videoPage?.copy(
-//                    preview = preview
-//                )
-//            )
-//        }
     }
 
     private fun clearPendingUri() {
@@ -199,28 +193,4 @@ class MediaFileViewModel @Inject constructor(
     companion object {
         const val KEY_MEDIA_FILE_ARGUMENT = "key_video_file_uri"
     }
-}
-
-data class ScreenState(
-    val videoPage: VideoPage?,
-    val audioPage: AudioPage?,
-    val subtitlesPage: SubtitlesPage?
-) {
-    val availableTabs = buildList {
-        if (videoPage != null) {
-            add(AvailableTab.VIDEO)
-        }
-        if (audioPage != null) {
-            add(AvailableTab.AUDIO)
-        }
-        if (subtitlesPage != null) {
-            add(AvailableTab.SUBTITLES)
-        }
-    }
-}
-
-sealed interface ScreenMessage {
-    data object FileOpeningError : ScreenMessage
-    data object PermissionDeniedError : ScreenMessage
-    class ValueCopied(val value: String) : ScreenMessage
 }

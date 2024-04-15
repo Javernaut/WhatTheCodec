@@ -40,9 +40,9 @@ import com.javernaut.whatthecodec.compose.preference.PreferenceGroup
 import com.javernaut.whatthecodec.compose.theme.WhatTheCodecTheme
 import com.javernaut.whatthecodec.compose.theme.dynamic.AppTheme
 import com.javernaut.whatthecodec.compose.theme.dynamic.ThemeViewModel
-import com.javernaut.whatthecodec.home.data.AudioStreamFeature
-import com.javernaut.whatthecodec.home.data.SubtitleStreamFeature
-import com.javernaut.whatthecodec.home.data.VideoStreamFeature
+import com.javernaut.whatthecodec.home.data.model.AudioStreamFeature
+import com.javernaut.whatthecodec.home.data.model.SubtitleStreamFeature
+import com.javernaut.whatthecodec.home.data.model.VideoStreamFeature
 import com.javernaut.whatthecodec.home.ui.audio.displayableResource
 import com.javernaut.whatthecodec.home.ui.subtitle.displayableResource
 import com.javernaut.whatthecodec.home.ui.video.displayableResource
