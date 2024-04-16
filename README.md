@@ -1,7 +1,7 @@
 # What the Codec
 
 [![Build](https://github.com/Javernaut/WhatTheCodec/actions/workflows/Build.yml/badge.svg?branch=main)](https://github.com/Javernaut/WhatTheCodec/actions/workflows/Build.yml)
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/db175d84403d4a76a77f09036f3ef913)](https://www.codacy.com/manual/Javernaut/WhatTheCodec)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/db175d84403d4a76a77f09036f3ef913)](https://app.codacy.com/gh/Javernaut/WhatTheCodec/dashboard)
 [![MIT license](http://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/Javernaut/WhatTheCodec/blob/main/LICENSE.txt)
 [![Android Weekly #378](https://androidweekly.net/issues/issue-378/badge)](https://androidweekly.net/issues/issue-378)
 [![Android Weekly #396](https://androidweekly.net/issues/issue-396/badge)](https://androidweekly.net/issues/issue-396)
