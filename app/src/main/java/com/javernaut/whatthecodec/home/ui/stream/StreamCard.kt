@@ -2,8 +2,6 @@ package com.javernaut.whatthecodec.home.ui.stream
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -17,10 +15,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ExpandLess
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -35,10 +33,12 @@ import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.compose.common.GridLayout
+import com.javernaut.whatthecodec.compose.theme.WhatTheCodecTheme
 import io.github.javernaut.mediafile.BasicStreamInfo
 import io.github.javernaut.mediafile.MediaStream
 
@@ -136,10 +136,9 @@ private fun StreamCardTopRow(
     arrowClicked: () -> Unit
 ) {
     Row(
-        Modifier
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
             .height(56.dp)
-            .padding(end = 5.dp),
-        verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
             text = title,
@@ -151,23 +150,32 @@ private fun StreamCardTopRow(
             maxLines = 1
         )
 
-        val angle by animateFloatAsState(
-            targetValue = if (gridVisible)
-                if (LocalLayoutDirection.current == LayoutDirection.Ltr) 360f else 0f
-            else 180f
-        )
-        Icon(
-            Icons.Filled.ExpandLess,
-            contentDescription = null,
-            modifier = Modifier
-                .rotate(angle)
-                .clickable(
-                    interactionSource = remember { MutableInteractionSource() },
-                    indication = rememberRipple(bounded = false),
-                    onClick = arrowClicked
-                )
-                .padding(12.dp),
-        )
+        IconButton(
+            onClick = arrowClicked,
+            modifier = Modifier.padding(end = 4.dp)
+        ) {
+            val angle by animateFloatAsState(
+                targetValue = if (gridVisible)
+                    if (LocalLayoutDirection.current == LayoutDirection.Ltr) 360f else 0f
+                else 180f
+            )
+            Icon(
+                imageVector = Icons.Filled.ExpandLess,
+                contentDescription = null,
+                modifier = Modifier.rotate(angle)
+            )
+        }
+    }
+}
+
+
+@PreviewLightDark
+@Composable
+private fun StreamCardTopRowPreview() {
+    WhatTheCodecTheme.Static {
+        StreamCard(
+            title = "Title"
+        ) {}
     }
 }
 
