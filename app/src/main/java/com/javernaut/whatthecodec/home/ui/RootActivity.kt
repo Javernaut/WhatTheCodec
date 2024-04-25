@@ -32,8 +32,6 @@ class RootActivity : ComponentActivity() {
             WhatTheCodecTheme.Dynamic {
                 HomeScreen(
                     mediaFileViewModel,
-                    ::onPickVideoClicked,
-                    ::onPickAudioClicked,
                     ::onSettingsClicked
                 )
             }
@@ -64,36 +62,16 @@ class RootActivity : ComponentActivity() {
         outState.putBoolean(EXTRA_INTENT_ACTION_VIEW_CONSUMED, intentActionViewConsumed)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == REQUEST_CODE_PICK_VIDEO || requestCode == REQUEST_CODE_PICK_AUDIO) {
-            if (resultCode == RESULT_OK && data?.data != null) {
-                openMediaFile(
-                    data.data!!, if (requestCode == REQUEST_CODE_PICK_VIDEO) {
-                        MediaType.VIDEO
-                    } else {
-                        MediaType.AUDIO
-                    }
-                )
-            }
-        } else {
-            super.onActivityResult(requestCode, resultCode, data)
-        }
-    }
-
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<String>,
         grantResults: IntArray
     ) {
         when (requestCode) {
-            REQUEST_CODE_PERMISSION_ACTION_VIEW,
-            REQUEST_CODE_PERMISSION_PICK_VIDEO,
-            REQUEST_CODE_PERMISSION_PICK_AUDIO -> {
+            REQUEST_CODE_PERMISSION_ACTION_VIEW -> {
                 if (TinyActivityCompat.wasReadStoragePermissionGranted(permissions, grantResults)) {
                     when (requestCode) {
                         REQUEST_CODE_PERMISSION_ACTION_VIEW -> actualDisplayFileFromActionView()
-                        REQUEST_CODE_PERMISSION_PICK_VIDEO -> actualPickVideoFile()
-                        else -> actualPickAudioFile()
                     }
                 } else {
                     mediaFileViewModel.onPermissionDenied()
@@ -103,18 +81,6 @@ class RootActivity : ComponentActivity() {
             else -> {
                 super.onRequestPermissionsResult(requestCode, permissions, grantResults)
             }
-        }
-    }
-
-    private fun onPickVideoClicked() {
-        checkPermissionAndTryOpenMedia(REQUEST_CODE_PERMISSION_PICK_VIDEO) {
-            actualPickVideoFile()
-        }
-    }
-
-    private fun onPickAudioClicked() {
-        checkPermissionAndTryOpenMedia(REQUEST_CODE_PERMISSION_PICK_AUDIO) {
-            actualPickAudioFile()
         }
     }
 
@@ -138,14 +104,6 @@ class RootActivity : ComponentActivity() {
         }
     }
 
-    private fun actualPickVideoFile() {
-        startActivityForMediaFile(MIME_TYPE_VIDEO, REQUEST_CODE_PICK_VIDEO)
-    }
-
-    private fun actualPickAudioFile() {
-        startActivityForMediaFile(MIME_TYPE_AUDIO, REQUEST_CODE_PICK_AUDIO)
-    }
-
     private fun actualDisplayFileFromActionView() {
         intentActionViewConsumed = true
         openMediaFile(
@@ -157,30 +115,15 @@ class RootActivity : ComponentActivity() {
         )
     }
 
-    private fun startActivityForMediaFile(type: String, requestCode: Int) {
-        startActivityForResult(
-            Intent(Intent.ACTION_GET_CONTENT)
-                .setType(type)
-                .putExtra(Intent.EXTRA_LOCAL_ONLY, true)
-                .addCategory(Intent.CATEGORY_OPENABLE),
-            requestCode
-        )
-    }
-
     private fun openMediaFile(uri: Uri, mediaType: MediaType) {
         mediaFileViewModel.openMediaFile(MediaFileArgument(uri.toString(), mediaType))
     }
 
     companion object {
-        private const val REQUEST_CODE_PICK_VIDEO = 41
-        private const val REQUEST_CODE_PICK_AUDIO = 42
         private const val REQUEST_CODE_PERMISSION_ACTION_VIEW = 43
-        private const val REQUEST_CODE_PERMISSION_PICK_VIDEO = 44
-        private const val REQUEST_CODE_PERMISSION_PICK_AUDIO = 45
 
         private const val EXTRA_INTENT_ACTION_VIEW_CONSUMED = "extra_intent_action_view_consumed"
 
-        private const val MIME_TYPE_VIDEO = "video/*"
         private const val MIME_TYPE_AUDIO = "audio/*"
     }
 }
