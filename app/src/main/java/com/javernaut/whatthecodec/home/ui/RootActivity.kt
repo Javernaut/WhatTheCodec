@@ -51,13 +51,6 @@ class RootActivity : ComponentActivity() {
         }
     }
 
-    override fun onNewIntent(intent: Intent) {
-        super.onNewIntent(intent)
-        setIntent(intent)
-
-        onCheckForActionView()
-    }
-
     private fun onCheckForActionView() {
         if (Intent.ACTION_VIEW == intent.action && intent.data != null) {
             TinyActivityCompat.requestReadStoragePermission(permissionRequestLauncher)
