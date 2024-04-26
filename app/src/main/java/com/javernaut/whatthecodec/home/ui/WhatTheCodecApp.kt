@@ -6,7 +6,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.javernaut.whatthecodec.home.presentation.MediaFileViewModel
 import com.javernaut.whatthecodec.home.ui.screen.HomeScreen
-import com.javernaut.whatthecodec.settings.ui.SettingsScreen
+import com.javernaut.whatthecodec.settings.navigation.navigateToSettings
+import com.javernaut.whatthecodec.settings.navigation.settingsScreen
 
 @Composable
 fun WhatTheCodecApp(
@@ -17,15 +18,9 @@ fun WhatTheCodecApp(
         composable("home") {
             HomeScreen(
                 viewModel = viewModel,
-                onSettingsClicked = {
-                    navController.navigate("settings")
-                }
+                onSettingsClicked = navController::navigateToSettings
             )
         }
-        composable("settings") {
-            SettingsScreen {
-                navController.popBackStack()
-            }
-        }
+        settingsScreen(onBackClick = navController::popBackStack)
     }
 }

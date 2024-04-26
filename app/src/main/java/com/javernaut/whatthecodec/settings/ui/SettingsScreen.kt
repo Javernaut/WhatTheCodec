@@ -49,11 +49,11 @@ import com.javernaut.whatthecodec.home.ui.video.displayableResource
 import com.javernaut.whatthecodec.settings.presentation.SettingsViewModel
 
 @Composable
-fun SettingsScreen(goUp: () -> Unit) {
+fun SettingsScreen(onBackClick: () -> Unit) {
     val context = LocalContext.current
     SettingsScreen(openUrl = {
         openUrl(context, it)
-    }, goUp)
+    }, onBackClick)
 }
 
 private fun openUrl(context: Context, url: String) {
@@ -66,13 +66,13 @@ private fun openUrl(context: Context, url: String) {
 @Composable
 fun SettingsScreen(
     openUrl: (String) -> Unit,
-    goUp: () -> Unit
+    onBackClick: () -> Unit
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            SettingsTopAppBar(scrollBehavior, goUp)
+            SettingsTopAppBar(scrollBehavior, onBackClick)
         }
     ) {
         Column(
@@ -118,12 +118,12 @@ private fun ColumnScope.SettingsContent(openUrl: (String) -> Unit) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun SettingsTopAppBar(scrollBehavior: TopAppBarScrollBehavior, goUp: () -> Unit) {
+private fun SettingsTopAppBar(scrollBehavior: TopAppBarScrollBehavior, onBackClick: () -> Unit) {
     TopAppBar(
         title = { Text(text = stringResource(id = R.string.settings_title)) },
         navigationIcon = {
             IconButton(
-                onClick = goUp
+                onClick = onBackClick
             ) {
                 Icon(
                     Icons.AutoMirrored.Filled.ArrowBack,
