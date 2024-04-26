@@ -16,7 +16,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.content.getSystemService
 import androidx.core.view.WindowCompat
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.javernaut.whatthecodec.compose.common.SystemBroadcastReceiver
 import com.javernaut.whatthecodec.compose.theme.dynamic.AppTheme
 import com.javernaut.whatthecodec.compose.theme.dynamic.ThemeViewModel
@@ -36,7 +36,7 @@ object WhatTheCodecTheme {
 
     @Composable
     fun Dynamic(
-        themeViewModel: ThemeViewModel = viewModel(),
+        themeViewModel: ThemeViewModel = hiltViewModel(),
         content: @Composable () -> Unit
     ) {
         val appTheme by themeViewModel.appTheme.collectAsState()

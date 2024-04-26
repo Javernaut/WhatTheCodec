@@ -11,6 +11,7 @@ androidx-navigation = "2.7.7"
 androidx-activity-compose = "1.9.0"
 androidx-compose-bom = "2024.04.01"
 androidx-compose-compiler = "1.5.12"
+androidx-hilt = "1.2.0"
 
 google-ksp = "1.9.23-1.0.20"
 google-dagger = "2.51.1"
@@ -49,6 +50,7 @@ androidx-compose-material3 = { module = "androidx.compose.material3:material3" }
 androidx-compose-compiler = { group = "androidx.compose.compiler", name = "compiler", version.ref = "androidx-compose-compiler" }
 
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "androidx-navigation" }
+androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "androidx-hilt" }
 
 dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "google-dagger" }
 dagger-hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "google-dagger" }

@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.javernaut.whatthecodec.compose.theme.WhatTheCodecTheme
 import com.javernaut.whatthecodec.home.presentation.MediaFileArgument
 import com.javernaut.whatthecodec.home.presentation.MediaFileViewModel
@@ -24,7 +24,7 @@ class ComposePlaygroundActivity : ComponentActivity() {
 
         setContent {
             WhatTheCodecTheme.Dynamic {
-                val viewModel = viewModel<MediaFileViewModel>()
+                val viewModel = hiltViewModel<MediaFileViewModel>()
 
                 val onAudioIconClick = pickAudioFile(
                     permissionDenied = viewModel::onPermissionDenied

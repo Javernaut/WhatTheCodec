@@ -1,7 +1,6 @@
 package com.javernaut.whatthecodec.util
 
 import android.Manifest
-import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
@@ -23,11 +22,6 @@ object TinyActivityCompat {
     }
 
     fun requestPermissionContract() = ActivityResultContracts.RequestPermission()
-
-    @Deprecated("Not needed once fully migrated to Compose")
-    fun requestReadStoragePermission(activity: Activity, requestCode: Int) {
-        activity.requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), requestCode)
-    }
 
     @Deprecated("Not needed once fully migrated to Compose")
     fun wasReadStoragePermissionGranted(

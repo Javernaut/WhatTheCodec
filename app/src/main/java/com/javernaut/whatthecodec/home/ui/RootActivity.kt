@@ -11,8 +11,6 @@ import androidx.core.content.MimeTypeFilter
 import com.javernaut.whatthecodec.compose.theme.WhatTheCodecTheme
 import com.javernaut.whatthecodec.home.presentation.MediaFileArgument
 import com.javernaut.whatthecodec.home.presentation.MediaFileViewModel
-import com.javernaut.whatthecodec.home.ui.screen.HomeScreen
-import com.javernaut.whatthecodec.settings.SettingsActivity
 import com.javernaut.whatthecodec.util.TinyActivityCompat
 import dagger.hilt.android.AndroidEntryPoint
 import io.github.javernaut.mediafile.creator.MediaType
@@ -44,10 +42,7 @@ class RootActivity : ComponentActivity() {
 
         setContent {
             WhatTheCodecTheme.Dynamic {
-                HomeScreen(
-                    mediaFileViewModel,
-                    ::onSettingsClicked
-                )
+                WhatTheCodecApp(mediaFileViewModel)
             }
         }
 
@@ -67,10 +62,6 @@ class RootActivity : ComponentActivity() {
         if (Intent.ACTION_VIEW == intent.action && intent.data != null) {
             TinyActivityCompat.requestReadStoragePermission(permissionRequestLauncher)
         }
-    }
-
-    private fun onSettingsClicked() {
-        SettingsActivity.start(this@RootActivity)
     }
 
     private fun openMediaFile(uri: Uri, mediaType: MediaType) {
