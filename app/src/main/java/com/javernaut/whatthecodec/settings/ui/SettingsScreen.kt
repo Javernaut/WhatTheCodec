@@ -30,7 +30,7 @@ import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.compose.preference.ListPreference
 import com.javernaut.whatthecodec.compose.preference.MultiSelectListPreference
@@ -137,7 +137,7 @@ private fun SettingsTopAppBar(scrollBehavior: TopAppBarScrollBehavior, goUp: () 
 
 @Composable
 private fun ThemeSelectionPreference(
-    themeViewModel: ThemeViewModel = viewModel()
+    themeViewModel: ThemeViewModel = hiltViewModel()
 ) {
     val selectedTheme by themeViewModel.appTheme.collectAsState()
     val selectedThemeIndex = AppTheme.entries.indexOf(selectedTheme)
@@ -154,7 +154,7 @@ private fun ThemeSelectionPreference(
 
 @Composable
 private fun PreferredVideoContentPreference(
-    viewModel: SettingsViewModel = viewModel()
+    viewModel: SettingsViewModel = hiltViewModel()
 ) {
     val selectedItems by viewModel.videoStreamFeatures.collectAsState()
     MultiSelectListPreference(
@@ -174,7 +174,7 @@ private fun PreferredVideoContentPreference(
 
 @Composable
 private fun PreferredAudioContentPreference(
-    viewModel: SettingsViewModel = viewModel()
+    viewModel: SettingsViewModel = hiltViewModel()
 ) {
     val selectedItems by viewModel.audioStreamFeatures.collectAsState()
     MultiSelectListPreference(
@@ -194,7 +194,7 @@ private fun PreferredAudioContentPreference(
 
 @Composable
 private fun PreferredSubtitlesContentPreference(
-    viewModel: SettingsViewModel = viewModel()
+    viewModel: SettingsViewModel = hiltViewModel()
 ) {
     val selectedItems by viewModel.subtitleStreamFeatures.collectAsState()
     MultiSelectListPreference(

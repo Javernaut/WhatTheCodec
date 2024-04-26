@@ -14,7 +14,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import com.javernaut.whatthecodec.R
+import com.javernaut.whatthecodec.home.presentation.MediaFileArgument
 import com.javernaut.whatthecodec.home.presentation.MediaFileViewModel
+import io.github.javernaut.mediafile.creator.MediaType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
@@ -22,23 +24,34 @@ import kotlinx.coroutines.withContext
 @Composable
 fun HomeScreen(
     viewModel: MediaFileViewModel,
-    onVideoIconClick: () -> Unit,
-    onAudioIconClick: () -> Unit,
     onSettingsClicked: () -> Unit
 ) {
     val screenState by viewModel.screenState.collectAsState()
+
+    val pickVideoFile = pickVideoFile(permissionDenied = viewModel::onPermissionDenied) {
+        viewModel.openMediaFile(
+            MediaFileArgument(it.toString(), MediaType.VIDEO)
+        )
+    }
+
+    val pickAudioFile = pickAudioFile(permissionDenied = viewModel::onPermissionDenied) {
+        viewModel.openMediaFile(
+            MediaFileArgument(it.toString(), MediaType.AUDIO)
+        )
+    }
+
     if (screenState == null) {
         EmptyHomeScreen(
-            onVideoIconClick,
-            onAudioIconClick,
+            pickVideoFile,
+            pickAudioFile,
             onSettingsClicked,
             viewModel.screenMessage
         )
     } else {
         MainHomeScreen(
             screenState!!,
-            onVideoIconClick,
-            onAudioIconClick,
+            pickVideoFile,
+            pickAudioFile,
             onSettingsClicked,
             viewModel::copyToClipboard,
             viewModel.screenMessage

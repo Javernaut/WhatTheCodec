@@ -141,6 +141,7 @@ dependencies {
     implementation(libs.androidx.window)
     implementation(libs.androidx.datastore.preferences)
     implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.hilt.navigation.compose)
 
     implementation(libs.mediafile)
 }
