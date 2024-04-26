@@ -70,7 +70,6 @@ private fun pickFileWithPermission(
     val currentPermissionDenied by rememberUpdatedState(permissionDenied)
     val permissionRequestLauncher =
         rememberLauncherForActivityResult(TinyActivityCompat.requestPermissionContract()) {
-            // TODO Consider ignoring the denied permission and picking the file anyway
             if (it) {
                 pickFile()
             } else {

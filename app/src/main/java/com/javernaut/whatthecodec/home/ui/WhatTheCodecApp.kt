@@ -1,31 +1,29 @@
 package com.javernaut.whatthecodec.home.ui
 
+import androidx.compose.foundation.background
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.javernaut.whatthecodec.home.presentation.MediaFileViewModel
-import com.javernaut.whatthecodec.home.ui.screen.HomeScreen
-import com.javernaut.whatthecodec.settings.ui.SettingsScreen
+import com.javernaut.whatthecodec.home.ui.navigation.HomeRoute
+import com.javernaut.whatthecodec.home.ui.navigation.homeScreen
+import com.javernaut.whatthecodec.settings.navigation.navigateToSettings
+import com.javernaut.whatthecodec.settings.navigation.settingsScreen
 
 @Composable
-fun WhatTheCodecApp(
-    viewModel: MediaFileViewModel
-) {
+fun WhatTheCodecApp() {
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = "home") {
-        composable("home") {
-            HomeScreen(
-                viewModel = viewModel,
-                onSettingsClicked = {
-                    navController.navigate("settings")
-                }
-            )
-        }
-        composable("settings") {
-            SettingsScreen {
-                navController.popBackStack()
-            }
-        }
+    NavHost(
+        navController = navController,
+        startDestination = HomeRoute,
+        modifier = Modifier.background(MaterialTheme.colorScheme.background)
+    ) {
+        homeScreen(
+            onSettingsClicked = navController::navigateToSettings
+        )
+        settingsScreen(
+            onBackClick = navController::popBackStack
+        )
     }
 }
