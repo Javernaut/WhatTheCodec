@@ -1,6 +1,9 @@
 package com.javernaut.whatthecodec.home.ui
 
+import androidx.compose.foundation.background
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.javernaut.whatthecodec.home.ui.navigation.HomeRoute
@@ -13,7 +16,8 @@ fun WhatTheCodecApp() {
     val navController = rememberNavController()
     NavHost(
         navController = navController,
-        startDestination = HomeRoute
+        startDestination = HomeRoute,
+        modifier = Modifier.background(MaterialTheme.colorScheme.background)
     ) {
         homeScreen(
             onSettingsClicked = navController::navigateToSettings
