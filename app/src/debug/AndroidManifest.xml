@@ -1,16 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application>
         <activity
             android:name="com.javernaut.whatthecodec.compose.playground.ComposePlaygroundActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustResize" />
-        <activity
-            android:name=".settings.SettingsActivity"
-            android:exported="true"
-            tools:replace="android:exported" />
     </application>
 
 </manifest>

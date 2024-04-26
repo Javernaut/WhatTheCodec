@@ -32,12 +32,6 @@
                 <data android:mimeType="audio/*" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="com.javernaut.whatthecodec.settings.SettingsActivity"
-            android:exported="false"
-            android:label="@string/settings_title"
-            android:parentActivityName="com.javernaut.whatthecodec.settings.SettingsActivity"
-            android:windowSoftInputMode="adjustResize" />
     </application>
 
 </manifest>
