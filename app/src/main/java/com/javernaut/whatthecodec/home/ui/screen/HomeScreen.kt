@@ -1,5 +1,6 @@
 package com.javernaut.whatthecodec.home.ui.screen
 
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Icon
@@ -9,21 +10,61 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
+import androidx.core.content.MimeTypeFilter
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.home.presentation.MediaFileArgument
 import com.javernaut.whatthecodec.home.presentation.MediaFileViewModel
+import com.javernaut.whatthecodec.util.TinyActivityCompat
 import io.github.javernaut.mediafile.creator.MediaType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 
 @Composable
+fun HomeScreenActionView(
+    contentUri: String,
+    mimeType: String,
+    onSettingsClicked: () -> Unit
+) {
+    val viewModel: MediaFileViewModel = hiltViewModel()
+
+    if (TinyActivityCompat.needRequestReadStoragePermission(LocalContext.current)) {
+        val launcher =
+            rememberLauncherForActivityResult(contract = TinyActivityCompat.requestPermissionContract()) {
+                if (it) {
+                    val argument = MediaFileArgument(
+                        contentUri, if (MimeTypeFilter.matches(mimeType, "audio/*")) {
+                            MediaType.AUDIO
+                        } else {
+                            MediaType.VIDEO
+                        }
+                    )
+                    viewModel.openMediaFile(argument)
+                } else {
+                    viewModel.onPermissionDenied()
+                }
+            }
+
+        LaunchedEffect(contentUri) {
+            TinyActivityCompat.requestReadStoragePermission(launcher)
+        }
+    }
+
+    HomeScreen(
+        viewModel = viewModel,
+        onSettingsClicked = onSettingsClicked
+    )
+}
+
+@Composable
 fun HomeScreen(
-    viewModel: MediaFileViewModel,
+    viewModel: MediaFileViewModel = hiltViewModel(),
     onSettingsClicked: () -> Unit
 ) {
     val screenState by viewModel.screenState.collectAsState()
