@@ -34,8 +34,6 @@ class MediaFileViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private var pendingMediaFileArgument: MediaFileArgument? = null
-
     private var _preview = MutableStateFlow<Preview>(NotYetEvaluated)
     private var _mediaFile = MutableStateFlow<MediaFile?>(null)
     private var _screenState = MutableStateFlow<ScreenState?>(null)
@@ -44,8 +42,6 @@ class MediaFileViewModel @Inject constructor(
     private val _screenMessageChannel = Channel<ScreenMessage>()
 
     init {
-        pendingMediaFileArgument = savedStateHandle[KEY_MEDIA_FILE_ARGUMENT]
-
         viewModelScope.launch {
             combine(
                 _mediaFile.onEach {
@@ -70,6 +66,10 @@ class MediaFileViewModel @Inject constructor(
                 }
             }.collect(_screenState)
         }
+
+        savedStateHandle.get<MediaFileArgument>(KEY_MEDIA_FILE_ARGUMENT)?.let {
+            openMediaFile(it)
+        }
     }
 
     /**
@@ -91,15 +91,7 @@ class MediaFileViewModel @Inject constructor(
         }
     }
 
-    fun applyPendingMediaFileIfNeeded() {
-        if (pendingMediaFileArgument != null) {
-            openMediaFile(pendingMediaFileArgument!!)
-        }
-    }
-
     fun openMediaFile(argument: MediaFileArgument) {
-        clearPendingUri()
-
         val newMediaFile = mediaFileProvider.obtainMediaFile(argument)
         if (newMediaFile != null) {
             savedStateHandle.set(KEY_MEDIA_FILE_ARGUMENT, argument)
@@ -158,10 +150,6 @@ class MediaFileViewModel @Inject constructor(
 
     private fun applyPreview(preview: Preview) {
         _preview.value = preview
-    }
-
-    private fun clearPendingUri() {
-        pendingMediaFileArgument = null
     }
 
     private fun computeFrameMetrics(): FrameMetrics? {

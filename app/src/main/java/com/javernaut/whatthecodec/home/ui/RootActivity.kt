@@ -22,7 +22,21 @@ class RootActivity : ComponentActivity() {
 
     private val mediaFileViewModel: MediaFileViewModel by viewModels()
 
-    private var intentActionViewConsumed = false
+    private val permissionRequestLauncher =
+        registerForActivityResult(TinyActivityCompat.requestPermissionContract()) {
+            if (it) {
+                openMediaFile(
+                    intent.data!!, if (MimeTypeFilter.matches(intent.type, MIME_TYPE_AUDIO)) {
+                        MediaType.AUDIO
+                    } else {
+                        MediaType.VIDEO
+                    }
+                )
+            } else {
+                mediaFileViewModel.onPermissionDenied()
+            }
+            intent.data = null
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
@@ -37,9 +51,7 @@ class RootActivity : ComponentActivity() {
             }
         }
 
-        intentActionViewConsumed =
-            savedInstanceState?.getBoolean(EXTRA_INTENT_ACTION_VIEW_CONSUMED) == true
-        if (!intentActionViewConsumed) {
+        if (savedInstanceState == null) {
             onCheckForActionView()
         }
     }
@@ -48,47 +60,12 @@ class RootActivity : ComponentActivity() {
         super.onNewIntent(intent)
         setIntent(intent)
 
-        intentActionViewConsumed = false
         onCheckForActionView()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        mediaFileViewModel.applyPendingMediaFileIfNeeded()
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putBoolean(EXTRA_INTENT_ACTION_VIEW_CONSUMED, intentActionViewConsumed)
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String>,
-        grantResults: IntArray
-    ) {
-        when (requestCode) {
-            REQUEST_CODE_PERMISSION_ACTION_VIEW -> {
-                if (TinyActivityCompat.wasReadStoragePermissionGranted(permissions, grantResults)) {
-                    when (requestCode) {
-                        REQUEST_CODE_PERMISSION_ACTION_VIEW -> actualDisplayFileFromActionView()
-                    }
-                } else {
-                    mediaFileViewModel.onPermissionDenied()
-                }
-            }
-
-            else -> {
-                super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-            }
-        }
     }
 
     private fun onCheckForActionView() {
         if (Intent.ACTION_VIEW == intent.action && intent.data != null) {
-            checkPermissionAndTryOpenMedia(REQUEST_CODE_PERMISSION_ACTION_VIEW) {
-                actualDisplayFileFromActionView()
-            }
+            TinyActivityCompat.requestReadStoragePermission(permissionRequestLauncher)
         }
     }
 
@@ -96,34 +73,11 @@ class RootActivity : ComponentActivity() {
         SettingsActivity.start(this@RootActivity)
     }
 
-    private inline fun checkPermissionAndTryOpenMedia(requestCode: Int, actualAction: () -> Unit) {
-        if (TinyActivityCompat.needRequestReadStoragePermission(this)) {
-            TinyActivityCompat.requestReadStoragePermission(this, requestCode)
-        } else {
-            actualAction()
-        }
-    }
-
-    private fun actualDisplayFileFromActionView() {
-        intentActionViewConsumed = true
-        openMediaFile(
-            intent.data!!, if (MimeTypeFilter.matches(intent.type, MIME_TYPE_AUDIO)) {
-                MediaType.AUDIO
-            } else {
-                MediaType.VIDEO
-            }
-        )
-    }
-
     private fun openMediaFile(uri: Uri, mediaType: MediaType) {
         mediaFileViewModel.openMediaFile(MediaFileArgument(uri.toString(), mediaType))
     }
 
     companion object {
-        private const val REQUEST_CODE_PERMISSION_ACTION_VIEW = 43
-
-        private const val EXTRA_INTENT_ACTION_VIEW_CONSUMED = "extra_intent_action_view_consumed"
-
         private const val MIME_TYPE_AUDIO = "audio/*"
     }
 }
