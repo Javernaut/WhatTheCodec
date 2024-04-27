@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -18,9 +17,9 @@ fun pickAudioFile(
     filePicked: (Uri) -> Unit
 ) =
     pickMediaFile(
-        contract = GetLocalContentContract,
-        contractArgument = "audio/*",
-        permissionDenied = permissionDenied, filePicked = filePicked
+        mimeType = "audio/*",
+        permissionDenied = permissionDenied,
+        filePicked = filePicked
     )
 
 @Composable
@@ -29,36 +28,34 @@ fun pickVideoFile(
     filePicked: (Uri) -> Unit
 ) =
     pickMediaFile(
-        // TODO Check ActivityResultContracts.PickVisualMedia
-        contract = GetLocalContentContract,
-        contractArgument = "video/*",
-        permissionDenied = permissionDenied, filePicked = filePicked
+        mimeType = "video/*",
+        permissionDenied = permissionDenied,
+        filePicked = filePicked
     )
 
 @Composable
-private fun <I> pickMediaFile(
-    contract: ActivityResultContract<I, Uri?>,
-    contractArgument: I,
+private fun pickMediaFile(
+    mimeType: String,
     permissionDenied: () -> Unit,
     filePicked: (Uri) -> Unit
 ): () -> Unit {
     val currentFilePicked by rememberUpdatedState(filePicked)
 
-    val audioPickerLauncher =
-        rememberLauncherForActivityResult(contract = contract) { uri ->
+    val filePickerLauncher =
+        rememberLauncherForActivityResult(contract = GetLocalContentContract) { uri ->
             uri?.let {
                 currentFilePicked(it)
             }
         }
 
-    val pickAudio = {
-        audioPickerLauncher.launch(contractArgument)
+    val pickMediaFile = {
+        filePickerLauncher.launch(mimeType)
     }
 
     return if (!TinyActivityCompat.needRequestReadStoragePermission(LocalContext.current)) {
-        pickAudio
+        pickMediaFile
     } else {
-        pickFileWithPermission(pickFile = pickAudio, permissionDenied = permissionDenied)
+        pickFileWithPermission(pickFile = pickMediaFile, permissionDenied = permissionDenied)
     }
 }
 

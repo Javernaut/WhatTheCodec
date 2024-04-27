@@ -22,13 +22,4 @@ object TinyActivityCompat {
     }
 
     fun requestPermissionContract() = ActivityResultContracts.RequestPermission()
-
-    @Deprecated("Not needed once fully migrated to Compose")
-    fun wasReadStoragePermissionGranted(
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ): Boolean {
-        val index = permissions.indexOf(Manifest.permission.READ_EXTERNAL_STORAGE)
-        return index >= 0 && grantResults[index] == PackageManager.PERMISSION_GRANTED
-    }
 }
