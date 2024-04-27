@@ -1,4 +1,4 @@
-# What the Codec
+# WhatTheCodec
 
 [![Build](https://github.com/Javernaut/WhatTheCodec/actions/workflows/Build.yml/badge.svg?branch=main)](https://github.com/Javernaut/WhatTheCodec/actions/workflows/Build.yml)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/db175d84403d4a76a77f09036f3ef913)](https://app.codacy.com/gh/Javernaut/WhatTheCodec/dashboard)
@@ -18,13 +18,9 @@ Have a look at the app yourself:
 
 Or see the gifs if it is more convenient:
 
-| Video file with video, audio and subtitle streams |              Audio file              |
-|:-------------------------------------------------:|:------------------------------------:|
-|       <img src="images/screens/video.gif">        | <img src="images/screens/audio.gif"> |
-
-| Handling ACTION_VIEW from Dropbox app  |  Picking file from Google Drive app  |
-|:--------------------------------------:|:------------------------------------:|
-| <img src="images/screens/dropbox.gif"> | <img src="images/screens/drive.gif"> |
+| Video file with video, audio and subtitle streams |              Audio file              | Handling ACTION_VIEW from Dropbox app  |
+|:-------------------------------------------------:|:------------------------------------:|:---------------------------------------|
+|       <img src="images/screens/video.gif">        | <img src="images/screens/audio.gif"> | <img src="images/screens/dropbox.gif"> |
 
 ## License
 
