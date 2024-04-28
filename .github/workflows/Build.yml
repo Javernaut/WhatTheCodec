@@ -30,5 +30,5 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
 
-      - name: Run Detekt and build the CI Debug Apk
-        run: ./gradlew detekt buildCiDebug
+      - name: Run Detekt and build the Google Play Debug Apk
+        run: ./gradlew detekt buildGoogleDebug

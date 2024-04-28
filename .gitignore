@@ -170,3 +170,4 @@ fabric.properties
 
 .ninja*
 .cxx
+secrets.properties
