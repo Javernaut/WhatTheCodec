@@ -59,7 +59,7 @@ jobs:
       - name: Run Detekt and build release variants for all markets
         run: ./gradlew detekt bundleRelease
 
-      - name: Create Github Release with attach AABs
+      - name: Create Github Release and attach AABs
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ github.ref_name }}
