@@ -13,8 +13,8 @@ android {
         minSdk = 24
         targetSdk = 34
 
-        versionCode = 4010
-        versionName = "4.0.1"
+        versionCode = 4100
+        versionName = "4.1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -57,7 +57,7 @@ android {
             val alias = rootProject.ext["signing.google.alias"] as? String
             if (!alias.isNullOrEmpty()) {
                 keyAlias = rootProject.ext["signing.google.alias"] as String
-                keyPassword = rootProject.ext["signing.google.passowrd"] as String
+                keyPassword = rootProject.ext["signing.google.password"] as String
                 storeFile = file(rootProject.ext["signing.google.storeFile"] as String)
                 storePassword = rootProject.ext["signing.google.storePassword"] as String
             }
@@ -66,7 +66,7 @@ android {
             val alias = rootProject.ext["signing.amazon.alias"] as? String
             if (!alias.isNullOrEmpty()) {
                 keyAlias = rootProject.ext["signing.amazon.alias"] as String
-                keyPassword = rootProject.ext["signing.amazon.passowrd"] as String
+                keyPassword = rootProject.ext["signing.amazon.password"] as String
                 storeFile = file(rootProject.ext["signing.amazon.storeFile"] as String)
                 storePassword = rootProject.ext["signing.amazon.storePassword"] as String
             }
@@ -75,7 +75,7 @@ android {
             val alias = rootProject.ext["signing.huawei.alias"] as? String
             if (!alias.isNullOrEmpty()) {
                 keyAlias = rootProject.ext["signing.huawei.alias"] as String
-                keyPassword = rootProject.ext["signing.huawei.passowrd"] as String
+                keyPassword = rootProject.ext["signing.huawei.password"] as String
                 storeFile = file(rootProject.ext["signing.huawei.storeFile"] as String)
                 storePassword = rootProject.ext["signing.huawei.storePassword"] as String
             }
@@ -111,12 +111,6 @@ android {
                 abiFilters += listOf("x86_64", "arm64-v8a")
             }
             signingConfig = signingConfigs.getByName("huawei")
-        }
-        create("ci") {
-            dimension = "market"
-            ndk {
-                abiFilters += "x86"
-            }
         }
     }
     lint {
