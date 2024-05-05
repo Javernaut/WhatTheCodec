@@ -3,8 +3,6 @@ package com.javernaut.whatthecodec.screenshots
 import androidx.activity.ComponentActivity
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import androidx.compose.ui.test.junit4.createComposeRule
-import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.rule.GrantPermissionRule
 import com.javernaut.whatthecodec.compose.theme.WhatTheCodecTheme
 import com.javernaut.whatthecodec.home.ui.screen.EmptyHomeScreen
@@ -13,7 +11,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
-import org.junit.runners.Parameterized.Parameter
 import org.junit.runners.Parameterized.Parameters
 import tools.fastlane.screengrab.Screengrab
 import tools.fastlane.screengrab.locale.LocaleTestRule
@@ -58,7 +55,11 @@ class ScreenshotsTestSuite(
                 )
             }
         }
-        composeTestRule.waitForIdle()
+        // Waiting for Compose to fully render +
+        // waiting for Navigation and Status bars to adjust their color.
+        // transition_animation_scale, window_animation_scale and animator_duration_scale doesn't
+        // seem to have any impact on the latter.
+        Thread.sleep(100)
 
         val suffix = if (darkMode) "dark" else "light"
         Screengrab.screenshot("empty_$suffix")
