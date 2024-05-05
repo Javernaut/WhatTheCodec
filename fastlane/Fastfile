@@ -35,4 +35,9 @@ platform :android do
     gradle(task: "clean assembleRelease")
     upload_to_play_store
   end
+
+    lane :screenshots do
+      gradle(task: "clean assembleGoogleDebug assembleGoogleAndroidTest")
+      screengrab
+    end
 end

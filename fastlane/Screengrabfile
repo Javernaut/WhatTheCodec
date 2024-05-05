@@ -1,8 +1,8 @@
 app_package_name('com.javernaut.whatthecodec')
-# use_tests_in_packages(['your.screenshot.tests.package'])
+use_tests_in_packages(['com.javernaut.whatthecodec.screenshots'])
 
-# app_apk_path('path/to/your/app.apk')
-# tests_apk_path('path/to/your/tests.apk')
+app_apk_path('app/build/outputs/apk/google/debug/app-google-debug.apk')
+tests_apk_path('app/build/outputs/apk/androidTest/google/debug/app-google-debug-androidTest.apk')
 
 locales(['en-US', 'uk_UA'])
 

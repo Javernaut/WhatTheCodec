@@ -13,6 +13,13 @@ androidx-compose-bom = "2024.05.00"
 androidx-compose-compiler = "1.5.13"
 androidx-hilt = "1.2.0"
 
+androidx-test-core = "1.5.0"
+androidx-test-rules = "1.5.0"
+androidx-test-runner = "1.5.2"
+androidx-test-ext-junit = "1.1.5"
+androidx-test-ext-truth = "1.5.0"
+screengrab = "2.1.1"
+
 google-ksp = "1.9.23-1.0.20"
 google-dagger = "2.51.1"
 
@@ -45,12 +52,21 @@ androidx-compose-ui = { module = "androidx.compose.ui:ui" }
 androidx-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
 androidx-compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended" }
 androidx-compose-material3 = { module = "androidx.compose.material3:material3" }
+androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
+androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 
 # This dependency is defined, but not used. This is necessary for Dependabot to actually update Compose Compiler.
 androidx-compose-compiler = { group = "androidx.compose.compiler", name = "compiler", version.ref = "androidx-compose-compiler" }
 
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "androidx-navigation" }
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "androidx-hilt" }
+
+androidx-test-core = { module = "androidx.test:core", version.ref = "androidx-test-core" }
+androidx-test-runner = { module = "androidx.test:runner", version.ref = "androidx-test-runner" }
+androidx-test-rules = { module = "androidx.test:rules", version.ref = "androidx-test-rules" }
+androidx-test-ext-junit = { module = "androidx.test.ext:junit-ktx", version.ref = "androidx-test-ext-junit" }
+androidx-test-ext-truth = { module = "androidx.test.ext:truth", version.ref = "androidx-test-ext-truth" }
+screengrab = { group = "tools.fastlane", name = "screengrab", version.ref = "screengrab" }
 
 dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "google-dagger" }
 dagger-hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "google-dagger" }
