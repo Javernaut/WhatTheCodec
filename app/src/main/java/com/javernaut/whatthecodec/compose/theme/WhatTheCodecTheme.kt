@@ -27,6 +27,17 @@ object WhatTheCodecTheme {
         darkTheme: Boolean = isSystemInDarkTheme(),
         content: @Composable () -> Unit
     ) {
+        val view = LocalView.current
+        if (!view.isInEditMode) {
+            SideEffect {
+                val window = (view.context as Activity).window
+                WindowCompat.getInsetsController(window, view).apply {
+                    isAppearanceLightStatusBars = !darkTheme
+                    isAppearanceLightNavigationBars = !darkTheme
+                }
+            }
+        }
+
         val colorScheme = if (darkTheme) darkScheme else lightScheme
         MaterialTheme(
             colorScheme = colorScheme,
@@ -47,17 +58,6 @@ object WhatTheCodecTheme {
                 // isSystemInDarkTheme() on Android S+ considers the Battery Saver mode
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) isSystemInDarkTheme()
                 else isPowerSaveMode()
-        }
-
-        val view = LocalView.current
-        if (!view.isInEditMode) {
-            SideEffect {
-                val window = (view.context as Activity).window
-                WindowCompat.getInsetsController(window, view).apply {
-                    isAppearanceLightStatusBars = !darkTheme
-                    isAppearanceLightNavigationBars = !darkTheme
-                }
-            }
         }
 
         Static(

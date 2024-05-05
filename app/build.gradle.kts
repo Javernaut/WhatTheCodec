@@ -116,6 +116,9 @@ android {
     lint {
         disable += "ExtraTranslation"
     }
+    packaging {
+        resources.excludes.add("META-INF/LICENSE*.md")
+    }
 }
 
 dependencies {
@@ -127,6 +130,7 @@ dependencies {
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.bundles.androidx.compose)
+    debugImplementation(libs.androidx.ui.test.manifest)
 
     implementation(libs.bundles.androidx.lifecycle)
     implementation(libs.androidx.palette)
@@ -138,6 +142,19 @@ dependencies {
     implementation(libs.androidx.hilt.navigation.compose)
 
     implementation(libs.mediafile)
+
+    testImplementation(libs.mockk.unit)
+
+    androidTestImplementation(platform(libs.androidx.compose.bom))
+    androidTestImplementation(libs.androidx.ui.test.junit4)
+    androidTestImplementation(libs.androidx.test.core)
+    androidTestImplementation(libs.androidx.test.runner)
+    androidTestImplementation(libs.androidx.test.rules)
+    androidTestImplementation(libs.androidx.test.uiautomator)
+    androidTestImplementation(libs.androidx.test.ext.junit)
+    androidTestImplementation(libs.androidx.test.ext.truth)
+    androidTestImplementation(libs.mockk.instrumentation)
+    androidTestImplementation(libs.screengrab)
 }
 
 detekt {
