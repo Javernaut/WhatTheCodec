@@ -33,12 +33,18 @@ import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.emptyFlow
+import org.junit.After
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 import org.junit.runners.Parameterized.Parameters
 import tools.fastlane.screengrab.Screengrab
+import tools.fastlane.screengrab.cleanstatusbar.BluetoothState
+import tools.fastlane.screengrab.cleanstatusbar.CleanStatusBar
+import tools.fastlane.screengrab.cleanstatusbar.IconVisibility
+import tools.fastlane.screengrab.cleanstatusbar.MobileDataType
 import tools.fastlane.screengrab.locale.LocaleTestRule
 
 @RunWith(Parameterized::class)
@@ -61,13 +67,29 @@ class ScreenshotsTestSuite(
     @get:Rule
     val localeTestRule = LocaleTestRule()
 
-    // TODO make sure the necessary permissions are given to all supported API levels
+    // TODO Make sure the necessary permissions are given to all supported API levels
     @get:Rule
     val mRuntimePermissionRule: GrantPermissionRule =
         GrantPermissionRule.grant("android.permission.DUMP")
 
-    // TODO Use the Demo Mode (status bar clearing - no notifications)
-    // TODO Tests should run on 2 specific devices and screenshots have to be grabbed from all of them
+    @Before
+    fun setUp() {
+        CleanStatusBar()
+            .setBluetoothState(BluetoothState.DISCONNECTED)
+            .setMobileNetworkDataType(MobileDataType.LTE)
+            .setWifiVisibility(IconVisibility.HIDE)
+            .setShowNotifications(false)
+            .setClock("0900")
+            .setBatteryLevel(100)
+            .enable()
+    }
+
+    @After
+    fun tearDown() {
+        CleanStatusBar.disable()
+    }
+
+    // TODO Tests should run on Pixel 2 and Pixel 6 Pro. Screenshots have to be grabbed from all of them
     @Test
     fun emptyScreen() {
         makeScreenshotOf("empty") {
