@@ -16,6 +16,7 @@ androidx-hilt = "1.2.0"
 androidx-test-core = "1.5.0"
 androidx-test-rules = "1.5.0"
 androidx-test-runner = "1.5.2"
+androidx-test-uiautomator = "2.3.0"
 androidx-test-ext-junit = "1.1.5"
 androidx-test-ext-truth = "1.5.0"
 screengrab = "2.1.1"
@@ -66,6 +67,7 @@ androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-com
 androidx-test-core = { module = "androidx.test:core", version.ref = "androidx-test-core" }
 androidx-test-runner = { module = "androidx.test:runner", version.ref = "androidx-test-runner" }
 androidx-test-rules = { module = "androidx.test:rules", version.ref = "androidx-test-rules" }
+androidx-test-uiautomator = { group = "androidx.test.uiautomator", name = "uiautomator", version.ref = "androidx-test-uiautomator" }
 androidx-test-ext-junit = { module = "androidx.test.ext:junit-ktx", version.ref = "androidx-test-ext-junit" }
 androidx-test-ext-truth = { module = "androidx.test.ext:truth", version.ref = "androidx-test-ext-truth" }
 screengrab = { group = "tools.fastlane", name = "screengrab", version.ref = "screengrab" }

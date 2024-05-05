@@ -117,7 +117,7 @@ android {
         disable += "ExtraTranslation"
     }
     packaging {
-        resources.excludes.add("META-INF/*")
+        resources.excludes.add("META-INF/LICENSE*.md")
     }
 }
 
@@ -150,6 +150,7 @@ dependencies {
     androidTestImplementation(libs.androidx.test.core)
     androidTestImplementation(libs.androidx.test.runner)
     androidTestImplementation(libs.androidx.test.rules)
+    androidTestImplementation(libs.androidx.test.uiautomator)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.androidx.test.ext.truth)
     androidTestImplementation(libs.mockk.instrumentation)

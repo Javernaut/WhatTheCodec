@@ -4,6 +4,6 @@ use_tests_in_packages(['com.javernaut.whatthecodec.screenshots'])
 app_apk_path('app/build/outputs/apk/google/debug/app-google-debug.apk')
 tests_apk_path('app/build/outputs/apk/androidTest/google/debug/app-google-debug-androidTest.apk')
 
-locales(['en-US', 'uk_UA'])
+locales(['en_US', 'uk_UA'])
 
 clear_previous_screenshots(true)

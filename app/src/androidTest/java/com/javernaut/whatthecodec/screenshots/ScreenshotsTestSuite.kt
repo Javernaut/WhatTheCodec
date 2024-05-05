@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.GrantPermissionRule
+import androidx.test.uiautomator.UiDevice
 import com.javernaut.whatthecodec.compose.theme.WhatTheCodecTheme
 import com.javernaut.whatthecodec.compose.theme.dynamic.AppTheme
 import com.javernaut.whatthecodec.compose.theme.dynamic.ThemeViewModel
@@ -50,6 +51,10 @@ class ScreenshotsTestSuite(
         fun parameters() = listOf(true, false)
     }
 
+    init {
+        resetNavigationMethod()
+    }
+
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
@@ -61,7 +66,6 @@ class ScreenshotsTestSuite(
     val mRuntimePermissionRule: GrantPermissionRule =
         GrantPermissionRule.grant("android.permission.DUMP")
 
-    // TODO Use 3 button navigation for dark mode and gesture navigation for light mode
     // TODO Use the Demo Mode (status bar clearing - no notifications)
     // TODO Tests should run on 2 specific devices and screenshots have to be grabbed from all of them
     @Test
@@ -188,5 +192,11 @@ class ScreenshotsTestSuite(
 
         val suffix = if (darkMode) "dark" else "light"
         Screengrab.screenshot("${name}_${suffix}")
+    }
+
+    private fun resetNavigationMethod() {
+        val action = if (darkMode) "disable" else "enable"
+        UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
+            .executeShellCommand("cmd overlay $action com.android.internal.systemui.navbar.gestural")
     }
 }
