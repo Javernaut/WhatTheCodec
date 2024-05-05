@@ -25,6 +25,8 @@ google-dagger = "2.51.1"
 
 detekt = "1.23.6"
 
+mockk = "1.13.10"
+
 [libraries]
 mediafile = "io.github.javernaut:mediafile:1.1.0"
 
@@ -71,6 +73,9 @@ screengrab = { group = "tools.fastlane", name = "screengrab", version.ref = "scr
 dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "google-dagger" }
 dagger-hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "google-dagger" }
 dagger-hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "google-dagger" }
+
+mockk-unit = { module = "io.mockk:mockk", version.ref = "mockk" }
+mockk-instrumentation = { module = "io.mockk:mockk-android", version.ref = "mockk" }
 
 [bundles]
 kotlinx-coroutines = ["coroutines-core", "coroutines-android"]

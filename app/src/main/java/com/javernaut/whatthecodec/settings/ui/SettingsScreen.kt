@@ -49,11 +49,20 @@ import com.javernaut.whatthecodec.home.ui.video.displayableResource
 import com.javernaut.whatthecodec.settings.presentation.SettingsViewModel
 
 @Composable
-fun SettingsScreen(onBackClick: () -> Unit) {
+fun SettingsScreen(
+    themeViewModel: ThemeViewModel = hiltViewModel(),
+    settingsViewModel: SettingsViewModel = hiltViewModel(),
+    onBackClick: () -> Unit
+) {
     val context = LocalContext.current
-    SettingsScreen(openUrl = {
-        openUrl(context, it)
-    }, onBackClick)
+    SettingsScreen(
+        themeViewModel = themeViewModel,
+        settingsViewModel = settingsViewModel,
+        openUrl = {
+            openUrl(context, it)
+        },
+        onBackClick = onBackClick
+    )
 }
 
 private fun openUrl(context: Context, url: String) {
@@ -65,6 +74,8 @@ private fun openUrl(context: Context, url: String) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(
+    themeViewModel: ThemeViewModel = hiltViewModel(),
+    settingsViewModel: SettingsViewModel = hiltViewModel(),
     openUrl: (String) -> Unit,
     onBackClick: () -> Unit
 ) {
@@ -82,23 +93,27 @@ fun SettingsScreen(
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            SettingsContent(openUrl)
+            SettingsContent(themeViewModel, settingsViewModel, openUrl)
         }
     }
 }
 
 @Composable
-private fun ColumnScope.SettingsContent(openUrl: (String) -> Unit) {
+private fun ColumnScope.SettingsContent(
+    themeViewModel: ThemeViewModel,
+    settingsViewModel: SettingsViewModel,
+    openUrl: (String) -> Unit
+) {
     PreferenceGroup(title = R.string.settings_category_general) {
-        ThemeSelectionPreference()
+        ThemeSelectionPreference(themeViewModel)
     }
 
     PreferenceGroup(title = R.string.settings_category_content) {
-        PreferredVideoContentPreference()
+        PreferredVideoContentPreference(settingsViewModel)
         PreferenceDivider()
-        PreferredAudioContentPreference()
+        PreferredAudioContentPreference(settingsViewModel)
         PreferenceDivider()
-        PreferredSubtitlesContentPreference()
+        PreferredSubtitlesContentPreference(settingsViewModel)
     }
 
     PreferenceGroup(title = R.string.settings_category_about) {
@@ -137,7 +152,7 @@ private fun SettingsTopAppBar(scrollBehavior: TopAppBarScrollBehavior, onBackCli
 
 @Composable
 private fun ThemeSelectionPreference(
-    themeViewModel: ThemeViewModel = hiltViewModel()
+    themeViewModel: ThemeViewModel
 ) {
     val selectedTheme by themeViewModel.appTheme.collectAsState()
     val selectedThemeIndex = AppTheme.entries.indexOf(selectedTheme)
@@ -154,7 +169,7 @@ private fun ThemeSelectionPreference(
 
 @Composable
 private fun PreferredVideoContentPreference(
-    viewModel: SettingsViewModel = hiltViewModel()
+    viewModel: SettingsViewModel
 ) {
     val selectedItems by viewModel.videoStreamFeatures.collectAsState()
     MultiSelectListPreference(
@@ -174,7 +189,7 @@ private fun PreferredVideoContentPreference(
 
 @Composable
 private fun PreferredAudioContentPreference(
-    viewModel: SettingsViewModel = hiltViewModel()
+    viewModel: SettingsViewModel
 ) {
     val selectedItems by viewModel.audioStreamFeatures.collectAsState()
     MultiSelectListPreference(
@@ -194,7 +209,7 @@ private fun PreferredAudioContentPreference(
 
 @Composable
 private fun PreferredSubtitlesContentPreference(
-    viewModel: SettingsViewModel = hiltViewModel()
+    viewModel: SettingsViewModel
 ) {
     val selectedItems by viewModel.subtitleStreamFeatures.collectAsState()
     MultiSelectListPreference(
@@ -228,6 +243,6 @@ private fun OpenUrlPreference(
 @Composable
 private fun PreviewSettingsScreen() {
     WhatTheCodecTheme.Static {
-        SettingsScreen({}, {})
+        SettingsScreen(openUrl = {}, onBackClick = {})
     }
 }

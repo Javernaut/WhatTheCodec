@@ -116,6 +116,9 @@ android {
     lint {
         disable += "ExtraTranslation"
     }
+    packaging {
+        resources.excludes.add("META-INF/*")
+    }
 }
 
 dependencies {
@@ -140,6 +143,8 @@ dependencies {
 
     implementation(libs.mediafile)
 
+    testImplementation(libs.mockk.unit)
+
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
     androidTestImplementation(libs.androidx.test.core)
@@ -147,6 +152,7 @@ dependencies {
     androidTestImplementation(libs.androidx.test.rules)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.androidx.test.ext.truth)
+    androidTestImplementation(libs.mockk.instrumentation)
     androidTestImplementation(libs.screengrab)
 }
 
