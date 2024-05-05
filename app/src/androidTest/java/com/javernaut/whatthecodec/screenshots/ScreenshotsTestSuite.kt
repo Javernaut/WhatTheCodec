@@ -1,9 +1,11 @@
 package com.javernaut.whatthecodec.screenshots
 
+import android.graphics.BitmapFactory
 import androidx.activity.ComponentActivity
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.GrantPermissionRule
 import com.javernaut.whatthecodec.compose.theme.WhatTheCodecTheme
 import com.javernaut.whatthecodec.compose.theme.dynamic.AppTheme
@@ -12,8 +14,10 @@ import com.javernaut.whatthecodec.home.data.completeEnumSet
 import com.javernaut.whatthecodec.home.data.model.AudioStreamFeature
 import com.javernaut.whatthecodec.home.data.model.SubtitleStreamFeature
 import com.javernaut.whatthecodec.home.data.model.VideoStreamFeature
+import com.javernaut.whatthecodec.home.presentation.model.ActualFrame
+import com.javernaut.whatthecodec.home.presentation.model.ActualPreview
 import com.javernaut.whatthecodec.home.presentation.model.AudioPage
-import com.javernaut.whatthecodec.home.presentation.model.NoPreviewAvailable
+import com.javernaut.whatthecodec.home.presentation.model.FrameMetrics
 import com.javernaut.whatthecodec.home.presentation.model.ScreenState
 import com.javernaut.whatthecodec.home.presentation.model.SubtitlesPage
 import com.javernaut.whatthecodec.home.presentation.model.VideoPage
@@ -76,21 +80,33 @@ class ScreenshotsTestSuite(
         val basicStreamInfo = mockk<BasicStreamInfo>()
         every { basicStreamInfo.index } returns 0
         every { basicStreamInfo.title } returns null
-        every { basicStreamInfo.codecName } returns "Super"
+        every { basicStreamInfo.codecName } returns "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10"
         every { basicStreamInfo.language } returns null
         every { basicStreamInfo.disposition } returns 0
 
         val videoStream = mockk<VideoStream>()
         every { videoStream.basicInfo } returns basicStreamInfo
-        every { videoStream.frameHeight } returns 100
-        every { videoStream.frameWidth } returns 100
-        every { videoStream.frameRate } returns 100.0
-        every { videoStream.bitRate } returns 100
+        every { videoStream.frameHeight } returns 1034
+        every { videoStream.frameWidth } returns 1840
+        every { videoStream.frameRate } returns 25.0
+        every { videoStream.bitRate } returns 4_500_000
+
+        val assets = InstrumentationRegistry.getInstrumentation().context.assets
+        val preview = ActualPreview(
+            frameMetrics = FrameMetrics(720, 405),
+            frames = (1..4).map {
+                val inputStream = assets.open("video_frame_$it.png")
+                val bitmap = BitmapFactory.decodeStream(inputStream)
+                inputStream.close()
+                ActualFrame(bitmap)
+            },
+            backgroundColor = (0xFF785050).toInt()
+        )
 
         val screenState = ScreenState(
             VideoPage(
-                NoPreviewAvailable,
-                "fileFormat",
+                preview,
+                "QuickTime / MOV",
                 true,
                 videoStream,
                 videoStreamFeatures = completeEnumSet()
