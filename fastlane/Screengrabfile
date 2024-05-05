@@ -1,0 +1,9 @@
+app_package_name('com.javernaut.whatthecodec')
+# use_tests_in_packages(['your.screenshot.tests.package'])
+
+# app_apk_path('path/to/your/app.apk')
+# tests_apk_path('path/to/your/tests.apk')
+
+locales(['en-US', 'uk_UA'])
+
+clear_previous_screenshots(true)
