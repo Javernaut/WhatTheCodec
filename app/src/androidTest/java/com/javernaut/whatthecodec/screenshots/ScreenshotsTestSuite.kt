@@ -25,6 +25,7 @@ import com.javernaut.whatthecodec.home.ui.screen.EmptyHomeScreen
 import com.javernaut.whatthecodec.home.ui.screen.MainHomeScreen
 import com.javernaut.whatthecodec.settings.presentation.SettingsViewModel
 import com.javernaut.whatthecodec.settings.ui.SettingsScreen
+import io.github.javernaut.mediafile.AudioStream
 import io.github.javernaut.mediafile.BasicStreamInfo
 import io.github.javernaut.mediafile.VideoStream
 import io.mockk.every
@@ -104,21 +105,52 @@ class ScreenshotsTestSuite(
         )
 
         val screenState = ScreenState(
-            VideoPage(
+            videoPage = VideoPage(
                 preview,
                 "QuickTime / MOV",
                 true,
                 videoStream,
                 videoStreamFeatures = completeEnumSet()
             ),
-            // These 2 are not visible anyway
-            AudioPage(streams = emptyList(), streamFeatures = emptySet()),
-            SubtitlesPage(streams = emptyList(), streamFeatures = emptySet())
+            // These 2 are visible only as tabs
+            audioPage = AudioPage(streams = emptyList(), streamFeatures = emptySet()),
+            subtitlesPage = SubtitlesPage(streams = emptyList(), streamFeatures = emptySet())
         )
         makeScreenshotOf("video") {
             MainHomeScreen(screenState, {}, {}, {}, {}, emptyFlow())
         }
     }
+
+    @Test
+    fun audioTabScreen() {
+        val basicStreamInfo = mockk<BasicStreamInfo>()
+        every { basicStreamInfo.index } returns 0
+        every { basicStreamInfo.title } returns null
+        every { basicStreamInfo.codecName } returns "MP3 (MPEG audio layer 3)"
+        every { basicStreamInfo.language } returns null
+        every { basicStreamInfo.disposition } returns 0
+
+        val audioStream = mockk<AudioStream>()
+        every { audioStream.basicInfo } returns basicStreamInfo
+        every { audioStream.bitRate } returns 320_000
+        every { audioStream.sampleFormat } returns "fltp"
+        every { audioStream.sampleRate } returns 44_1000
+        every { audioStream.channels } returns 2
+        every { audioStream.channelLayout } returns "stereo"
+
+        val screenState = ScreenState(
+            videoPage = null,
+            audioPage = AudioPage(
+                streams = listOf(audioStream),
+                streamFeatures = completeEnumSet()
+            ),
+            subtitlesPage = null
+        )
+        makeScreenshotOf("audio") {
+            MainHomeScreen(screenState, {}, {}, {}, {}, emptyFlow())
+        }
+    }
+
 
     @Test
     fun settingsScreen() {
