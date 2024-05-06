@@ -158,7 +158,7 @@ class ScreenshotsTestSuite(
         every { audioStream.basicInfo } returns basicStreamInfo
         every { audioStream.bitRate } returns 320_000
         every { audioStream.sampleFormat } returns "fltp"
-        every { audioStream.sampleRate } returns 44_1000
+        every { audioStream.sampleRate } returns 44_100
         every { audioStream.channels } returns 2
         every { audioStream.channelLayout } returns "stereo"
 
