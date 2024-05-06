@@ -6,7 +6,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.platform.app.InstrumentationRegistry
-import androidx.test.rule.GrantPermissionRule
 import androidx.test.uiautomator.UiDevice
 import com.javernaut.whatthecodec.compose.theme.WhatTheCodecTheme
 import com.javernaut.whatthecodec.compose.theme.dynamic.AppTheme
@@ -70,11 +69,6 @@ class ScreenshotsTestSuite(
 
     @get:Rule
     val localeTestRule = LocaleTestRule()
-
-    // TODO Make sure the necessary permissions are given to all supported API levels
-    @get:Rule
-    val mRuntimePermissionRule: GrantPermissionRule =
-        GrantPermissionRule.grant("android.permission.DUMP")
 
     @Before
     fun setUp() {
