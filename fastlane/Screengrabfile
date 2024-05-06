@@ -7,3 +7,5 @@ tests_apk_path('app/build/outputs/apk/androidTest/google/debug/app-google-debug-
 locales(['en_US', 'uk_UA'])
 
 clear_previous_screenshots(true)
+
+launch_arguments('fastlane-screenshots true')

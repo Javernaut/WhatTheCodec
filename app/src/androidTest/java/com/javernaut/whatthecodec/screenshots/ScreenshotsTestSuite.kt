@@ -34,6 +34,7 @@ import io.mockk.mockk
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.emptyFlow
 import org.junit.After
+import org.junit.Assume
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -58,6 +59,9 @@ class ScreenshotsTestSuite(
     }
 
     init {
+        val isFastlane = InstrumentationRegistry.getArguments().getString("fastlane-screenshots")
+        Assume.assumeTrue("This test suite should run only with 'fastlane screenshots'", "true" == isFastlane)
+
         resetNavigationMethod()
     }
 
