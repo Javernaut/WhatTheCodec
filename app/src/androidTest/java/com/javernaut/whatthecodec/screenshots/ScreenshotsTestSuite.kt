@@ -1,6 +1,7 @@
 package com.javernaut.whatthecodec.screenshots
 
 import android.graphics.BitmapFactory
+import android.os.Build
 import androidx.activity.ComponentActivity
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
@@ -59,7 +60,10 @@ class ScreenshotsTestSuite(
 
     init {
         val isFastlane = InstrumentationRegistry.getArguments().getString("fastlane-screenshots")
-        Assume.assumeTrue("This test suite should run only with 'fastlane screenshots'", "true" == isFastlane)
+        Assume.assumeTrue(
+            "This test suite should run only with 'fastlane screenshots'",
+            "true" == isFastlane
+        )
 
         resetNavigationMethod()
     }
@@ -69,6 +73,9 @@ class ScreenshotsTestSuite(
 
     @get:Rule
     val localeTestRule = LocaleTestRule()
+
+    private val uiDevice
+        get() = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
 
     @Before
     fun setUp() {
@@ -87,7 +94,6 @@ class ScreenshotsTestSuite(
         CleanStatusBar.disable()
     }
 
-    // TODO Tests should run on Pixel 2 and Pixel 6 Pro. Screenshots have to be grabbed from all of them
     @Test
     fun emptyScreen() {
         makeScreenshotOf("empty") {
@@ -145,6 +151,7 @@ class ScreenshotsTestSuite(
         }
     }
 
+
     @Test
     fun audioTabScreen() {
         val basicStreamInfo = mockk<BasicStreamInfo>()
@@ -175,7 +182,6 @@ class ScreenshotsTestSuite(
         }
     }
 
-
     @Test
     fun settingsScreen() {
         val appThemeFlow = MutableStateFlow(AppTheme.Auto)
@@ -198,25 +204,25 @@ class ScreenshotsTestSuite(
     }
 
     private fun makeScreenshotOf(name: String, content: @Composable () -> Unit) {
-        composeTestRule.activityRule.scenario.onActivity {
-            it.enableEdgeToEdge()
-        }
+        composeTestRule.activityRule.scenario.onActivity(
+            ComponentActivity::enableEdgeToEdge
+        )
+
         composeTestRule.setContent {
             WhatTheCodecTheme.Static(darkTheme = darkMode, content = content)
         }
-        // Waiting for Compose to fully render +
-        // waiting for Navigation and Status bars to adjust their color.
-        // transition_animation_scale, window_animation_scale and animator_duration_scale doesn't
-        // seem to have any impact on the latter.
-        Thread.sleep(100)
+
+        uiDevice.waitForIdle()
 
         val suffix = if (darkMode) "dark" else "light"
         Screengrab.screenshot("${name}_${suffix}")
     }
 
     private fun resetNavigationMethod() {
-        val action = if (darkMode) "disable" else "enable"
-        UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
-            .executeShellCommand("cmd overlay $action com.android.internal.systemui.navbar.gestural")
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            val action = if (darkMode) "disable" else "enable"
+            uiDevice
+                .executeShellCommand("cmd overlay $action com.android.internal.systemui.navbar.gestural")
+        }
     }
 }
