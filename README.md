@@ -25,6 +25,7 @@ Main features:
 - Dagger/Hilt for DI
 - DataStore for settings storing
 - Dependabot and Github Actions for automating some housekeeping, static analysis, release management
+- Fastlane for screenshots making
 
 ## License
 
