@@ -7,7 +7,6 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -17,6 +16,7 @@ import androidx.compose.ui.platform.LocalView
 import androidx.core.content.getSystemService
 import androidx.core.view.WindowCompat
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.javernaut.whatthecodec.compose.common.SystemBroadcastReceiver
 import com.javernaut.whatthecodec.compose.theme.dynamic.AppTheme
 import com.javernaut.whatthecodec.compose.theme.dynamic.ThemeViewModel
@@ -50,7 +50,7 @@ object WhatTheCodecTheme {
         themeViewModel: ThemeViewModel = hiltViewModel(),
         content: @Composable () -> Unit
     ) {
-        val appTheme by themeViewModel.appTheme.collectAsState()
+        val appTheme by themeViewModel.appTheme.collectAsStateWithLifecycle()
         val darkTheme = when (appTheme) {
             AppTheme.Light -> false
             AppTheme.Dark -> true
