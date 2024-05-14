@@ -7,7 +7,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -16,6 +15,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.core.content.MimeTypeFilter
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.home.presentation.MediaFileArgument
@@ -67,7 +67,7 @@ fun HomeScreen(
     viewModel: MediaFileViewModel = hiltViewModel(),
     onSettingsClicked: () -> Unit
 ) {
-    val screenState by viewModel.screenState.collectAsState()
+    val screenState by viewModel.screenState.collectAsStateWithLifecycle()
 
     val pickVideoFile = pickVideoFile(permissionDenied = viewModel::onPermissionDenied) {
         viewModel.openMediaFile(

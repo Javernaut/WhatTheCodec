@@ -21,7 +21,6 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -31,6 +30,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.compose.preference.ListPreference
 import com.javernaut.whatthecodec.compose.preference.MultiSelectListPreference
@@ -154,7 +154,7 @@ private fun SettingsTopAppBar(scrollBehavior: TopAppBarScrollBehavior, onBackCli
 private fun ThemeSelectionPreference(
     themeViewModel: ThemeViewModel
 ) {
-    val selectedTheme by themeViewModel.appTheme.collectAsState()
+    val selectedTheme by themeViewModel.appTheme.collectAsStateWithLifecycle()
     val selectedThemeIndex = AppTheme.entries.indexOf(selectedTheme)
     ListPreference(
         title = stringResource(id = R.string.settings_theme_title),
@@ -171,7 +171,7 @@ private fun ThemeSelectionPreference(
 private fun PreferredVideoContentPreference(
     viewModel: SettingsViewModel
 ) {
-    val selectedItems by viewModel.videoStreamFeatures.collectAsState()
+    val selectedItems by viewModel.videoStreamFeatures.collectAsStateWithLifecycle()
     MultiSelectListPreference(
         title = stringResource(id = R.string.settings_content_video_title),
         items = VideoStreamFeature.entries.map {
@@ -191,7 +191,7 @@ private fun PreferredVideoContentPreference(
 private fun PreferredAudioContentPreference(
     viewModel: SettingsViewModel
 ) {
-    val selectedItems by viewModel.audioStreamFeatures.collectAsState()
+    val selectedItems by viewModel.audioStreamFeatures.collectAsStateWithLifecycle()
     MultiSelectListPreference(
         title = stringResource(id = R.string.settings_content_audio_title),
         items = AudioStreamFeature.entries.map {
@@ -211,7 +211,7 @@ private fun PreferredAudioContentPreference(
 private fun PreferredSubtitlesContentPreference(
     viewModel: SettingsViewModel
 ) {
-    val selectedItems by viewModel.subtitleStreamFeatures.collectAsState()
+    val selectedItems by viewModel.subtitleStreamFeatures.collectAsStateWithLifecycle()
     MultiSelectListPreference(
         title = stringResource(id = R.string.settings_content_subtitles_title),
         items = SubtitleStreamFeature.entries.map {
