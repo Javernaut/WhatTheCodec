@@ -2,10 +2,10 @@ package com.javernaut.whatthecodec.settings.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.javernaut.whatthecodec.home.data.StreamFeatureRepository
-import com.javernaut.whatthecodec.home.data.model.AudioStreamFeature
-import com.javernaut.whatthecodec.home.data.model.SubtitleStreamFeature
-import com.javernaut.whatthecodec.home.data.model.VideoStreamFeature
+import com.javernaut.whatthecodec.feature.settings.content.AudioStreamFeature
+import com.javernaut.whatthecodec.feature.settings.content.ContentSettingsRepository
+import com.javernaut.whatthecodec.feature.settings.content.SubtitleStreamFeature
+import com.javernaut.whatthecodec.feature.settings.content.VideoStreamFeature
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
@@ -16,27 +16,28 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
-    private val streamFeatureRepository: StreamFeatureRepository
+    private val contentSettingsRepository: ContentSettingsRepository
 ) : ViewModel() {
-    val videoStreamFeatures = streamFeatureRepository.videoStreamFeatures.stateIn(emptySet())
+    val videoStreamFeatures = contentSettingsRepository.videoStreamFeatures.stateIn(emptySet())
 
-    val audioStreamFeatures = streamFeatureRepository.audioStreamFeatures.stateIn(emptySet())
+    val audioStreamFeatures = contentSettingsRepository.audioStreamFeatures.stateIn(emptySet())
 
-    val subtitleStreamFeatures = streamFeatureRepository.subtitleStreamFeatures.stateIn(emptySet())
+    val subtitleStreamFeatures =
+        contentSettingsRepository.subtitleStreamFeatures.stateIn(emptySet())
 
     fun setVideoStreamFeatures(newVideoStreamFeatures: Set<VideoStreamFeature>) =
         viewModelScope.launch {
-            streamFeatureRepository.setVideoStreamFeatures(newVideoStreamFeatures)
+            contentSettingsRepository.setVideoStreamFeatures(newVideoStreamFeatures)
         }
 
     fun setAudioStreamFeatures(newAudioStreamFeatures: Set<AudioStreamFeature>) =
         viewModelScope.launch {
-            streamFeatureRepository.setAudioStreamFeatures(newAudioStreamFeatures)
+            contentSettingsRepository.setAudioStreamFeatures(newAudioStreamFeatures)
         }
 
     fun setSubtitleStreamFeatures(newSubtitleStreamFeatures: Set<SubtitleStreamFeature>) =
         viewModelScope.launch {
-            streamFeatureRepository.setSubtitleStreamFeatures(newSubtitleStreamFeatures)
+            contentSettingsRepository.setSubtitleStreamFeatures(newSubtitleStreamFeatures)
         }
 }
 

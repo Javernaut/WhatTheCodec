@@ -1,8 +1,8 @@
 package com.javernaut.whatthecodec.home.presentation.model
 
-import com.javernaut.whatthecodec.home.data.model.AudioStreamFeature
-import com.javernaut.whatthecodec.home.data.model.SubtitleStreamFeature
-import com.javernaut.whatthecodec.home.data.model.VideoStreamFeature
+import com.javernaut.whatthecodec.feature.settings.content.AudioStreamFeature
+import com.javernaut.whatthecodec.feature.settings.content.SubtitleStreamFeature
+import com.javernaut.whatthecodec.feature.settings.content.VideoStreamFeature
 import io.github.javernaut.mediafile.AudioStream
 import io.github.javernaut.mediafile.SubtitleStream
 import io.github.javernaut.mediafile.VideoStream

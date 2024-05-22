@@ -1,4 +1,4 @@
-package com.javernaut.whatthecodec.home.data
+package com.javernaut.whatthecodec.feature.settings.impl.content
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
@@ -33,10 +33,10 @@ internal suspend fun DataStore<Preferences>.saveEnumSet(
     }
 }
 
-internal inline fun <reified E : Enum<E>> mutableEnumSet(): EnumSet<E> {
+inline fun <reified E : Enum<E>> mutableEnumSet(): EnumSet<E> {
     return EnumSet.noneOf(E::class.java)
 }
 
-internal inline fun <reified E : Enum<E>> completeEnumSet(): EnumSet<E> {
+inline fun <reified E : Enum<E>> completeEnumSet(): EnumSet<E> {
     return EnumSet.allOf(E::class.java)
 }

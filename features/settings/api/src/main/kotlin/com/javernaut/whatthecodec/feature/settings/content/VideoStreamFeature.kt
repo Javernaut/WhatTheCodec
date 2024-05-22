@@ -1,4 +1,4 @@
-package com.javernaut.whatthecodec.home.data.model
+package com.javernaut.whatthecodec.feature.settings.content
 
 import androidx.annotation.Keep
 

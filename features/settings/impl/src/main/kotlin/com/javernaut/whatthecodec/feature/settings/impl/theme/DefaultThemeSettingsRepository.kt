@@ -1,4 +1,4 @@
-package com.javernaut.whatthecodec.feature.settings.impl
+package com.javernaut.whatthecodec.feature.settings.impl.theme
 
 import android.content.Context
 import androidx.datastore.core.DataStore

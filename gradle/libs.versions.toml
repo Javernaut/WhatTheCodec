@@ -45,6 +45,7 @@ androidx-datastore-preferences = { module = "androidx.datastore:datastore-prefer
 androidx-palette = "androidx.palette:palette-ktx:1.0.0"
 androidx-savedstate = "androidx.savedstate:savedstate:1.2.1"
 androidx-browser = "androidx.browser:browser:1.8.0"
+androidx-annotation = "androidx.annotation:annotation:1.8.0"
 
 androidx-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "androidx-compose-bom" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity-compose" }
