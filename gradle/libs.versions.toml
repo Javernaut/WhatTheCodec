@@ -1,7 +1,7 @@
 [versions]
 androidGradlePlugin = "8.4.0"
 
-kotlin = "1.9.24"
+kotlin = "2.0.0"
 kotlinx-coroutines = "1.8.1"
 
 # 2.8.0 implicitly requires Compose 1.7.0. Sticking to 2.7.0 to omit workarounds
@@ -22,7 +22,7 @@ androidx-test-ext-junit = "1.1.5"
 androidx-test-ext-truth = "1.5.0"
 screengrab = "2.1.1"
 
-google-ksp = "1.9.24-1.0.20"
+google-ksp = "2.0.0-1.0.21"
 google-dagger = "2.51.1"
 
 detekt = "1.23.6"
