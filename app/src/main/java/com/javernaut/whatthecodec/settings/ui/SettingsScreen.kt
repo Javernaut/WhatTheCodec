@@ -38,8 +38,8 @@ import com.javernaut.whatthecodec.compose.preference.Preference
 import com.javernaut.whatthecodec.compose.preference.PreferenceDivider
 import com.javernaut.whatthecodec.compose.preference.PreferenceGroup
 import com.javernaut.whatthecodec.compose.theme.WhatTheCodecTheme
-import com.javernaut.whatthecodec.compose.theme.dynamic.AppTheme
 import com.javernaut.whatthecodec.compose.theme.dynamic.ThemeViewModel
+import com.javernaut.whatthecodec.feature.settings.theme.AppTheme
 import com.javernaut.whatthecodec.home.data.model.AudioStreamFeature
 import com.javernaut.whatthecodec.home.data.model.SubtitleStreamFeature
 import com.javernaut.whatthecodec.home.data.model.VideoStreamFeature

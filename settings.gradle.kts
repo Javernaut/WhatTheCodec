@@ -28,3 +28,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "WhatTheCodec"
 include(":app")
+include(":features:settings:api")

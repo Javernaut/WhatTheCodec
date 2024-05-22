@@ -2,8 +2,8 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.compose.compiler)
+    alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.jetbrains.kotlin.compose.compiler)
     alias(libs.plugins.detekt)
     alias(libs.plugins.google.ksp)
     alias(libs.plugins.google.hilt)
@@ -135,6 +135,7 @@ hilt {
 }
 
 dependencies {
+    implementation(project(":features:settings:api"))
     ksp(libs.dagger.compiler)
     ksp(libs.dagger.hilt.compiler)
     implementation(libs.dagger.hilt.android)

@@ -9,8 +9,8 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.UiDevice
 import com.javernaut.whatthecodec.compose.theme.WhatTheCodecTheme
-import com.javernaut.whatthecodec.compose.theme.dynamic.AppTheme
 import com.javernaut.whatthecodec.compose.theme.dynamic.ThemeViewModel
+import com.javernaut.whatthecodec.feature.settings.theme.AppTheme
 import com.javernaut.whatthecodec.home.data.completeEnumSet
 import com.javernaut.whatthecodec.home.data.model.AudioStreamFeature
 import com.javernaut.whatthecodec.home.data.model.SubtitleStreamFeature
