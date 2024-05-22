@@ -1,4 +1,4 @@
-package com.javernaut.whatthecodec.compose.theme.dynamic
+package com.javernaut.whatthecodec.feature.settings.impl
 
 import android.content.Context
 import androidx.datastore.core.DataStore
@@ -16,9 +16,10 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class AppThemeRepository @Inject constructor(
+internal class DefaultThemeSettingsRepository @Inject constructor(
     @ApplicationContext context: Context
 ) : ThemeSettingsRepository {
+
     private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "theme_settings")
     private val keyTheme = intPreferencesKey("selected_theme")
 
