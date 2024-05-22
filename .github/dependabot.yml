@@ -16,5 +16,4 @@ updates:
         patterns:
           - "org.jetbrains.kotlin.android"
           - "com.google.devtools.ksp"
-          - "androidx.compose.compiler:compiler"
     open-pull-requests-limit: 10
