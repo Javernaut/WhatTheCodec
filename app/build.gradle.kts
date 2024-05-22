@@ -1,6 +1,9 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.compose.compiler)
     alias(libs.plugins.detekt)
     alias(libs.plugins.google.ksp)
     alias(libs.plugins.google.hilt)
@@ -31,9 +34,6 @@ android {
     buildFeatures {
         compose = true
     }
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.androidx.compose.compiler.get()
-    }
     bundle {
         language {
             enableSplit = true
@@ -48,10 +48,6 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
-    }
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8.toString()
-        freeCompilerArgs += "-Xcontext-receivers"
     }
     signingConfigs {
         create("google") {
@@ -122,6 +118,22 @@ android {
     }
 }
 
+kotlin {
+    compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_1_8)
+        freeCompilerArgs.add("-Xcontext-receivers")
+    }
+}
+
+detekt {
+    config.setFrom("$projectDir/../config/detekt/detekt.yml")
+    buildUponDefaultConfig = true
+}
+
+hilt {
+    enableAggregatingTask = true
+}
+
 dependencies {
     ksp(libs.dagger.compiler)
     ksp(libs.dagger.hilt.compiler)
@@ -156,13 +168,4 @@ dependencies {
     androidTestImplementation(libs.androidx.test.ext.truth)
     androidTestImplementation(libs.mockk.instrumentation)
     androidTestImplementation(libs.screengrab)
-}
-
-detekt {
-    config.setFrom("$projectDir/../config/detekt/detekt.yml")
-    buildUponDefaultConfig = true
-}
-
-hilt {
-    enableAggregatingTask = true
 }

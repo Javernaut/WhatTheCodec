@@ -188,3 +188,6 @@ secrets.properties
 
 # Fastlane.swift runner binary
 **/fastlane/FastlaneRunner
+
+# Kotlin 2.0
+.kotlin/

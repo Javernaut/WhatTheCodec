@@ -1,7 +1,7 @@
 [versions]
 androidGradlePlugin = "8.4.0"
 
-kotlin = "1.9.24"
+kotlin = "2.0.0"
 kotlinx-coroutines = "1.8.1"
 
 # 2.8.0 implicitly requires Compose 1.7.0. Sticking to 2.7.0 to omit workarounds
@@ -11,7 +11,6 @@ androidx-datastore = "1.1.1"
 androidx-navigation = "2.7.7"
 androidx-activity-compose = "1.9.0"
 androidx-compose-bom = "2024.05.00"
-androidx-compose-compiler = "1.5.14"
 androidx-hilt = "1.2.0"
 
 androidx-test-core = "1.5.0"
@@ -22,7 +21,7 @@ androidx-test-ext-junit = "1.1.5"
 androidx-test-ext-truth = "1.5.0"
 screengrab = "2.1.1"
 
-google-ksp = "1.9.24-1.0.20"
+google-ksp = "2.0.0-1.0.21"
 google-dagger = "2.51.1"
 
 detekt = "1.23.6"
@@ -60,9 +59,6 @@ androidx-compose-material3 = { module = "androidx.compose.material3:material3" }
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 
-# This dependency is defined, but not used. This is necessary for Dependabot to actually update Compose Compiler.
-androidx-compose-compiler = { group = "androidx.compose.compiler", name = "compiler", version.ref = "androidx-compose-compiler" }
-
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "androidx-navigation" }
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "androidx-hilt" }
 
@@ -99,6 +95,7 @@ androidx-compose = [
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 google-ksp = { id = "com.google.devtools.ksp", version.ref = "google-ksp" }
 google-hilt = { id = "com.google.dagger.hilt.android", version.ref = "google-dagger" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
