@@ -9,12 +9,12 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.UiDevice
 import com.javernaut.whatthecodec.compose.theme.WhatTheCodecTheme
-import com.javernaut.whatthecodec.compose.theme.dynamic.AppTheme
 import com.javernaut.whatthecodec.compose.theme.dynamic.ThemeViewModel
-import com.javernaut.whatthecodec.home.data.completeEnumSet
-import com.javernaut.whatthecodec.home.data.model.AudioStreamFeature
-import com.javernaut.whatthecodec.home.data.model.SubtitleStreamFeature
-import com.javernaut.whatthecodec.home.data.model.VideoStreamFeature
+import com.javernaut.whatthecodec.feature.settings.api.content.AudioStreamFeature
+import com.javernaut.whatthecodec.feature.settings.api.content.SubtitleStreamFeature
+import com.javernaut.whatthecodec.feature.settings.api.content.VideoStreamFeature
+import com.javernaut.whatthecodec.feature.settings.api.theme.AppTheme
+import com.javernaut.whatthecodec.feature.settings.data.content.completeEnumSet
 import com.javernaut.whatthecodec.home.presentation.model.ActualFrame
 import com.javernaut.whatthecodec.home.presentation.model.ActualPreview
 import com.javernaut.whatthecodec.home.presentation.model.AudioPage
@@ -173,7 +173,7 @@ class ScreenshotsTestSuite(
             videoPage = null,
             audioPage = AudioPage(
                 streams = listOf(audioStream),
-                streamFeatures = completeEnumSet()
+                streamFeatures = completeEnumSet<AudioStreamFeature>()
             ),
             subtitlesPage = null
         )

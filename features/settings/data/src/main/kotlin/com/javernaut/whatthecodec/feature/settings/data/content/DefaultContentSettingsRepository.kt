@@ -1,22 +1,24 @@
-package com.javernaut.whatthecodec.home.data
+package com.javernaut.whatthecodec.feature.settings.data.content
 
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.stringSetPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
-import com.javernaut.whatthecodec.home.data.model.AudioStreamFeature
-import com.javernaut.whatthecodec.home.data.model.SubtitleStreamFeature
-import com.javernaut.whatthecodec.home.data.model.VideoStreamFeature
+import com.javernaut.whatthecodec.feature.settings.api.content.AudioStreamFeature
+import com.javernaut.whatthecodec.feature.settings.api.content.ContentSettingsRepository
+import com.javernaut.whatthecodec.feature.settings.api.content.SubtitleStreamFeature
+import com.javernaut.whatthecodec.feature.settings.api.content.VideoStreamFeature
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class StreamFeatureRepository @Inject constructor(
+internal class DefaultContentSettingsRepository @Inject constructor(
     @ApplicationContext context: Context
-) {
+) : ContentSettingsRepository {
+
     private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "stream_features")
 
     private val dataStore = context.dataStore
@@ -25,31 +27,30 @@ class StreamFeatureRepository @Inject constructor(
     private val keyAudioStreamFeatures = stringSetPreferencesKey("audio_stream_features")
     private val keySubtitleStreamFeatures = stringSetPreferencesKey("subtitle_stream_features")
 
-    val videoStreamFeatures: Flow<Set<VideoStreamFeature>> =
+    override val videoStreamFeatures: Flow<Set<VideoStreamFeature>> =
         context.dataStore.enumSetFlow(
             keyVideoStreamFeatures
         )
 
-    val audioStreamFeatures: Flow<Set<AudioStreamFeature>> =
+    override val audioStreamFeatures: Flow<Set<AudioStreamFeature>> =
         context.dataStore.enumSetFlow(
             keyAudioStreamFeatures
         )
 
-    val subtitleStreamFeatures: Flow<Set<SubtitleStreamFeature>> =
+    override val subtitleStreamFeatures: Flow<Set<SubtitleStreamFeature>> =
         context.dataStore.enumSetFlow(
             keySubtitleStreamFeatures
         )
 
-
-    suspend fun setVideoStreamFeatures(newVideoStreamFeatures: Set<VideoStreamFeature>) {
+    override suspend fun setVideoStreamFeatures(newVideoStreamFeatures: Set<VideoStreamFeature>) {
         dataStore.saveEnumSet(keyVideoStreamFeatures, newVideoStreamFeatures)
     }
 
-    suspend fun setAudioStreamFeatures(newAudioStreamFeatures: Set<AudioStreamFeature>) {
+    override suspend fun setAudioStreamFeatures(newAudioStreamFeatures: Set<AudioStreamFeature>) {
         dataStore.saveEnumSet(keyAudioStreamFeatures, newAudioStreamFeatures)
     }
 
-    suspend fun setSubtitleStreamFeatures(newSubtitleStreamFeatures: Set<SubtitleStreamFeature>) {
+    override suspend fun setSubtitleStreamFeatures(newSubtitleStreamFeatures: Set<SubtitleStreamFeature>) {
         dataStore.saveEnumSet(keySubtitleStreamFeatures, newSubtitleStreamFeatures)
     }
 }

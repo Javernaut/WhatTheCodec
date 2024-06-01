@@ -3,8 +3,8 @@ package com.javernaut.whatthecodec.home.presentation
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.javernaut.whatthecodec.home.data.StreamFeatureRepository
-import com.javernaut.whatthecodec.home.data.model.VideoStreamFeature
+import com.javernaut.whatthecodec.feature.settings.api.content.ContentSettingsRepository
+import com.javernaut.whatthecodec.feature.settings.api.content.VideoStreamFeature
 import com.javernaut.whatthecodec.home.presentation.model.AudioPage
 import com.javernaut.whatthecodec.home.presentation.model.FrameMetrics
 import com.javernaut.whatthecodec.home.presentation.model.NoPreviewAvailable
@@ -30,7 +30,7 @@ class MediaFileViewModel @Inject constructor(
     private val clipboard: Clipboard,
     private val frameMetricsProvider: FrameMetricsProvider,
     private val mediaFileProvider: MediaFileProvider,
-    private val streamFeatureRepository: StreamFeatureRepository,
+    private val contentSettingsRepository: ContentSettingsRepository,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -49,9 +49,9 @@ class MediaFileViewModel @Inject constructor(
                     _preview.value = NotYetEvaluated
                 },
                 _preview,
-                streamFeatureRepository.videoStreamFeatures,
-                streamFeatureRepository.audioStreamFeatures,
-                streamFeatureRepository.subtitleStreamFeatures,
+                contentSettingsRepository.videoStreamFeatures,
+                contentSettingsRepository.audioStreamFeatures,
+                contentSettingsRepository.subtitleStreamFeatures,
             ) { mediaFile, preview, videoFeatures, audioFeatures, subtitleFeatures ->
                 mediaFile?.let {
                     ScreenState(

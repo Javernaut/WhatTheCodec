@@ -1,4 +1,4 @@
-package com.javernaut.whatthecodec.compose.theme.dynamic
+package com.javernaut.whatthecodec.feature.settings.data.theme
 
 import android.content.Context
 import androidx.datastore.core.DataStore
@@ -6,6 +6,9 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import com.javernaut.whatthecodec.feature.settings.api.theme.AppTheme
+import com.javernaut.whatthecodec.feature.settings.api.theme.ThemeSettings
+import com.javernaut.whatthecodec.feature.settings.api.theme.ThemeSettingsRepository
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -13,22 +16,25 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class AppThemeRepository @Inject constructor(
+internal class DefaultThemeSettingsRepository @Inject constructor(
     @ApplicationContext context: Context
-) {
+) : ThemeSettingsRepository {
+
     private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "theme_settings")
     private val keyTheme = intPreferencesKey("selected_theme")
 
     private val dataStore = context.dataStore
 
-    val selectedTheme: Flow<AppTheme> = context.dataStore.data
+    private val selectedTheme: Flow<AppTheme> = context.dataStore.data
         .map { preferences ->
             preferences[keyTheme] ?: AppTheme.Auto.ordinal
         }.map {
             AppTheme.entries[it]
         }
 
-    suspend fun setSelectedTheme(newAppTheme: AppTheme) {
+    override val themeSettings = selectedTheme.map { ThemeSettings(it) }
+
+    override suspend fun setSelectedTheme(newAppTheme: AppTheme) {
         dataStore.edit { settings ->
             settings[keyTheme] = newAppTheme.ordinal
         }
