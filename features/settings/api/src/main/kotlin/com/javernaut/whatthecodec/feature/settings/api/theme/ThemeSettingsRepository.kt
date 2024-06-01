@@ -1,4 +1,4 @@
-package com.javernaut.whatthecodec.feature.settings.theme
+package com.javernaut.whatthecodec.feature.settings.api.theme
 
 import kotlinx.coroutines.flow.Flow
 

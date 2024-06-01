@@ -1,14 +1,14 @@
-package com.javernaut.whatthecodec.feature.settings.impl.content
+package com.javernaut.whatthecodec.feature.settings.data.content
 
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.stringSetPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
-import com.javernaut.whatthecodec.feature.settings.content.AudioStreamFeature
-import com.javernaut.whatthecodec.feature.settings.content.ContentSettingsRepository
-import com.javernaut.whatthecodec.feature.settings.content.SubtitleStreamFeature
-import com.javernaut.whatthecodec.feature.settings.content.VideoStreamFeature
+import com.javernaut.whatthecodec.feature.settings.api.content.AudioStreamFeature
+import com.javernaut.whatthecodec.feature.settings.api.content.ContentSettingsRepository
+import com.javernaut.whatthecodec.feature.settings.api.content.SubtitleStreamFeature
+import com.javernaut.whatthecodec.feature.settings.api.content.VideoStreamFeature
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject

@@ -2,10 +2,10 @@ package com.javernaut.whatthecodec.settings.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.javernaut.whatthecodec.feature.settings.content.AudioStreamFeature
-import com.javernaut.whatthecodec.feature.settings.content.ContentSettingsRepository
-import com.javernaut.whatthecodec.feature.settings.content.SubtitleStreamFeature
-import com.javernaut.whatthecodec.feature.settings.content.VideoStreamFeature
+import com.javernaut.whatthecodec.feature.settings.api.content.AudioStreamFeature
+import com.javernaut.whatthecodec.feature.settings.api.content.ContentSettingsRepository
+import com.javernaut.whatthecodec.feature.settings.api.content.SubtitleStreamFeature
+import com.javernaut.whatthecodec.feature.settings.api.content.VideoStreamFeature
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted

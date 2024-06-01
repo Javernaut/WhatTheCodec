@@ -3,8 +3,8 @@ package com.javernaut.whatthecodec.home.presentation
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.javernaut.whatthecodec.feature.settings.content.ContentSettingsRepository
-import com.javernaut.whatthecodec.feature.settings.content.VideoStreamFeature
+import com.javernaut.whatthecodec.feature.settings.api.content.ContentSettingsRepository
+import com.javernaut.whatthecodec.feature.settings.api.content.VideoStreamFeature
 import com.javernaut.whatthecodec.home.presentation.model.AudioPage
 import com.javernaut.whatthecodec.home.presentation.model.FrameMetrics
 import com.javernaut.whatthecodec.home.presentation.model.NoPreviewAvailable

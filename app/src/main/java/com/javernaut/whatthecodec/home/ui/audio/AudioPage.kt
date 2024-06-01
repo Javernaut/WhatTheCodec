@@ -6,7 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import com.javernaut.whatthecodec.R
-import com.javernaut.whatthecodec.feature.settings.content.AudioStreamFeature
+import com.javernaut.whatthecodec.feature.settings.api.content.AudioStreamFeature
 import com.javernaut.whatthecodec.home.presentation.model.AudioPage
 import com.javernaut.whatthecodec.home.ui.stream.DisplayableStreamFeature
 import com.javernaut.whatthecodec.home.ui.stream.SimplePage

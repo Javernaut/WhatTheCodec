@@ -1,4 +1,4 @@
-package com.javernaut.whatthecodec.feature.settings.impl.theme
+package com.javernaut.whatthecodec.feature.settings.data.theme
 
 import android.content.Context
 import androidx.datastore.core.DataStore
@@ -6,9 +6,9 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
-import com.javernaut.whatthecodec.feature.settings.theme.AppTheme
-import com.javernaut.whatthecodec.feature.settings.theme.ThemeSettings
-import com.javernaut.whatthecodec.feature.settings.theme.ThemeSettingsRepository
+import com.javernaut.whatthecodec.feature.settings.api.theme.AppTheme
+import com.javernaut.whatthecodec.feature.settings.api.theme.ThemeSettings
+import com.javernaut.whatthecodec.feature.settings.api.theme.ThemeSettingsRepository
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map

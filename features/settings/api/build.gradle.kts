@@ -2,6 +2,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.jetbrains.kotlin.jvm)
+    // TODO add Detekt and its setup via a convenience plugin
 }
 
 // TODO Consider a convention plugin here

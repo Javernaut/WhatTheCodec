@@ -19,7 +19,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.javernaut.whatthecodec.compose.common.SystemBroadcastReceiver
 import com.javernaut.whatthecodec.compose.theme.dynamic.ThemeViewModel
-import com.javernaut.whatthecodec.feature.settings.theme.AppTheme
+import com.javernaut.whatthecodec.feature.settings.api.theme.AppTheme
 
 object WhatTheCodecTheme {
     @Composable

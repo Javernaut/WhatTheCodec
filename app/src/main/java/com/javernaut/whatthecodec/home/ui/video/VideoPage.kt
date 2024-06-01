@@ -12,7 +12,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.javernaut.whatthecodec.R
-import com.javernaut.whatthecodec.feature.settings.content.VideoStreamFeature
+import com.javernaut.whatthecodec.feature.settings.api.content.VideoStreamFeature
 import com.javernaut.whatthecodec.home.presentation.model.VideoPage
 import com.javernaut.whatthecodec.home.ui.stream.DisplayableStreamFeature
 import com.javernaut.whatthecodec.home.ui.stream.StreamCard

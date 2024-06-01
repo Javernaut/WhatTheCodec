@@ -3,12 +3,13 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
+    // TODO add Detekt and its setup via a convenience plugin
     alias(libs.plugins.google.ksp)
     alias(libs.plugins.google.hilt)
 }
 
 android {
-    namespace = "com.javernaut.whatthecodec.feature.settings.impl"
+    namespace = "com.javernaut.whatthecodec.feature.settings.data"
     compileSdk = 34
 
     defaultConfig {
