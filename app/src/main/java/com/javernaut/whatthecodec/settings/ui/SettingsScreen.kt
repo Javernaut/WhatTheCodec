@@ -38,7 +38,6 @@ import com.javernaut.whatthecodec.compose.preference.Preference
 import com.javernaut.whatthecodec.compose.preference.PreferenceDivider
 import com.javernaut.whatthecodec.compose.preference.PreferenceGroup
 import com.javernaut.whatthecodec.compose.theme.WhatTheCodecTheme
-import com.javernaut.whatthecodec.compose.theme.dynamic.ThemeViewModel
 import com.javernaut.whatthecodec.feature.settings.api.content.AudioStreamFeature
 import com.javernaut.whatthecodec.feature.settings.api.content.SubtitleStreamFeature
 import com.javernaut.whatthecodec.feature.settings.api.content.VideoStreamFeature
@@ -50,13 +49,11 @@ import com.javernaut.whatthecodec.settings.presentation.SettingsViewModel
 
 @Composable
 fun SettingsScreen(
-    themeViewModel: ThemeViewModel = hiltViewModel(),
     settingsViewModel: SettingsViewModel = hiltViewModel(),
     onBackClick: () -> Unit
 ) {
     val context = LocalContext.current
     SettingsScreen(
-        themeViewModel = themeViewModel,
         settingsViewModel = settingsViewModel,
         openUrl = {
             openUrl(context, it)
@@ -74,7 +71,6 @@ private fun openUrl(context: Context, url: String) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(
-    themeViewModel: ThemeViewModel = hiltViewModel(),
     settingsViewModel: SettingsViewModel = hiltViewModel(),
     openUrl: (String) -> Unit,
     onBackClick: () -> Unit
@@ -93,19 +89,18 @@ fun SettingsScreen(
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            SettingsContent(themeViewModel, settingsViewModel, openUrl)
+            SettingsContent(settingsViewModel, openUrl)
         }
     }
 }
 
 @Composable
 private fun ColumnScope.SettingsContent(
-    themeViewModel: ThemeViewModel,
     settingsViewModel: SettingsViewModel,
     openUrl: (String) -> Unit
 ) {
     PreferenceGroup(title = R.string.settings_category_general) {
-        ThemeSelectionPreference(themeViewModel)
+        ThemeSelectionPreference(settingsViewModel)
     }
 
     PreferenceGroup(title = R.string.settings_category_content) {
@@ -152,16 +147,16 @@ private fun SettingsTopAppBar(scrollBehavior: TopAppBarScrollBehavior, onBackCli
 
 @Composable
 private fun ThemeSelectionPreference(
-    themeViewModel: ThemeViewModel
+    settingsViewModel: SettingsViewModel
 ) {
-    val selectedTheme by themeViewModel.appTheme.collectAsStateWithLifecycle()
+    val selectedTheme by settingsViewModel.appTheme.collectAsStateWithLifecycle()
     val selectedThemeIndex = AppTheme.entries.indexOf(selectedTheme)
     ListPreference(
         title = stringResource(id = R.string.settings_theme_title),
         displayableEntries = stringArrayResource(id = R.array.settings_theme_entries).toList(),
         selectedItemIndex = selectedThemeIndex
     ) {
-        themeViewModel.setAppTheme(
+        settingsViewModel.setAppTheme(
             AppTheme.entries[it]
         )
     }

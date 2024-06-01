@@ -6,17 +6,21 @@ import com.javernaut.whatthecodec.feature.settings.api.content.AudioStreamFeatur
 import com.javernaut.whatthecodec.feature.settings.api.content.ContentSettingsRepository
 import com.javernaut.whatthecodec.feature.settings.api.content.SubtitleStreamFeature
 import com.javernaut.whatthecodec.feature.settings.api.content.VideoStreamFeature
+import com.javernaut.whatthecodec.feature.settings.api.theme.AppTheme
+import com.javernaut.whatthecodec.feature.settings.api.theme.ThemeSettingsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
-    private val contentSettingsRepository: ContentSettingsRepository
+    private val contentSettingsRepository: ContentSettingsRepository,
+    private val themeSettingsRepository: ThemeSettingsRepository
 ) : ViewModel() {
     val videoStreamFeatures = contentSettingsRepository.videoStreamFeatures.stateIn(emptySet())
 
@@ -39,6 +43,16 @@ class SettingsViewModel @Inject constructor(
         viewModelScope.launch {
             contentSettingsRepository.setSubtitleStreamFeatures(newSubtitleStreamFeatures)
         }
+
+    val appTheme = themeSettingsRepository.themeSettings
+        .map { it.selectedTheme }
+        .stateIn(AppTheme.Auto)
+
+    fun setAppTheme(newAppTheme: AppTheme) {
+        viewModelScope.launch {
+            themeSettingsRepository.setSelectedTheme(newAppTheme)
+        }
+    }
 }
 
 context(ViewModel)

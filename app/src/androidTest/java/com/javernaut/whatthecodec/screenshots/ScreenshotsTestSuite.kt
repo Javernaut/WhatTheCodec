@@ -9,7 +9,6 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.UiDevice
 import com.javernaut.whatthecodec.compose.theme.WhatTheCodecTheme
-import com.javernaut.whatthecodec.compose.theme.dynamic.ThemeViewModel
 import com.javernaut.whatthecodec.feature.settings.api.content.AudioStreamFeature
 import com.javernaut.whatthecodec.feature.settings.api.content.SubtitleStreamFeature
 import com.javernaut.whatthecodec.feature.settings.api.content.VideoStreamFeature
@@ -184,11 +183,10 @@ class ScreenshotsTestSuite(
 
     @Test
     fun settingsScreen() {
-        val appThemeFlow = MutableStateFlow(AppTheme.Auto)
-        val themeViewModel = mockk<ThemeViewModel>()
-        every { themeViewModel.appTheme } returns appThemeFlow
-
         val settingsViewModel = mockk<SettingsViewModel>()
+
+        val appThemeFlow = MutableStateFlow(AppTheme.Auto)
+        every { settingsViewModel.appTheme } returns appThemeFlow
 
         val videoFeatures = MutableStateFlow(completeEnumSet<VideoStreamFeature>())
         val audioFeatures = MutableStateFlow(completeEnumSet<AudioStreamFeature>())
@@ -199,7 +197,7 @@ class ScreenshotsTestSuite(
         every { settingsViewModel.subtitleStreamFeatures } returns subtitleFeatures
 
         makeScreenshotOf("settings") {
-            SettingsScreen(themeViewModel, settingsViewModel, {}, {})
+            SettingsScreen(settingsViewModel, {}, {})
         }
     }
 
