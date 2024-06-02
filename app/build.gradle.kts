@@ -137,6 +137,9 @@ hilt {
 dependencies {
     implementation(project(":features:settings:api"))
     implementation(project(":features:settings:data"))
+    implementation(project(":features:settings:ui"))
+    implementation(project(":features:home:localization"))
+
     ksp(libs.dagger.compiler)
     ksp(libs.dagger.hilt.compiler)
     implementation(libs.dagger.hilt.android)
@@ -150,7 +153,6 @@ dependencies {
     implementation(libs.bundles.androidx.lifecycle)
     implementation(libs.androidx.palette)
     implementation(libs.androidx.savedstate)
-    implementation(libs.androidx.browser)
     implementation(libs.androidx.window)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.hilt.navigation.compose)

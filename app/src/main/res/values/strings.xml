@@ -1,55 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="content_description_back">Go back</string>
     <string name="message_permission_denied">Permission denied</string>
     <string name="message_couldnt_open_file">Couldn\'t open the file</string>
     <string name="menu_pick_video">Pick Video</string>
     <string name="menu_pick_audio">Pick Audio</string>
     <string name="menu_more">More options</string>
     <string name="menu_settings">@string/settings_title</string>
-    <string name="tab_video">Video</string>
-    <string name="tab_audio">Audio</string>
-    <string name="tab_subtitles">Subtitles</string>
     <string name="info_container">Container</string>
     <string name="info_file_format">File format</string>
     <string name="info_protocol_title">Used protocol</string>
-    <string name="info_bit_rate">Bit rate</string>
     <string name="page_video_preview_missing_decoder">Missing decoder\nPreview is unavailable</string>
     <string name="page_video_preview_frame_decoding_error">Couldn\'t decode this frame</string>
-    <string name="page_video_codec_name">Video codec</string>
-    <string name="page_video_bit_rate">@string/info_bit_rate</string>
-    <string name="page_video_frame_rate">Frame rate</string>
-    <string name="page_video_frame_width">Width</string>
-    <string name="page_video_frame_height">Height</string>
     <string name="page_stream_title_prefix">Stream #</string>
-    <string name="page_audio_codec_name">Audio codec</string>
-    <string name="page_audio_bit_rate">@string/info_bit_rate</string>
-    <string name="page_audio_channels">Channels</string>
-    <string name="page_audio_channel_layout">Channel layout</string>
-    <string name="page_audio_sample_rate">Sample rate</string>
-    <string name="page_audio_sample_format">Sample format</string>
-    <string name="page_subtitle_codec_name">Subtitle codec</string>
-    <string name="page_stream_language">Language</string>
-    <string name="page_stream_disposition">Disposition</string>
     <string name="page_stream_no_info">No info to display</string>
     <string name="stream_copy">Copy</string>
     <string name="stream_text_copied_pattern" formatted="false">\"%s\" copied to clipboard</string>
     <string name="empty_root_description">Open a video or audio file\nto see its details</string>
     <string name="empty_root_choose">Choose</string>
     <string name="empty_root_or">or</string>
-    <string name="settings_title">Settings</string>
-    <string name="settings_category_general">General</string>
-    <string name="settings_category_content">Content</string>
-    <string name="settings_category_about">About</string>
-    <string name="settings_theme_light">Light</string>
-    <string name="settings_theme_dark">Dark</string>
-    <string name="settings_theme_battery_saver">Set by Battery Saver</string>
-    <string name="settings_theme_system_default">System default</string>
-    <string name="settings_theme_title">App Theme</string>
-    <string name="settings_content_video_title">@string/tab_video</string>
-    <string name="settings_content_audio_title">@string/tab_audio</string>
-    <string name="settings_content_subtitles_title">@string/tab_subtitles</string>
-    <string name="settings_source_code_title">Source Code</string>
-    <string name="settings_privacy_policy_title">Privacy Policy</string>
-    <string name="settings_nothing_is_selected">Nothing is selected</string>
 </resources>

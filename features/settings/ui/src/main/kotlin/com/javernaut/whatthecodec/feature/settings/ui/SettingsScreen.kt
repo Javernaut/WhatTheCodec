@@ -1,4 +1,4 @@
-package com.javernaut.whatthecodec.settings.ui
+package com.javernaut.whatthecodec.feature.settings.ui
 
 import android.content.Context
 import android.net.Uri
@@ -27,36 +27,28 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.compose.preference.ListPreference
 import com.javernaut.whatthecodec.compose.preference.MultiSelectListPreference
-import com.javernaut.whatthecodec.compose.preference.Preference
-import com.javernaut.whatthecodec.compose.preference.PreferenceDivider
-import com.javernaut.whatthecodec.compose.preference.PreferenceGroup
-import com.javernaut.whatthecodec.compose.theme.WhatTheCodecTheme
-import com.javernaut.whatthecodec.compose.theme.dynamic.ThemeViewModel
+import com.javernaut.whatthecodec.feature.home.stream.displayableResource
 import com.javernaut.whatthecodec.feature.settings.api.content.AudioStreamFeature
 import com.javernaut.whatthecodec.feature.settings.api.content.SubtitleStreamFeature
 import com.javernaut.whatthecodec.feature.settings.api.content.VideoStreamFeature
 import com.javernaut.whatthecodec.feature.settings.api.theme.AppTheme
-import com.javernaut.whatthecodec.home.ui.audio.displayableResource
-import com.javernaut.whatthecodec.home.ui.subtitle.displayableResource
-import com.javernaut.whatthecodec.home.ui.video.displayableResource
-import com.javernaut.whatthecodec.settings.presentation.SettingsViewModel
+import com.javernaut.whatthecodec.feature.settings.preferences.Preference
+import com.javernaut.whatthecodec.feature.settings.preferences.PreferenceDivider
+import com.javernaut.whatthecodec.feature.settings.preferences.PreferenceGroup
+import com.javernaut.whatthecodec.feature.settings.presentation.SettingsViewModel
 
 @Composable
 fun SettingsScreen(
-    themeViewModel: ThemeViewModel = hiltViewModel(),
     settingsViewModel: SettingsViewModel = hiltViewModel(),
     onBackClick: () -> Unit
 ) {
     val context = LocalContext.current
     SettingsScreen(
-        themeViewModel = themeViewModel,
         settingsViewModel = settingsViewModel,
         openUrl = {
             openUrl(context, it)
@@ -74,7 +66,6 @@ private fun openUrl(context: Context, url: String) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(
-    themeViewModel: ThemeViewModel = hiltViewModel(),
     settingsViewModel: SettingsViewModel = hiltViewModel(),
     openUrl: (String) -> Unit,
     onBackClick: () -> Unit
@@ -93,19 +84,18 @@ fun SettingsScreen(
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            SettingsContent(themeViewModel, settingsViewModel, openUrl)
+            SettingsContent(settingsViewModel, openUrl)
         }
     }
 }
 
 @Composable
 private fun ColumnScope.SettingsContent(
-    themeViewModel: ThemeViewModel,
     settingsViewModel: SettingsViewModel,
     openUrl: (String) -> Unit
 ) {
     PreferenceGroup(title = R.string.settings_category_general) {
-        ThemeSelectionPreference(themeViewModel)
+        ThemeSelectionPreference(settingsViewModel)
     }
 
     PreferenceGroup(title = R.string.settings_category_content) {
@@ -152,16 +142,16 @@ private fun SettingsTopAppBar(scrollBehavior: TopAppBarScrollBehavior, onBackCli
 
 @Composable
 private fun ThemeSelectionPreference(
-    themeViewModel: ThemeViewModel
+    settingsViewModel: SettingsViewModel
 ) {
-    val selectedTheme by themeViewModel.appTheme.collectAsStateWithLifecycle()
+    val selectedTheme by settingsViewModel.appTheme.collectAsStateWithLifecycle()
     val selectedThemeIndex = AppTheme.entries.indexOf(selectedTheme)
     ListPreference(
         title = stringResource(id = R.string.settings_theme_title),
         displayableEntries = stringArrayResource(id = R.array.settings_theme_entries).toList(),
         selectedItemIndex = selectedThemeIndex
     ) {
-        themeViewModel.setAppTheme(
+        settingsViewModel.setAppTheme(
             AppTheme.entries[it]
         )
     }
@@ -239,10 +229,11 @@ private fun OpenUrlPreference(
     }
 }
 
-@PreviewLightDark
-@Composable
-private fun PreviewSettingsScreen() {
-    WhatTheCodecTheme.Static {
-        SettingsScreen(openUrl = {}, onBackClick = {})
-    }
-}
+// TODO Pull the theme into a common module
+//@PreviewLightDark
+//@Composable
+//private fun PreviewSettingsScreen() {
+//    WhatTheCodecTheme.Static {
+//        SettingsScreen(openUrl = {}, onBackClick = {})
+//    }
+//}

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="info_bit_rate">Бітрейт</string>
+    <string name="page_video_codec_name">Відео кодек</string>
+    <string name="page_video_bit_rate">@string/info_bit_rate</string>
+    <string name="page_video_frame_rate">Частота кадрів</string>
+    <string name="page_video_frame_width">Ширина</string>
+    <string name="page_video_frame_height">Висота</string>
+    <string name="page_audio_codec_name">Аудіо кодек</string>
+    <string name="page_audio_bit_rate">@string/info_bit_rate</string>
+    <string name="page_audio_channels">Канали</string>
+    <string name="page_audio_channel_layout">Схема каналів</string>
+    <string name="page_audio_sample_rate">Частота дискретизації</string>
+    <string name="page_audio_sample_format">Формат дискретизації</string>
+    <string name="page_subtitle_codec_name">Кодек субтитрів</string>
+    <string name="page_stream_language">Мова</string>
+    <string name="page_stream_disposition">Диспозиція</string>
+</resources>

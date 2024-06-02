@@ -1,4 +1,4 @@
-package com.javernaut.whatthecodec.compose.preference
+package com.javernaut.whatthecodec.feature.settings.preferences
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
@@ -14,11 +14,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
-import com.javernaut.whatthecodec.R
-import com.javernaut.whatthecodec.compose.theme.WhatTheCodecTheme
 
 @Composable
 fun Preference(
@@ -97,38 +93,39 @@ private fun PreferenceTitle(@StringRes title: Int) {
     )
 }
 
-@Preview
-@Composable
-private fun PreferencePreview() {
-    WhatTheCodecTheme.Static {
-        PreferenceGroup {
-            Preference(
-                title = "Title",
-                summary = "Summary",
-                clickHandler = {}
-            )
-        }
-    }
-}
+// TODO Pull the theming to a core module
+//@Preview
+//@Composable
+//private fun PreferencePreview() {
+//    WhatTheCodecTheme.Static {
+//        PreferenceGroup {
+//            Preference(
+//                title = "Title",
+//                summary = "Summary",
+//                clickHandler = {}
+//            )
+//        }
+//    }
+//}
 
-@PreviewLightDark
-@Composable
-private fun PreviewPreferenceGroup() {
-    WhatTheCodecTheme.Static {
-        Column {
-            PreferenceGroup(R.string.settings_title) {
-                Preference(title = "Title", summary = "Summary") {
-
-                }
-                PreferenceDivider()
-                Preference(title = "Title3", summary = "Summary2") {
-
-                }
-                PreferenceDivider()
-                Preference(title = "Title3", summary = "Summary3") {
-
-                }
-            }
-        }
-    }
-}
+//@PreviewLightDark
+//@Composable
+//private fun PreviewPreferenceGroup() {
+//    WhatTheCodecTheme.Static {
+//        Column {
+//            PreferenceGroup(R.string.settings_title) {
+//                Preference(title = "Title", summary = "Summary") {
+//
+//                }
+//                PreferenceDivider()
+//                Preference(title = "Title3", summary = "Summary2") {
+//
+//                }
+//                PreferenceDivider()
+//                Preference(title = "Title3", summary = "Summary3") {
+//
+//                }
+//            }
+//        }
+//    }
+//}

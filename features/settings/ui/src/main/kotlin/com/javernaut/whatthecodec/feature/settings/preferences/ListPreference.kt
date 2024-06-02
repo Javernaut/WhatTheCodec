@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
@@ -31,8 +32,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.javernaut.whatthecodec.R
-import com.javernaut.whatthecodec.compose.common.WtcDialog
+import com.javernaut.whatthecodec.feature.settings.preferences.Preference
+import com.javernaut.whatthecodec.feature.settings.ui.R
 
 @Composable
 fun ListPreference(
@@ -198,12 +199,12 @@ private fun PreferenceDialog(
     applyRequest: () -> Unit,
     content: @Composable () -> Unit
 ) {
-    WtcDialog(
-        title,
-        dismissRequest,
+    AlertDialog(
+        title = { Text(text = title) },
+        onDismissRequest = dismissRequest,
         dismissButton = { CancelDialogButton(dismissRequest) },
         confirmButton = { ApplyDialogButton(applyRequest, dismissRequest) },
-        content = content
+        text = content
     )
 }
 

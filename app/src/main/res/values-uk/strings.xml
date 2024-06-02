@@ -1,55 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="content_description_back">Повернутися назад</string>
     <string name="message_permission_denied">У дозволі відмовлено</string>
     <string name="message_couldnt_open_file">Не вдалося відкрити файл</string>
     <string name="menu_pick_video">Вибрати відео</string>
     <string name="menu_pick_audio">Вибрати аудіо</string>
     <string name="menu_more">Більше налаштувань</string>
     <string name="menu_settings">@string/settings_title</string>
-    <string name="tab_video">Відео</string>
-    <string name="tab_audio">Аудіо</string>
-    <string name="tab_subtitles">Субтитри</string>
     <string name="info_container">Контейнер</string>
     <string name="info_file_format">Формат файлу</string>
     <string name="info_protocol_title">Використаний протокол</string>
-    <string name="info_bit_rate">Бітрейт</string>
     <string name="page_video_preview_missing_decoder">Нема декодеру\nЗображення недоступно</string>
     <string name="page_video_preview_frame_decoding_error">Не вдалося декодувати кадр</string>
-    <string name="page_video_codec_name">Відео кодек</string>
-    <string name="page_video_bit_rate">@string/info_bit_rate</string>
-    <string name="page_video_frame_rate">Частота кадрів</string>
-    <string name="page_video_frame_width">Ширина</string>
-    <string name="page_video_frame_height">Висота</string>
     <string name="page_stream_title_prefix">Поток #</string>
-    <string name="page_audio_codec_name">Аудіо кодек</string>
-    <string name="page_audio_bit_rate">@string/info_bit_rate</string>
-    <string name="page_audio_channels">Канали</string>
-    <string name="page_audio_channel_layout">Схема каналів</string>
-    <string name="page_audio_sample_rate">Частота дискретизації</string>
-    <string name="page_audio_sample_format">Формат дискретизації</string>
-    <string name="page_subtitle_codec_name">Кодек субтитрів</string>
-    <string name="page_stream_language">Мова</string>
-    <string name="page_stream_disposition">Диспозиція</string>
     <string name="page_stream_no_info">Нема інформації для показу</string>
     <string name="stream_copy">Скопіювати</string>
     <string name="stream_text_copied_pattern" formatted="false">\"%s\" скопійовано в буфер обміну</string>
     <string name="empty_root_description">Відкрийте відео або аудіо файл,\nщоб побачити їх інформацію</string>
     <string name="empty_root_choose">Виберіть</string>
     <string name="empty_root_or">або</string>
-    <string name="settings_title">Налаштування</string>
-    <string name="settings_category_general">Загальне</string>
-    <string name="settings_category_content">Наповнення</string>
-    <string name="settings_category_about">Про програму</string>
-    <string name="settings_theme_light">Світла</string>
-    <string name="settings_theme_dark">Темна</string>
-    <string name="settings_theme_battery_saver">За режимом енергозбереження</string>
-    <string name="settings_theme_system_default">Системна</string>
-    <string name="settings_theme_title">Візуальна тема</string>
-    <string name="settings_content_video_title">@string/tab_video</string>
-    <string name="settings_content_audio_title">@string/tab_audio</string>
-    <string name="settings_content_subtitles_title">@string/tab_subtitles</string>
-    <string name="settings_source_code_title">Програмний код</string>
-    <string name="settings_privacy_policy_title">Політика конфіденційності</string>
-    <string name="settings_nothing_is_selected">Нічого не вибрано</string>
 </resources>
