@@ -137,6 +137,8 @@ hilt {
 dependencies {
     implementation(project(":features:settings:api"))
     implementation(project(":features:settings:data"))
+    implementation(project(":features:home:localization"))
+
     ksp(libs.dagger.compiler)
     ksp(libs.dagger.hilt.compiler)
     implementation(libs.dagger.hilt.android)

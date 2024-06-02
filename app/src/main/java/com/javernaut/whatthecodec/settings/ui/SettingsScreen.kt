@@ -38,13 +38,11 @@ import com.javernaut.whatthecodec.compose.preference.Preference
 import com.javernaut.whatthecodec.compose.preference.PreferenceDivider
 import com.javernaut.whatthecodec.compose.preference.PreferenceGroup
 import com.javernaut.whatthecodec.compose.theme.WhatTheCodecTheme
+import com.javernaut.whatthecodec.feature.home.stream.displayableResource
 import com.javernaut.whatthecodec.feature.settings.api.content.AudioStreamFeature
 import com.javernaut.whatthecodec.feature.settings.api.content.SubtitleStreamFeature
 import com.javernaut.whatthecodec.feature.settings.api.content.VideoStreamFeature
 import com.javernaut.whatthecodec.feature.settings.api.theme.AppTheme
-import com.javernaut.whatthecodec.home.ui.audio.displayableResource
-import com.javernaut.whatthecodec.home.ui.subtitle.displayableResource
-import com.javernaut.whatthecodec.home.ui.video.displayableResource
 import com.javernaut.whatthecodec.settings.presentation.SettingsViewModel
 
 @Composable

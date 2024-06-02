@@ -55,7 +55,7 @@ fun PreviewStreamFeature() {
     WhatTheCodecTheme.Static {
         Surface {
             StreamFeatureContent(
-                stringResource(id = R.string.page_audio_codec_name),
+                "Some title",
                 "Some value"
             ) { }
         }
