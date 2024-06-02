@@ -30,4 +30,5 @@ rootProject.name = "WhatTheCodec"
 include(":app")
 include(":features:settings:api")
 include(":features:settings:data")
+include(":features:settings:ui")
 include(":features:home:localization")

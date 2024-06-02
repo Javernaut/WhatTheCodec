@@ -14,6 +14,8 @@ import com.javernaut.whatthecodec.feature.settings.api.content.SubtitleStreamFea
 import com.javernaut.whatthecodec.feature.settings.api.content.VideoStreamFeature
 import com.javernaut.whatthecodec.feature.settings.api.theme.AppTheme
 import com.javernaut.whatthecodec.feature.settings.data.content.completeEnumSet
+import com.javernaut.whatthecodec.feature.settings.presentation.SettingsViewModel
+import com.javernaut.whatthecodec.feature.settings.ui.SettingsScreen
 import com.javernaut.whatthecodec.home.presentation.model.ActualFrame
 import com.javernaut.whatthecodec.home.presentation.model.ActualPreview
 import com.javernaut.whatthecodec.home.presentation.model.AudioPage
@@ -23,8 +25,6 @@ import com.javernaut.whatthecodec.home.presentation.model.SubtitlesPage
 import com.javernaut.whatthecodec.home.presentation.model.VideoPage
 import com.javernaut.whatthecodec.home.ui.screen.EmptyHomeScreen
 import com.javernaut.whatthecodec.home.ui.screen.MainHomeScreen
-import com.javernaut.whatthecodec.settings.presentation.SettingsViewModel
-import com.javernaut.whatthecodec.settings.ui.SettingsScreen
 import io.github.javernaut.mediafile.AudioStream
 import io.github.javernaut.mediafile.BasicStreamInfo
 import io.github.javernaut.mediafile.VideoStream

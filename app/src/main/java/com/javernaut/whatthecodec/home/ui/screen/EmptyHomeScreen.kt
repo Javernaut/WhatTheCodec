@@ -34,6 +34,7 @@ import com.javernaut.whatthecodec.home.presentation.model.ScreenMessage
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.launch
+import com.javernaut.whatthecodec.feature.settings.ui.R as RSettings
 
 @Composable
 fun EmptyHomeScreen(
@@ -100,7 +101,7 @@ private fun EmptyScreenContent(
         Row(verticalAlignment = Alignment.CenterVertically) {
             EmptyScreenMainAction(
                 Icons.Filled.Videocam,
-                R.string.tab_video,
+                RSettings.string.tab_video,
                 onVideoIconClick
             )
             Text(
@@ -111,7 +112,7 @@ private fun EmptyScreenContent(
             )
             EmptyScreenMainAction(
                 Icons.Filled.MusicNote,
-                R.string.tab_audio,
+                RSettings.string.tab_audio,
                 onAudioIconClick
             )
         }

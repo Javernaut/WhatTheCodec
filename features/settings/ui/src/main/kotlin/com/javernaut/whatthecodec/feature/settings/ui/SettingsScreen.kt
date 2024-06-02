@@ -1,4 +1,4 @@
-package com.javernaut.whatthecodec.settings.ui
+package com.javernaut.whatthecodec.feature.settings.ui
 
 import android.content.Context
 import android.net.Uri
@@ -27,23 +27,20 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.compose.preference.ListPreference
 import com.javernaut.whatthecodec.compose.preference.MultiSelectListPreference
-import com.javernaut.whatthecodec.compose.preference.Preference
-import com.javernaut.whatthecodec.compose.preference.PreferenceDivider
-import com.javernaut.whatthecodec.compose.preference.PreferenceGroup
-import com.javernaut.whatthecodec.compose.theme.WhatTheCodecTheme
 import com.javernaut.whatthecodec.feature.home.stream.displayableResource
 import com.javernaut.whatthecodec.feature.settings.api.content.AudioStreamFeature
 import com.javernaut.whatthecodec.feature.settings.api.content.SubtitleStreamFeature
 import com.javernaut.whatthecodec.feature.settings.api.content.VideoStreamFeature
 import com.javernaut.whatthecodec.feature.settings.api.theme.AppTheme
-import com.javernaut.whatthecodec.settings.presentation.SettingsViewModel
+import com.javernaut.whatthecodec.feature.settings.preferences.Preference
+import com.javernaut.whatthecodec.feature.settings.preferences.PreferenceDivider
+import com.javernaut.whatthecodec.feature.settings.preferences.PreferenceGroup
+import com.javernaut.whatthecodec.feature.settings.presentation.SettingsViewModel
 
 @Composable
 fun SettingsScreen(
@@ -232,10 +229,11 @@ private fun OpenUrlPreference(
     }
 }
 
-@PreviewLightDark
-@Composable
-private fun PreviewSettingsScreen() {
-    WhatTheCodecTheme.Static {
-        SettingsScreen(openUrl = {}, onBackClick = {})
-    }
-}
+// TODO Pull the theme into a common module
+//@PreviewLightDark
+//@Composable
+//private fun PreviewSettingsScreen() {
+//    WhatTheCodecTheme.Static {
+//        SettingsScreen(openUrl = {}, onBackClick = {})
+//    }
+//}

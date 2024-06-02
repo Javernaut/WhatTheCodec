@@ -1,4 +1,4 @@
-package com.javernaut.whatthecodec.settings.presentation
+package com.javernaut.whatthecodec.feature.settings.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

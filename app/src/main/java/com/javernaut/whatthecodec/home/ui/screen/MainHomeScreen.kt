@@ -57,6 +57,7 @@ import com.javernaut.whatthecodec.home.ui.subtitle.SubtitlePage
 import com.javernaut.whatthecodec.home.ui.video.VideoPage
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
+import com.javernaut.whatthecodec.feature.settings.ui.R as RSettings
 
 @Composable
 fun MainHomeScreen(
@@ -386,9 +387,9 @@ private fun SideMainAction(
 
 private val AvailableTab.title: Int
     get() = when (this) {
-        AvailableTab.VIDEO -> R.string.tab_video
-        AvailableTab.AUDIO -> R.string.tab_audio
-        AvailableTab.SUBTITLES -> R.string.tab_subtitles
+        AvailableTab.VIDEO -> RSettings.string.tab_video
+        AvailableTab.AUDIO -> RSettings.string.tab_audio
+        AvailableTab.SUBTITLES -> RSettings.string.tab_subtitles
     }
 
 private val AvailableTab.icon: ImageVector

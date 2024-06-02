@@ -6,10 +6,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import com.javernaut.whatthecodec.compose.navigation.MaterialNavHost
+import com.javernaut.whatthecodec.feature.settings.navigation.navigateToSettings
+import com.javernaut.whatthecodec.feature.settings.navigation.settingsScreen
 import com.javernaut.whatthecodec.home.ui.navigation.HomeRoute
 import com.javernaut.whatthecodec.home.ui.navigation.homeScreen
-import com.javernaut.whatthecodec.settings.navigation.navigateToSettings
-import com.javernaut.whatthecodec.settings.navigation.settingsScreen
 
 @Composable
 fun WhatTheCodecApp() {

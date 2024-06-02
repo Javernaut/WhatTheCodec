@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="content_description_back">Повернутися назад</string>
+    <string name="tab_video">Відео</string>
+    <string name="tab_audio">Аудіо</string>
+    <string name="tab_subtitles">Субтитри</string>
+    <string name="settings_title">Налаштування</string>
+    <string name="settings_category_general">Загальне</string>
+    <string name="settings_category_content">Наповнення</string>
+    <string name="settings_category_about">Про програму</string>
+    <string name="settings_theme_light">Світла</string>
+    <string name="settings_theme_dark">Темна</string>
+    <string name="settings_theme_battery_saver">За режимом енергозбереження</string>
+    <string name="settings_theme_system_default">Системна</string>
+    <string name="settings_theme_title">Візуальна тема</string>
+    <string name="settings_content_video_title">@string/tab_video</string>
+    <string name="settings_content_audio_title">@string/tab_audio</string>
+    <string name="settings_content_subtitles_title">@string/tab_subtitles</string>
+    <string name="settings_source_code_title">Програмний код</string>
+    <string name="settings_privacy_policy_title">Політика конфіденційності</string>
+    <string name="settings_nothing_is_selected">Нічого не вибрано</string>
+</resources>
