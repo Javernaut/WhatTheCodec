@@ -4,7 +4,6 @@ androidGradlePlugin = "8.4.2"
 kotlin = "2.0.0"
 kotlinx-coroutines = "1.8.1"
 
-# 2.8.0 implicitly requires Compose 1.7.0. Sticking to 2.7.0 to omit workarounds
 androidx-lifecycle = "2.8.2"
 androidx-window = "1.3.0"
 androidx-datastore = "1.1.1"
