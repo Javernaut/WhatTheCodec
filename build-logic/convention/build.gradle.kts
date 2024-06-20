@@ -44,6 +44,10 @@ gradlePlugin {
             id = "whatthecodec.android.application"
             implementationClass = "AndroidApplicationConventionPlugin"
         }
+        register("androidCompose") {
+            id = "whatthecodec.android.compose"
+            implementationClass = "AndroidComposeConventionPlugin"
+        }
         register("androidLibrary") {
             id = "whatthecodec.android.library"
             implementationClass = "AndroidLibraryConventionPlugin"

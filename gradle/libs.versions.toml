@@ -112,6 +112,7 @@ google-hilt = { id = "com.google.dagger.hilt.android", version.ref = "google-dag
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 
 whatthecodec-android-application = { id = "whatthecodec.android.application", version = "unspecified" }
+whatthecodec-android-compose = { id = "whatthecodec.android.compose", version = "unspecified" }
 whatthecodec-android-hilt = { id = "whatthecodec.android.hilt", version = "unspecified" }
 whatthecodec-android-library = { id = "whatthecodec.android.library", version = "unspecified" }
 whatthecodec-jvm-library = { id = "whatthecodec.jvm.library", version = "unspecified" }

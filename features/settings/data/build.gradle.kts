@@ -8,7 +8,6 @@ android {
     namespace = "com.javernaut.whatthecodec.feature.settings.data"
 
     defaultConfig {
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
 

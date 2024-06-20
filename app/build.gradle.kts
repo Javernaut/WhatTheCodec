@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.whatthecodec.android.application)
+    alias(libs.plugins.whatthecodec.android.compose)
     alias(libs.plugins.whatthecodec.android.hilt)
-    alias(libs.plugins.jetbrains.kotlin.compose)
     alias(libs.plugins.detekt)
 }
 
@@ -10,8 +10,6 @@ android {
     defaultConfig {
         versionCode = 4100
         versionName = "4.1.0"
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
@@ -22,9 +20,6 @@ android {
         debug {
             signingConfig = signingConfigs.getByName("debug")
         }
-    }
-    buildFeatures {
-        compose = true
     }
     bundle {
         language {
@@ -119,10 +114,6 @@ dependencies {
 
     implementation(libs.bundles.kotlinx.coroutines)
 
-    implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.bundles.androidx.compose)
-    debugImplementation(libs.androidx.ui.test.manifest)
-
     implementation(libs.bundles.androidx.lifecycle)
     implementation(libs.androidx.palette)
     implementation(libs.androidx.savedstate)
@@ -134,8 +125,6 @@ dependencies {
 
     testImplementation(libs.mockk.unit)
 
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.ui.test.junit4)
     androidTestImplementation(libs.androidx.test.core)
     androidTestImplementation(libs.androidx.test.runner)
     androidTestImplementation(libs.androidx.test.rules)

@@ -1,18 +1,14 @@
 plugins {
     alias(libs.plugins.whatthecodec.android.library)
-    alias(libs.plugins.jetbrains.kotlin.compose)
+    alias(libs.plugins.whatthecodec.android.compose)
+    alias(libs.plugins.whatthecodec.android.hilt)
     // TODO add Detekt and its setup via a convention plugin
 }
 
 android {
     namespace = "com.javernaut.whatthecodec.feature.settings.ui"
 
-    buildFeatures {
-        compose = true
-    }
-
     defaultConfig {
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
 
@@ -32,9 +28,6 @@ dependencies {
     implementation(project(":features:home:localization"))
 
     implementation(libs.bundles.androidx.lifecycle)
-
-    implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.bundles.androidx.compose)
 
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.hilt.navigation.compose)
