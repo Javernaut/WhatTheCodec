@@ -1,25 +1,15 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-
 plugins {
-    alias(libs.plugins.android.application)
-    alias(libs.plugins.jetbrains.kotlin.android)
-    alias(libs.plugins.jetbrains.kotlin.compose.compiler)
+    alias(libs.plugins.whatthecodec.android.application)
+    alias(libs.plugins.whatthecodec.android.compose)
+    alias(libs.plugins.whatthecodec.android.hilt)
     alias(libs.plugins.detekt)
-    alias(libs.plugins.google.ksp)
-    alias(libs.plugins.google.hilt)
 }
 
 android {
     namespace = "com.javernaut.whatthecodec"
-    compileSdk = 34
     defaultConfig {
-        minSdk = 24
-        targetSdk = 34
-
         versionCode = 4100
         versionName = "4.1.0"
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
@@ -31,9 +21,6 @@ android {
             signingConfig = signingConfigs.getByName("debug")
         }
     }
-    buildFeatures {
-        compose = true
-    }
     bundle {
         language {
             enableSplit = true
@@ -44,10 +31,6 @@ android {
         abi {
             enableSplit = true
         }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
     }
     signingConfigs {
         create("google") {
@@ -118,20 +101,9 @@ android {
     }
 }
 
-kotlin {
-    compilerOptions {
-        jvmTarget.set(JvmTarget.JVM_1_8)
-        freeCompilerArgs.add("-Xcontext-receivers")
-    }
-}
-
 detekt {
     config.setFrom("$projectDir/../config/detekt/detekt.yml")
     buildUponDefaultConfig = true
-}
-
-hilt {
-    enableAggregatingTask = true
 }
 
 dependencies {
@@ -140,15 +112,7 @@ dependencies {
     implementation(project(":features:settings:ui"))
     implementation(project(":features:home:localization"))
 
-    ksp(libs.dagger.compiler)
-    ksp(libs.dagger.hilt.compiler)
-    implementation(libs.dagger.hilt.android)
-
     implementation(libs.bundles.kotlinx.coroutines)
-
-    implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.bundles.androidx.compose)
-    debugImplementation(libs.androidx.ui.test.manifest)
 
     implementation(libs.bundles.androidx.lifecycle)
     implementation(libs.androidx.palette)
@@ -161,8 +125,6 @@ dependencies {
 
     testImplementation(libs.mockk.unit)
 
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.ui.test.junit4)
     androidTestImplementation(libs.androidx.test.core)
     androidTestImplementation(libs.androidx.test.runner)
     androidTestImplementation(libs.androidx.test.rules)

@@ -1,6 +1,7 @@
 import java.net.URI
 
 pluginManagement {
+    includeBuild("build-logic")
     repositories {
         google {
             content {
