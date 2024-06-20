@@ -1,21 +1,13 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-
 plugins {
-    alias(libs.plugins.android.application)
-    alias(libs.plugins.jetbrains.kotlin.android)
-    alias(libs.plugins.jetbrains.kotlin.compose.compiler)
+    alias(libs.plugins.whatthecodec.android.application)
+    alias(libs.plugins.whatthecodec.android.hilt)
+    alias(libs.plugins.jetbrains.kotlin.compose)
     alias(libs.plugins.detekt)
-    alias(libs.plugins.google.ksp)
-    alias(libs.plugins.google.hilt)
 }
 
 android {
     namespace = "com.javernaut.whatthecodec"
-    compileSdk = 34
     defaultConfig {
-        minSdk = 24
-        targetSdk = 34
-
         versionCode = 4100
         versionName = "4.1.0"
 
@@ -44,10 +36,6 @@ android {
         abi {
             enableSplit = true
         }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
     }
     signingConfigs {
         create("google") {
@@ -118,20 +106,9 @@ android {
     }
 }
 
-kotlin {
-    compilerOptions {
-        jvmTarget.set(JvmTarget.JVM_1_8)
-        freeCompilerArgs.add("-Xcontext-receivers")
-    }
-}
-
 detekt {
     config.setFrom("$projectDir/../config/detekt/detekt.yml")
     buildUponDefaultConfig = true
-}
-
-hilt {
-    enableAggregatingTask = true
 }
 
 dependencies {
@@ -139,10 +116,6 @@ dependencies {
     implementation(project(":features:settings:data"))
     implementation(project(":features:settings:ui"))
     implementation(project(":features:home:localization"))
-
-    ksp(libs.dagger.compiler)
-    ksp(libs.dagger.hilt.compiler)
-    implementation(libs.dagger.hilt.android)
 
     implementation(libs.bundles.kotlinx.coroutines)
 

@@ -1,5 +1,6 @@
 [versions]
 androidGradlePlugin = "8.5.0"
+androidTools = "31.5.0"
 
 kotlin = "2.0.0"
 kotlinx-coroutines = "1.8.1"
@@ -77,6 +78,14 @@ dagger-hilt-android = { module = "com.google.dagger:hilt-android", version.ref =
 mockk-unit = { module = "io.mockk:mockk", version.ref = "mockk" }
 mockk-instrumentation = { module = "io.mockk:mockk-android", version.ref = "mockk" }
 
+# Dependencies of the included build-logic
+android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
+android-tools-common = { group = "com.android.tools", name = "common", version.ref = "androidTools" }
+compose-gradlePlugin = { module = "org.jetbrains.kotlin:compose-compiler-gradle-plugin", version.ref = "kotlin" }
+kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "google-ksp" }
+hilt-gradlePlugin = { group = "com.google.dagger", name = "hilt-android-gradle-plugin", version.ref = "google-dagger" }
+
 [bundles]
 kotlinx-coroutines = ["coroutines-core", "coroutines-android"]
 androidx-lifecycle = ["androidx-lifecycle-viewmodel-ktx", "androidx-lifecycle-livedata-ktx", "androidx-lifecycle-viewmodel-savedstate", "androidx-lifecycle-compose"]
@@ -97,7 +106,12 @@ android-application = { id = "com.android.application", version.ref = "androidGr
 android-library = { id = "com.android.library", version.ref = "androidGradlePlugin" }
 jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-jetbrains-kotlin-compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+jetbrains-kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 google-ksp = { id = "com.google.devtools.ksp", version.ref = "google-ksp" }
 google-hilt = { id = "com.google.dagger.hilt.android", version.ref = "google-dagger" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+
+whatthecodec-android-application = { id = "whatthecodec.android.application", version = "unspecified" }
+whatthecodec-android-hilt = { id = "whatthecodec.android.hilt", version = "unspecified" }
+whatthecodec-android-library = { id = "whatthecodec.android.library", version = "unspecified" }
+whatthecodec-jvm-library = { id = "whatthecodec.jvm.library", version = "unspecified" }
