@@ -14,7 +14,7 @@ androidx-compose-bom = "2024.06.00"
 androidx-hilt = "1.2.0"
 
 androidx-test-core = "1.5.0"
-androidx-test-rules = "1.5.0"
+androidx-test-rules = "1.6.0"
 androidx-test-runner = "1.5.2"
 androidx-test-uiautomator = "2.3.0"
 androidx-test-ext-junit = "1.1.5"
