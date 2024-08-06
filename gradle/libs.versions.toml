@@ -2,7 +2,7 @@
 androidGradlePlugin = "8.5.1"
 androidTools = "31.5.1"
 
-kotlin = "2.0.0"
+kotlin = "2.0.10"
 kotlinx-coroutines = "1.8.1"
 
 androidx-lifecycle = "2.8.4"
