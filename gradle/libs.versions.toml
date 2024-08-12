@@ -123,4 +123,5 @@ whatthecodec-android-application = { id = "whatthecodec.android.application", ve
 whatthecodec-android-compose = { id = "whatthecodec.android.compose", version = "unspecified" }
 whatthecodec-android-hilt = { id = "whatthecodec.android.hilt", version = "unspecified" }
 whatthecodec-android-library = { id = "whatthecodec.android.library", version = "unspecified" }
+whatthecodec-android-test = { id = "whatthecodec.android.test", version = "unspecified" }
 whatthecodec-jvm-library = { id = "whatthecodec.jvm.library", version = "unspecified" }

@@ -1,29 +1,15 @@
 import com.android.build.api.dsl.ManagedVirtualDevice
 
 plugins {
-    alias(libs.plugins.android.test)
-    alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.whatthecodec.android.test)
     alias(libs.plugins.androidx.baselineprofile)
 }
 
 android {
     namespace = "com.javernaut.whatthecodec.baselineprofile"
-    compileSdk = 34
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
 
     defaultConfig {
         minSdk = 28
-        targetSdk = 34
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     targetProjectPath = ":app"

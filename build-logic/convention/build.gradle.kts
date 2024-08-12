@@ -52,6 +52,10 @@ gradlePlugin {
             id = "whatthecodec.android.library"
             implementationClass = "AndroidLibraryConventionPlugin"
         }
+        register("androidTest") {
+            id = "whatthecodec.android.test"
+            implementationClass = "AndroidTestConventionPlugin"
+        }
         register("androidHilt") {
             id = "whatthecodec.android.hilt"
             implementationClass = "AndroidHiltConventionPlugin"
