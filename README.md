@@ -24,6 +24,7 @@ Main features:
 - Single Activity with Jetpack Compose for the whole UI and Navigation
 - Dagger/Hilt for DI
 - DataStore for settings storing
+- Baseline and Startup profiles
 - Dependabot and Github Actions for automating some housekeeping, static analysis, release management
 - Fastlane for screenshots making
 

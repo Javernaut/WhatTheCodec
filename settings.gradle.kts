@@ -29,6 +29,7 @@ dependencyResolutionManagement {
 
 rootProject.name = "WhatTheCodec"
 include(":app")
+include(":baselineprofile")
 include(":features:settings:api")
 include(":features:settings:data")
 include(":features:settings:ui")

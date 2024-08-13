@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.whatthecodec.android.application)
     alias(libs.plugins.whatthecodec.android.compose)
     alias(libs.plugins.whatthecodec.android.hilt)
+    alias(libs.plugins.androidx.baselineprofile)
     alias(libs.plugins.detekt)
 }
 
@@ -107,6 +108,8 @@ detekt {
 }
 
 dependencies {
+    baselineProfile(project(":baselineprofile"))
+
     implementation(project(":features:settings:api"))
     implementation(project(":features:settings:data"))
     implementation(project(":features:settings:ui"))
@@ -115,6 +118,7 @@ dependencies {
     implementation(libs.bundles.kotlinx.coroutines)
 
     implementation(libs.bundles.androidx.lifecycle)
+    implementation(libs.androidx.profileinstaller)
     implementation(libs.androidx.palette)
     implementation(libs.androidx.savedstate)
     implementation(libs.androidx.window)

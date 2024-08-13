@@ -13,6 +13,10 @@ androidx-activity-compose = "1.9.1"
 androidx-compose-bom = "2024.06.00"
 androidx-hilt = "1.2.0"
 
+androidx-benchmark-macro = "1.2.4"
+androidx-baselineprofile = "1.2.4"
+androidx-profileinstaller = "1.3.1"
+
 androidx-test-core = "1.6.1"
 androidx-test-rules = "1.6.1"
 androidx-test-runner = "1.6.1"
@@ -85,6 +89,8 @@ compose-gradlePlugin = { module = "org.jetbrains.kotlin:compose-compiler-gradle-
 kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "google-ksp" }
 hilt-gradlePlugin = { group = "com.google.dagger", name = "hilt-android-gradle-plugin", version.ref = "google-dagger" }
+androidx-benchmark-macro = { group = "androidx.benchmark", name = "benchmark-macro-junit4", version.ref = "androidx-benchmark-macro" }
+androidx-profileinstaller = { group = "androidx.profileinstaller", name = "profileinstaller", version.ref = "androidx-profileinstaller" }
 
 [bundles]
 kotlinx-coroutines = ["coroutines-core", "coroutines-android"]
@@ -104,6 +110,8 @@ androidx-compose = [
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
 android-library = { id = "com.android.library", version.ref = "androidGradlePlugin" }
+android-test = { id = "com.android.test", version.ref = "androidGradlePlugin" }
+androidx-baselineprofile = { id = "androidx.baselineprofile", version.ref = "androidx-baselineprofile" }
 jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 jetbrains-kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
@@ -115,4 +123,5 @@ whatthecodec-android-application = { id = "whatthecodec.android.application", ve
 whatthecodec-android-compose = { id = "whatthecodec.android.compose", version = "unspecified" }
 whatthecodec-android-hilt = { id = "whatthecodec.android.hilt", version = "unspecified" }
 whatthecodec-android-library = { id = "whatthecodec.android.library", version = "unspecified" }
+whatthecodec-android-test = { id = "whatthecodec.android.test", version = "unspecified" }
 whatthecodec-jvm-library = { id = "whatthecodec.jvm.library", version = "unspecified" }
