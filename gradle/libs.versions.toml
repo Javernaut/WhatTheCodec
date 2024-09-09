@@ -27,7 +27,7 @@ screengrab = "2.1.1"
 google-ksp = "2.0.20-1.0.25"
 google-dagger = "2.52"
 
-detekt = "1.23.6"
+detekt = "1.23.7"
 
 mockk = "1.13.12"
 
