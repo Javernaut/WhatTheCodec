@@ -29,7 +29,7 @@ google-dagger = "2.52"
 
 detekt = "1.23.7"
 
-mockk = "1.13.12"
+mockk = "1.13.13"
 
 [libraries]
 mediafile = "io.github.javernaut:mediafile:1.1.0"
