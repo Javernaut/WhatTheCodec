@@ -24,7 +24,7 @@ androidx-test-ext-junit = "1.2.1"
 androidx-test-ext-truth = "1.6.0"
 screengrab = "2.1.1"
 
-google-ksp = "2.0.20-1.0.25"
+google-ksp = "2.0.21-1.0.25"
 google-dagger = "2.52"
 
 detekt = "1.23.7"
