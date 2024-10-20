@@ -78,7 +78,9 @@ class TestMediaFileViewModel : ViewModel() {
                 Request.Content(mediaFileArgument.uri.toUri()), mediaFileArgument.type
             )
 
-            Log.e("MediaFileFactory", "is mediaFileContext null? ${mediaFileContext == null}")
+            val mediaFile = mediaFileContext?.readMetaData()
+
+            Log.e("MediaFileFactory", "is mediaFile null? ${mediaFile == null}")
 
             mediaFileContext?.dispose()
         }
