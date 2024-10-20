@@ -15,6 +15,7 @@ import com.javernaut.whatthecodec.home.ui.screen.EmptyHomeScreen
 import com.javernaut.whatthecodec.home.ui.screen.pickAudioFile
 import com.javernaut.whatthecodec.home.ui.screen.pickVideoFile
 import dagger.hilt.android.AndroidEntryPoint
+import io.github.javernaut.mediafile.MediaFileFrameLoader
 import io.github.javernaut.mediafile.creator.MediaType
 import io.github.javernaut.mediafile.factory.MediaFileFactory
 import io.github.javernaut.mediafile.factory.Request
@@ -80,7 +81,14 @@ class TestMediaFileViewModel : ViewModel() {
 
             val mediaFile = mediaFileContext?.readMetaData()
 
+            Log.e("MediaFileFactory", "is mediaFileContext null? ${mediaFileContext == null}")
             Log.e("MediaFileFactory", "is mediaFile null? ${mediaFile == null}")
+
+            if (mediaFileContext != null) {
+                val frameLoader = MediaFileFrameLoader.create(mediaFileContext, 4)
+                Log.e("MediaFileFactory", "is frameLoader null? ${frameLoader == null}")
+                frameLoader?.dispose()
+            }
 
             mediaFileContext?.dispose()
         }

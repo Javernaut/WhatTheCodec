@@ -10,7 +10,7 @@ import com.javernaut.whatthecodec.home.presentation.model.Frame
 import com.javernaut.whatthecodec.home.presentation.model.FrameMetrics
 import com.javernaut.whatthecodec.home.presentation.model.LoadingFrame
 import com.javernaut.whatthecodec.home.presentation.model.PlaceholderFrame
-import io.github.javernaut.mediafile.FrameLoader
+import io.github.javernaut.mediafile.LegacyFrameLoader
 import io.github.javernaut.mediafile.MediaFile
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -50,7 +50,7 @@ class FrameLoaderHelper(
 
             tryApplyPreview(previewApplier, actualPreview)
 
-            for (index in 0 until FrameLoader.TOTAL_FRAMES_TO_LOAD) {
+            for (index in 0 until LegacyFrameLoader.TOTAL_FRAMES_TO_LOAD) {
                 if (!isWorking) {
                     break
                 }
@@ -126,7 +126,7 @@ class FrameLoaderHelper(
     private fun loadSingleFrame(mediaFile: MediaFile, index: Int): FrameLoadingResult {
         val frameBitmap = getFrameBitmap(index)
 
-        val successfulLoading = mediaFile.frameLoader?.loadNextFrameInto(frameBitmap) == true
+        val successfulLoading = mediaFile.legacyFrameLoader?.loadNextFrameInto(frameBitmap) == true
 
         return FrameLoadingResult(frameBitmap, successfulLoading)
     }
