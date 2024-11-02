@@ -11,7 +11,7 @@ import com.javernaut.whatthecodec.home.presentation.model.FrameMetrics
 import com.javernaut.whatthecodec.home.presentation.model.LoadingFrame
 import com.javernaut.whatthecodec.home.presentation.model.PlaceholderFrame
 import io.github.javernaut.mediafile.LegacyFrameLoader
-import io.github.javernaut.mediafile.MediaFile
+import io.github.javernaut.mediafile.MediaFileFrameLoader
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -30,7 +30,7 @@ class FrameLoaderHelper(
 
     private lateinit var framesLoadingJob: Job
 
-    fun loadFrames(mediaFile: MediaFile) {
+    fun loadFrames(mediaFileFrameLoader: MediaFileFrameLoader) {
         isWorking = true
 
         framesLoadingJob = scope.launch(Dispatchers.Default) {
@@ -61,7 +61,7 @@ class FrameLoaderHelper(
 
                 // Loading a frame in a separate dispatcher
                 val result = withContext(Dispatchers.IO) {
-                    loadSingleFrame(mediaFile, index)
+                    loadSingleFrame(mediaFileFrameLoader, index)
                 }
 
                 // Depending on the actual result, displaying either an actual frame or an error
@@ -83,7 +83,7 @@ class FrameLoaderHelper(
                 tryApplyPreview(previewApplier, actualPreview)
             }
 
-            mediaFile.release()
+            mediaFileFrameLoader.dispose()
         }
     }
 
@@ -123,10 +123,13 @@ class FrameLoaderHelper(
         }
     }
 
-    private fun loadSingleFrame(mediaFile: MediaFile, index: Int): FrameLoadingResult {
+    private fun loadSingleFrame(
+        mediaFileFrameLoader: MediaFileFrameLoader,
+        index: Int
+    ): FrameLoadingResult {
         val frameBitmap = getFrameBitmap(index)
 
-        val successfulLoading = mediaFile.legacyFrameLoader?.loadNextFrameInto(frameBitmap) == true
+        val successfulLoading = mediaFileFrameLoader.loadNextFrameInto(frameBitmap)
 
         return FrameLoadingResult(frameBitmap, successfulLoading)
     }

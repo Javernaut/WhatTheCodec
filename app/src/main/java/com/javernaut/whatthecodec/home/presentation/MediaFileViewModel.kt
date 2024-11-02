@@ -16,6 +16,8 @@ import com.javernaut.whatthecodec.home.presentation.model.SubtitlesPage
 import com.javernaut.whatthecodec.home.presentation.model.VideoPage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.javernaut.mediafile.MediaFile
+import io.github.javernaut.mediafile.MediaFileFrameLoader
+import io.github.javernaut.mediafile.factory.MediaFileContext
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -33,6 +35,8 @@ class MediaFileViewModel @Inject constructor(
     private val contentSettingsRepository: ContentSettingsRepository,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
+
+    private var mediaFileContext: MediaFileContext? = null
 
     private var _preview = MutableStateFlow<Preview>(NotYetEvaluated)
     private var _mediaFile = MutableStateFlow<MediaFile?>(null)
@@ -84,24 +88,43 @@ class MediaFileViewModel @Inject constructor(
     val screenMessage = _screenMessageChannel.receiveAsFlow()
 
     override fun onCleared() {
-        if (frameLoaderHelper == null) {
-            _mediaFile.value?.release()
-        } else {
-            frameLoaderHelper?.release()
-        }
+        // Release prev context, frame loader and frame loader wrapper
+        // TODO Dispose frame loading too
+        mediaFileContext?.dispose()
     }
 
     fun openMediaFile(argument: MediaFileArgument) {
-        val newMediaFile = mediaFileProvider.obtainMediaFile(argument)
-        if (newMediaFile != null) {
-            savedStateHandle.set(KEY_MEDIA_FILE_ARGUMENT, argument)
-
-            releasePreviousMediaFileAndFrameLoader(newMediaFile)
-
-            _mediaFile.value = newMediaFile
-            applyMediaFile(newMediaFile)
-        } else {
+        val newMediaFileContext = mediaFileProvider.obtainMediaFile(argument)
+        if (newMediaFileContext == null) {
             sendMessage(ScreenMessage.FileOpeningError)
+            return
+        }
+
+        val newMediaFile = newMediaFileContext.readMetaData()
+        if (newMediaFile == null) {
+            sendMessage(ScreenMessage.FileOpeningError)
+            return
+        }
+
+        savedStateHandle[KEY_MEDIA_FILE_ARGUMENT] = argument
+
+        // Release prev context, frame loader and frame loader wrapper
+        // TODO Dispose frame loading too
+        mediaFileContext?.dispose()
+
+        mediaFileContext = newMediaFileContext
+        _mediaFile.value = newMediaFile
+
+        val newMediaFileFrameLoader =
+            MediaFileFrameLoader.create(newMediaFileContext, FRAMES_TO_READ)
+        if (newMediaFileFrameLoader != null) {
+            // setup new frame loader wrapper
+            val frameMetrics = computeFrameMetrics()
+
+            frameLoaderHelper = FrameLoaderHelper(frameMetrics!!, viewModelScope, ::applyPreview)
+            frameLoaderHelper?.loadFrames(newMediaFileFrameLoader)
+        } else {
+            applyPreview(NoPreviewAvailable)
         }
     }
 
@@ -117,34 +140,6 @@ class MediaFileViewModel @Inject constructor(
     private fun sendMessage(message: ScreenMessage) {
         viewModelScope.launch {
             _screenMessageChannel.send(message)
-        }
-    }
-
-    private fun applyMediaFile(mediaFile: MediaFile) {
-        val frameMetrics = computeFrameMetrics()
-
-        frameLoaderHelper = if (mediaFile.supportsFrameLoading())
-            FrameLoaderHelper(frameMetrics!!, viewModelScope, ::applyPreview)
-        else null
-
-        tryLoadVideoFrames(mediaFile)
-    }
-
-    private fun releasePreviousMediaFileAndFrameLoader(newMediaFile: MediaFile) {
-        if (frameLoaderHelper != null) {
-            frameLoaderHelper?.release(newMediaFile.supportsFrameLoading())
-        } else {
-            // MediaFile is released only if there was no FrameLoaderHelper used.
-            _mediaFile.value?.release()
-        }
-        frameLoaderHelper = null
-    }
-
-    private fun tryLoadVideoFrames(mediaFile: MediaFile) {
-        if (frameLoaderHelper != null) {
-            frameLoaderHelper?.loadFrames(mediaFile)
-        } else {
-            applyPreview(NoPreviewAvailable)
         }
     }
 
@@ -180,5 +175,6 @@ class MediaFileViewModel @Inject constructor(
 
     companion object {
         const val KEY_MEDIA_FILE_ARGUMENT = "key_video_file_uri"
+        private const val FRAMES_TO_READ = 4
     }
 }
