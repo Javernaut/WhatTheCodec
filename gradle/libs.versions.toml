@@ -1,16 +1,16 @@
 [versions]
-androidGradlePlugin = "8.7.1"
-androidTools = "31.7.1"
+androidGradlePlugin = "8.7.2"
+androidTools = "31.7.2"
 
 kotlin = "2.0.21"
 kotlinx-coroutines = "1.9.0"
 
-androidx-lifecycle = "2.8.6"
+androidx-lifecycle = "2.8.7"
 androidx-window = "1.3.0"
 androidx-datastore = "1.1.1"
 androidx-navigation = "2.8.3"
 androidx-activity-compose = "1.9.3"
-androidx-compose-bom = "2024.10.00"
+androidx-compose-bom = "2024.10.01"
 androidx-hilt = "1.2.0"
 
 androidx-benchmark = "1.3.3"
@@ -24,7 +24,7 @@ androidx-test-ext-junit = "1.2.1"
 androidx-test-ext-truth = "1.6.0"
 screengrab = "2.1.1"
 
-google-ksp = "2.0.21-1.0.25"
+google-ksp = "2.0.21-1.0.26"
 google-dagger = "2.52"
 
 detekt = "1.23.7"
@@ -49,7 +49,7 @@ androidx-datastore-preferences = { module = "androidx.datastore:datastore-prefer
 androidx-palette = "androidx.palette:palette-ktx:1.0.0"
 androidx-savedstate = "androidx.savedstate:savedstate:1.2.1"
 androidx-browser = "androidx.browser:browser:1.8.0"
-androidx-annotation = "androidx.annotation:annotation:1.9.0"
+androidx-annotation = "androidx.annotation:annotation:1.9.1"
 
 androidx-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "androidx-compose-bom" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity-compose" }
