@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.javernaut.whatthecodec.feature.settings.api.content.ContentSettingsRepository
 import com.javernaut.whatthecodec.feature.settings.api.content.VideoStreamFeature
+import com.javernaut.whatthecodec.home.domain.FileReadingUseCase
 import com.javernaut.whatthecodec.home.presentation.model.AudioPage
 import com.javernaut.whatthecodec.home.presentation.model.FrameMetrics
 import com.javernaut.whatthecodec.home.presentation.model.NoPreviewAvailable
@@ -31,7 +32,7 @@ import javax.inject.Inject
 class MediaFileViewModel @Inject constructor(
     private val clipboard: Clipboard,
     private val frameMetricsProvider: FrameMetricsProvider,
-    private val mediaFileProvider: MediaFileProvider,
+    private val fileReadingUseCase: FileReadingUseCase,
     private val contentSettingsRepository: ContentSettingsRepository,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
@@ -94,37 +95,35 @@ class MediaFileViewModel @Inject constructor(
     }
 
     fun openMediaFile(argument: MediaFileArgument) {
-        val newMediaFileContext = mediaFileProvider.obtainMediaFile(argument)
-        if (newMediaFileContext == null) {
-            sendMessage(ScreenMessage.FileOpeningError)
-            return
-        }
+        viewModelScope.launch {
+            val (newMediaFileContext, newMediaFile) = fileReadingUseCase
+                .readFile(argument)
+                .getOrElse {
+                    sendMessage(ScreenMessage.FileOpeningError)
+                    return@launch
+                }
 
-        val newMediaFile = newMediaFileContext.readMetaData()
-        if (newMediaFile == null) {
-            sendMessage(ScreenMessage.FileOpeningError)
-            return
-        }
+            savedStateHandle[KEY_MEDIA_FILE_ARGUMENT] = argument
 
-        savedStateHandle[KEY_MEDIA_FILE_ARGUMENT] = argument
+            // Release prev context, frame loader and frame loader wrapper
+            // TODO Dispose frame loading too
+            mediaFileContext?.dispose()
 
-        // Release prev context, frame loader and frame loader wrapper
-        // TODO Dispose frame loading too
-        mediaFileContext?.dispose()
+            mediaFileContext = newMediaFileContext
+            _mediaFile.value = newMediaFile
 
-        mediaFileContext = newMediaFileContext
-        _mediaFile.value = newMediaFile
+            val newMediaFileFrameLoader =
+                MediaFileFrameLoader.create(newMediaFileContext, FRAMES_TO_READ)
+            if (newMediaFileFrameLoader != null) {
+                // setup new frame loader wrapper
+                val frameMetrics = computeFrameMetrics()
 
-        val newMediaFileFrameLoader =
-            MediaFileFrameLoader.create(newMediaFileContext, FRAMES_TO_READ)
-        if (newMediaFileFrameLoader != null) {
-            // setup new frame loader wrapper
-            val frameMetrics = computeFrameMetrics()
-
-            frameLoaderHelper = FrameLoaderHelper(frameMetrics!!, viewModelScope, ::applyPreview)
-            frameLoaderHelper?.loadFrames(newMediaFileFrameLoader)
-        } else {
-            applyPreview(NoPreviewAvailable)
+                frameLoaderHelper =
+                    FrameLoaderHelper(frameMetrics!!, viewModelScope, ::applyPreview)
+                frameLoaderHelper?.loadFrames(newMediaFileFrameLoader)
+            } else {
+                applyPreview(NoPreviewAvailable)
+            }
         }
     }
 

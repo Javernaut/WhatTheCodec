@@ -9,6 +9,7 @@ import javax.inject.Inject
 class MediaFileProvider @Inject constructor() {
     fun obtainMediaFile(argument: MediaFileArgument): MediaFileContext? {
         return MediaFileFactory.create(
+            // Limiting the file reading to content://
             Request.Content(argument.uri.toUri()), argument.type
         )
     }
