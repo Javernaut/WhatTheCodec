@@ -7,8 +7,6 @@ import com.javernaut.whatthecodec.feature.settings.api.content.ContentSettingsRe
 import com.javernaut.whatthecodec.feature.settings.api.content.VideoStreamFeature
 import com.javernaut.whatthecodec.home.domain.FileReadingUseCase
 import com.javernaut.whatthecodec.home.presentation.model.AudioPage
-import com.javernaut.whatthecodec.home.presentation.model.FrameMetrics
-import com.javernaut.whatthecodec.home.presentation.model.NoPreviewAvailable
 import com.javernaut.whatthecodec.home.presentation.model.NotYetEvaluated
 import com.javernaut.whatthecodec.home.presentation.model.Preview
 import com.javernaut.whatthecodec.home.presentation.model.ScreenMessage
@@ -17,13 +15,11 @@ import com.javernaut.whatthecodec.home.presentation.model.SubtitlesPage
 import com.javernaut.whatthecodec.home.presentation.model.VideoPage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.javernaut.mediafile.MediaFile
-import io.github.javernaut.mediafile.MediaFileFrameLoader
 import io.github.javernaut.mediafile.factory.MediaFileContext
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -31,7 +27,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MediaFileViewModel @Inject constructor(
     private val clipboard: Clipboard,
-    private val frameMetricsProvider: FrameMetricsProvider,
+    private val previewLoaderHelper: PreviewLoaderHelper,
     private val fileReadingUseCase: FileReadingUseCase,
     private val contentSettingsRepository: ContentSettingsRepository,
     private val savedStateHandle: SavedStateHandle
@@ -42,17 +38,13 @@ class MediaFileViewModel @Inject constructor(
     private var _preview = MutableStateFlow<Preview>(NotYetEvaluated)
     private var _mediaFile = MutableStateFlow<MediaFile?>(null)
     private var _screenState = MutableStateFlow<ScreenState?>(null)
-    private var frameLoaderHelper: FrameLoaderHelper? = null
 
     private val _screenMessageChannel = Channel<ScreenMessage>()
 
     init {
         viewModelScope.launch {
             combine(
-                _mediaFile.onEach {
-                    // Resetting the preview on each setting of a new MediaFile
-                    _preview.value = NotYetEvaluated
-                },
+                _mediaFile,
                 _preview,
                 contentSettingsRepository.videoStreamFeatures,
                 contentSettingsRepository.audioStreamFeatures,
@@ -112,18 +104,7 @@ class MediaFileViewModel @Inject constructor(
             mediaFileContext = newMediaFileContext
             _mediaFile.value = newMediaFile
 
-            val newMediaFileFrameLoader =
-                MediaFileFrameLoader.create(newMediaFileContext, FRAMES_TO_READ)
-            if (newMediaFileFrameLoader != null) {
-                // setup new frame loader wrapper
-                val frameMetrics = computeFrameMetrics()
-
-                frameLoaderHelper =
-                    FrameLoaderHelper(frameMetrics!!, viewModelScope, ::applyPreview)
-                frameLoaderHelper?.loadFrames(newMediaFileFrameLoader)
-            } else {
-                applyPreview(NoPreviewAvailable)
-            }
+            previewLoaderHelper.flowFor(newMediaFileContext, newMediaFile).collect(_preview)
         }
     }
 
@@ -139,21 +120,6 @@ class MediaFileViewModel @Inject constructor(
     private fun sendMessage(message: ScreenMessage) {
         viewModelScope.launch {
             _screenMessageChannel.send(message)
-        }
-    }
-
-    private fun applyPreview(preview: Preview) {
-        _preview.value = preview
-    }
-
-    private fun computeFrameMetrics(): FrameMetrics? {
-        val videoStream = _mediaFile.value?.videoStream
-
-        return videoStream?.let {
-            frameMetricsProvider.getTargetFrameMetrics(
-                it.frameWidth,
-                it.frameHeight
-            )
         }
     }
 
@@ -174,6 +140,5 @@ class MediaFileViewModel @Inject constructor(
 
     companion object {
         const val KEY_MEDIA_FILE_ARGUMENT = "key_video_file_uri"
-        private const val FRAMES_TO_READ = 4
     }
 }

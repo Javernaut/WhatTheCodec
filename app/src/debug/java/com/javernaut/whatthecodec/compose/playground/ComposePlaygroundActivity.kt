@@ -1,7 +1,6 @@
 package com.javernaut.whatthecodec.compose.playground
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -10,18 +9,32 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.javernaut.whatthecodec.compose.theme.WhatTheCodecTheme
+import com.javernaut.whatthecodec.feature.settings.data.content.completeEnumSet
 import com.javernaut.whatthecodec.home.presentation.MediaFileArgument
+import com.javernaut.whatthecodec.home.presentation.PreviewLoaderHelper
+import com.javernaut.whatthecodec.home.presentation.model.AudioPage
+import com.javernaut.whatthecodec.home.presentation.model.ScreenState
+import com.javernaut.whatthecodec.home.presentation.model.SubtitlesPage
+import com.javernaut.whatthecodec.home.presentation.model.VideoPage
 import com.javernaut.whatthecodec.home.ui.screen.EmptyHomeScreen
 import com.javernaut.whatthecodec.home.ui.screen.pickAudioFile
 import com.javernaut.whatthecodec.home.ui.screen.pickVideoFile
 import dagger.hilt.android.AndroidEntryPoint
-import io.github.javernaut.mediafile.MediaFileFrameLoader
+import dagger.hilt.android.lifecycle.HiltViewModel
+import io.github.javernaut.mediafile.MediaFile
 import io.github.javernaut.mediafile.creator.MediaType
+import io.github.javernaut.mediafile.factory.MediaFileContext
 import io.github.javernaut.mediafile.factory.MediaFileFactory
 import io.github.javernaut.mediafile.factory.Request
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class ComposePlaygroundActivity : ComponentActivity() {
@@ -68,10 +81,16 @@ class ComposePlaygroundActivity : ComponentActivity() {
     }
 }
 
-class TestMediaFileViewModel : ViewModel() {
+@HiltViewModel
+class TestMediaFileViewModel @Inject constructor(
+    private val previewLoaderHelper: PreviewLoaderHelper
+) : ViewModel() {
     fun onPermissionDenied() {
         // Whatever, it's test
     }
+
+    private val _screenState = MutableStateFlow<ScreenState?>(null)
+    val screenState = _screenState.asStateFlow()
 
     fun openMediaFile(mediaFileArgument: MediaFileArgument) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -81,16 +100,46 @@ class TestMediaFileViewModel : ViewModel() {
 
             val mediaFile = mediaFileContext?.readMetaData()
 
-            Log.e("MediaFileFactory", "is mediaFileContext null? ${mediaFileContext == null}")
-            Log.e("MediaFileFactory", "is mediaFile null? ${mediaFile == null}")
-
-            if (mediaFileContext != null) {
-                val frameLoader = MediaFileFrameLoader.create(mediaFileContext, 4)
-                Log.e("MediaFileFactory", "is frameLoader null? ${frameLoader == null}")
-                frameLoader?.dispose()
+            withContext(Dispatchers.Main) {
+                if (mediaFileContext != null && mediaFile != null) {
+                    fileProcessingFlow(mediaFileContext, mediaFile).collect(_screenState)
+                }
             }
+        }
+    }
 
-            mediaFileContext?.dispose()
+    private fun fileProcessingFlow(
+        mediaFileContext: MediaFileContext,
+        mediaFile: MediaFile
+    ): Flow<ScreenState> = flow {
+        val audioPage = AudioPage(emptyList(), completeEnumSet())
+        val subtitlePage = SubtitlesPage(emptyList(), completeEnumSet())
+        videoPagesFlow(mediaFileContext, mediaFile).collect {
+            emit(
+                ScreenState(it, audioPage, subtitlePage)
+            )
+        }
+    }
+
+    private fun videoPagesFlow(
+        mediaFileContext: MediaFileContext,
+        mediaFile: MediaFile
+    ): Flow<VideoPage?> = flow {
+        val videoStream = mediaFile.videoStream
+        if (videoStream == null) {
+            emit(null)
+        } else {
+            previewLoaderHelper.flowFor(mediaFileContext, mediaFile).collect {
+                emit(
+                    VideoPage(
+                        it,
+                        mediaFile.fileFormatName,
+                        mediaFile.fullFeatured,
+                        videoStream,
+                        completeEnumSet()
+                    )
+                )
+            }
         }
     }
 }
