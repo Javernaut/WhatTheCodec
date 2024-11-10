@@ -16,6 +16,8 @@ import com.javernaut.whatthecodec.home.presentation.model.VideoPage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.javernaut.mediafile.MediaFile
 import io.github.javernaut.mediafile.factory.MediaFileContext
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -82,9 +84,10 @@ class MediaFileViewModel @Inject constructor(
     val screenMessage = _screenMessageChannel.receiveAsFlow()
 
     override fun onCleared() {
-        // Release prev context, frame loader and frame loader wrapper
-        // TODO Dispose frame loading too
-//        mediaFileContext?.dispose()
+        // TODO Any other way to leave it disposing after VM is cleared?
+        GlobalScope.launch(Dispatchers.IO) {
+            mediaFileContext?.close()
+        }
     }
 
     private var lastJob: Job? = null
@@ -103,7 +106,11 @@ class MediaFileViewModel @Inject constructor(
 
             // Release prev context, frame loader and frame loader wrapper
             // TODO Dispose frame loading too
-//            mediaFileContext?.dispose()
+            // Any other way to leave it disposing as non cancelable?
+            val prevContext = mediaFileContext
+            GlobalScope.launch(Dispatchers.IO) {
+                prevContext?.close()
+            }
 
             mediaFileContext = newMediaFileContext
             _mediaFile.value = newMediaFile

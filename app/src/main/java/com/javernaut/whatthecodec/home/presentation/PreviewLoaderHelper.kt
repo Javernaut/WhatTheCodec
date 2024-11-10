@@ -16,8 +16,8 @@ import com.javernaut.whatthecodec.home.presentation.model.NotYetEvaluated
 import com.javernaut.whatthecodec.home.presentation.model.PlaceholderFrame
 import com.javernaut.whatthecodec.home.presentation.model.Preview
 import io.github.javernaut.mediafile.MediaFile
-import io.github.javernaut.mediafile.MediaFileFrameLoader
 import io.github.javernaut.mediafile.factory.MediaFileContext
+import io.github.javernaut.mediafile.getFrameLoader
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -36,7 +36,7 @@ class PreviewLoaderHelper @Inject constructor(
     ): Flow<Preview> = flow {
         emit(NotYetEvaluated)
 
-        MediaFileFrameLoader.create(mediaFileContext, framesToLoad).use {
+        mediaFileContext.getFrameLoader(framesToLoad).use {
             if (it == null) {
                 emit(NoPreviewAvailable)
             } else {
