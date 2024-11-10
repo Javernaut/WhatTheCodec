@@ -16,6 +16,7 @@ import com.javernaut.whatthecodec.home.presentation.model.VideoPage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.javernaut.mediafile.MediaFile
 import io.github.javernaut.mediafile.factory.MediaFileContext
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -83,11 +84,14 @@ class MediaFileViewModel @Inject constructor(
     override fun onCleared() {
         // Release prev context, frame loader and frame loader wrapper
         // TODO Dispose frame loading too
-        mediaFileContext?.dispose()
+//        mediaFileContext?.dispose()
     }
 
+    private var lastJob: Job? = null
+
     fun openMediaFile(argument: MediaFileArgument) {
-        viewModelScope.launch {
+        lastJob?.cancel()
+        lastJob = viewModelScope.launch {
             val (newMediaFileContext, newMediaFile) = fileReadingUseCase
                 .readFile(argument)
                 .getOrElse {
@@ -99,7 +103,7 @@ class MediaFileViewModel @Inject constructor(
 
             // Release prev context, frame loader and frame loader wrapper
             // TODO Dispose frame loading too
-            mediaFileContext?.dispose()
+//            mediaFileContext?.dispose()
 
             mediaFileContext = newMediaFileContext
             _mediaFile.value = newMediaFile

@@ -36,56 +36,53 @@ class PreviewLoaderHelper @Inject constructor(
     ): Flow<Preview> = flow {
         emit(NotYetEvaluated)
 
-        // TODO IO?
-        // TODO Try with resources?
-        val frameLoader = MediaFileFrameLoader.create(mediaFileContext, framesToLoad)
-        if (frameLoader == null) {
-            emit(NoPreviewAvailable)
-        } else {
-            val frames = MutableList<Frame>(framesToLoad) { PlaceholderFrame }
+        MediaFileFrameLoader.create(mediaFileContext, framesToLoad).use {
+            if (it == null) {
+                emit(NoPreviewAvailable)
+            } else {
+                val frames = MutableList<Frame>(framesToLoad) { PlaceholderFrame }
 
-            val videoStream = mediaFile.videoStream!!
-            val metrics = frameMetricsProvider.getTargetFrameMetrics(
-                videoStream.frameWidth,
-                videoStream.frameHeight
-            )
-
-            emit(
-                // Initial state where all cells are empty
-                ActualPreview(
-                    metrics,
-                    frames.toList(),
-                    Color.TRANSPARENT
+                val videoStream = mediaFile.videoStream!!
+                val metrics = frameMetricsProvider.getTargetFrameMetrics(
+                    videoStream.frameWidth,
+                    videoStream.frameHeight
                 )
-            )
 
-            for (index in 0 until framesToLoad) {
-                videoFrameFlow(metrics, frameLoader::loadNextFrameInto).collect {
-                    frames[index] = it
-                    emit(
-                        ActualPreview(
-                            metrics,
-                            frames.toList(),
-                            Color.TRANSPARENT
-                        )
+                emit(
+                    // Initial state where all cells are empty
+                    ActualPreview(
+                        metrics,
+                        frames.toList(),
+                        Color.TRANSPARENT
                     )
-                }
-            }
-
-            // In the end, we compute the background for frames
-            val frameBackground = withContext(defaultDispatcher) {
-                (frames.first() as? ActualFrame)?.frameData?.let(::computeBackground)
-            } ?: Color.TRANSPARENT
-
-            emit(
-                ActualPreview(
-                    metrics,
-                    frames.toList(),
-                    frameBackground
                 )
-            )
-            // TODO Check the proper native refs disposal
-//        mediaFileFrameLoader.dispose()
+
+                for (index in 0 until framesToLoad) {
+                    videoFrameFlow(metrics, it::loadNextFrameInto).collect {
+                        frames[index] = it
+                        emit(
+                            ActualPreview(
+                                metrics,
+                                frames.toList(),
+                                Color.TRANSPARENT
+                            )
+                        )
+                    }
+                }
+
+                // In the end, we compute the background for frames
+                val frameBackground = withContext(defaultDispatcher) {
+                    (frames.first() as? ActualFrame)?.frameData?.let(::computeBackground)
+                } ?: Color.TRANSPARENT
+
+                emit(
+                    ActualPreview(
+                        metrics,
+                        frames.toList(),
+                        frameBackground
+                    )
+                )
+            }
         }
     }
 
