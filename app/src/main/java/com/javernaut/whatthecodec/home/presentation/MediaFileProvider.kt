@@ -3,14 +3,14 @@ package com.javernaut.whatthecodec.home.presentation
 import androidx.core.net.toUri
 import io.github.javernaut.mediafile.factory.MediaFileContext
 import io.github.javernaut.mediafile.factory.MediaFileFactory
-import io.github.javernaut.mediafile.factory.Request
+import io.github.javernaut.mediafile.factory.MediaSource
 import javax.inject.Inject
 
 class MediaFileProvider @Inject constructor() {
     fun obtainMediaFile(argument: MediaFileArgument): MediaFileContext? {
         return MediaFileFactory.create(
             // Limiting the file reading to content://
-            Request.Content(argument.uri.toUri()), argument.type
+            MediaSource.Content(argument.uri.toUri()), argument.type
         )
     }
 }

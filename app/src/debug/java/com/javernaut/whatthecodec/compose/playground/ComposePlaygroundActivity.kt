@@ -25,7 +25,7 @@ import io.github.javernaut.mediafile.MediaFile
 import io.github.javernaut.mediafile.creator.MediaType
 import io.github.javernaut.mediafile.factory.MediaFileContext
 import io.github.javernaut.mediafile.factory.MediaFileFactory
-import io.github.javernaut.mediafile.factory.Request
+import io.github.javernaut.mediafile.factory.MediaSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -95,7 +95,7 @@ class TestMediaFileViewModel @Inject constructor(
     fun openMediaFile(mediaFileArgument: MediaFileArgument) {
         viewModelScope.launch(Dispatchers.IO) {
             val mediaFileContext = MediaFileFactory.create(
-                Request.Content(mediaFileArgument.uri.toUri()), mediaFileArgument.type
+                MediaSource.Content(mediaFileArgument.uri.toUri()), mediaFileArgument.type
             )
 
             val mediaFile = mediaFileContext?.readMetaData()
