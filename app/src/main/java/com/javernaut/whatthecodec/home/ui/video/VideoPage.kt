@@ -18,7 +18,7 @@ import com.javernaut.whatthecodec.home.ui.stream.StreamCard
 import com.javernaut.whatthecodec.home.ui.stream.StreamFeatureItem
 import com.javernaut.whatthecodec.home.ui.stream.StreamFeaturesGrid
 import com.javernaut.whatthecodec.home.ui.stream.makeCardTitle
-import io.github.javernaut.mediafile.VideoStream
+import io.github.javernaut.mediafile.model.VideoStream
 
 @Composable
 fun VideoPage(

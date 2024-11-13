@@ -15,9 +15,9 @@ import com.javernaut.whatthecodec.home.presentation.model.NoPreviewAvailable
 import com.javernaut.whatthecodec.home.presentation.model.NotYetEvaluated
 import com.javernaut.whatthecodec.home.presentation.model.PlaceholderFrame
 import com.javernaut.whatthecodec.home.presentation.model.Preview
-import io.github.javernaut.mediafile.MediaFile
 import io.github.javernaut.mediafile.factory.MediaFileContext
 import io.github.javernaut.mediafile.getFrameLoader
+import io.github.javernaut.mediafile.model.MediaFile
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

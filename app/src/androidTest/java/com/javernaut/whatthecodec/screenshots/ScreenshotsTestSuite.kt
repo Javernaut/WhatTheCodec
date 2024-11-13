@@ -25,9 +25,9 @@ import com.javernaut.whatthecodec.home.presentation.model.SubtitlesPage
 import com.javernaut.whatthecodec.home.presentation.model.VideoPage
 import com.javernaut.whatthecodec.home.ui.screen.EmptyHomeScreen
 import com.javernaut.whatthecodec.home.ui.screen.MainHomeScreen
-import io.github.javernaut.mediafile.AudioStream
-import io.github.javernaut.mediafile.BasicStreamInfo
-import io.github.javernaut.mediafile.VideoStream
+import io.github.javernaut.mediafile.model.AudioStream
+import io.github.javernaut.mediafile.model.BasicStreamInfo
+import io.github.javernaut.mediafile.model.VideoStream
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.MutableStateFlow

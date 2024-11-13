@@ -14,8 +14,8 @@ import com.javernaut.whatthecodec.home.presentation.model.ScreenState
 import com.javernaut.whatthecodec.home.presentation.model.SubtitlesPage
 import com.javernaut.whatthecodec.home.presentation.model.VideoPage
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.github.javernaut.mediafile.MediaFile
 import io.github.javernaut.mediafile.factory.MediaFileContext
+import io.github.javernaut.mediafile.model.MediaFile
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job

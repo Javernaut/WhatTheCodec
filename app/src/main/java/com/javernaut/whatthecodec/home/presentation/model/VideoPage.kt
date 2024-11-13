@@ -3,9 +3,9 @@ package com.javernaut.whatthecodec.home.presentation.model
 import com.javernaut.whatthecodec.feature.settings.api.content.AudioStreamFeature
 import com.javernaut.whatthecodec.feature.settings.api.content.SubtitleStreamFeature
 import com.javernaut.whatthecodec.feature.settings.api.content.VideoStreamFeature
-import io.github.javernaut.mediafile.AudioStream
-import io.github.javernaut.mediafile.SubtitleStream
-import io.github.javernaut.mediafile.VideoStream
+import io.github.javernaut.mediafile.model.AudioStream
+import io.github.javernaut.mediafile.model.SubtitleStream
+import io.github.javernaut.mediafile.model.VideoStream
 
 data class VideoPage(
     val preview: Preview,
