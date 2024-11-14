@@ -14,8 +14,8 @@ import com.javernaut.whatthecodec.home.presentation.model.ScreenState
 import com.javernaut.whatthecodec.home.presentation.model.SubtitlesPage
 import com.javernaut.whatthecodec.home.presentation.model.VideoPage
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.github.javernaut.mediafile.factory.MediaFileContext
-import io.github.javernaut.mediafile.model.MediaFile
+import io.github.javernaut.mediafile.MediaFile
+import io.github.javernaut.mediafile.model.MediaInfo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
@@ -36,10 +36,10 @@ class MediaFileViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private var mediaFileContext: MediaFileContext? = null
+    private var mediaFile: MediaFile? = null
 
     private var _preview = MutableStateFlow<Preview>(NotYetEvaluated)
-    private var _mediaFile = MutableStateFlow<MediaFile?>(null)
+    private var _mediaInfo = MutableStateFlow<MediaInfo?>(null)
     private var _screenState = MutableStateFlow<ScreenState?>(null)
 
     private val _screenMessageChannel = Channel<ScreenMessage>()
@@ -47,7 +47,7 @@ class MediaFileViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             combine(
-                _mediaFile,
+                _mediaInfo,
                 _preview,
                 contentSettingsRepository.videoStreamFeatures,
                 contentSettingsRepository.audioStreamFeatures,
@@ -86,7 +86,7 @@ class MediaFileViewModel @Inject constructor(
     override fun onCleared() {
         // TODO Any other way to leave it disposing after VM is cleared?
         GlobalScope.launch(Dispatchers.IO) {
-            mediaFileContext?.close()
+            mediaFile?.close()
         }
     }
 
@@ -107,13 +107,13 @@ class MediaFileViewModel @Inject constructor(
             // Release prev context, frame loader and frame loader wrapper
             // TODO Dispose frame loading too
             // Any other way to leave it disposing as non cancelable?
-            val prevContext = mediaFileContext
+            val prevContext = mediaFile
             GlobalScope.launch(Dispatchers.IO) {
                 prevContext?.close()
             }
 
-            mediaFileContext = newMediaFileContext
-            _mediaFile.value = newMediaFile
+            mediaFile = newMediaFileContext
+            _mediaInfo.value = newMediaFile
 
             previewLoaderHelper.flowFor(newMediaFileContext, newMediaFile).collect(_preview)
         }
@@ -134,7 +134,7 @@ class MediaFileViewModel @Inject constructor(
         }
     }
 
-    private fun MediaFile.toVideoPage(
+    private fun MediaInfo.toVideoPage(
         preview: Preview,
         streamFeatures: Set<VideoStreamFeature>
     ): VideoPage? {

@@ -15,9 +15,9 @@ import com.javernaut.whatthecodec.home.presentation.model.NoPreviewAvailable
 import com.javernaut.whatthecodec.home.presentation.model.NotYetEvaluated
 import com.javernaut.whatthecodec.home.presentation.model.PlaceholderFrame
 import com.javernaut.whatthecodec.home.presentation.model.Preview
-import io.github.javernaut.mediafile.factory.MediaFileContext
+import io.github.javernaut.mediafile.MediaFile
 import io.github.javernaut.mediafile.getFrameLoader
-import io.github.javernaut.mediafile.model.MediaFile
+import io.github.javernaut.mediafile.model.MediaInfo
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -31,18 +31,18 @@ class PreviewLoaderHelper @Inject constructor(
     @DefaultDispatcher private val defaultDispatcher: CoroutineDispatcher,
 ) {
     fun flowFor(
-        mediaFileContext: MediaFileContext,
-        mediaFile: MediaFile
+        mediaFile: MediaFile,
+        mediaInfo: MediaInfo
     ): Flow<Preview> = flow {
         emit(NotYetEvaluated)
 
-        mediaFileContext.getFrameLoader(framesToLoad).use {
+        mediaFile.getFrameLoader(framesToLoad).use {
             if (it == null) {
                 emit(NoPreviewAvailable)
             } else {
                 val frames = MutableList<Frame>(framesToLoad) { PlaceholderFrame }
 
-                val videoStream = mediaFile.videoStream!!
+                val videoStream = mediaInfo.videoStream!!
                 val metrics = frameMetricsProvider.getTargetFrameMetrics(
                     videoStream.frameWidth,
                     videoStream.frameHeight

@@ -21,11 +21,11 @@ import com.javernaut.whatthecodec.home.ui.screen.pickAudioFile
 import com.javernaut.whatthecodec.home.ui.screen.pickVideoFile
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.github.javernaut.mediafile.MediaFile
 import io.github.javernaut.mediafile.creator.MediaType
-import io.github.javernaut.mediafile.factory.MediaFileContext
 import io.github.javernaut.mediafile.factory.MediaFileFactory
 import io.github.javernaut.mediafile.factory.MediaSource
-import io.github.javernaut.mediafile.model.MediaFile
+import io.github.javernaut.mediafile.model.MediaInfo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -109,12 +109,12 @@ class TestMediaFileViewModel @Inject constructor(
     }
 
     private fun fileProcessingFlow(
-        mediaFileContext: MediaFileContext,
-        mediaFile: MediaFile
+        mediaFile: MediaFile,
+        mediaInfo: MediaInfo
     ): Flow<ScreenState> = flow {
         val audioPage = AudioPage(emptyList(), completeEnumSet())
         val subtitlePage = SubtitlesPage(emptyList(), completeEnumSet())
-        videoPagesFlow(mediaFileContext, mediaFile).collect {
+        videoPagesFlow(mediaFile, mediaInfo).collect {
             emit(
                 ScreenState(it, audioPage, subtitlePage)
             )
@@ -122,19 +122,19 @@ class TestMediaFileViewModel @Inject constructor(
     }
 
     private fun videoPagesFlow(
-        mediaFileContext: MediaFileContext,
-        mediaFile: MediaFile
+        mediaFile: MediaFile,
+        mediaInfo: MediaInfo
     ): Flow<VideoPage?> = flow {
-        val videoStream = mediaFile.videoStream
+        val videoStream = mediaInfo.videoStream
         if (videoStream == null) {
             emit(null)
         } else {
-            previewLoaderHelper.flowFor(mediaFileContext, mediaFile).collect {
+            previewLoaderHelper.flowFor(mediaFile, mediaInfo).collect {
                 emit(
                     VideoPage(
                         it,
-                        mediaFile.fileFormatName,
-                        mediaFile.fullFeatured,
+                        mediaInfo.fileFormatName,
+                        mediaInfo.fullFeatured,
                         videoStream,
                         completeEnumSet()
                     )
