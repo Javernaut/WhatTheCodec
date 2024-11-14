@@ -20,7 +20,7 @@ class FileReadingUseCase @Inject constructor(
             val context = mediaFileProvider.obtainMediaFile(arg)
                 ?: return@withContext Result.failure(IOException("Couldn't read the file"))
 
-            val mediaFile = context.readMetaData()
+            val mediaFile = context.readMetaInfo()
                 ?: return@withContext Result.failure(IOException("Couldn't read the file's meta data"))
 
             Result.success(ReadingResult(context, mediaFile))

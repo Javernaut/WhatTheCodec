@@ -22,9 +22,9 @@ import com.javernaut.whatthecodec.home.ui.screen.pickVideoFile
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.javernaut.mediafile.MediaFile
-import io.github.javernaut.mediafile.creator.MediaType
 import io.github.javernaut.mediafile.factory.MediaFileFactory
 import io.github.javernaut.mediafile.factory.MediaSource
+import io.github.javernaut.mediafile.factory.MediaType
 import io.github.javernaut.mediafile.model.MediaInfo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -98,7 +98,7 @@ class TestMediaFileViewModel @Inject constructor(
                 MediaSource.Content(mediaFileArgument.uri.toUri()), mediaFileArgument.type
             )
 
-            val mediaFile = mediaFileContext?.readMetaData()
+            val mediaFile = mediaFileContext?.readMetaInfo()
 
             withContext(Dispatchers.Main) {
                 if (mediaFileContext != null && mediaFile != null) {
