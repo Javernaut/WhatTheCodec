@@ -37,14 +37,8 @@ fun VideoPage(
         val commonModifier = Modifier.padding(horizontal = 16.dp)
         item {
             Container(
-                fileFormat = videoPage.fileFormat,
-                protocol = stringResource(
-                    id = if (videoPage.fullFeatured) {
-                        R.string.info_protocol_file
-                    } else {
-                        R.string.info_protocol_pipe
-                    }
-                ),
+                fileFormat = videoPage.container.formatName,
+                protocol = stringResource(id = R.string.info_protocol_content),
                 onCopyValue = onCopyValue,
                 modifier = commonModifier
                     .padding(top = 16.dp)

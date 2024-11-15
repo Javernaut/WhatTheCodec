@@ -133,8 +133,7 @@ class TestMediaFileViewModel @Inject constructor(
                 emit(
                     VideoPage(
                         it,
-                        mediaInfo.fileFormatName,
-                        mediaInfo.fullFeatured,
+                        mediaInfo.container,
                         videoStream,
                         completeEnumSet()
                     )

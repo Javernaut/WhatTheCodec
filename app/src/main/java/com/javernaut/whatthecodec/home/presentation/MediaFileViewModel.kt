@@ -141,8 +141,7 @@ class MediaFileViewModel @Inject constructor(
         return videoStream?.let {
             VideoPage(
                 preview,
-                fileFormatName,
-                fullFeatured,
+                container,
                 it,
                 streamFeatures
             )

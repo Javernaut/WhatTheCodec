@@ -16,7 +16,7 @@ import com.javernaut.whatthecodec.home.presentation.model.NotYetEvaluated
 import com.javernaut.whatthecodec.home.presentation.model.PlaceholderFrame
 import com.javernaut.whatthecodec.home.presentation.model.Preview
 import io.github.javernaut.mediafile.MediaFile
-import io.github.javernaut.mediafile.getFrameLoader
+import io.github.javernaut.mediafile.ext.getFrameLoader
 import io.github.javernaut.mediafile.model.MediaInfo
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
