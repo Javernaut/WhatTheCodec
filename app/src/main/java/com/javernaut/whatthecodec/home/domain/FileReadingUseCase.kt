@@ -17,10 +17,10 @@ class FileReadingUseCase @Inject constructor(
 
     suspend fun readFile(arg: MediaFileArgument): Result<ReadingResult> =
         withContext(ioDispatcher) {
-            val context = mediaFileProvider.obtainMediaFile(arg)
+            val context = mediaFileProvider.obtainMediaFile(arg.uri)
                 ?: return@withContext Result.failure(IOException("Couldn't read the file"))
 
-            val mediaFile = context.readMetaInfo()
+            val mediaFile = context.readMetaInfo(arg.type)
                 ?: return@withContext Result.failure(IOException("Couldn't read the file's meta data"))
 
             Result.success(ReadingResult(context, mediaFile))
