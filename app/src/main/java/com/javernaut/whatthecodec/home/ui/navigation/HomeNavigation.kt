@@ -29,7 +29,7 @@ fun NavGraphBuilder.homeScreen(
             BundleCompat.getParcelable(it, NavController.KEY_DEEP_LINK_INTENT, Intent::class.java)
         }
 
-        val contentUri = deepLinkIntent?.data?.toString()
+        val contentUri = deepLinkIntent?.data
         val mimeType = deepLinkIntent?.type
 
         if (contentUri != null && mimeType != null) {

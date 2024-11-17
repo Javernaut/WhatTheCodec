@@ -4,13 +4,13 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.javernaut.whatthecodec.compose.theme.WhatTheCodecTheme
 import com.javernaut.whatthecodec.feature.settings.data.content.completeEnumSet
 import com.javernaut.whatthecodec.home.presentation.MediaFileArgument
+import com.javernaut.whatthecodec.home.presentation.MediaFileProvider
 import com.javernaut.whatthecodec.home.presentation.PreviewLoaderHelper
 import com.javernaut.whatthecodec.home.presentation.model.AudioPage
 import com.javernaut.whatthecodec.home.presentation.model.ScreenState
@@ -22,9 +22,7 @@ import com.javernaut.whatthecodec.home.ui.screen.pickVideoFile
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.javernaut.mediafile.MediaFile
-import io.github.javernaut.mediafile.factory.MediaFileFactory
-import io.github.javernaut.mediafile.factory.MediaSource
-import io.github.javernaut.mediafile.factory.MediaType
+import io.github.javernaut.mediafile.MediaType
 import io.github.javernaut.mediafile.model.MediaInfo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -51,10 +49,7 @@ class ComposePlaygroundActivity : ComponentActivity() {
                     permissionDenied = viewModel::onPermissionDenied
                 ) {
                     viewModel.openMediaFile(
-                        MediaFileArgument(
-                            it.toString(),
-                            MediaType.AUDIO
-                        )
+                        MediaFileArgument(it, MediaType.AUDIO)
                     )
                 }
 
@@ -62,10 +57,7 @@ class ComposePlaygroundActivity : ComponentActivity() {
                     permissionDenied = viewModel::onPermissionDenied
                 ) {
                     viewModel.openMediaFile(
-                        MediaFileArgument(
-                            it.toString(),
-                            MediaType.VIDEO
-                        )
+                        MediaFileArgument(it, MediaType.VIDEO)
                     )
                 }
 
@@ -83,7 +75,8 @@ class ComposePlaygroundActivity : ComponentActivity() {
 
 @HiltViewModel
 class TestMediaFileViewModel @Inject constructor(
-    private val previewLoaderHelper: PreviewLoaderHelper
+    private val previewLoaderHelper: PreviewLoaderHelper,
+    private val mediaFileProvider: MediaFileProvider
 ) : ViewModel() {
     fun onPermissionDenied() {
         // Whatever, it's test
@@ -94,8 +87,8 @@ class TestMediaFileViewModel @Inject constructor(
 
     fun openMediaFile(mediaFileArgument: MediaFileArgument) {
         viewModelScope.launch(Dispatchers.IO) {
-            val mediaFileContext = MediaFileFactory.create(
-                MediaSource.Content(mediaFileArgument.uri.toUri()), mediaFileArgument.type
+            val mediaFileContext = mediaFileProvider.obtainMediaFile(
+                mediaFileArgument
             )
 
             val mediaFile = mediaFileContext?.readMetaInfo()

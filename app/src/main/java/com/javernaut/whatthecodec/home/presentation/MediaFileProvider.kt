@@ -1,16 +1,20 @@
 package com.javernaut.whatthecodec.home.presentation
 
-import androidx.core.net.toUri
+import android.content.Context
+import dagger.hilt.android.qualifiers.ApplicationContext
 import io.github.javernaut.mediafile.MediaFile
-import io.github.javernaut.mediafile.factory.MediaFileFactory
-import io.github.javernaut.mediafile.factory.MediaSource
+import io.github.javernaut.mediafile.MediaFileFactory
+import io.github.javernaut.mediafile.MediaSource
 import javax.inject.Inject
 
-class MediaFileProvider @Inject constructor() {
+class MediaFileProvider @Inject constructor(
+    @ApplicationContext context: Context
+) {
+    private val mediaFileFactory = MediaFileFactory.getDefault(context)
+
     fun obtainMediaFile(argument: MediaFileArgument): MediaFile? {
-        return MediaFileFactory.create(
-            // Limiting the file reading to content://
-            MediaSource.Content(argument.uri.toUri()), argument.type
+        return mediaFileFactory.create(
+            MediaSource.Content(argument.uri), argument.type
         )
     }
 }

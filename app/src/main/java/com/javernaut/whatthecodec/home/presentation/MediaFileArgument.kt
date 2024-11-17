@@ -1,18 +1,19 @@
 package com.javernaut.whatthecodec.home.presentation
 
+import android.net.Uri
 import android.os.Parcel
 import android.os.Parcelable
-import io.github.javernaut.mediafile.factory.MediaType
+import io.github.javernaut.mediafile.MediaType
 
-class MediaFileArgument(val uri: String, val type: MediaType) : Parcelable {
+class MediaFileArgument(val uri: Uri, val type: MediaType) : Parcelable {
 
     constructor(parcel: Parcel) : this(
-        parcel.readString()!!,
+        Uri.parse(parcel.readString()!!),
         MediaType.valueOf(parcel.readString()!!)
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeString(uri)
+        parcel.writeString(uri.toString())
         parcel.writeString(type.toString())
     }
 
