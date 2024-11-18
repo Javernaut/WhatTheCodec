@@ -1,5 +1,6 @@
 package com.javernaut.whatthecodec.home.ui.video
 
+import android.util.Size
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -25,14 +26,13 @@ import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.home.presentation.model.ActualFrame
 import com.javernaut.whatthecodec.home.presentation.model.DecodingErrorFrame
 import com.javernaut.whatthecodec.home.presentation.model.Frame
-import com.javernaut.whatthecodec.home.presentation.model.FrameMetrics
 import com.javernaut.whatthecodec.home.presentation.model.LoadingFrame
 import com.javernaut.whatthecodec.home.presentation.model.PlaceholderFrame
 
 @Composable
 fun Frame(
     frame: Frame,
-    frameMetrics: FrameMetrics,
+    frameMetrics: Size,
     modifier: Modifier = Modifier
 ) {
     Box(modifier = with(LocalDensity.current) {

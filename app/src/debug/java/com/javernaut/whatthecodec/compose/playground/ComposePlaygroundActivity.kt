@@ -11,6 +11,7 @@ import com.javernaut.whatthecodec.compose.theme.WhatTheCodecTheme
 import com.javernaut.whatthecodec.feature.settings.data.content.completeEnumSet
 import com.javernaut.whatthecodec.home.presentation.MediaFileArgument
 import com.javernaut.whatthecodec.home.presentation.MediaFileProvider
+import com.javernaut.whatthecodec.home.presentation.MediaType
 import com.javernaut.whatthecodec.home.presentation.PreviewLoaderHelper
 import com.javernaut.whatthecodec.home.presentation.model.AudioPage
 import com.javernaut.whatthecodec.home.presentation.model.ScreenState
@@ -22,7 +23,6 @@ import com.javernaut.whatthecodec.home.ui.screen.pickVideoFile
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.javernaut.mediafile.MediaFile
-import io.github.javernaut.mediafile.MediaType
 import io.github.javernaut.mediafile.model.MediaInfo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -88,10 +88,10 @@ class TestMediaFileViewModel @Inject constructor(
     fun openMediaFile(mediaFileArgument: MediaFileArgument) {
         viewModelScope.launch(Dispatchers.IO) {
             val mediaFileContext = mediaFileProvider.obtainMediaFile(
-                mediaFileArgument
+                mediaFileArgument.uri
             )
 
-            val mediaFile = mediaFileContext?.readMetaInfo()
+            val mediaFile = mediaFileContext?.readMediaInfo()
 
             withContext(Dispatchers.Main) {
                 if (mediaFileContext != null && mediaFile != null) {

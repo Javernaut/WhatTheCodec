@@ -28,3 +28,9 @@ class MediaFileArgument(val uri: Uri, val type: MediaType) : Parcelable {
         }
     }
 }
+
+// TODO Actually use for audio files processing
+enum class MediaType {
+    AUDIO,
+    VIDEO
+}

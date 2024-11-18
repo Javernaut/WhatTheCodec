@@ -135,6 +135,5 @@ dependencies {
     androidTestImplementation(libs.androidx.test.uiautomator)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.androidx.test.ext.truth)
-    androidTestImplementation(libs.mockk.instrumentation)
     androidTestImplementation(libs.screengrab)
 }

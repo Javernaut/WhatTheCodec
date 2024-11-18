@@ -15,8 +15,8 @@ fun VideoStreamFeature.toDisplayableStreamFeature(
     VideoStreamFeature.Codec -> stream.basicInfo.codecName
     VideoStreamFeature.Bitrate -> stream.bitRate.toDisplayable(resources)
     VideoStreamFeature.FrameRate -> stream.frameRate.toDisplayable(resources)
-    VideoStreamFeature.FrameWidth -> stream.frameWidth.toString()
-    VideoStreamFeature.FrameHeight -> stream.frameHeight.toString()
+    VideoStreamFeature.FrameWidth -> stream.frameSize.width.toString()
+    VideoStreamFeature.FrameHeight -> stream.frameSize.height.toString()
     VideoStreamFeature.Language -> stream.basicInfo.displayableLanguage
     VideoStreamFeature.Disposition -> stream.basicInfo.getDisplayableDisposition(resources)
 }?.let {
