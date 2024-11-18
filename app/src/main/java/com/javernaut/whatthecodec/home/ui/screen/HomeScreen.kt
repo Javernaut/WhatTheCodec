@@ -22,7 +22,6 @@ import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.home.presentation.MediaFileArgument
 import com.javernaut.whatthecodec.home.presentation.MediaFileViewModel
 import com.javernaut.whatthecodec.util.TinyActivityCompat
-import io.github.javernaut.mediafile.MediaType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext

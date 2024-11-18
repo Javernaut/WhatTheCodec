@@ -3,7 +3,6 @@ package com.javernaut.whatthecodec.home.presentation
 import android.net.Uri
 import android.os.Parcel
 import android.os.Parcelable
-import io.github.javernaut.mediafile.MediaType
 
 class MediaFileArgument(val uri: Uri, val type: MediaType) : Parcelable {
 

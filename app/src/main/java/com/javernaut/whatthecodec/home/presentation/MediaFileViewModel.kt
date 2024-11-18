@@ -15,7 +15,7 @@ import com.javernaut.whatthecodec.home.presentation.model.SubtitlesPage
 import com.javernaut.whatthecodec.home.presentation.model.VideoPage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.javernaut.mediafile.MediaFile
-import io.github.javernaut.mediafile.model.MediaInfo
+import io.github.javernaut.mediafile.model.MetaData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
@@ -39,7 +39,7 @@ class MediaFileViewModel @Inject constructor(
     private var mediaFile: MediaFile? = null
 
     private var _preview = MutableStateFlow<Preview>(NotYetEvaluated)
-    private var _mediaInfo = MutableStateFlow<MediaInfo?>(null)
+    private var _metaData = MutableStateFlow<MetaData?>(null)
     private var _screenState = MutableStateFlow<ScreenState?>(null)
 
     private val _screenMessageChannel = Channel<ScreenMessage>()
@@ -47,7 +47,7 @@ class MediaFileViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             combine(
-                _mediaInfo,
+                _metaData,
                 _preview,
                 contentSettingsRepository.videoStreamFeatures,
                 contentSettingsRepository.audioStreamFeatures,
@@ -113,7 +113,7 @@ class MediaFileViewModel @Inject constructor(
             }
 
             mediaFile = newMediaFileContext
-            _mediaInfo.value = newMediaFile
+            _metaData.value = newMediaFile
 
             previewLoaderHelper.flowFor(newMediaFileContext, newMediaFile).collect(_preview)
         }
@@ -134,7 +134,7 @@ class MediaFileViewModel @Inject constructor(
         }
     }
 
-    private fun MediaInfo.toVideoPage(
+    private fun MetaData.toVideoPage(
         preview: Preview,
         streamFeatures: Set<VideoStreamFeature>
     ): VideoPage? {

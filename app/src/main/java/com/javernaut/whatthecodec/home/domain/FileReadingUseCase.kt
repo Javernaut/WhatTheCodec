@@ -4,7 +4,7 @@ import com.javernaut.whatthecodec.di.IoDispatcher
 import com.javernaut.whatthecodec.home.presentation.MediaFileArgument
 import com.javernaut.whatthecodec.home.presentation.MediaFileProvider
 import io.github.javernaut.mediafile.MediaFile
-import io.github.javernaut.mediafile.model.MediaInfo
+import io.github.javernaut.mediafile.model.MetaData
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import java.io.IOException
@@ -20,7 +20,7 @@ class FileReadingUseCase @Inject constructor(
             val context = mediaFileProvider.obtainMediaFile(arg.uri)
                 ?: return@withContext Result.failure(IOException("Couldn't read the file"))
 
-            val mediaFile = context.readMetaInfo(arg.type)
+            val mediaFile = context.readMetaData(arg.type)
                 ?: return@withContext Result.failure(IOException("Couldn't read the file's meta data"))
 
             Result.success(ReadingResult(context, mediaFile))
@@ -29,6 +29,6 @@ class FileReadingUseCase @Inject constructor(
     // Reusing the data types from MediaFile library
     data class ReadingResult(
         val context: MediaFile,
-        val mediaInfo: MediaInfo
+        val metaData: MetaData
     )
 }
