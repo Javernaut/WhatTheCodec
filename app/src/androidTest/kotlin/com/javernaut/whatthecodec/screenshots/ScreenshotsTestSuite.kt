@@ -30,7 +30,10 @@ import com.javernaut.whatthecodec.home.ui.screen.EmptyHomeScreen
 import com.javernaut.whatthecodec.home.ui.screen.MainHomeScreen
 import io.github.javernaut.mediafile.model.AudioStream
 import io.github.javernaut.mediafile.model.BasicStreamInfo
+import io.github.javernaut.mediafile.model.BitRate
 import io.github.javernaut.mediafile.model.Container
+import io.github.javernaut.mediafile.model.FrameRate
+import io.github.javernaut.mediafile.model.SampleRate
 import io.github.javernaut.mediafile.model.VideoStream
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
@@ -118,8 +121,8 @@ class ScreenshotsTestSuite(
                 language = null,
                 disposition = 0
             ),
-            bitRate = 4_500_000,
-            frameRate = 25.0,
+            bitRate = BitRate(4_500_000),
+            frameRate = FrameRate(25.0),
             frameSize = Size(1840, 1034)
         )
 
@@ -162,9 +165,9 @@ class ScreenshotsTestSuite(
                 language = null,
                 disposition = 0
             ),
-            bitRate = 320_000,
+            bitRate = BitRate(320_000),
             sampleFormat = "fltp",
-            sampleRate = 44_100,
+            sampleRate = SampleRate(44_100),
             channels = 2,
             channelLayout = "stereo",
         )
