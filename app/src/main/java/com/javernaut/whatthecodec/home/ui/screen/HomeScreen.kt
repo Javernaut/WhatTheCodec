@@ -1,5 +1,6 @@
 package com.javernaut.whatthecodec.home.ui.screen
 
+import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
@@ -20,15 +21,15 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.home.presentation.MediaFileArgument
 import com.javernaut.whatthecodec.home.presentation.MediaFileViewModel
+import com.javernaut.whatthecodec.home.presentation.MediaType
 import com.javernaut.whatthecodec.util.TinyActivityCompat
-import io.github.javernaut.mediafile.creator.MediaType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 
 @Composable
 fun HomeScreenActionView(
-    contentUri: String,
+    contentUri: Uri,
     mimeType: String,
     onSettingsClicked: () -> Unit
 ) {
@@ -71,13 +72,13 @@ fun HomeScreen(
 
     val pickVideoFile = pickVideoFile(permissionDenied = viewModel::onPermissionDenied) {
         viewModel.openMediaFile(
-            MediaFileArgument(it.toString(), MediaType.VIDEO)
+            MediaFileArgument(it, MediaType.VIDEO)
         )
     }
 
     val pickAudioFile = pickAudioFile(permissionDenied = viewModel::onPermissionDenied) {
         viewModel.openMediaFile(
-            MediaFileArgument(it.toString(), MediaType.AUDIO)
+            MediaFileArgument(it, MediaType.AUDIO)
         )
     }
 

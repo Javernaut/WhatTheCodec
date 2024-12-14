@@ -9,7 +9,7 @@ import com.javernaut.whatthecodec.feature.settings.api.content.AudioStreamFeatur
 import com.javernaut.whatthecodec.home.presentation.model.AudioPage
 import com.javernaut.whatthecodec.home.ui.stream.SimplePage
 import com.javernaut.whatthecodec.home.ui.stream.StreamFeaturesGrid
-import io.github.javernaut.mediafile.AudioStream
+import io.github.javernaut.mediafile.model.AudioStream
 
 @Composable
 fun AudioPage(

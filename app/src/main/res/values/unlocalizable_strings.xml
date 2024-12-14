@@ -4,6 +4,7 @@
     <string name="app_name" translatable="false">WhatTheCodec</string>
 
     <string name="info_protocol_file" translatable="false">file</string>
-    <string name="info_protocol_pipe" translatable="false">pipe</string>
+    <string name="info_protocol_fd" translatable="false">fd</string>
+    <string name="info_protocol_content" translatable="false">content</string>
 
 </resources>

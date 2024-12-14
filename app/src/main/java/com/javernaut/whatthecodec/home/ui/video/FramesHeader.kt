@@ -1,5 +1,6 @@
 package com.javernaut.whatthecodec.home.ui.video
 
+import android.util.Size
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -19,7 +20,6 @@ import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.compose.common.GridLayout
 import com.javernaut.whatthecodec.home.presentation.model.ActualPreview
 import com.javernaut.whatthecodec.home.presentation.model.Frame
-import com.javernaut.whatthecodec.home.presentation.model.FrameMetrics
 import com.javernaut.whatthecodec.home.presentation.model.NoPreviewAvailable
 import com.javernaut.whatthecodec.home.presentation.model.NotYetEvaluated
 import com.javernaut.whatthecodec.home.presentation.model.Preview
@@ -62,7 +62,7 @@ fun FramesHeader(
 @Composable
 private fun FramesGrid(
     newFrames: List<Frame>,
-    frameMetrics: FrameMetrics,
+    frameMetrics: Size,
     modifier: Modifier = Modifier,
 ) {
     val previewFrameSpacing = dimensionResource(id = R.dimen.preview_frames_spacing)

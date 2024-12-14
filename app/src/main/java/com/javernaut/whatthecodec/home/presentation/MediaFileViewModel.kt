@@ -5,9 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.javernaut.whatthecodec.feature.settings.api.content.ContentSettingsRepository
 import com.javernaut.whatthecodec.feature.settings.api.content.VideoStreamFeature
+import com.javernaut.whatthecodec.home.domain.FileReadingUseCase
 import com.javernaut.whatthecodec.home.presentation.model.AudioPage
-import com.javernaut.whatthecodec.home.presentation.model.FrameMetrics
-import com.javernaut.whatthecodec.home.presentation.model.NoPreviewAvailable
 import com.javernaut.whatthecodec.home.presentation.model.NotYetEvaluated
 import com.javernaut.whatthecodec.home.presentation.model.Preview
 import com.javernaut.whatthecodec.home.presentation.model.ScreenMessage
@@ -16,11 +15,14 @@ import com.javernaut.whatthecodec.home.presentation.model.SubtitlesPage
 import com.javernaut.whatthecodec.home.presentation.model.VideoPage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.javernaut.mediafile.MediaFile
+import io.github.javernaut.mediafile.model.MediaInfo
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -28,26 +30,24 @@ import javax.inject.Inject
 @HiltViewModel
 class MediaFileViewModel @Inject constructor(
     private val clipboard: Clipboard,
-    private val frameMetricsProvider: FrameMetricsProvider,
-    private val mediaFileProvider: MediaFileProvider,
+    private val previewLoaderHelper: PreviewLoaderHelper,
+    private val fileReadingUseCase: FileReadingUseCase,
     private val contentSettingsRepository: ContentSettingsRepository,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
+    private var mediaFile: MediaFile? = null
+
     private var _preview = MutableStateFlow<Preview>(NotYetEvaluated)
-    private var _mediaFile = MutableStateFlow<MediaFile?>(null)
+    private var _mediaInfo = MutableStateFlow<MediaInfo?>(null)
     private var _screenState = MutableStateFlow<ScreenState?>(null)
-    private var frameLoaderHelper: FrameLoaderHelper? = null
 
     private val _screenMessageChannel = Channel<ScreenMessage>()
 
     init {
         viewModelScope.launch {
             combine(
-                _mediaFile.onEach {
-                    // Resetting the preview on each setting of a new MediaFile
-                    _preview.value = NotYetEvaluated
-                },
+                _mediaInfo,
                 _preview,
                 contentSettingsRepository.videoStreamFeatures,
                 contentSettingsRepository.audioStreamFeatures,
@@ -84,24 +84,38 @@ class MediaFileViewModel @Inject constructor(
     val screenMessage = _screenMessageChannel.receiveAsFlow()
 
     override fun onCleared() {
-        if (frameLoaderHelper == null) {
-            _mediaFile.value?.release()
-        } else {
-            frameLoaderHelper?.release()
+        // TODO Any other way to leave it disposing after VM is cleared?
+        GlobalScope.launch(Dispatchers.IO) {
+            mediaFile?.close()
         }
     }
 
+    private var lastJob: Job? = null
+
     fun openMediaFile(argument: MediaFileArgument) {
-        val newMediaFile = mediaFileProvider.obtainMediaFile(argument)
-        if (newMediaFile != null) {
-            savedStateHandle.set(KEY_MEDIA_FILE_ARGUMENT, argument)
+        lastJob?.cancel()
+        lastJob = viewModelScope.launch {
+            val (newMediaFileContext, newMediaFile) = fileReadingUseCase
+                .readFile(argument)
+                .getOrElse {
+                    sendMessage(ScreenMessage.FileOpeningError)
+                    return@launch
+                }
 
-            releasePreviousMediaFileAndFrameLoader(newMediaFile)
+            savedStateHandle[KEY_MEDIA_FILE_ARGUMENT] = argument
 
-            _mediaFile.value = newMediaFile
-            applyMediaFile(newMediaFile)
-        } else {
-            sendMessage(ScreenMessage.FileOpeningError)
+            // Release prev context, frame loader and frame loader wrapper
+            // TODO Dispose frame loading too
+            // Any other way to leave it disposing as non cancelable?
+            val prevContext = mediaFile
+            GlobalScope.launch(Dispatchers.IO) {
+                prevContext?.close()
+            }
+
+            mediaFile = newMediaFileContext
+            _mediaInfo.value = newMediaFile
+
+            previewLoaderHelper.flowFor(newMediaFileContext, newMediaFile).collect(_preview)
         }
     }
 
@@ -120,58 +134,14 @@ class MediaFileViewModel @Inject constructor(
         }
     }
 
-    private fun applyMediaFile(mediaFile: MediaFile) {
-        val frameMetrics = computeFrameMetrics()
-
-        frameLoaderHelper = if (mediaFile.supportsFrameLoading())
-            FrameLoaderHelper(frameMetrics!!, viewModelScope, ::applyPreview)
-        else null
-
-        tryLoadVideoFrames(mediaFile)
-    }
-
-    private fun releasePreviousMediaFileAndFrameLoader(newMediaFile: MediaFile) {
-        if (frameLoaderHelper != null) {
-            frameLoaderHelper?.release(newMediaFile.supportsFrameLoading())
-        } else {
-            // MediaFile is released only if there was no FrameLoaderHelper used.
-            _mediaFile.value?.release()
-        }
-        frameLoaderHelper = null
-    }
-
-    private fun tryLoadVideoFrames(mediaFile: MediaFile) {
-        if (frameLoaderHelper != null) {
-            frameLoaderHelper?.loadFrames(mediaFile)
-        } else {
-            applyPreview(NoPreviewAvailable)
-        }
-    }
-
-    private fun applyPreview(preview: Preview) {
-        _preview.value = preview
-    }
-
-    private fun computeFrameMetrics(): FrameMetrics? {
-        val videoStream = _mediaFile.value?.videoStream
-
-        return videoStream?.let {
-            frameMetricsProvider.getTargetFrameMetrics(
-                it.frameWidth,
-                it.frameHeight
-            )
-        }
-    }
-
-    private fun MediaFile.toVideoPage(
+    private fun MediaInfo.toVideoPage(
         preview: Preview,
         streamFeatures: Set<VideoStreamFeature>
     ): VideoPage? {
         return videoStream?.let {
             VideoPage(
                 preview,
-                fileFormatName,
-                fullFeatured,
+                container,
                 it,
                 streamFeatures
             )

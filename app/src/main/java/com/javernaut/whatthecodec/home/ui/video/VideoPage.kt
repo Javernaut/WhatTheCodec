@@ -18,7 +18,7 @@ import com.javernaut.whatthecodec.home.ui.stream.StreamCard
 import com.javernaut.whatthecodec.home.ui.stream.StreamFeatureItem
 import com.javernaut.whatthecodec.home.ui.stream.StreamFeaturesGrid
 import com.javernaut.whatthecodec.home.ui.stream.makeCardTitle
-import io.github.javernaut.mediafile.VideoStream
+import io.github.javernaut.mediafile.model.VideoStream
 
 @Composable
 fun VideoPage(
@@ -37,14 +37,8 @@ fun VideoPage(
         val commonModifier = Modifier.padding(horizontal = 16.dp)
         item {
             Container(
-                fileFormat = videoPage.fileFormat,
-                protocol = stringResource(
-                    id = if (videoPage.fullFeatured) {
-                        R.string.info_protocol_file
-                    } else {
-                        R.string.info_protocol_pipe
-                    }
-                ),
+                fileFormat = videoPage.container.formatName,
+                protocol = stringResource(id = R.string.info_protocol_content),
                 onCopyValue = onCopyValue,
                 modifier = commonModifier
                     .padding(top = 16.dp)

@@ -9,7 +9,7 @@ import com.javernaut.whatthecodec.feature.settings.api.content.SubtitleStreamFea
 import com.javernaut.whatthecodec.home.presentation.model.SubtitlesPage
 import com.javernaut.whatthecodec.home.ui.stream.SimplePage
 import com.javernaut.whatthecodec.home.ui.stream.StreamFeaturesGrid
-import io.github.javernaut.mediafile.SubtitleStream
+import io.github.javernaut.mediafile.model.SubtitleStream
 
 @Composable
 fun SubtitlePage(

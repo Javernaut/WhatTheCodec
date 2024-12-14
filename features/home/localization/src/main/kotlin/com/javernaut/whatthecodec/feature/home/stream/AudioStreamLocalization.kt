@@ -3,10 +3,10 @@ package com.javernaut.whatthecodec.feature.home.stream
 import android.content.res.Resources
 import com.javernaut.whatthecodec.feature.home.localization.R
 import com.javernaut.whatthecodec.feature.settings.api.content.AudioStreamFeature
-import io.github.javernaut.mediafile.AudioStream
 import io.github.javernaut.mediafile.displayable.displayableLanguage
 import io.github.javernaut.mediafile.displayable.getDisplayableDisposition
 import io.github.javernaut.mediafile.displayable.toDisplayable
+import io.github.javernaut.mediafile.model.AudioStream
 
 fun AudioStreamFeature.toDisplayableStreamFeature(
     stream: AudioStream,

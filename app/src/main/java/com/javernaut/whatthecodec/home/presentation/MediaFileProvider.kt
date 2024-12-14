@@ -1,17 +1,19 @@
 package com.javernaut.whatthecodec.home.presentation
 
 import android.content.Context
+import android.net.Uri
 import dagger.hilt.android.qualifiers.ApplicationContext
-import io.github.javernaut.mediafile.MediaFile
-import io.github.javernaut.mediafile.creator.MediaFileCreator
+import io.github.javernaut.mediafile.MediaFileFactory
+import io.github.javernaut.mediafile.MediaSource
 import javax.inject.Inject
 
 class MediaFileProvider @Inject constructor(
     @ApplicationContext context: Context
 ) {
-    private val mediaFileCreator = MediaFileCreator(context)
+    private val mediaFileFactory = MediaFileFactory.getDefault(context)
 
-    fun obtainMediaFile(argument: MediaFileArgument): MediaFile? {
-        return mediaFileCreator.createMediaFile(argument.uri, argument.type)
-    }
+    fun obtainMediaFile(uri: Uri) =
+        mediaFileFactory.create(
+            MediaSource.Content(uri)
+        )
 }
