@@ -8,7 +8,7 @@ object Versions {
     const val compileSdk = 35
     const val minSdk = 24
 
-    val javaSourceCompatibility = JavaVersion.VERSION_1_8
-    val javaTargetCompatibility = JavaVersion.VERSION_1_8
-    val kotlinJvmTarget = JvmTarget.JVM_1_8
+    val javaSourceCompatibility = JavaVersion.VERSION_17
+    val javaTargetCompatibility = JavaVersion.VERSION_17
+    val kotlinJvmTarget = JvmTarget.JVM_17
 }
