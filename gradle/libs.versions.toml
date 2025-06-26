@@ -2,7 +2,7 @@
 androidGradlePlugin = "8.11.0"
 androidTools = "31.11.0"
 
-kotlin = "2.1.21"
+kotlin = "2.2.0"
 kotlinx-coroutines = "1.10.2"
 
 androidx-lifecycle = "2.9.1"
@@ -24,7 +24,7 @@ androidx-test-ext-junit = "1.2.1"
 androidx-test-ext-truth = "1.6.0"
 screengrab = "2.1.1"
 
-google-ksp = "2.1.21-2.0.2"
+google-ksp = "2.2.0-2.0.2"
 google-dagger = "2.56.2"
 
 detekt = "1.23.8"
