@@ -1,6 +1,6 @@
 [versions]
 androidGradlePlugin = "8.11.1"
-androidTools = "31.11.0"
+androidTools = "31.11.1"
 
 kotlin = "2.2.0"
 kotlinx-coroutines = "1.10.2"
