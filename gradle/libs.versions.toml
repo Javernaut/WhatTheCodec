@@ -18,7 +18,7 @@ androidx-profileinstaller = "1.4.1"
 
 androidx-test-core = "1.6.1"
 androidx-test-rules = "1.6.1"
-androidx-test-runner = "1.6.2"
+androidx-test-runner = "1.7.0"
 androidx-test-uiautomator = "2.3.0"
 androidx-test-ext-junit = "1.2.1"
 androidx-test-ext-truth = "1.6.0"
