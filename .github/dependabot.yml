@@ -7,9 +7,9 @@ updates:
   - package-ecosystem: "gradle"
     directory: "/"
     schedule:
-      interval: "daily"
-      # Jetpack libraries are usually released on each second Wednesday 1-2 hours before 17:30 UTC
-      time: "17:30"
+      interval: "weekly"
+      # Jetpack libraries are usually released on each second Wednesday
+      day: "thursday"
     registries: "*"
     labels:
       - "dependencies"
