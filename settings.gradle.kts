@@ -1,5 +1,3 @@
-import java.net.URI
-
 pluginManagement {
     includeBuild("build-logic")
     repositories {
@@ -21,8 +19,12 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
         maven {
-            name = "MaventCentralSnapshots"
-            url = URI("https://s01.oss.sonatype.org/content/repositories/snapshots/")
+            name = "Central Portal Snapshots"
+            url = uri("https://central.sonatype.com/repository/maven-snapshots/")
+
+            content {
+                includeModule("io.github.javernaut", "mediafile")
+            }
         }
     }
 }
