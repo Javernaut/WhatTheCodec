@@ -1,7 +1,6 @@
 package com.javernaut.whatthecodec.feature.settings.ui
 
 import android.content.Context
-import android.net.Uri
 import androidx.annotation.StringRes
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.foundation.layout.Arrangement
@@ -28,7 +27,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.core.net.toUri
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.javernaut.whatthecodec.compose.preference.ListPreference
 import com.javernaut.whatthecodec.compose.preference.MultiSelectListPreference
@@ -60,7 +60,7 @@ fun SettingsScreen(
 private fun openUrl(context: Context, url: String) {
     CustomTabsIntent.Builder()
         .build()
-        .launchUrl(context, Uri.parse(url))
+        .launchUrl(context, url.toUri())
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
