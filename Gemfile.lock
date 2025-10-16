@@ -5,6 +5,7 @@ GEM
       base64
       nkf
       rexml
+    abbrev (0.1.2)
     addressable (2.8.6)
       public_suffix (>= 2.0.2, < 6.0)
     artifactory (3.0.17)
@@ -158,6 +159,7 @@ GEM
     mini_mime (1.1.5)
     multi_json (1.15.0)
     multipart-post (2.4.0)
+    mutex_m (0.3.0)
     nanaimo (0.3.0)
     naturally (2.2.1)
     nkf (0.2.0)
@@ -211,7 +213,9 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  abbrev
   fastlane
+  mutex_m
 
 BUNDLED WITH
    2.5.9
