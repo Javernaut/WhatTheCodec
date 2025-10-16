@@ -3,7 +3,7 @@ package com.javernaut.whatthecodec.home.ui.audio
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import com.javernaut.whatthecodec.feature.home.stream.toDisplayableStreamFeature
 import com.javernaut.whatthecodec.feature.settings.api.content.AudioStreamFeature
 import com.javernaut.whatthecodec.home.presentation.model.AudioPage
@@ -30,7 +30,7 @@ private fun AudioCardContent(
     onCopyValue: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val resources = LocalContext.current.resources
+    val resources = LocalResources.current
     val displayableStreamFeatures =
         AudioStreamFeature.entries.filter {
             streamFeatures.contains(it)

@@ -25,7 +25,7 @@ internal class DefaultThemeSettingsRepository @Inject constructor(
 
     private val dataStore = context.dataStore
 
-    private val selectedTheme: Flow<AppTheme> = context.dataStore.data
+    private val selectedTheme: Flow<AppTheme> = dataStore.data
         .map { preferences ->
             preferences[keyTheme] ?: AppTheme.Auto.ordinal
         }.map {

@@ -7,7 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.javernaut.whatthecodec.R
@@ -94,7 +94,7 @@ private fun VideoStream(
         title = makeCardTitle(stream.basicInfo),
         modifier = modifier
     ) {
-        val resources = LocalContext.current.resources
+        val resources = LocalResources.current
         val displayableStreamFeatures =
             VideoStreamFeature.entries.filter {
                 streamFeatures.contains(it)

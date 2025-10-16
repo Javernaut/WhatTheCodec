@@ -3,7 +3,7 @@ package com.javernaut.whatthecodec.home.ui.subtitle
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import com.javernaut.whatthecodec.feature.home.stream.toDisplayableStreamFeature
 import com.javernaut.whatthecodec.feature.settings.api.content.SubtitleStreamFeature
 import com.javernaut.whatthecodec.home.presentation.model.SubtitlesPage
@@ -30,7 +30,7 @@ private fun SubtitleCardContent(
     onCopyValue: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val resources = LocalContext.current.resources
+    val resources = LocalResources.current
     val displayableStreamFeatures =
         SubtitleStreamFeature.entries.filter {
             streamFeatures.contains(it)
