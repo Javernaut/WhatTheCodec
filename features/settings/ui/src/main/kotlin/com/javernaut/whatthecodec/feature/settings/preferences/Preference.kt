@@ -58,7 +58,7 @@ fun PreferenceGroup(
 ) {
     Surface(
         shape = MaterialTheme.shapes.medium,
-        color = MaterialTheme.colorScheme.surfaceContainer
+        color = MaterialTheme.colorScheme.surfaceContainerHigh
     ) {
         Column(content = content)
     }
