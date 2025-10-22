@@ -30,6 +30,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.javernaut.whatthecodec.feature.settings.preferences.Preference
@@ -260,7 +261,7 @@ private fun PreferenceItemRow(
     Surface(
         onClick = clickListener,
         shape = MaterialTheme.shapes.medium,
-        tonalElevation = if (checked) 8.dp else 0.dp,
+        color = if (checked) MaterialTheme.colorScheme.secondaryContainer else Color.Transparent
     ) {
         Row(
             modifier = Modifier
