@@ -1,17 +1,14 @@
 package com.javernaut.whatthecodec.home.ui.screen
 
 import androidx.compose.foundation.layout.Arrangement.spacedBy
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
@@ -33,7 +30,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRowDefaults
 import androidx.compose.material3.Text
@@ -107,11 +103,6 @@ fun LandscapeMainScreen(
     }
 
     Row {
-        // TODO Reenable the actions in landscape mode
-        MainScreenSideBar(
-            onVideoIconClick, onAudioIconClick, onSettingsClicked
-        )
-
         val snackbarHostState = remember { SnackbarHostState() }
 
         ObserveScreenMessages(
@@ -124,10 +115,12 @@ fun LandscapeMainScreen(
                 SnackbarHost(hostState = snackbarHostState)
             },
             topBar = {
-                MainScreenTopAppBar(
-                    tabsToShow = tabsToShow,
-                    pagerState = pagerState,
-                    inPortrait = false
+                LandscapeMainScreenTopAppBar(
+                    tabsToShow,
+                    pagerState,
+                    onVideoIconClick,
+                    onAudioIconClick,
+                    onSettingsClicked,
                 )
             }
         ) {
@@ -139,44 +132,6 @@ fun LandscapeMainScreen(
                 modifier = Modifier
                     .fillMaxSize()
             )
-        }
-    }
-}
-
-@Composable
-private fun MainScreenSideBar(
-    onVideoIconClick: () -> Unit,
-    onAudioIconClick: () -> Unit,
-    onSettingsClicked: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Surface(
-        color = MaterialTheme.colorScheme.surfaceContainer,
-        modifier = modifier
-    ) {
-        Column(
-            modifier = Modifier
-                .windowInsetsPadding(
-                    WindowInsets.systemBars.only(
-                        WindowInsetsSides.Vertical + WindowInsetsSides.Start
-                    )
-                )
-                .padding(16.dp),
-            verticalArrangement = spacedBy(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            SideMainAction(
-                image = Icons.Filled.Videocam,
-                contentDescription = stringResource(id = R.string.menu_pick_video),
-                clickListener = onVideoIconClick
-            )
-            SideMainAction(
-                image = Icons.Filled.MusicNote,
-                contentDescription = stringResource(id = R.string.menu_pick_audio),
-                clickListener = onAudioIconClick
-            )
-            Spacer(modifier = Modifier.weight(1f))
-            HomeScreenSettingsAction(onSettingsClicked)
         }
     }
 }
@@ -252,6 +207,43 @@ private fun MainScreenTopAppBar(
 }
 
 @Composable
+private fun LandscapeMainScreenTopAppBar(
+    tabsToShow: List<AvailableTab>,
+    pagerState: PagerState,
+    onVideoIconClick: () -> Unit,
+    onAudioIconClick: () -> Unit,
+    onSettingsClicked: () -> Unit,
+) {
+    Box {
+        MainScreenTopAppBar(
+            tabsToShow = tabsToShow,
+            pagerState = pagerState,
+            inPortrait = false
+        )
+        Row(
+            Modifier
+                .align(Alignment.CenterEnd)
+                .padding(end = 16.dp)
+                .windowInsetsPadding(TopAppBarDefaults.windowInsets)
+        ) {
+            // TODO Reconsider the styling of these action elements
+            // TODO Use tooltips?
+            SideMainAction(
+                image = Icons.Filled.Videocam,
+                contentDescription = stringResource(id = R.string.menu_pick_video),
+                clickListener = onVideoIconClick
+            )
+            SideMainAction(
+                image = Icons.Filled.MusicNote,
+                contentDescription = stringResource(id = R.string.menu_pick_audio),
+                clickListener = onAudioIconClick
+            )
+            HomeScreenSettingsAction(onSettingsClicked)
+        }
+    }
+}
+
+@Composable
 private fun MainScreenTabRow(
     pagerState: PagerState,
     inPortrait: Boolean,
@@ -265,6 +257,7 @@ private fun MainScreenTabRow(
             tabs = tabs
         )
     } else {
+        // TODO edgePadding = 0.dp?
         PrimaryScrollableTabRow(
             selectedTabIndex = pagerState.currentPage,
             modifier = modifier,
