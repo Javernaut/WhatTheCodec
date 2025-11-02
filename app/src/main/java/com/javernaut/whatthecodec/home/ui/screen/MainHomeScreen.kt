@@ -28,6 +28,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.LeadingIconTab
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.PrimaryScrollableTabRow
+import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.SnackbarHost
@@ -233,25 +234,9 @@ private fun MainScreenTopAppBar(
     inPortrait: Boolean,
 ) {
     val scope = rememberCoroutineScope()
-    PrimaryScrollableTabRow(
-        selectedTabIndex = pagerState.currentPage,
-        indicator = {
-            TabRowDefaults.PrimaryIndicator(
-                Modifier
-                    // There is a small glitch of animating the indicator from and to the 0 position.
-                    // Check out the tabIndicatorOffset {} version of this method for potential fix.
-                    .tabIndicatorOffset(pagerState.currentPage)
-                    .then(
-                        if (pagerState.currentPage == 0) Modifier.windowInsetsPadding(
-                            TopAppBarDefaults.windowInsets.only(
-                                WindowInsetsSides.Start
-                            )
-                        )
-                        else Modifier
-                    ),
-                width = Dp.Unspecified,
-            )
-        },
+    MainScreenTabRow(
+        pagerState = pagerState,
+        inPortrait = inPortrait,
         modifier = Modifier.fillMaxWidth()
     ) {
         MainScreenTopAppBarTabs(
@@ -267,7 +252,46 @@ private fun MainScreenTopAppBar(
 }
 
 @Composable
-fun MainScreenTopAppBarTabs(
+private fun MainScreenTabRow(
+    pagerState: PagerState,
+    inPortrait: Boolean,
+    modifier: Modifier = Modifier,
+    tabs: @Composable () -> Unit,
+) {
+    if (inPortrait) {
+        PrimaryTabRow(
+            selectedTabIndex = pagerState.currentPage,
+            modifier = modifier,
+            tabs = tabs
+        )
+    } else {
+        PrimaryScrollableTabRow(
+            selectedTabIndex = pagerState.currentPage,
+            modifier = modifier,
+            indicator = {
+                TabRowDefaults.PrimaryIndicator(
+                    Modifier
+                        // There is a small glitch of animating the indicator from and to the 0 position.
+                        // Check out the tabIndicatorOffset {} version of this method for potential fix.
+                        .tabIndicatorOffset(pagerState.currentPage, matchContentSize = true)
+                        .then(
+                            if (pagerState.currentPage == 0) Modifier.windowInsetsPadding(
+                                TopAppBarDefaults.windowInsets.only(
+                                    WindowInsetsSides.Start
+                                )
+                            )
+                            else Modifier
+                        ),
+                    width = Dp.Unspecified,
+                )
+            },
+            tabs = tabs
+        )
+    }
+}
+
+@Composable
+private fun MainScreenTopAppBarTabs(
     tabsToShow: List<AvailableTab>,
     pagerState: PagerState,
     inPortrait: Boolean,
