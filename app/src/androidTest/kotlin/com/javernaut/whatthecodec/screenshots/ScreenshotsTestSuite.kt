@@ -134,8 +134,7 @@ class ScreenshotsTestSuite(
                 val bitmap = BitmapFactory.decodeStream(inputStream)
                 inputStream.close()
                 ActualFrame(bitmap)
-            },
-            backgroundColor = (0xFF785050).toInt()
+            }
         )
 
         val screenState = ScreenState(

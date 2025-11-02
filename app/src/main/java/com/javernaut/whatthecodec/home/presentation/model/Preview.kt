@@ -9,6 +9,5 @@ data object NoPreviewAvailable : Preview()
 
 data class ActualPreview(
     val frameMetrics: Size,
-    val frames: List<Frame>,
-    val backgroundColor: Int
+    val frames: List<Frame>
 ) : Preview()
