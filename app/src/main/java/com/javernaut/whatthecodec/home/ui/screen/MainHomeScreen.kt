@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
-import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.only
@@ -28,13 +27,14 @@ import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LeadingIconTab
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.PrimaryTabRow
+import androidx.compose.material3.PrimaryScrollableTabRow
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Tab
+import androidx.compose.material3.TabRowDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -44,6 +44,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.compose.common.OrientationLayout
@@ -105,6 +106,7 @@ fun LandscapeMainScreen(
     }
 
     Row {
+        // TODO Reenable the actions in landscape mode
         MainScreenSideBar(
             onVideoIconClick, onAudioIconClick, onSettingsClicked
         )
@@ -117,9 +119,6 @@ fun LandscapeMainScreen(
         )
 
         Scaffold(
-            modifier = Modifier.consumeWindowInsets(
-                WindowInsets.systemBars.only(WindowInsetsSides.Start)
-            ),
             snackbarHost = {
                 SnackbarHost(hostState = snackbarHostState)
             },
@@ -234,30 +233,64 @@ private fun MainScreenTopAppBar(
     inPortrait: Boolean,
 ) {
     val scope = rememberCoroutineScope()
-    PrimaryTabRow(
+    PrimaryScrollableTabRow(
         selectedTabIndex = pagerState.currentPage,
-        modifier = Modifier
-            .fillMaxWidth()
-            .windowInsetsPadding(
-                TopAppBarDefaults.windowInsets.only(WindowInsetsSides.Horizontal)
+        indicator = {
+            TabRowDefaults.PrimaryIndicator(
+                Modifier
+                    // There is a small glitch of animating the indicator from and to the 0 position.
+                    // Check out the tabIndicatorOffset {} version of this method for potential fix.
+                    .tabIndicatorOffset(pagerState.currentPage)
+                    .then(
+                        if (pagerState.currentPage == 0) Modifier.windowInsetsPadding(
+                            TopAppBarDefaults.windowInsets.only(
+                                WindowInsetsSides.Start
+                            )
+                        )
+                        else Modifier
+                    ),
+                width = Dp.Unspecified,
             )
+        },
+        modifier = Modifier.fillMaxWidth()
     ) {
-        tabsToShow.forEachIndexed { index, tabToShow ->
-            MainScreenIconTab(
-                tall = inPortrait,
-                text = { Text(stringResource(id = tabToShow.title)) },
-                icon = {
-                    Icon(imageVector = tabToShow.icon, contentDescription = null)
-                },
-                selected = pagerState.currentPage == index,
-                onClick = {
-                    scope.launch {
-                        pagerState.animateScrollToPage(index)
-                    }
-                },
-                modifier = Modifier.windowInsetsPadding(TopAppBarDefaults.windowInsets)
-            )
+        MainScreenTopAppBarTabs(
+            tabsToShow = tabsToShow,
+            pagerState = pagerState,
+            inPortrait = inPortrait
+        ) { index ->
+            scope.launch {
+                pagerState.animateScrollToPage(index)
+            }
         }
+    }
+}
+
+@Composable
+fun MainScreenTopAppBarTabs(
+    tabsToShow: List<AvailableTab>,
+    pagerState: PagerState,
+    inPortrait: Boolean,
+    onTabClicked: (Int) -> Unit
+) {
+    tabsToShow.forEachIndexed { index, tabToShow ->
+        var windowInsetsSides = WindowInsetsSides.Top
+        if (index == 0) {
+            windowInsetsSides += WindowInsetsSides.Start
+        }
+
+        MainScreenIconTab(
+            tall = inPortrait,
+            text = { Text(stringResource(id = tabToShow.title)) },
+            icon = {
+                Icon(imageVector = tabToShow.icon, contentDescription = null)
+            },
+            selected = pagerState.currentPage == index,
+            onClick = { onTabClicked(index) },
+            modifier = Modifier.windowInsetsPadding(
+                TopAppBarDefaults.windowInsets.only(windowInsetsSides)
+            )
+        )
     }
 }
 
