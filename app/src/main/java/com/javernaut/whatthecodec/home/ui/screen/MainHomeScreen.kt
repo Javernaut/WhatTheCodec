@@ -1,6 +1,5 @@
 package com.javernaut.whatthecodec.home.ui.screen
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -24,7 +23,6 @@ import androidx.compose.material.icons.filled.MusicNote
 import androidx.compose.material.icons.filled.Subtitles
 import androidx.compose.material.icons.filled.Videocam
 import androidx.compose.material3.BottomAppBar
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
@@ -92,7 +90,6 @@ fun MainHomeScreen(
     )
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun LandscapeMainScreen(
     screenState: ScreenState,
@@ -185,7 +182,6 @@ private fun MainScreenSideBar(
 }
 
 @Composable
-@OptIn(ExperimentalFoundationApi::class)
 fun PortraitMainScreen(
     screenState: ScreenState,
     onVideoIconClick: () -> Unit,
@@ -231,9 +227,7 @@ fun PortraitMainScreen(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-@ExperimentalFoundationApi
 private fun MainScreenTopAppBar(
     tabsToShow: List<AvailableTab>,
     pagerState: PagerState,
@@ -296,7 +290,6 @@ fun MainScreenIconTab(
 }
 
 @Composable
-@ExperimentalFoundationApi
 private fun MainScreenContent(
     screenState: ScreenState,
     pagerState: PagerState,
