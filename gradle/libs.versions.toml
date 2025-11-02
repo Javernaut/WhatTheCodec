@@ -46,7 +46,6 @@ androidx-lifecycle-compose = { module = "androidx.lifecycle:lifecycle-runtime-co
 androidx-window = { module = "androidx.window:window", version.ref = "androidx-window" }
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "androidx-datastore" }
 
-androidx-palette = "androidx.palette:palette-ktx:1.0.0"
 androidx-savedstate = "androidx.savedstate:savedstate:1.4.0"
 androidx-browser = "androidx.browser:browser:1.9.0"
 androidx-annotation = "androidx.annotation:annotation:1.9.1"

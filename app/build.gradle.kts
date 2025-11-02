@@ -119,7 +119,6 @@ dependencies {
 
     implementation(libs.bundles.androidx.lifecycle)
     implementation(libs.androidx.profileinstaller)
-    implementation(libs.androidx.palette)
     implementation(libs.androidx.savedstate)
     implementation(libs.androidx.window)
     implementation(libs.androidx.navigation.compose)
