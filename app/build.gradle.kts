@@ -108,6 +108,7 @@ detekt {
 }
 
 dependencies {
+    implementation(libs.androidx.compose.adaptive)
     baselineProfile(project(":baselineprofile"))
 
     implementation(project(":features:settings:api"))

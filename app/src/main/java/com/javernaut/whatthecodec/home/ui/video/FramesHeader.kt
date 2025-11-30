@@ -1,19 +1,22 @@
 package com.javernaut.whatthecodec.home.ui.video
 
 import android.util.Size
+import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.window.core.layout.WindowSizeClass
 import com.javernaut.whatthecodec.R
-import com.javernaut.whatthecodec.compose.common.GridLayout
 import com.javernaut.whatthecodec.home.presentation.model.ActualPreview
 import com.javernaut.whatthecodec.home.presentation.model.Frame
 import com.javernaut.whatthecodec.home.presentation.model.NoPreviewAvailable
@@ -56,21 +59,42 @@ fun FramesHeader(
 @Composable
 private fun FramesGrid(
     newFrames: List<Frame>,
-    frameMetrics: Size,
-    modifier: Modifier = Modifier,
+    frameMetrics: Size
 ) {
-    val previewFrameSpacing = dimensionResource(id = R.dimen.preview_frames_spacing)
-    GridLayout(
-        modifier = modifier
-            .padding(previewFrameSpacing),
-        columns = 2,
-        horizontalSpacing = previewFrameSpacing,
-        verticalSpacing = previewFrameSpacing
+    val windowSizeClass = currentWindowAdaptiveInfo().windowSizeClass
+    if (windowSizeClass.isHeightAtLeastBreakpoint(WindowSizeClass.HEIGHT_DP_MEDIUM_LOWER_BOUND)) {
+        NarrowFramesGrid(newFrames, frameMetrics)
+    } else {
+        FramesRow(newFrames, frameMetrics)
+    }
+}
+
+@Composable
+private fun FramesRow(
+    newFrames: List<Frame>,
+    frameMetrics: Size,
+) {
+    Row(
+        horizontalArrangement = spacedBy(16.dp)
     ) {
         newFrames.forEach {
             Frame(
-                it, frameMetrics
+                it, frameMetrics, Modifier.weight(1f)
             )
+        }
+    }
+}
+
+@Composable
+private fun NarrowFramesGrid(
+    newFrames: List<Frame>,
+    frameMetrics: Size,
+) {
+    Column(
+        verticalArrangement = spacedBy(16.dp)
+    ) {
+        newFrames.chunked(2).forEach {
+            FramesRow(it, frameMetrics)
         }
     }
 }
