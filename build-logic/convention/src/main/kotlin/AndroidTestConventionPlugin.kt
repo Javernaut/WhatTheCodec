@@ -1,4 +1,4 @@
-import com.android.build.gradle.TestExtension
+import com.android.build.api.dsl.TestExtension
 import com.javernaut.whatthecodec.buildlogic.Versions
 import com.javernaut.whatthecodec.buildlogic.configureKotlinAndroid
 import com.javernaut.whatthecodec.buildlogic.extension.apply
@@ -12,7 +12,6 @@ class AndroidTestConventionPlugin : Plugin<Project> {
         with(target) {
             with(pluginManager) {
                 apply(libs.plugins.android.test)
-                apply(libs.plugins.jetbrains.kotlin.android)
             }
 
             extensions.configure<TestExtension> {
