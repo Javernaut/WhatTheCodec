@@ -35,17 +35,13 @@ fun VideoPage(
         item {
             FramesHeader(
                 videoPage.preview,
-//                Modifier.padding(horizontal = 16.dp)
             )
         }
-//        val commonModifier = Modifier.padding(horizontal = 16.dp)
         item {
             Container(
                 fileFormat = videoPage.container.formatName,
                 protocol = stringResource(id = R.string.info_protocol_content),
                 onCopyValue = onCopyValue,
-//                modifier = commonModifier
-//                    .padding(top = 16.dp)
             )
         }
         item {
@@ -53,7 +49,6 @@ fun VideoPage(
                 stream = videoPage.videoStream,
                 streamFeatures = videoPage.videoStreamFeatures,
                 onCopyValue = onCopyValue,
-//                modifier = commonModifier.padding(vertical = 16.dp)
             )
         }
     }

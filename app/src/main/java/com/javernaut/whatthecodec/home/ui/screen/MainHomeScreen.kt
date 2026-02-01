@@ -22,12 +22,12 @@ import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.LeadingIconTab
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.PrimaryScrollableTabRow
 import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Tab
@@ -228,15 +228,15 @@ private fun LandscapeMainScreenTopAppBar(
         ) {
             // TODO Reconsider the styling of these action elements
             // TODO Use tooltips?
-            SideMainAction(
+            ToolbarActionButton(
                 image = Icons.Filled.Videocam,
                 contentDescription = stringResource(id = R.string.menu_pick_video),
-                clickListener = onVideoIconClick
+                onClick = onVideoIconClick
             )
-            SideMainAction(
+            ToolbarActionButton(
                 image = Icons.Filled.MusicNote,
                 contentDescription = stringResource(id = R.string.menu_pick_audio),
-                clickListener = onAudioIconClick
+                onClick = onAudioIconClick
             )
             HomeScreenSettingsAction(onSettingsClicked)
         }
@@ -413,16 +413,15 @@ private fun BottomMainAction(
 }
 
 @Composable
-private fun SideMainAction(
+private fun ToolbarActionButton(
     image: ImageVector,
     contentDescription: String,
-    clickListener: () -> Unit,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    SmallFloatingActionButton(
-        onClick = clickListener,
-        elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation(),
-        modifier = modifier
+    IconButton(
+        onClick = onClick,
+        modifier
     ) {
         Icon(image, contentDescription)
     }
