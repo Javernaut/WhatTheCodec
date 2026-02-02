@@ -30,7 +30,7 @@ android {
      *      While on Github Actions, another parameter is required:
      *      -Pandroid.testoptions.manageddevices.emulator.gpu="swiftshader_indirect"
      */
-    testOptions.managedDevices.devices {
+    testOptions.managedDevices.allDevices {
         create<ManagedVirtualDevice>("pixel6Api34") {
             device = "Pixel 6"
             apiLevel = 34

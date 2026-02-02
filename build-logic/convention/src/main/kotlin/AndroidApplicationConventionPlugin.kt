@@ -12,7 +12,6 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
         with(target) {
             with(pluginManager) {
                 apply(libs.plugins.android.application)
-                apply(libs.plugins.jetbrains.kotlin.android)
             }
 
             extensions.configure<ApplicationExtension> {
