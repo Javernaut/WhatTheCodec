@@ -30,6 +30,7 @@ google-dagger = "2.59"
 detekt = "1.23.8"
 
 mockk = "1.14.9"
+adaptive = "1.2.0"
 
 [libraries]
 mediafile = "io.github.javernaut:mediafile:2.0.1"
@@ -46,7 +47,6 @@ androidx-lifecycle-compose = { module = "androidx.lifecycle:lifecycle-runtime-co
 androidx-window = { module = "androidx.window:window", version.ref = "androidx-window" }
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "androidx-datastore" }
 
-androidx-palette = "androidx.palette:palette-ktx:1.0.0"
 androidx-savedstate = "androidx.savedstate:savedstate:1.4.0"
 androidx-browser = "androidx.browser:browser:1.9.0"
 androidx-annotation = "androidx.annotation:annotation:1.9.1"
@@ -91,6 +91,7 @@ ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devto
 hilt-gradlePlugin = { group = "com.google.dagger", name = "hilt-android-gradle-plugin", version.ref = "google-dagger" }
 androidx-benchmark-macro = { group = "androidx.benchmark", name = "benchmark-macro-junit4", version.ref = "androidx-benchmark" }
 androidx-profileinstaller = { group = "androidx.profileinstaller", name = "profileinstaller", version.ref = "androidx-profileinstaller" }
+androidx-compose-adaptive = { group = "androidx.compose.material3.adaptive", name = "adaptive", version.ref = "adaptive" }
 
 [bundles]
 kotlinx-coroutines = ["coroutines-core", "coroutines-android"]

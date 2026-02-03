@@ -1,13 +1,12 @@
 package com.javernaut.whatthecodec.home.ui.video
 
+import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.javernaut.whatthecodec.R
@@ -18,6 +17,7 @@ import com.javernaut.whatthecodec.home.ui.stream.StreamCard
 import com.javernaut.whatthecodec.home.ui.stream.StreamFeatureItem
 import com.javernaut.whatthecodec.home.ui.stream.StreamFeaturesGrid
 import com.javernaut.whatthecodec.home.ui.stream.makeCardTitle
+import com.javernaut.whatthecodec.home.ui.stream.plus
 import io.github.javernaut.mediafile.model.VideoStream
 
 @Composable
@@ -29,19 +29,19 @@ fun VideoPage(
 ) {
     LazyColumn(
         modifier = modifier,
-        contentPadding = contentPadding
+        verticalArrangement = spacedBy(16.dp),
+        contentPadding = contentPadding + PaddingValues(16.dp)
     ) {
         item {
-            FramesHeader(videoPage.preview, Modifier.fillMaxWidth())
+            FramesHeader(
+                videoPage.preview,
+            )
         }
-        val commonModifier = Modifier.padding(horizontal = 16.dp)
         item {
             Container(
                 fileFormat = videoPage.container.formatName,
                 protocol = stringResource(id = R.string.info_protocol_content),
                 onCopyValue = onCopyValue,
-                modifier = commonModifier
-                    .padding(top = 16.dp)
             )
         }
         item {
@@ -49,7 +49,6 @@ fun VideoPage(
                 stream = videoPage.videoStream,
                 streamFeatures = videoPage.videoStreamFeatures,
                 onCopyValue = onCopyValue,
-                modifier = commonModifier.padding(vertical = 16.dp)
             )
         }
     }
@@ -94,7 +93,7 @@ private fun VideoStream(
         title = makeCardTitle(stream.basicInfo),
         modifier = modifier
     ) {
-        val resources = LocalContext.current.resources
+        val resources = LocalResources.current
         val displayableStreamFeatures =
             VideoStreamFeature.entries.filter {
                 streamFeatures.contains(it)

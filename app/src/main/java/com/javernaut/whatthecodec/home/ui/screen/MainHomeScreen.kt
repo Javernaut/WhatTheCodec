@@ -1,19 +1,14 @@
 package com.javernaut.whatthecodec.home.ui.screen
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement.spacedBy
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
-import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
@@ -24,19 +19,19 @@ import androidx.compose.material.icons.filled.MusicNote
 import androidx.compose.material.icons.filled.Subtitles
 import androidx.compose.material.icons.filled.Videocam
 import androidx.compose.material3.BottomAppBar
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.LeadingIconTab
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.PrimaryScrollableTabRow
 import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Tab
+import androidx.compose.material3.TabRowDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -46,6 +41,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.javernaut.whatthecodec.R
 import com.javernaut.whatthecodec.compose.common.OrientationLayout
@@ -92,7 +88,6 @@ fun MainHomeScreen(
     )
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun LandscapeMainScreen(
     screenState: ScreenState,
@@ -108,10 +103,6 @@ fun LandscapeMainScreen(
     }
 
     Row {
-        MainScreenSideBar(
-            onVideoIconClick, onAudioIconClick, onSettingsClicked
-        )
-
         val snackbarHostState = remember { SnackbarHostState() }
 
         ObserveScreenMessages(
@@ -120,17 +111,16 @@ fun LandscapeMainScreen(
         )
 
         Scaffold(
-            modifier = Modifier.consumeWindowInsets(
-                WindowInsets.systemBars.only(WindowInsetsSides.Start)
-            ),
             snackbarHost = {
                 SnackbarHost(hostState = snackbarHostState)
             },
             topBar = {
-                MainScreenTopAppBar(
-                    tabsToShow = tabsToShow,
-                    pagerState = pagerState,
-                    inPortrait = false
+                LandscapeMainScreenTopAppBar(
+                    tabsToShow,
+                    pagerState,
+                    onVideoIconClick,
+                    onAudioIconClick,
+                    onSettingsClicked,
                 )
             }
         ) {
@@ -147,45 +137,6 @@ fun LandscapeMainScreen(
 }
 
 @Composable
-private fun MainScreenSideBar(
-    onVideoIconClick: () -> Unit,
-    onAudioIconClick: () -> Unit,
-    onSettingsClicked: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Surface(
-        color = MaterialTheme.colorScheme.surfaceContainer,
-        modifier = modifier
-    ) {
-        Column(
-            modifier = Modifier
-                .windowInsetsPadding(
-                    WindowInsets.systemBars.only(
-                        WindowInsetsSides.Vertical + WindowInsetsSides.Start
-                    )
-                )
-                .padding(16.dp),
-            verticalArrangement = spacedBy(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            SideMainAction(
-                image = Icons.Filled.Videocam,
-                contentDescription = stringResource(id = R.string.menu_pick_video),
-                clickListener = onVideoIconClick
-            )
-            SideMainAction(
-                image = Icons.Filled.MusicNote,
-                contentDescription = stringResource(id = R.string.menu_pick_audio),
-                clickListener = onAudioIconClick
-            )
-            Spacer(modifier = Modifier.weight(1f))
-            HomeScreenSettingsAction(onSettingsClicked)
-        }
-    }
-}
-
-@Composable
-@OptIn(ExperimentalFoundationApi::class)
 fun PortraitMainScreen(
     screenState: ScreenState,
     onVideoIconClick: () -> Unit,
@@ -231,39 +182,132 @@ fun PortraitMainScreen(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-@ExperimentalFoundationApi
 private fun MainScreenTopAppBar(
     tabsToShow: List<AvailableTab>,
     pagerState: PagerState,
     inPortrait: Boolean,
 ) {
     val scope = rememberCoroutineScope()
-    PrimaryTabRow(
-        selectedTabIndex = pagerState.currentPage,
-        modifier = Modifier
-            .fillMaxWidth()
-            .windowInsetsPadding(
-                TopAppBarDefaults.windowInsets.only(WindowInsetsSides.Horizontal)
-            )
+    MainScreenTabRow(
+        pagerState = pagerState,
+        inPortrait = inPortrait,
+        modifier = Modifier.fillMaxWidth()
     ) {
-        tabsToShow.forEachIndexed { index, tabToShow ->
-            MainScreenIconTab(
-                tall = inPortrait,
-                text = { Text(stringResource(id = tabToShow.title)) },
-                icon = {
-                    Icon(imageVector = tabToShow.icon, contentDescription = null)
-                },
-                selected = pagerState.currentPage == index,
-                onClick = {
-                    scope.launch {
-                        pagerState.animateScrollToPage(index)
-                    }
-                },
-                modifier = Modifier.windowInsetsPadding(TopAppBarDefaults.windowInsets)
-            )
+        MainScreenTopAppBarTabs(
+            tabsToShow = tabsToShow,
+            pagerState = pagerState,
+            inPortrait = inPortrait
+        ) { index ->
+            scope.launch {
+                pagerState.animateScrollToPage(index)
+            }
         }
+    }
+}
+
+@Composable
+private fun LandscapeMainScreenTopAppBar(
+    tabsToShow: List<AvailableTab>,
+    pagerState: PagerState,
+    onVideoIconClick: () -> Unit,
+    onAudioIconClick: () -> Unit,
+    onSettingsClicked: () -> Unit,
+) {
+    Box {
+        MainScreenTopAppBar(
+            tabsToShow = tabsToShow,
+            pagerState = pagerState,
+            inPortrait = false
+        )
+        Row(
+            Modifier
+                .align(Alignment.CenterEnd)
+                .padding(end = 16.dp)
+                .windowInsetsPadding(TopAppBarDefaults.windowInsets)
+        ) {
+            // TODO Reconsider the styling of these action elements
+            // TODO Use tooltips?
+            ToolbarActionButton(
+                image = Icons.Filled.Videocam,
+                contentDescription = stringResource(id = R.string.menu_pick_video),
+                onClick = onVideoIconClick
+            )
+            ToolbarActionButton(
+                image = Icons.Filled.MusicNote,
+                contentDescription = stringResource(id = R.string.menu_pick_audio),
+                onClick = onAudioIconClick
+            )
+            HomeScreenSettingsAction(onSettingsClicked)
+        }
+    }
+}
+
+@Composable
+private fun MainScreenTabRow(
+    pagerState: PagerState,
+    inPortrait: Boolean,
+    modifier: Modifier = Modifier,
+    tabs: @Composable () -> Unit,
+) {
+    if (inPortrait) {
+        PrimaryTabRow(
+            selectedTabIndex = pagerState.currentPage,
+            modifier = modifier,
+            tabs = tabs
+        )
+    } else {
+        // TODO edgePadding = 0.dp?
+        PrimaryScrollableTabRow(
+            selectedTabIndex = pagerState.currentPage,
+            modifier = modifier,
+            indicator = {
+                TabRowDefaults.PrimaryIndicator(
+                    Modifier
+                        // There is a small glitch of animating the indicator from and to the 0 position.
+                        // Check out the tabIndicatorOffset {} version of this method for potential fix.
+                        .tabIndicatorOffset(pagerState.currentPage, matchContentSize = true)
+                        .then(
+                            if (pagerState.currentPage == 0) Modifier.windowInsetsPadding(
+                                TopAppBarDefaults.windowInsets.only(
+                                    WindowInsetsSides.Start
+                                )
+                            )
+                            else Modifier
+                        ),
+                    width = Dp.Unspecified,
+                )
+            },
+            tabs = tabs
+        )
+    }
+}
+
+@Composable
+private fun MainScreenTopAppBarTabs(
+    tabsToShow: List<AvailableTab>,
+    pagerState: PagerState,
+    inPortrait: Boolean,
+    onTabClicked: (Int) -> Unit
+) {
+    tabsToShow.forEachIndexed { index, tabToShow ->
+        var windowInsetsSides = WindowInsetsSides.Top
+        if (index == 0) {
+            windowInsetsSides += WindowInsetsSides.Start
+        }
+
+        MainScreenIconTab(
+            tall = inPortrait,
+            text = { Text(stringResource(id = tabToShow.title)) },
+            icon = {
+                Icon(imageVector = tabToShow.icon, contentDescription = null)
+            },
+            selected = pagerState.currentPage == index,
+            onClick = { onTabClicked(index) },
+            modifier = Modifier.windowInsetsPadding(
+                TopAppBarDefaults.windowInsets.only(windowInsetsSides)
+            )
+        )
     }
 }
 
@@ -296,7 +340,6 @@ fun MainScreenIconTab(
 }
 
 @Composable
-@ExperimentalFoundationApi
 private fun MainScreenContent(
     screenState: ScreenState,
     pagerState: PagerState,
@@ -370,16 +413,15 @@ private fun BottomMainAction(
 }
 
 @Composable
-private fun SideMainAction(
+private fun ToolbarActionButton(
     image: ImageVector,
     contentDescription: String,
-    clickListener: () -> Unit,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    SmallFloatingActionButton(
-        onClick = clickListener,
-        elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation(),
-        modifier = modifier
+    IconButton(
+        onClick = onClick,
+        modifier
     ) {
         Icon(image, contentDescription)
     }
