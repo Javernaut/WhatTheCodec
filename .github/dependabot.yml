@@ -13,9 +13,4 @@ updates:
     registries: "*"
     labels:
       - "dependencies"
-    groups:
-      kotlin-ksp-compose:
-        patterns:
-          - "org.jetbrains.kotlin.android"
-          - "com.google.devtools.ksp"
     open-pull-requests-limit: 10
