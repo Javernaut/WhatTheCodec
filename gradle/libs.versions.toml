@@ -7,7 +7,7 @@ kotlinx-coroutines = "1.10.2"
 
 androidx-lifecycle = "2.10.0"
 androidx-window = "1.5.1"
-androidx-datastore = "1.2.0"
+androidx-datastore = "1.2.1"
 androidx-navigation = "2.9.7"
 androidx-activity-compose = "1.12.4"
 androidx-compose-bom = "2026.02.01"
