@@ -55,10 +55,10 @@ class SettingsViewModel @Inject constructor(
     }
 }
 
-context(ViewModel)
+context(viewModel: ViewModel)
 fun <T> Flow<T>.stateIn(initialValue: T): StateFlow<T> {
     return stateIn(
-        viewModelScope,
+        viewModel.viewModelScope,
         SharingStarted.WhileSubscribed(stopTimeoutMillis = 5_000),
         initialValue
     )
