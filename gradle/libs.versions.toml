@@ -48,7 +48,7 @@ androidx-window = { module = "androidx.window:window", version.ref = "androidx-w
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "androidx-datastore" }
 
 androidx-savedstate = "androidx.savedstate:savedstate:1.4.0"
-androidx-browser = "androidx.browser:browser:1.9.0"
+androidx-browser = "androidx.browser:browser:1.10.0"
 androidx-annotation = "androidx.annotation:annotation:1.9.1"
 
 androidx-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "androidx-compose-bom" }
