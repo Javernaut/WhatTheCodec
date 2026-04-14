@@ -60,7 +60,7 @@ jobs:
         run: ./gradlew detekt bundleRelease
 
       - name: Create Github Release and attach AABs
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           tag_name: ${{ github.ref_name }}
           draft: true
