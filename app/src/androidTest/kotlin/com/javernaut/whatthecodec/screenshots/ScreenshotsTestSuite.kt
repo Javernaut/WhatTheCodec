@@ -211,9 +211,11 @@ class ScreenshotsTestSuite(
             override suspend fun setSelectedTheme(newAppTheme: AppTheme) = Unit
         }
 
+        val settingsViewModel =
+            SettingsViewModel(contentSettingsRepository, themeSettingsRepository)
         makeScreenshotOf("settings") {
             SettingsScreen(
-                SettingsViewModel(contentSettingsRepository, themeSettingsRepository),
+                settingsViewModel,
                 {},
                 {}
             )
