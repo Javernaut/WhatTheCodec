@@ -9,8 +9,8 @@ plugins {
 android {
     namespace = "com.javernaut.whatthecodec"
     defaultConfig {
-        versionCode = 4100
-        versionName = "4.1.0"
+        versionCode = 4210
+        versionName = "4.2.1"
     }
     buildTypes {
         release {
