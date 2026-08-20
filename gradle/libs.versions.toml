@@ -30,7 +30,7 @@ google-dagger = "2.60.1"
 detekt = "1.23.8"
 
 mockk = "1.14.11"
-adaptive = "1.2.0"
+adaptive = "1.3.0"
 
 [libraries]
 mediafile = "io.github.javernaut:mediafile:2.0.1"
