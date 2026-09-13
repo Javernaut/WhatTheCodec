@@ -17,7 +17,11 @@ internal fun Project.configureKotlinAndroid(
     commonExtension: CommonExtension,
 ) {
     commonExtension.apply {
-        compileSdk = Versions.compileSdk
+        compileSdk {
+            version = release(Versions.compileSdk) {
+                minorApiLevel = Versions.compileSdkMinor
+            }
+        }
 
         defaultConfig.apply {
             minSdk = Versions.minSdk
