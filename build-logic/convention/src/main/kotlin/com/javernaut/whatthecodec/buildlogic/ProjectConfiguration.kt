@@ -64,6 +64,5 @@ private inline fun <reified T : KotlinBaseExtension> Project.configureKotlin() =
     }.apply {
         jvmTarget = Versions.kotlinJvmTarget
         allWarningsAsErrors = warningsAsErrors.toBoolean()
-        freeCompilerArgs.add("-Xcontext-parameters")
     }
 }
