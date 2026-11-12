@@ -29,7 +29,7 @@ google-dagger = "2.60.1"
 
 detekt = "1.23.8"
 
-mockk = "1.14.11"
+mockk = "1.14.12"
 adaptive = "1.3.0"
 
 [libraries]
